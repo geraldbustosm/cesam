@@ -13,7 +13,7 @@
     <div class="container login">
         <div class="row">
             <div class="col">
-                <img class="img-fluid mx-auto d-block mb-4" src="{{asset('img/logo.png')}}">
+                <img class="img-fluid mb-4" src="{{asset('img/logo.png')}}">
                 <form action="">
                     <div class="form-group">
                         <input type="text" class="form-control" id="rut" placeholder="RUT">
