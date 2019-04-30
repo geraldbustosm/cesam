@@ -1,7 +1,7 @@
 @extends('layout')
 @section('title','Dashboard')
 @section('user', 'David')
-
+@section('active-escritorio','active')
 @section('content')
 <h1>Un titulo</h1>
 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum in labore fuga quisquam incidunt neque, dignissimos, vel cum est, qui consequuntur ab mollitia voluptate Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, qui. Officia mollitia, eaque qui beatae, optio possimus consequatur nostrum maxime natus molestias ipsam delectus, ducimus cumque officiis dignissimos adipisci laborum. possimus ad laudantium cupiditate nulla accusamus? Nostrum aspernatur hic ipsum cupiditate perferendis nobis ex, culpa quasi possimus illum sed. Corrupti dolorem magni tenetur cupiditate rem alias natus iste?

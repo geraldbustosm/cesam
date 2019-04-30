@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/dashboard', function (){
+Route::get('dashboard', function (){
     return view('dashboard');
+});
+
+Route::get('pacientes', function(){
+    return view('pacientes');
+});
+
+Route::get('ingresarpaciente', function(){
+    return view('ingresarpaciente');
 });
