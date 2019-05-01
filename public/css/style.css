@@ -90,3 +90,8 @@ a:hover{
 .nav-link i{
     padding-right: 5px;
 }
+
+#searchbox{
+    background: url('../img/searchicon.png') no-repeat scroll 9px 9px;
+    padding-left: 40px;
+    background-color: white;

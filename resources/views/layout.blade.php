@@ -20,7 +20,7 @@
             <nav>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#"><i class="material-icons">home</i><span>Home</span></a>
+                        <a class="nav-link disabled" href="#"><span>Tierras blancas</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('active-escritorio')" href="{{url('dashboard')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
