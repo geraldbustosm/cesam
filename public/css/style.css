@@ -3,9 +3,11 @@ body{
 }
 .dashboard{
     position: fixed;
+    overflow-y:auto;
     height: 100%;
     background-color: white;
     width: 10rem;
+    z-index: 2; /* ocupo 2, para que le gane al z index de top-bar (z-index: 1) */
     -webkit-box-shadow: 26px 50px 26px -40px rgba(0,0,0,0.75);
     -moz-box-shadow: 26px 50px 26px -40px rgba(0,0,0,0.75);
     box-shadow: 26px 50px 26px -40px rgba(0,0,0,0.75);
@@ -16,8 +18,8 @@ body{
     padding-right: 2rem;
     padding-bottom: 2rem;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 .page-content p{
     text-align: justify;
@@ -38,6 +40,7 @@ body{
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
+    z-index: 1;
 }
 .welcome{
     padding-top: 10px;
@@ -66,8 +69,7 @@ nav ul li a:hover {
     background-color: #f7f7f7;
 }
 .card{
-    z-index: -1;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 a{
     color: #bcc0ca;
@@ -84,14 +86,34 @@ a:hover{
 #saludo{
     color: #bcc0ca;
 }
-.form-full{
+.div-full{
     width: 100%;
 }
 .nav-link i{
     padding-right: 5px;
 }
-
 #searchbox{
     background: url('../img/searchicon.png') no-repeat scroll 9px 9px;
     padding-left: 40px;
     background-color: white;
+}
+
+/* Para posicionar iconos en las cabeceras de las tarjetas de prestaciones */
+.card-header{
+    display:flex;
+    justify-content: space-between;
+}
+.card-header i{
+    padding-right: 5px;
+}
+
+/* Definiendo el ancho de las columnas de tabla */
+
+.column-width{
+    width: 16.6666666667%;
+}
+
+/* Primera celda de filas de tabla esté en negrita */
+.bold-cell{
+    font-weight: bold;
+}

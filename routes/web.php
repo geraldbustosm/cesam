@@ -26,3 +26,11 @@ Route::get('pacientes', function(){
 Route::get('ingresarpaciente', function(){
     return view('ingresarpaciente');
 });
+
+Route::get('infopaciente', function(){
+    return view('infopaciente');
+});
+
+Route::get('fichas', function(){
+    return view('fichas');
+});

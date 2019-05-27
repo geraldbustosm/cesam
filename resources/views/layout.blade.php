@@ -32,17 +32,16 @@
                         <a class="nav-link @yield('active-prestaciones')" href="#"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('ingresarpaciente')}}"><i class="material-icons">person_add</i><span id="masdeunalinea">Ingresar paciente</span></a>
+                        <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('ingresarpaciente')}}"><i class="material-icons">person_add</i><span>Ingresar paciente</span></a>
                     </li>
                 </ul>
             </nav>
         </div>
-        <div class="page-content">
-            @yield('content')
-        </div>
+        <!-- cuando se herede 'content' debemos iniciarlo con <div class="page-content"> -->
+        @yield('content') 
     </div>
 <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}"></script>
+<script src="{{asset('js/bootstrap.min.js')}}"></script>
 </body>
 </html>
