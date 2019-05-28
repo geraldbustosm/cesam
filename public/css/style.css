@@ -24,6 +24,7 @@ body{
 .page-content p{
     text-align: justify;
     color: #4c4c4c;
+    line-height: 1.8;
 }
 .page-content h1{
     color: #4c4c4c;
