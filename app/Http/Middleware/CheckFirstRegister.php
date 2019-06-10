@@ -5,8 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\User;
 
-class CheckIfExistUsers
-{
+class CheckFirstRegister{
     /**
      * Handle an incoming request.
      *
