@@ -9,28 +9,23 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
+| ->name funciona para crearle un nombre a la ruta y luego poder llamarlo luego (en los action por ejemplo)
+| con {{ route('nombre_de_la_ruta')}}
+|
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+Auth::routes();
 
-Route::get('dashboard', function (){
-    return view('dashboard');
-});
+Route::get('/', 'AdminController@index');
 
-Route::get('pacientes', function(){
-    return view('pacientes');
-});
+Route::get('registrar', 'AdminController@mostrarRegistrarUsuario')->middleware('checkrole:1');
 
-Route::get('ingresarpaciente', function(){
-    return view('ingresarpaciente');
-});
+Route::post('registrar','AdminController@registrarUsuario');
 
-Route::get('infopaciente', function(){
-    return view('infopaciente');
-});
+Route::get('pacientes', 'AdminController@pacientes');
 
-Route::get('fichas', function(){
-    return view('fichas');
-});
+Route::get('ingresarpaciente', 'AdminController@mostrarRegistrarPaciente')->middleware('checkrole:1');
+
+Route::get('infopaciente', 'AdminController@infoPaciente');
+
+Route::get('fichas', 'AdminController@fichas');

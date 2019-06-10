@@ -13,9 +13,18 @@
 <body>
     <div class="top-bar">
         <div><img class="" src="{{asset('img/logo.png')}}" alt="" width="185" height="46"></div>
-        <div class="welcome"><span id="saludo">Hola, @yield('user') |</span> <a href="">Salir</a></span></div>
+        <!-- El logout no se puede realizar por link, puesto que sería enviarlo por get y este debe
+        enviarse por POST, lo que se hace es cuando se presione el link es que no se ejecute (prevenDefault)
+        y que con javascript busque el formulario de logout que está invisible y se ejecute con metodo POST-->
+        <div class="welcome"><span id="saludo">Hola, {{$auth->nombre}} | </span><a 
+            href="{{ route('logout') }}" onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">Salir</a></span>
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+        </form>
+        </div>
     </div>
-    
     <div class="wrap">
         <div class="dashboard">
             <nav>
@@ -24,7 +33,7 @@
                         <a class="nav-link disabled" href="#"><span>Tierras blancas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('active-escritorio')" href="{{url('dashboard')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
+                        <a class="nav-link @yield('active-escritorio')" href="{{url('/')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('active-pacientes')" href="{{url('pacientes')}}"><i class="material-icons">people</i><span>Pacientes</span></a>
@@ -38,8 +47,7 @@
                 </ul>
             </nav>
         </div>
-        <!-- cuando se herede 'content' debemos iniciarlo con <div class="page-content"> -->
-        @yield('content') 
+        <div class="page-content">@yield('content')</div>
     </div>
 <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>

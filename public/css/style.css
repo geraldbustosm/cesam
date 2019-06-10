@@ -28,6 +28,7 @@ body{
 }
 .page-content h1{
     color: #4c4c4c;
+    margin-bottom: 2rem;
 }
 .top-bar{    
     border-bottom: 1px solid #e1e5eb;
@@ -87,9 +88,6 @@ a:hover{
 #saludo{
     color: #bcc0ca;
 }
-.div-full{
-    width: 100%;
-}
 .nav-link i{
     padding-right: 5px;
 }
@@ -97,6 +95,10 @@ a:hover{
     background: url('../img/searchicon.png') no-repeat scroll 9px 9px;
     padding-left: 40px;
     background-color: white;
+}
+
+.div-full{
+    width: 100%;
 }
 
 /* Para posicionar iconos en las cabeceras de las tarjetas de prestaciones */
