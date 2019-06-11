@@ -1,4 +1,7 @@
 var tabla = document.getElementById('table-body');
+var searchbox = document.getElementById("searchbox");
+var busqueda;
+var timer;
 
 function crearFila(dato1,dato2,dato3,dato4,dato5){
     // Creamos una nueva fila que se insertará al final de las demás
@@ -34,11 +37,17 @@ function filtrar(data, busqueda){
     }
 }
 
-function buscar(data){
-    var searchbox = document.getElementById("searchbox");
+function buscar(data){ 
     searchbox.addEventListener("keyup", function(){
-        var busqueda = searchbox.value;
-        filtrar(data,busqueda);
+        var count = 1;
+        clearInterval(timer);
+        timer = setInterval(function(){
+            count--;
+            if(count == 0) {
+                busqueda = searchbox.value;
+                filtrar(data, busqueda);
+            }
+        }, 800);
     });
 }
 rellenoInicial(pacientes);

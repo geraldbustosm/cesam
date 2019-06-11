@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title','Fichas')
-@section('active-pacientes','active')
+@section('active-prestaciones','active')
 
 @section('content')
 <h1>Fichas</h1>

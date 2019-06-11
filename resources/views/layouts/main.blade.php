@@ -39,7 +39,7 @@
                         <a class="nav-link @yield('active-pacientes')" href="{{url('pacientes')}}"><i class="material-icons">people</i><span>Pacientes</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('active-prestaciones')" href="#"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
+                        <a class="nav-link @yield('active-prestaciones')" href="{{url('fichas')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('ingresarpaciente')}}"><i class="material-icons">person_add</i><span>Ingresar paciente</span></a>

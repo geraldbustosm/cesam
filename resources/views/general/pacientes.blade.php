@@ -4,7 +4,7 @@
 @section('content')
 <h1>Pacientes</h1>
 <div>
-  <input class="form-control" id="searchbox" type="text" placeholder="Felipe Ruiz">
+  <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
 </div>
 <table class="table table-striped">
   <thead>
