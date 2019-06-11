@@ -18,14 +18,14 @@ Auth::routes();
 
 Route::get('/', 'AdminController@index');
 
-Route::get('registrar', 'AdminController@mostrarRegistrarUsuario')->middleware('checkrole:1');
+Route::get('registrar', 'AdminController@addUser')->middleware('checkrole:1');
 
-Route::post('registrar','AdminController@registrarUsuario');
+Route::post('registrar','AdminController@registUser');
 
-Route::get('pacientes', 'AdminController@pacientes');
+Route::get('pacientes', 'AdminController@showPatients');
 
-Route::get('ingresarpaciente', 'AdminController@mostrarRegistrarPaciente')->middleware('checkrole:1');
+Route::get('ingresarpaciente', 'AdminController@addPatient')->middleware('checkrole:1');
 
-Route::get('infopaciente', 'AdminController@infoPaciente');
+Route::get('infopaciente', 'AdminController@showPatientInfo');
 
-Route::get('fichas', 'AdminController@fichas');
+Route::get('fichas', 'AdminController@showClinicalRecords');

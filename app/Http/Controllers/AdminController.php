@@ -21,28 +21,28 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('general.dashboard');
+        return view('general.home');
     }
-    public function pacientes(){
-        return view('general.pacientes');
-    }
-
-    public function mostrarRegistrarPaciente(){
-        return view('admin.ingresarpaciente');
+    public function showPatients(){
+        return view('general.patient');
     }
 
-    public function infoPaciente(){
-        return view('admin.infopaciente');
+    public function addPatient(){
+        return view('admin.patientForm');
     }
 
-    public function fichas(){
-        return view('admin.fichas');
+    public function showPatientInfo(){
+        return view('admin.patientInfo');
     }
 
-    public function mostrarRegistrarUsuario(){
-        return view('admin.registrarusuario');
+    public function showClinicalRecords(){
+        return view('admin.clinicalRecords');
     }
-    public function registrarUsuario(Request $request){
+
+    public function addUser(){
+        return view('admin.userForm');
+    }
+    public function registUser(Request $request){
 
         $validacion = $request->validate([
             'nombre' => 'required|string|max:255',

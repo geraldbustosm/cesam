@@ -61,5 +61,5 @@ en el controlador -->
 </script>
 
 <!-- Añadiendo script que solo se utiliza en esta vista -->
-<script src="{{asset('js/filtrartabla.js')}}"></script>
+<script src="{{asset('js/patientFilter.js')}}"></script>
 @endsection
