@@ -19,12 +19,12 @@
         </tr>
       </thead>
       <tbody id="table-body">
-        <!-- Acá se rellenará con filas desde javascript -->
+        <!-- Filling cells from javascript -->
     </tbody>
   </table>
 </div>
 
-<!-- Modal (Inicialmente invisible)-->
+<!-- Modal (Hidden at begin)-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
@@ -43,6 +43,7 @@
     </div>
   </div>
 </div>
+
 <!-- Simulando la query recibida por la vista con el metodo with utilizado
 en el controlador -->
 <?php
@@ -61,6 +62,6 @@ en el controlador -->
   var pacientes = <?php echo json_encode($pacientes); ?>;
 </script>
 
-<!-- Añadiendo script que solo se utiliza en esta vista -->
+<!-- Adding script using on this view -->
 <script src="{{asset('js/patientFilter.js')}}"></script>
 @endsection

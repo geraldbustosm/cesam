@@ -17,7 +17,8 @@ function demoFromHTML() {
 				// true = "handled elsewhere, bypass text extraction"
 				return true
 			}
-		}; 
+		};
+		// Define the margins to this file
 		margins = {
 			top: 80,
 			bottom: 60,
@@ -29,7 +30,7 @@ function demoFromHTML() {
 		pdf.fromHTML(
 				source, // HTML string or DOM elem ref.
 				margins.left, // x coord
-				margins.top, {// y coord
+				margins.top, { // y coord
 					'width': margins.width, // max width of content on PDF
 					'elementHandlers': specialElementHandlers
 				},
