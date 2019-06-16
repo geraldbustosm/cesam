@@ -6,21 +6,22 @@
 <div>
   <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
 </div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-        <th class="column-width">#</th>
-        <th class="column-width" scope="col">First</th>
-        <th class="column-width" scope="col">Last</th>
-        <th class="column-width" scope="col">Handle</th>
-        <th class="column-width" scope="col">Descripcion</th>
-        <th class="column-width" scope="col">Acciones</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      <!-- Acá se rellenará con filas desde javascript -->
-  </tbody>
-</table>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+          <th class="column-width">#</th>
+          <th class="column-width" scope="col">First</th>
+          <th class="column-width" scope="col">Last</th>
+          <th class="column-width" scope="col">Handle</th>
+          <th class="column-width" scope="col">Descripcion</th>
+          <th class="column-width" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Acá se rellenará con filas desde javascript -->
+    </tbody>
+  </table>
 </div>
 
 <!-- Modal (Inicialmente invisible)-->

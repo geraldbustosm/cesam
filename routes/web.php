@@ -29,3 +29,5 @@ Route::get('ingresarpaciente', 'AdminController@addPatient')->middleware('checkr
 Route::get('infopaciente', 'AdminController@showPatientInfo');
 
 Route::get('fichas', 'AdminController@showClinicalRecords');
+
+Route::get('testing', 'AdminController@showTesting');

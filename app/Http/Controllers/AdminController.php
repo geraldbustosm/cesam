@@ -65,4 +65,8 @@ class AdminController extends Controller
 
         return redirect('registrar')->with('status', 'Usuario creado');
     }
+
+    public function showTesting(){
+        return view('general.test');
+    }
 }
