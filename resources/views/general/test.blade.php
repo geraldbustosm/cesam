@@ -7,7 +7,7 @@
 <div>
   <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
 </div>
-<div id="test">
+<div id="target">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -23,7 +23,7 @@
         <!-- Acá se rellenará con filas desde javascript -->
     </tbody>
   </table>
-  <button onclick="javascript:demoFromHTML()">PDF</button>
+  <button type="submit" class="btn btn-primary" id="export">PDF</button>
 </div>
 
 <!-- Modal (Inicialmente invisible)-->
@@ -65,50 +65,8 @@ en el controlador -->
 
 <!-- Añadiendo script que solo se utiliza en esta vista -->
 <script src="{{asset('js/patientFilter.js')}}"></script>
+<script src="{{asset('js/pdfExport.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-
-<script type="text/javascript">
-  demoFromHTML = function () {
-    var pdf = new jsPDF('p', 'pt', 'letter', true);
-    // source can be HTML-formatted string, or a reference
-    // to an actual DOM element from which the text will be scraped.
-    source = $('#test')[0];
-
-    // we support special element handlers. Register them with jQuery-style 
-    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-    // There is no support for any other type of selectors 
-    // (class, of compound) at this time.
-    specialElementHandlers = {
-        // element with id of "bypass" - jQuery style selector
-        '#bypassme': function(element, renderer) {
-          console.log("test");
-            // true = "handled elsewhere, bypass text extraction"
-            return true
-        }
-    }; 
-    margins = {
-        top: 80,
-        bottom: 60,
-        left: 40,
-        width: 522
-    };
-    // all coords and widths are in jsPDF instance's declared units
-    // 'inches' in this case
-    pdf.fromHTML(
-            source, // HTML string or DOM elem ref.
-            margins.left, // x coord
-            margins.top, {// y coord
-                'width': margins.width, // max width of content on PDF
-                'elementHandlers': specialElementHandlers
-            },
-    function(dispose) {
-        // dispose: object with X, Y of the last line add to the PDF 
-        //          this allow the insertion of new lines after html
-        pdf.save('Test.pdf');
-    }
-    , margins);
-  }
-</script>
 
 <!-- Demostración de 'bypass' (parece funcionar con div's)
 <div class="details" id="render_me">

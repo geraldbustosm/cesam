@@ -4,8 +4,6 @@ var id = document.getElementById('userID');
 
 function validar( id, ciudad )
 {
-	console.log(id.value);
-	console.log(ciudad.value);
 	var validate = document.getElementById('test');
   validate.addEventListener("click", function(){
     ValidaCiudad(id,ciudad.value);
