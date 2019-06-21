@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-<div class="page-content">
+<div class="page-content" style="margin: 0; padding: 0;">
     <h1>Ingresar pacientes</h1>
     <div class="div-full">
     <form action="">
@@ -46,9 +47,11 @@
             <label for="userAdd">Fecha de nacimiento</label>
             <input id="datepicker" width="276" required>
             <script>
-                $('#datepicker').datepicker({
+                var config = {
+                    locale: 'es-es',
                     uiLibrary: 'bootstrap4'
-                });
+                };
+                $('#datepicker').datepicker(config);
             </script>
         </div>
         <button type="submit" class="btn btn-primary" id="regist">Registrar</button>
@@ -56,6 +59,6 @@
     </div>
 </div>
 
-<!-- Añadiendo script que solo se utiliza en esta vista -->
+<!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
 @endsection

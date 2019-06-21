@@ -2,15 +2,20 @@
 @section('title','Pacientes')
 @section('active-testing','active')
 @section('content')
-<h1>Testing</h1>
 
-<div>
-  <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
-</div>
-<div id="target">
-  <table class="table table-striped">
-    <thead>
-      <tr>
+<div class="container" style="margin: 0; padding: 0;" id="target">
+  <div class="row">
+    <div class="col">
+      <h1>Test Page</h1>
+    </div>
+    <div class="col" style="max-width: 30%;">
+      <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
           <th class="column-width">#</th>
           <th class="column-width" scope="col">First</th>
           <th class="column-width" scope="col">Last</th>
@@ -21,9 +26,10 @@
       </thead>
       <tbody id="table-body">
         <!-- Acá se rellenará con filas desde javascript -->
-    </tbody>
-  </table>
-  <button type="submit" class="btn btn-primary" id="export">PDF</button>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-outline-primary" id="export">Exportar en formato PDF</button>
+  </div>
 </div>
 
 <!-- Modal (Inicialmente invisible)-->
@@ -40,11 +46,12 @@
       ...
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary">Save changes</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      <button type="button" class="btn btn-primary">Guardar</button>
     </div>
   </div>
 </div>
+
 <!-- Simulando la query recibida por la vista con el metodo with utilizado
 en el controlador -->
 <?php

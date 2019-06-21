@@ -2,27 +2,28 @@
 @section('title','Pacientes')
 @section('active-pacientes','active')
 @section('content')
+
 <h1>Pacientes</h1>
 <div>
   <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
 </div>
-<div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-          <th class="column-width">#</th>
-          <th class="column-width" scope="col">First</th>
-          <th class="column-width" scope="col">Last</th>
-          <th class="column-width" scope="col">Handle</th>
-          <th class="column-width" scope="col">Descripcion</th>
-          <th class="column-width" scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="table-body">
-        <!-- Filling cells from javascript -->
-    </tbody>
-  </table>
-</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+        <th class="column-width">#</th>
+        <th class="column-width" scope="col">First</th>
+        <th class="column-width" scope="col">Last</th>
+        <th class="column-width" scope="col">Handle</th>
+        <th class="column-width" scope="col">Descripcion</th>
+        <th class="column-width" scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <!-- Filling cells from javascript -->
+  </tbody>
+</table>
+
 
 <!-- Modal (Hidden at begin)-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -38,8 +39,8 @@
       ...
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="button" class="btn btn-primary">Save changes</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      <button type="button" class="btn btn-primary">Guardar</button>
     </div>
   </div>
 </div>
