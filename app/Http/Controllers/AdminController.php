@@ -20,14 +20,13 @@ class AdminController extends Controller
     }
     public function index()
     {
-        $user = Auth::user();
         return view('general.home');
     }
     public function showPatients(){
         return view('general.patient');
     }
 
-    public function addPatient(){
+    public function showAddPatient(){
         return view('admin.patientForm');
     }
 
@@ -39,7 +38,7 @@ class AdminController extends Controller
         return view('admin.clinicalRecords');
     }
 
-    public function addUser(){
+    public function showAddUser(){
         return view('admin.userForm');
     }
     public function registerUser(Request $request){

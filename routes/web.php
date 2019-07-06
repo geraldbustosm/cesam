@@ -18,13 +18,13 @@ Auth::routes();
 
 Route::get('/', 'AdminController@index');
 
-Route::get('registrar', 'AdminController@addUser')->middleware('checkrole:1');
+Route::get('registrar', 'AdminController@showAddUser')->middleware('checkrole:1');
 
 Route::post('registrar','AdminController@registerUser');
 
 Route::get('pacientes', 'AdminController@showPatients');
 
-Route::get('registrarpaciente', 'AdminController@addPatient')->middleware('checkrole:1');
+Route::get('registrarpaciente', 'AdminController@showAddPatient')->middleware('checkrole:1');
 
 Route::get('infopaciente', 'AdminController@showPatientInfo');
 
