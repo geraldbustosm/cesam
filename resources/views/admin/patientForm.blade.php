@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Paciente')
+@section('title','Registrar paciente')
 @section('active-ingresarpaciente','active')
 
 <meta charset="utf-8">

@@ -42,7 +42,7 @@
                         <a class="nav-link @yield('active-prestaciones')" href="{{url('fichas')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('ingresarpaciente')}}"><i class="material-icons">person_add</i><span>Ingresar paciente</span></a>
+                        <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><i class="material-icons">person_add</i><span>Ingresar paciente</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('active-testing')" href="{{url('testing')}}"><i class="material-icons">bug_report</i><span>Sitio de Pruebas</span></a>
