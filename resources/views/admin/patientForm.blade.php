@@ -14,7 +14,7 @@
     <div class="div-full">
     <form action="">
         <div class="form-group">
-            <input type="text" class="form-control" id="userName" placeholder="Nombre completo">
+            <input type="text" class="form-control" id="userName" placeholder="Nombre completo" required>
         </div>
         <div class="form-group">
             <input type="text" class="form-control" id="userID" placeholder="Ingresar rut" required>
@@ -25,7 +25,7 @@
                   <input type="text" class="form-control" id="userCountry" placeholder="País" required>
                 </div>
                 <div class="col">
-                  <input type="text" class="form-control" id="userCity" placeholder="Ciudad">
+                  <input type="text" class="form-control" id="userCity" placeholder="Ciudad" required>
                 </div>
             </div>
         </div>
