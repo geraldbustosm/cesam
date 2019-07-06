@@ -27,7 +27,7 @@
             <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('name') }}" id="name" name="name" placeholder="Nombre completo" required>
         </div>
         <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Ingresar rut" required>
+            <input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Ingresar rut o pasaporte" required>
         </div>
         <div class="form-group">
             <div class="form-row">

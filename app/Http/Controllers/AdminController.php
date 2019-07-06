@@ -71,7 +71,7 @@ class AdminController extends Controller
 
         $validacion = $request->validate([
             'name' => 'required|string|max:255',
-            'id' => 'required|string|max:255',
+            'id' => 'required|string|max:255|unique:paciente',
             'country' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'first_address' => 'required|string|max:255',
@@ -80,8 +80,17 @@ class AdminController extends Controller
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
 
-        return "hola";
-
+        $paciente = new Paciente;
+        
+        
+        $paciente->nombre = $request->name;
+        $paciente->id = $request->id;
+        $paciente->country = $request->country;
+        $paciente->city = $request->city;
+        $paciente->first_address = $request->first_address;
+        $paciente->optional_address = $request->optional_address;
+        $paciente->gender = $request->gender;
+        $paciente->fecha_nacimiento = $request->datepicker;
 
     }
 
