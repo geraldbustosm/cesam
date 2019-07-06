@@ -16,7 +16,7 @@
 
 Auth::routes();
 
-Route::get('/', 'AdminController@index');
+Route::get('/', 'GeneralController@index');
 
 Route::get('registrar', 'AdminController@showAddUser');
 
