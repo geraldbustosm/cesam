@@ -2,7 +2,6 @@
 @section('title','Paciente')
 @section('active-ingresarpaciente','active')
 
-@section('content')
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -10,15 +9,15 @@
 <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-<div class="page-content" style="margin: 0; padding: 0;">
+@section('content')
     <h1>Ingresar pacientes</h1>
     <div class="div-full">
     <form action="">
         <div class="form-group">
-            <input type="text" class="form-control" id="userID" placeholder="Ingresar rut" required>
+            <input type="text" class="form-control" id="userName" placeholder="Nombre completo">
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" id="userName" placeholder="Nombre completo">
+            <input type="text" class="form-control" id="userID" placeholder="Ingresar rut" required>
         </div>
         <div class="form-group">
             <div class="form-row">
@@ -57,8 +56,7 @@
         <button type="submit" class="btn btn-primary" id="regist">Registrar</button>
     </form>
     </div>
-</div>
+@endsection
 
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
-@endsection
