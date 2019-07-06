@@ -19,10 +19,6 @@ class AdminController extends Controller
         $this->middleware('auth');
         $this->middleware('checkrole:1');
     }
-    public function index()
-    {
-        return view('general.home');
-    }
     public function showPatients(){
         return view('general.patient');
     }
