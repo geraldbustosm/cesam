@@ -1,19 +1,14 @@
 @extends('layouts.main')
 @section('title','Pacientes')
 @section('active-testing','active')
-@section('content')
 
-<div class="container" style="margin: 0; padding: 0;" id="target">
-  <div class="row">
-    <div class="col">
-      <h1>Test Page</h1>
-    </div>
-    <div class="col" style="max-width: 30%;">
-      <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
-    </div>
-  </div>
-  <div class="row">
-    <table class="table table-striped">
+@section('content')
+<h1>Test Page</h1>
+<div>
+  <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda por rut">
+</div>
+
+<table class="table table-striped">
       <thead>
         <tr>
           <th class="column-width">#</th>
@@ -30,7 +25,6 @@
     </table>
     <button type="submit" class="btn btn-outline-primary" id="export">Exportar en formato PDF</button>
   </div>
-</div>
 
 <!-- Modal (Inicialmente invisible)-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
