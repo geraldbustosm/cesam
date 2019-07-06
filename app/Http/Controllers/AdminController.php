@@ -42,7 +42,7 @@ class AdminController extends Controller
     public function addUser(){
         return view('admin.userForm');
     }
-    public function registUser(Request $request){
+    public function registerUser(Request $request){
 
         $validacion = $request->validate([
             'nombre' => 'required|string|max:255',
