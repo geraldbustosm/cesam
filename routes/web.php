@@ -26,6 +26,8 @@ Route::get('pacientes', 'AdminController@showPatients');
 
 Route::get('registrarpaciente', 'AdminController@showAddPatient');
 
+Route::post('registrarpaciente', 'AdminController@registerPatient');
+
 Route::get('infopaciente', 'AdminController@showPatientInfo');
 
 Route::get('fichas', 'AdminController@showClinicalRecords');

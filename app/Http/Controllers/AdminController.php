@@ -38,6 +38,11 @@ class AdminController extends Controller
     public function showAddUser(){
         return view('admin.userForm');
     }
+
+    public function showTesting(){
+        return view('general.test');
+    }
+
     public function registerUser(Request $request){
 
         $validacion = $request->validate([
@@ -62,7 +67,22 @@ class AdminController extends Controller
         return redirect('registrar')->with('status', 'Usuario creado');
     }
 
-    public function showTesting(){
-        return view('general.test');
+    public function registerPatient(Request $request){
+
+        $validacion = $request->validate([
+            'name' => 'required|string|max:255',
+            'id' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'first_address' => 'required|string|max:255',
+            'optional_address' => 'string|max:255|nullable',
+            'gender' => 'required',
+            'datepicker' => 'required|date_format:"d/m/Y"',
+        ]);
+
+        return "hola";
+
+
     }
+
 }
