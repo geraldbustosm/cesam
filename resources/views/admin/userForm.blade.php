@@ -16,14 +16,14 @@
             <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre completo">
         </div>
         <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="Ingresar rut">
+            <input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="Rut o pasaporte">
         </div>
         <div class="form-group">
-            <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" id="email" name="email" placeholder="Correo electronico">
+            <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" id="email" name="email" placeholder="Correo">
         </div>
         <div class="form-group">
             <select id="rol" name="rol" class="form-control">
-                <option disabled selected>Escoja un rol</option>
+                <option value="0" disabled selected>Rol de usuario</option>
                 <option value="1">Administrador</option>
                 <option value="2">Funcionario</option>
                 <option value="3">Secretaria</option>
