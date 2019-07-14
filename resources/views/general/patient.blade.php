@@ -22,8 +22,12 @@
     <tbody id="table-body">
       <!-- Filling cells from javascript -->
   </tbody>
+  <div>
+    <ul class="pagination pagination-sm justify-content-center" id="maxPages">
+      <!-- Filling list from javascript -->
+    </ul>
+  </div>
 </table>
-
 
 <!-- Modal (Hidden at begin)-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -45,22 +49,10 @@
   </div>
 </div>
 
-<!-- Simulando la query recibida por la vista con el metodo with utilizado
-en el controlador -->
-<?php
-  $pacientes = array(
-          array("1", "Jacob", "Thorton", "@fat", "Male"),
-          array("12", "Larry", "Bird", "@thin", "Male"),
-          array("13", "Mandiola", "Reggati", "@dils", "Female"),
-          array("123", "Carla", "Faund", "@fest", "Female"),
-          array("124", "dd", "Faundsd", "@afest", "sFemale"),
-          array("125", "Larry", "Bird", "@thin", "Male")
-  );
-?>
-
 <!-- Pasando la data de pacientes a javascript -->
 <script type="text/javascript">
-  var pacientes = <?php echo json_encode($pacientes); ?>;
+  var pacientes = <?php echo json_encode($patients->items()); ?>;
+  var object = <?php echo json_encode($patients); ?>;
 </script>
 
 <!-- Adding script using on this view -->

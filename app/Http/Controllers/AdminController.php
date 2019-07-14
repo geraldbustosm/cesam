@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -20,7 +21,8 @@ class AdminController extends Controller
         $this->middleware('checkrole:1');
     }
     public function showPatients(){
-        return view('general.patient');
+        $patient = DB::table('paciente')->paginate(8);
+        return view('general.patient', ['patients' => $patient]);
     }
 
     public function showAddPatient(){
