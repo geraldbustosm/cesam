@@ -1,10 +1,17 @@
 var tabla = document.getElementById('table-body');
-var pagNav = document.getElementById('maxPages');
 var searchbox = document.getElementById("searchbox");
-var searchText;
-var timer;
 
-function createRow(dato1,dato2,dato3,dato4,dato5){
+var btn_prev = document.getElementById("btn_prev");
+var pagNav = document.getElementById('paginate');
+var tagA = document.getElementsByName('tagA');
+
+var current_page = 1;
+var records_per_page = 3;
+var patients = patientsArr;
+var last_page = 1;
+
+function createRow(dato1,dato2,dato3,dato4,dato5)
+{
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
     var celdas = [];
@@ -31,39 +38,140 @@ function initFill(data){
 }
 
 // Generate a new table whit patients that have 'searchText' on their ID
-function filter(data, searchText){
-    tabla.innerHTML = "";
-    for(var i=0;i<data.length;i++){
-        if(data[i][0].includes(searchText)){
-            createRow(data[i][0],data[i][1],data[i][2],data[i][3],data[i][4]);
+function filter(searchText)
+{
+    // Create a variable for patients matches with searchText, and another variable for the possition in the new array
+    var newPatients = [];
+    var pos = 0;
+    for(var i=0;i<patientsArr.length;i++){
+        // Compare id with searchText
+        if(patientsArr[i].id.toString().includes(searchText)){
+            // If it matches then add the patient in new array, and change the possition
+            newPatients[pos] = patientsArr[i];
+            pos++;
         }
     }
+    // Set patients (global variable) with the new array
+    patients = newPatients;
+    init(1);
 }
 
 // Wait 0.8 sec by every keyup and then call filter function
-function search(data){
+function search(data)
+{
     // Listener for every keyup
     searchbox.addEventListener("keyup", function(){
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        timer = setInterval(function(){
+        var timer = setInterval(function(){
             count--;
             if(count == 0) {
                 // Get text from searchbox item (id of tag)
-                searchText = searchbox.value;
+                var searchText = searchbox.value;
                 // Filter data by searchText
-                filter(data, searchText);
+                filter(searchText);
             }
         // 800 = 0.8 sec
         }, 800);
     });
 }
 
-function pagination(data){
+function prevPage()
+{
+    if (current_page > 1) {
+        current_page--;
+        init(current_page);
+    }
+}
+
+function nextPage()
+{
+    if (current_page < last_page) {
+        current_page++;
+        init(current_page);
+    }
+}
+
+function changePage(page)
+{
+    // Validate page so it can't be out of range.
+    if (page < 1) page = 1;
+    if (page > last_page) page = last_page;
+
+    // Clean the table before re-filling
+    tabla.innerHTML = "";
+    // Re-filling table with patients
+    for (var i = (page-1) * records_per_page; i < (page * records_per_page); i++) {
+      try{
+        // Insert the rows with patients info.
+        createRow(patients[i].id,patients[i].nombre1,patients[i].apellido1,patients[i].sexo,patients[i].fecha_nacimiento);
+      }catch(err){
+        // We exit if don't have equal number of patients and records for page.
+        break;
+      }
+    }
+}
+
+function aListener()
+{
+    for(var i=0;i<tagA.length;i++){
+        tagA[i].addEventListener("click", function(){
+            current_page = Number(this.id);
+            init(current_page);
+        });
+    }
+}
+
+function generatePaginationPrev()
+{
+    // Create <li>
+    var listItem = document.createElement('li');
+    // Create <a>
+    var linkItem = document.createElement('a');
+    // Adding class to both tags
+    listItem.className += "page-item";
+    linkItem.className += "page-link";
+    // Adding ref to <a> with the numbre of pagination
+    linkItem.href += "javascript:prevPage()";
+    var spanItem = document.createElement('span');
+    // Adding the number (text) on <a>
+    linkItem.appendChild(spanItem);
+    // Adding <a> on his own <li>
+    listItem.appendChild(linkItem);
+    // Finally add <li> item on <ul>
+    pagNav.appendChild(listItem);
+    spanItem.innerHTML = "&laquo;";
+}
+
+function generatePaginationNext()
+{
+    // Create <li>
+    var listItem = document.createElement('li');
+    // Create <a>
+    var linkItem = document.createElement('a');
+    // Adding class to both tags
+    listItem.className += "page-item";
+    linkItem.className += "page-link";
+    // Adding ref to <a> with the numbre of pagination
+    linkItem.href += "javascript:nextPage()";
+    var spanItem = document.createElement('span');
+    // Adding the number (text) on <a>
+    linkItem.appendChild(spanItem);
+    // Adding <a> on his own <li>
+    listItem.appendChild(linkItem);
+    // Finally add <li> item on <ul>
+    pagNav.appendChild(listItem);
+    spanItem.innerHTML = "&raquo;";
+}
+
+function generatePaginationNum(n, m)
+{
+    pagNav.innerHTML = ""
+    generatePaginationPrev();
     // Iterative method for list item creation
-    for(var i=1;i<=data.last_page;i++){
+    for(n;n<=m;n++){
         // Create <li>
         var listItem = document.createElement('li');
         // Create <a>
@@ -72,16 +180,52 @@ function pagination(data){
         listItem.className += "page-item";
         linkItem.className += "page-link";
         // Adding ref to <a> with the numbre of pagination
-        linkItem.href = "pacientes?page=".concat(i);
+        linkItem.id += n;
+        linkItem.name += "tagA"
+        linkItem.href += "javascript:aListener()";
         // Adding the number (text) on <a>
-        linkItem.appendChild(document.createTextNode(i));
+        linkItem.appendChild(document.createTextNode(n));
         // Adding <a> on his own <li>
         listItem.appendChild(linkItem);
         // Finally add <li> item on <ul>
         pagNav.appendChild(listItem);
     }
+    generatePaginationNext();
 }
 
-pagination(object);
-initFill(pacientes);
-search(pacientes);
+function numPerPagination()
+{
+    if(current_page<5){
+        if(last_page<9){
+            generatePaginationNum(1,last_page);
+        }else{
+            generatePaginationNum(1,9);
+        }        
+    }else{
+        if(current_page+3 >= last_page){
+            if(last_page-8 < 1){
+                generatePaginationNum(1,last_page);
+            }else{
+                generatePaginationNum(last_page-8,last_page);
+            }           
+        }else{
+            generatePaginationNum(current_page-4,current_page+4);
+        }
+    }
+}
+
+// Calculate max number of pages in pagination
+function numPages()
+{
+    last_page = Math.ceil(patients.length / records_per_page);
+}
+
+function init(page)
+{
+    numPages();
+    changePage(page);
+    numPerPagination();
+}
+
+init(1);
+search(patients);
