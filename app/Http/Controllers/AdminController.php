@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Support\Facades\Hash;
+use App\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -19,8 +21,10 @@ class AdminController extends Controller
         $this->middleware('auth');
         $this->middleware('checkrole:1');
     }
+
     public function showPatients(){
-        return view('general.patient');
+        $patients = Patient::all();;
+        return view('general.patient', ['patients' => $patients]);
     }
 
     public function showAddPatient(){
@@ -40,7 +44,8 @@ class AdminController extends Controller
     }
 
     public function showTesting(){
-        return view('general.test');
+        $patients = DB::table('paciente')->paginate(5);        
+        return view('general.test', ['patients' => $patients]);
     }
 
     public function registerUser(Request $request){
@@ -65,33 +70,6 @@ class AdminController extends Controller
         $user->save();
 
         return redirect('registrar')->with('status', 'Usuario creado');
-    }
-
-    public function registerPatient(Request $request){
-
-        $validacion = $request->validate([
-            'name' => 'required|string|max:255',
-            'id' => 'required|string|max:255|unique:paciente',
-            'country' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'first_address' => 'required|string|max:255',
-            'optional_address' => 'string|max:255|nullable',
-            'gender' => 'required',
-            'datepicker' => 'required|date_format:"d/m/Y"',
-        ]);
-
-        $paciente = new Paciente;
-        
-        
-        $paciente->nombre = $request->name;
-        $paciente->id = $request->id;
-        $paciente->country = $request->country;
-        $paciente->city = $request->city;
-        $paciente->first_address = $request->first_address;
-        $paciente->optional_address = $request->optional_address;
-        $paciente->gender = $request->gender;
-        $paciente->fecha_nacimiento = $request->datepicker;
-
     }
 
 }

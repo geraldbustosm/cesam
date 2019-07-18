@@ -22,13 +22,12 @@
     <tbody id="table-body">
       <!-- Filling cells from javascript -->
   </tbody>
+  <div>
+    <ul class="pagination pagination-sm justify-content-center" id="maxPages">
+      <!-- Filling list from javascript -->
+    </ul>
+  </div>
 </table>
-
-<div>
-  <ul class="pagination pagination-sm justify-content-center" id="maxPages">
-    <!-- Filling list from javascript -->
-  </ul>
-</div>
 
 <!-- Modal (Hidden at begin)-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -57,5 +56,5 @@
 </script>
 
 <!-- Adding script using on this view -->
-<script src="{{asset('js/pagination.js')}}"></script>
+<script src="{{asset('js/patientFilter.js')}}"></script>
 @endsection

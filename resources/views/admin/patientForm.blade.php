@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Registrar paciente')
+@section('title','Paciente')
 @section('active-ingresarpaciente','active')
 
 <meta charset="utf-8">
@@ -10,63 +10,57 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <h1>Ingresar pacientes</h1>
-    <div class="div-full">
-    <form method="post" action="{{ url('registrarpaciente') }}">
-        @csrf
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('name') }}" id="name" name="name" placeholder="Nombre completo" required>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Ingresar rut o pasaporte" required>
-        </div>
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-7">
-                  <input type="text" class="form-control {{ $errors->has('country') ? ' is-invalid' : '' }}" value="{{ old('country') }}" id="country" name="country" placeholder="País" required>
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control {{ $errors->has('city') ? ' is-invalid' : '' }}" value="{{ old('city') }}" id="city" name="city" placeholder="Ciudad" required>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('first_address') ? ' is-invalid' : '' }}" value="{{ old('first_address') }}" id="first_address" name="first_address" placeholder="Dirección actual" required>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('optional_address') ? ' is-invalid' : '' }}" value="{{ old('optional_address') }}" id="optional_address" name="optional_address" placeholder="Dirección opcional">
-            <small id="addressHelp" class="form-text text-muted">La dirección no será de visualización pública.</small>
-        </div>
-        <div class="form-group">
-            <label>Sexo</label><br>
-            <input type="radio" name="gender" value="m" required> Masculino &nbsp;
-            <input type="radio" name="gender" value="f" required> Femenino &nbsp;
-            <input type="radio" name="gender" value="o" required> Otro
-        </div>
-        <div class="form-group">
-            <label>Fecha de nacimiento</label>
-            <input id="datepicker" name="datepicker" width="276" required>
-            <script>
-                $('#datepicker').datepicker({
-                    locale: 'es-es',
-                    uiLibrary: 'bootstrap4',
-                    format: 'dd/mm/yyyy',
-                    startDate: '-3d'
-                });
-            </script>
-        </div>
-        <button type="submit" class="btn btn-primary" id="regist">Registrar</button>
-    </form>
-    </div>
+<h1>Ingresar pacientes</h1>
+<div class="div-full">
+	@if (session('status'))
+		<div class="alert alert-success" role="alert">
+			{{ session('status') }}
+		</div>
+	@endif
+	<form method="post" action="{{ url('ingresarpaciente') }}">
+		<div class="form-group">
+			<input type="text" class="form-control {{ $errors->has('userID') ? ' is-invalid' : '' }}" value="{{ old('userID') }}" id="userID" name="userID" placeholder="Rut o pasaporte">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control {{ $errors->has('userName') ? ' is-invalid' : '' }}" value="{{ old('userName') }}" id="userName" name="userName" placeholder="Nombre completo">
+		</div>
+		<div class="form-group">
+			<div class="form-row">
+				<div class="col-7">
+				  <input type="text" class="form-control {{ $errors->has('userCountry') ? ' is-invalid' : '' }}" value="{{ old('userCountry') }}" id="userCountry" name="userCountry" placeholder="País">
+				</div>
+				<div class="col">
+				  <input type="text" class="form-control {{ $errors->has('userCity') ? ' is-invalid' : '' }}" value="{{ old('userCity') }}" id="userCity" name="userCity" placeholder="Ciudad">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control {{ $errors->has('userAddress1') ? ' is-invalid' : '' }}" value="{{ old('userAddress1') }}" id="userAddress1" name="userAddress1" placeholder="Dirección actual">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control {{ $errors->has('userAddress2') ? ' is-invalid' : '' }}" value="{{ old('userAddress2') }}" id="userAddress1" name="userAddress2" placeholder="Dirección opcional">
+			<small id="addressHelp" class="form-text text-muted">La dirección no será de visualización pública.</small>
+		</div>
+		<div class="form-group">
+			<label for="userAdd">Sexo</label><br>
+			<input type="radio" id="gender" name="gender" value="m" required> Masculino &nbsp;
+			<input type="radio" id="gender" name="gender" value="f" required> Femenino &nbsp;
+			<input type="radio" id="gender" name="gender" value="o" required> Otro
+		</div>
+		<div class="form-group">
+			<label for="userAdd">Fecha de nacimiento</label>
+			<input id="birthdate" name="birthdate" width="276" required>
+			<script>
+				var config = {
+					locale: 'es-es',
+					uiLibrary: 'bootstrap4'
+				};
+				$('#birthdate').datepicker(config);
+			</script>
+		</div>
+		<button type="submit" class="btn btn-primary">Registrar</button>
+	</form>
+</div>
 @endsection
 
 <!-- Adding script using on this view -->
