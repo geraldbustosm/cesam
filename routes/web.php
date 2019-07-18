@@ -32,4 +32,6 @@ Route::get('infopaciente', 'AdminController@showPatientInfo');
 
 Route::get('fichas', 'AdminController@showClinicalRecords');
 
+Route::get('obtenerPacientesAjax', 'GeneralController@getPatientsAjax');
+
 Route::get('testing', 'AdminController@showTesting');

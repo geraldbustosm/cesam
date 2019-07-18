@@ -52,7 +52,6 @@
         </div>
         <div class="page-content">@yield('content')</div>
     </div>
-<script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 </body>
