@@ -27,10 +27,6 @@ class AdminController extends Controller
         return view('general.patient', ['patients' => $patients]);
     }
 
-    public function showAddPatient(){
-        return view('admin.patientForm');
-    }
-
     public function showPatientInfo(){
         return view('admin.patientInfo');
     }

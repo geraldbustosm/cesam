@@ -10,6 +10,15 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <h1>Ingresar pacientes</h1>
 <div class="div-full">
 	@if (session('status'))
@@ -17,45 +26,48 @@
 			{{ session('status') }}
 		</div>
 	@endif
-	<form method="post" action="{{ url('ingresarpaciente') }}">
+	<form method="post" action="{{ url('registrarpaciente') }}">
+		@csrf
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('userID') ? ' is-invalid' : '' }}" value="{{ old('userID') }}" id="userID" name="userID" placeholder="Rut o pasaporte">
+			<input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Rut o pasaporte">
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('userName') ? ' is-invalid' : '' }}" value="{{ old('userName') }}" id="userName" name="userName" placeholder="Nombre completo">
+			<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre completo">
 		</div>
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
-				  <input type="text" class="form-control {{ $errors->has('userCountry') ? ' is-invalid' : '' }}" value="{{ old('userCountry') }}" id="userCountry" name="userCountry" placeholder="País">
+				  <input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
 				</div>
 				<div class="col">
-				  <input type="text" class="form-control {{ $errors->has('userCity') ? ' is-invalid' : '' }}" value="{{ old('userCity') }}" id="userCity" name="userCity" placeholder="Ciudad">
+				  <input type="text" class="form-control {{ $errors->has('ciudad') ? ' is-invalid' : '' }}" value="{{ old('ciudad') }}" id="ciudad" name="ciudad" placeholder="Ciudad">
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('userAddress1') ? ' is-invalid' : '' }}" value="{{ old('userAddress1') }}" id="userAddress1" name="userAddress1" placeholder="Dirección actual">
+			<input type="text" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{ old('direccion') }}" id="direccion" name="direccion" placeholder="Dirección actual">
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('userAddress2') ? ' is-invalid' : '' }}" value="{{ old('userAddress2') }}" id="userAddress1" name="userAddress2" placeholder="Dirección opcional">
+			<input type="text" class="form-control {{ $errors->has('direccion_opcional') ? ' is-invalid' : '' }}" value="{{ old('direccion_opcional') }}" id="direccion_opcional" name="direccion_opcional" placeholder="Dirección opcional">
 			<small id="addressHelp" class="form-text text-muted">La dirección no será de visualización pública.</small>
 		</div>
 		<div class="form-group">
-			<label for="userAdd">Sexo</label><br>
-			<input type="radio" id="gender" name="gender" value="m" required> Masculino &nbsp;
-			<input type="radio" id="gender" name="gender" value="f" required> Femenino &nbsp;
-			<input type="radio" id="gender" name="gender" value="o" required> Otro
+			<label for="sexo">Sexo</label><br>
+			<input type="radio" id="sexo" name="sexo" value="m" required checked> Masculino &nbsp;
+			<input type="radio" id="sexo" name="sexo" value="f"> Femenino &nbsp;
+			<input type="radio" id="sexo" name="sexo" value="o"> Otro
 		</div>
 		<div class="form-group">
-			<label for="userAdd">Fecha de nacimiento</label>
-			<input id="birthdate" name="birthdate" width="276" required>
+			<label for="datepicker">Fecha de nacimiento</label>
+			<input id="datepicker" name="datepicker" width="276" required>
 			<script>
+			
 				var config = {
+					format: 'dd/mm/yyyy',
 					locale: 'es-es',
 					uiLibrary: 'bootstrap4'
 				};
-				$('#birthdate').datepicker(config);
+				$('#datepicker').datepicker(config);
 			</script>
 		</div>
 		<button type="submit" class="btn btn-primary">Registrar</button>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Paciente;
+use App\Patient;
 
 class GeneralController extends Controller
 {
@@ -14,10 +14,42 @@ class GeneralController extends Controller
     {
         return view('general.home');
     }
+    public function showAddPatient(){
+        return view('admin.patientForm');
+    }
+    public function registerPatient(Request $request){
+
+        $validation = $request->validate([
+            'id' => 'required|int|max:255|unique:paciente',
+            //'id' => 'required|int|max:255',
+            'nombre' => 'required|string|max:255',
+            'pais' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'direccion_opcional' => 'string|max:255|nullable',
+            'datepicker' => 'required|date_format:"d/m/Y"',
+            ]);
+
+        $nombre = explode(" ", $request->nombre);
+        $patient = new Patient;
+        //$patient->id = rand(1,9999);
+        $patient->nombre1 = $nombre[0];
+        $patient->nombre2 = $nombre[1];
+        $patient->apellido1 = $nombre[2];
+        $patient->apellido2 = $nombre[3];
+        $patient->sexo = $request->sexo;
+        $patient->fecha_nacimiento = "2019-07-19 06:19:51.029";
+        $patient->prevision_id = 1;
+
+        $patient->save();
+        
+        return redirect('registrarpaciente')->with('status', 'Usuario creado');
+
+    }
     public function getPatientsAjax(Request $request){
         $data = "";
         $i = 0;
-        $pacientes = Paciente::where('nombre1', 'LIKE', '%'.$request->busqueda.'%')->get();
+        $pacientes = Patient::where('nombre1', 'LIKE', '%'.$request->busqueda.'%')->get();
 
         foreach ($pacientes as $paciente){
             $i++;
