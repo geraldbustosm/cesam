@@ -30,6 +30,8 @@ class GeneralController extends Controller
             'datepicker' => 'required|date_format:"d/m/Y"',
             ]);
 
+        echo $request->new_start;
+
         $nombre = explode(" ", $request->nombre);
         $patient = new Patient;
         //$patient->id = rand(1,9999);

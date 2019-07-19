@@ -1,11 +1,11 @@
-var country = document.getElementById('userCountry');
 var id = document.getElementById('userID');
 
 // Start the validation
-function validator( id, country )
+function validator( id )
 {
-	var validate = document.getElementById('regist');
-  validate.addEventListener("click", function(){
+	var validate = document.getElementById('pais');
+  validate.addEventListener("keyup", function(){
+  	var country = document.getElementById('userCountry');
     checkCountry(id,country.value);
   });
 }
@@ -89,5 +89,3 @@ function CheckRUT( object )
 		return true;
 	}
 }
-
-validator(id,country);

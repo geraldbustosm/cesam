@@ -60,17 +60,22 @@
 		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
 			<input id="datepicker" name="datepicker" width="276" required>
-			<script>
-			
+			<script>			
 				var config = {
 					format: 'dd/mm/yyyy',
 					locale: 'es-es',
 					uiLibrary: 'bootstrap4'
 				};
 				$('#datepicker').datepicker(config);
+
+				$("#datepicker").on("change", function() {
+					var from = $("#datepicker").val().split("/");
+					var date = new Date(from[2], from[1] - 1, from[0]);
+				});
 			</script>
 		</div>
 		<button type="submit" class="btn btn-primary">Registrar</button>
+		<input id="execute" type="button" value="Create Date object" />
 	</form>
 </div>
 @endsection
