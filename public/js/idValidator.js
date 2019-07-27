@@ -1,19 +1,19 @@
-var id = document.getElementById('userID');
+function start() {
+	var test = document.getElementById("testing");
+	test.addEventListener("click", validator);
+}
 
 // Start the validation
-function validator( id )
-{
-	var validate = document.getElementById('pais');
-  validate.addEventListener("keyup", function(){
-  	var country = document.getElementById('userCountry');
-    checkCountry(id,country.value);
-  });
+function validator() {
+	var id = document.getElementById('id');
+	var pais = document.getElementById('pais');
+	checkCountry(id, pais);
+	
 }
 
 // Check origin country
-function checkCountry( id, country )
-{
-	if(country.includes('chile')) {
+function checkCountry(id, country) {
+	if (country.value.includes('chile')) {
 		CheckRUT(id); // For Chilean check rut
 	}
 	else {
@@ -22,70 +22,66 @@ function checkCountry( id, country )
 }
 
 // Valid the RUT
-function CheckRUT( object )
-{
+function CheckRUT(object) {
 	var tmpstr = "";
 	var intlen = object.value
-	if (intlen.length > 0)
-	{
+	if (intlen.length > 0) {
 		crut = object.value
 		len = crut.length;
-		if ( len < 2 )
-		{
+		if (len < 2) {
 			alert('rut inválido')
 			object.focus()
 			return false;
 		}
-		for ( i=0; i < crut.length ; i++ )
-		if ( crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-' )
-		{
-			tmpstr = tmpstr + crut.charAt(i);
-		}
+		for (i = 0; i < crut.length; i++)
+			if (crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-') {
+				tmpstr = tmpstr + crut.charAt(i);
+			}
 		rut = tmpstr;
-		crut= tmpstr;
+		crut = tmpstr;
 		len = crut.length;
- 
-		if ( len > 2 )
+
+		if (len > 2)
 			rut = crut.substring(0, len - 1);
 		else
 			rut = crut.charAt(0);
- 
-		dv = crut.charAt(len-1);
- 
-		if ( rut == null || dv == null )
-		return 0;
- 
+
+		dv = crut.charAt(len - 1);
+
+		if (rut == null || dv == null)
+			return 0;
+
 		var dvr = '0';
 		add = 0;
-		mul  = 2;
- 
-		for (i= rut.length-1 ; i>= 0; i--)
-		{
+		mul = 2;
+
+		for (i = rut.length - 1; i >= 0; i--) {
 			add = add + rut.charAt(i) * mul;
 			if (mul == 7)
 				mul = 2;
 			else
 				mul++;
 		}
- 
+
 		sub = add % 11;
-		if (sub==1)
+		if (sub == 1)
 			dvr = 'k';
-		else if (sub==0)
+		else if (sub == 0)
 			dvr = '0';
-		else
-		{
-			dvi = 11-sub;
+		else {
+			dvi = 11 - sub;
 			dvr = dvi + "";
 		}
- 
-		if ( dvr != dv.toLowerCase() )
-		{
-			alert('El Rut Ingreso es Invalido')
+
+		if (dvr != dv.toLowerCase()) {
+			alert('El Rut Ingresado es Invalido')
 			object.focus()
 			return false;
 		}
 		object.focus()
+		console.log(tmpstr);
 		return true;
 	}
 }
+
+start()

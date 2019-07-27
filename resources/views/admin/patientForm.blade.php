@@ -75,10 +75,10 @@
 			</script>
 		</div>
 		<button type="submit" class="btn btn-primary">Registrar</button>
-		<input id="execute" type="button" value="Create Date object" />
+		<input type="button" href="javascript:validator()" value="Test" id="testing"/>
 	</form>
 </div>
-@endsection
 
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
+@endsection

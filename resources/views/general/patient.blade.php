@@ -25,7 +25,7 @@
 </table>
 
 <ul class="pagination justify-content-end" id="paginate"> 
-  <!-- Generate in js->generatePaginationNum(); -->
+  <!-- Generate in patientFilter.js->generatePaginationNum(); -->
 </ul>
 
 <script>
