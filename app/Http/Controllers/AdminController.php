@@ -23,7 +23,7 @@ class AdminController extends Controller
     }
 
     public function showPatients(){
-        $patients = Patient::all();;
+        $patients = Patient::all();
         return view('general.patient', ['patients' => $patients]);
     }
 

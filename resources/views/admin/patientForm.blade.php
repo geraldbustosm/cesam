@@ -70,6 +70,7 @@
 
 				$("#datepicker").on("change", function() {
 					var from = $("#datepicker").val().split("/");
+					// Probar usando la id 'datepicker' en vez de var 'date'
 					var date = new Date(from[2], from[1] - 1, from[0]);
 				});
 			</script>

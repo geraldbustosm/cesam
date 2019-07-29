@@ -33,7 +33,5 @@
 </script>
 
 <!-- Adding script using on this view -->
-<script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
-<!-- <script src="{{asset('js/patientSearch.js')}}"></script> -->
 <script src="{{asset('js/patientFilter.js')}}"></script>
 @endsection
