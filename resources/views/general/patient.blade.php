@@ -12,10 +12,10 @@
   <thead>
     <tr>
       <th class="column-width">#</th>
-      <th class="column-width" scope="col">First</th>
-      <th class="column-width" scope="col">Last</th>
-      <th class="column-width" scope="col">Handle</th>
-      <th class="column-width" scope="col">Descripcion</th>
+      <th class="column-width" scope="col">Identificación</th>
+      <th class="column-width" scope="col">Nombre</th>
+      <th class="column-width" scope="col">Sexo</th>
+      <th class="column-width" scope="col">Edad</th>
       <th class="column-width" scope="col">Acciones</th>
     </tr>
   </thead>
