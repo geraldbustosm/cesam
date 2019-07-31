@@ -29,13 +29,6 @@ function createRow(dato1, dato2, dato3, dato4, dato5) {
     celdas[5].innerHTML = "<td><a href='#'><i title='Ver ficha' class='material-icons'>description</i></a><a href='#'><i title='Añadir prestación' class='material-icons'>add</i></a><a href='#' data-toggle='modal' data-target='#exampleModal'><i title='Editar' class='material-icons'>create</i></a><a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>";
 }
 
-// Generate a table with all the patients
-function initFill(data) {
-    for (var i = 0; i < data.length; i++) {
-        createRow(data[i].id, data[i].nombre1, data[i].apellido1, data[i].sexo, data[i].fecha_nacimiento);
-    }
-}
-
 // Generate a new table whit patients that have 'searchText' on their ID
 function filter(searchText) {
     // Create a variable for patients matches with searchText, and another variable for the possition in the new array
