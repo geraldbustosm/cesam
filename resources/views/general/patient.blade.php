@@ -24,9 +24,11 @@
   </tbody>
 </table>
 
-<ul class="pagination justify-content-end" id="paginate"> 
-  <!-- Generate in patientFilter.js->generatePaginationNum(); -->
-</ul>
+<div class="div-full">
+  <ul class="pagination justify-content-center" id="paginate"> 
+    <!-- Generate in patientFilter.js->generatePaginationNum(); -->
+  </ul>
+</div>
 
 <script>
   var patientsArr = <?php echo json_encode($patients); ?>;
