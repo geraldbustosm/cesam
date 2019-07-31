@@ -167,8 +167,13 @@ function generatePaginationNum(n, m) {
         // Create <a>
         var linkItem = document.createElement('a');
         // Adding class to both tags
-        listItem.className += "page-item";
         linkItem.className += "page-link";
+        // Using a conditional for listItem
+        if(n == current_page){
+            listItem.className += "page-item active";
+        }else{
+            listItem.className += "page-item";
+        }
         // Adding ref to <a> with the numbre of pagination
         linkItem.id += n;
         linkItem.name += "tagA"
