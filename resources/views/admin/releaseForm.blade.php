@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Registrar alta')
+@section('active-ingresardatos','active')
 @section('active-ingresaralta','active')
 
 @section('content')

@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Registrar Especialidad')
+@section('active-ingresardatos','active')
 @section('active-ingresarespecialidad','active')
 
 @section('content')

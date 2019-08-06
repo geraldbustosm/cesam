@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Paciente')
+@section('active-ingresardatos','active')
 @section('active-ingresarpaciente','active')
 
 @section('content')

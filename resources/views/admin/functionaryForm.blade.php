@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Funcionario')
+@section('active-ingresarpersonas','active')
 @section('active-ingresarfuncionario','active')
 
 @section('content')

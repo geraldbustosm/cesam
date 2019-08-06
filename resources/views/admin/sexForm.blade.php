@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Registrar Sexo/Genero')
+@section('active-ingresardatos','active')
 @section('active-ingresarsexo','active')
 
 @section('content')
