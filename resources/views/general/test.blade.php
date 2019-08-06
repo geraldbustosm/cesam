@@ -1,25 +1,91 @@
-@extends('layouts.main')
-@section('title','test')
-@section('active-testing','active')
-@section('content')
-<h1>TEST</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<nav aria-label="...">
-  <ul class="pagination">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active" aria-current="page">
-      <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="page-item active"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</nav>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="{{asset('img/favicon.png')}}" sizes="48x48" type="image/png">
+  <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/style.css')}}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<!-- Adding script using on this view -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+  <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
+  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-@endsection
+  <title>Cesam - Testing</title>
+</head>
+
+<body>
+
+  <h1>TEST</h1>
+  <hr>
+
+  <div class="top-bar">
+    <div><img class="" src="{{asset('img/logo.png')}}" alt="" width="185" height="46"></div>
+    <!-- El logout no se puede realizar por link, puesto que sería enviarlo por get y este debe
+        enviarse por POST, lo que se hace es cuando se presione el link es que no se ejecute (prevenDefault)
+        y que con javascript busque el formulario de logout que está invisible y se ejecute con metodo POST-->
+    <div class="welcome"><span id="saludo">Hola, {{$auth->nombre}} | </span><a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">Salir</a></span>
+
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="dashboard">
+      <nav>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#"><span>Tierras blancas</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link @yield('active-escritorio')" href="{{url('/')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link @yield('active-pacientes')" href="{{url('pacientes')}}"><i class="material-icons">people</i><span>Pacientes</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link @yield('active-prestaciones')" href="{{url('fichas')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><i class="material-icons">person_add</i><span>Ingresar paciente</span></a>
+          </li>
+          <nav id="sidebar">
+          <li class="nav-item">
+            <a class="nav-link @yield('active-testing')" href="#pageSubmenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">bug_report</i><span>Pages</span></a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+              <li>
+                <a href="#">Page 1</a>
+              </li>
+              <li>
+                <a href="#">Page 2</a>
+              </li>
+              <li>
+                <a href="#">Page 3</a>
+              </li>
+            </ul>
+          </li>
+          </nav>
+          
+          <li class="nav-item">
+            <a class="nav-link @yield('active-testing')" href="{{url('testing')}}"><i class="material-icons">bug_report</i><span>Sitio de Pruebas</span></a>
+          </li>
+          
+        </ul>
+      </nav>
+    </div>
+    <div class="page-content">@yield('content')</div>
+  </div>
+
+  <script src="{{asset('js/popper.min.js')}}"></script>
+  <script src="{{asset('js/bootstrap.min.js')}}"></script>
+  <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
+
+</body>
+
+</html>
