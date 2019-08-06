@@ -28,6 +28,26 @@ Route::get('registrarpaciente', 'GeneralController@showAddPatient');
 
 Route::post('registrarpaciente', 'GeneralController@registerPatient');
 
+Route::get('registrarfuncionario', 'AdminController@showAddFunctionary');
+
+Route::post('registrarfuncionario', 'AdminController@registerFunctionary');
+
+Route::get('registraralta', 'AdminController@showAddRelease');
+
+Route::post('registraralta', 'AdminController@registerRelease');
+
+Route::get('registraratributos', 'AdminController@showAddAtributes');
+
+Route::post('registraratributos', 'AdminController@registerAtributes');
+
+Route::get('registrarsexo', 'AdminController@showAddSex');
+
+Route::post('registrarsexo', 'AdminController@registerSex');
+
+Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
+
+Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
+
 Route::get('infopaciente', 'AdminController@showPatientInfo');
 
 Route::get('fichas', 'AdminController@showClinicalRecords');

@@ -51,6 +51,25 @@
                         <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><i class="material-icons">person_add</i><span>Ingresar paciente</span></a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link @yield('active-ingresarfuncionario')" href="{{url('registrarfuncionario')}}"><i class="material-icons">person_add</i><span>Ingresar funcionario</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('active-ingresaralta')" href="{{url('registraralta')}}"><i class="material-icons">person_add</i><span>Ingresar tipo de alta</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('active-ingresaratributos')" href="{{url('registraratributos')}}"><i class="material-icons">person_add</i><span>Ingresar atributos </span></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link @yield('active-ingresarsexo')" href="{{url('registrarsexo')}}"><i class="material-icons">person_add</i><span>Ingresar Genero/Sexo </span></a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link @yield('active-ingresarespecialidad')" href="{{url('registrarespecialidad')}}"><i class="material-icons">person_add</i><span>Ingresar Especialidad </span></a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link @yield('active-testing')" href="{{url('testing')}}"><i class="material-icons">bug_report</i><span>Sitio de Pruebas</span></a>
                     </li>
                 </ul>
