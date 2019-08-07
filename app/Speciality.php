@@ -4,9 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Functionary;
 
 class Speciality extends Model
 {
+  public function functionary()
+    {
+        return $this->belongsToMany(Functionary::class, 'funcionario_posee_especialidad', 'especialidad_id','funcionarios_id');
+    }
+	
 	use Notifiable;
   /**
    * The table associated with the model.

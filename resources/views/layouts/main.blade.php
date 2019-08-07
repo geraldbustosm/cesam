@@ -82,6 +82,9 @@
                                 <li>
                                     <a class="nav-link @yield('active-ingresaralta')" href="{{url('registraralta')}}"><span>Ingresar tipo de alta</span></a>
                                 </li>
+                                <li>
+                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar Especialidad</span></a>
+                                </li>
                             </ul>
                         </li>
                     </nav>

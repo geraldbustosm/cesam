@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Patient;
+use App\Sex;
 
 class GeneralController extends Controller
 {
@@ -15,7 +16,8 @@ class GeneralController extends Controller
         return view('general.home');
     }
     public function showAddPatient(){
-        return view('admin.patientForm');
+        $sex = Sex::all();
+        return view('admin.patientForm', compact('sex'));
     }
     public function registerPatient(Request $request){
 
