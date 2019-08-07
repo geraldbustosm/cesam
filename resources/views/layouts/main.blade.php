@@ -15,6 +15,9 @@
     <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
+    <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+
     <title>Cesam - @yield('title')</title>
 </head>
 
@@ -54,10 +57,10 @@
                             <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">person_add</i><span>Igreso de Datos</span></a>
                             <ul class="collapse list-unstyled" id="people_Submenu">
                                 <li>
-                                <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><span>Ingresar paciente</span></a>
+                                    <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><span>Ingresar paciente</span></a>
                                 </li>
                                 <li>
-                                <a class="nav-link @yield('active-ingresarfuncionario')" href="{{url('registrarfuncionario')}}"><span>Ingresar funcionario</span></a>
+                                    <a class="nav-link @yield('active-ingresarfuncionario')" href="{{url('registrarfuncionario')}}"><span>Ingresar funcionario</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -91,9 +94,6 @@
         </div>
         <div class="page-content">@yield('content')</div>
     </div>
-    <script src="{{asset('js/popper.min.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
 </body>
 
 </html>

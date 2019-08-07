@@ -11,12 +11,13 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class="column-width">#</th>
-      <th class="column-width" scope="col">Identificación</th>
-      <th class="column-width" scope="col">Nombre</th>
-      <th class="column-width" scope="col">Sexo</th>
-      <th class="column-width" scope="col">Edad</th>
-      <th class="column-width" scope="col">Acciones</th>
+      <th style="width: 3%;">#</th>
+      <th style="width: 15%;">Identificación</th>
+      <th style="width: 40%;">Nombre</th>
+      <th style="width: 10%;">Sexo</th>
+      <th style="width: 10%;">Edad</th>
+      <th style="width: 10%">Previsión</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody id="table-body">
@@ -32,8 +33,11 @@
 
 <script>
   var patientsArr = <?php echo json_encode($patients); ?>;
+  var prevArr = <?php echo json_encode($prev); ?>;
+  var sexArr = <?php echo json_encode($sex); ?>;
 </script>
 
 <!-- Adding script using on this view -->
-<script src="{{asset('js/patientFilter.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/patientFilter.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/calcAge.js')}}"></script>
 @endsection

@@ -7,6 +7,7 @@ use App\Patient;
 use App\Release;
 use App\Atributes;
 use App\Sex;
+use App\Prevition;
 use App\Speciality;
 
 use Illuminate\Http\Request;
@@ -28,8 +29,10 @@ class AdminController extends Controller
     }
 
     public function showPatients(){
-        $patients = Patient::all();
-        return view('general.patient', ['patients' => $patients]);
+        $patients = Patient::all()->where('activa', 1);
+        $prev = Prevition::all();
+        $sex = Sex::all();
+        return view('general.patient', ['patients' => $patients, 'prev' => $prev, 'sex' => $sex]);
     }
 
     public function showPatientInfo(){
@@ -50,7 +53,7 @@ class AdminController extends Controller
     }
 
     public function showAddFunctionary(){
-        $user = User::all();
+        $user = User::all()->where('activa', 1);
         return view('admin.functionaryForm',compact('user'));
     }
 
@@ -67,7 +70,8 @@ class AdminController extends Controller
     }
 
     public function showAddSpeciality(){
-        return view('admin.specialityForm');
+        $speciality = Speciality::all()->where('activa', 1);
+        return view('admin.specialityForm', ['specialitys' => $speciality]);
     }
 
     public function registerUser(Request $request){
