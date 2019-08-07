@@ -48,9 +48,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{ old('direccion') }}" id="direccion" name="direccion" placeholder="Dirección actual">
-		</div>
+		
 		
        
         <div class="form-group">

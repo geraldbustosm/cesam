@@ -36,8 +36,8 @@ class AdminController extends Controller
         return view('admin.patientInfo');
     }
 
-    public function showClinicalRecords(){
-        return view('admin.clinicalRecords');
+    public function showClinicalfunctionary(){
+        return view('admin.clinicalfunctionary');
     }
 
     public function showAddUser(){
@@ -68,6 +68,52 @@ class AdminController extends Controller
 
     public function showAddSpeciality(){
         return view('admin.specialityForm');
+    }
+
+    public static function existFunctionarySpeciality($idFunct,$idSp){   
+        
+        $value=false;
+        $doesClientHaveProduct = Speciality::where('id', $idSp)
+                    ->whereHas('functionary', function($q) use($idFunct) {
+                            $q->where('dbo.funcionarios.id', $idFunct);
+                    })
+                    ->count();
+        if($doesClientHaveProduct ){
+                $value = true ;
+            }
+          
+        return $value;
+    }
+    public function showAsignSpeciality(){   
+
+        $speciality = Speciality::orderBy('descripcion')
+            ->get();
+        
+        $functionary = Functionary::orderBy('nombre1')            
+            ->get();
+        $rows = [];
+        $columns = [];
+        $ids = [];
+        foreach($functionary as $index => $record) {
+            // Creamos un array vacio si las claves no existen
+            if(!isset($rows[$record->nombre1])) {
+                $rows[$record->nombre1] = [];
+            }
+        }
+        foreach($speciality as $index => $record) {
+            if(!in_array($record->profesion, $columns)) {
+                $columns[] = $record->descripcion;
+            }
+        }
+        
+        foreach($functionary as $index => $record1) {
+            $ids [0]=$record1->id;
+            foreach($speciality as $index => $record2) {
+                    $ids [1]=$record2->id;           
+                    $rows[$record1->nombre1][$record2->descripcion] = $ids;
+            } 
+        }
+        return view('admin.specialityAsign', compact('rows','columns'));
     }
 
     public function registerUser(Request $request){

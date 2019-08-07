@@ -48,6 +48,10 @@ Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
 
 Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
 
+Route::get('asignarespecialidad', 'AdminController@showAsignSpeciality');
+
+Route::post('asignarespecialidad', 'AdminController@AsignSpeciality');
+
 Route::get('infopaciente', 'AdminController@showPatientInfo');
 
 Route::get('fichas', 'AdminController@showClinicalRecords');

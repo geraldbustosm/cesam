@@ -39,18 +39,32 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('direccion') ? ' is-invalid' : '' }}" value="{{ old('direccion') }}" id="direccion" name="direccion" placeholder="Dirección actual">
+			<div class="form-row">
+					<div class="col-4">
+					<input type="text" class="form-control {{ $errors->has('comuna') ? ' is-invalid' : '' }}" value="{{ old('comuna') }}" id="comuna" name="comuna" placeholder="Comuna">
+					</div>
+					<div class="col-4">
+					<input type="text" class="form-control {{ $errors->has('calle') ? ' is-invalid' : '' }}" value="{{ old('calle') }}" id="calle" name="calle" placeholder="Calle">
+					</div>
+					<div class="col-4">
+					<input type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{ old('numero') }}" id="numero" name="numero" placeholder="Numero">
+					</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('direccion_opcional') ? ' is-invalid' : '' }}" value="{{ old('direccion_opcional') }}" id="direccion_opcional" name="direccion_opcional" placeholder="Dirección opcional">
 			<small id="addressHelp" class="form-text text-muted">La dirección no será de visualización pública.</small>
 		</div>
+		
 		<div class="form-group">
-			<label for="sexo">Sexo</label><br>
-			<input type="radio" id="sexo" name="sexo" value="m" required checked> Masculino &nbsp;
-			<input type="radio" id="sexo" name="sexo" value="f"> Femenino &nbsp;
-			<input type="radio" id="sexo" name="sexo" value="o"> Otro
-		</div>
+            <select name="patient_sex">
+                <option selected disabled>Por favor seleccione un genero / sexo </option>
+                @foreach($sex as $sexo)
+                <option value="{{ $sexo->id}}">{{ $sexo->descripcion}}</option>
+                @endforeach
+            </select>
+        </div>
+
 		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
 			<input id="datepicker" name="datepicker" width="276" required>
