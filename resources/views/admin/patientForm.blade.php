@@ -1,24 +1,24 @@
 @extends('layouts.main')
 @section('title','Paciente')
-@section('active-ingresardatos','active')
+@section('active-ingresarpersonas','active')
 @section('active-ingresarpaciente','active')
 
 @section('content')
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="alert alert-danger">
+	<ul>
+		@foreach ($errors->all() as $error)
+		<li>{{ $error }}</li>
+		@endforeach
+	</ul>
+</div>
 @endif
 <h1>Ingresar pacientes</h1>
 <div class="div-full">
 	@if (session('status'))
-		<div class="alert alert-success" role="alert">
-			{{ session('status') }}
-		</div>
+	<div class="alert alert-success" role="alert">
+		{{ session('status') }}
+	</div>
 	@endif
 	<form method="post" action="{{ url('registrarpaciente') }}">
 		@csrf
@@ -31,44 +31,44 @@
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
-				  <input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
+					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
 				</div>
 				<div class="col">
-				  <input type="text" class="form-control {{ $errors->has('ciudad') ? ' is-invalid' : '' }}" value="{{ old('ciudad') }}" id="ciudad" name="ciudad" placeholder="Ciudad">
+					<input type="text" class="form-control {{ $errors->has('ciudad') ? ' is-invalid' : '' }}" value="{{ old('ciudad') }}" id="ciudad" name="ciudad" placeholder="Ciudad">
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="form-row">
-					<div class="col-4">
+				<div class="col-4">
 					<input type="text" class="form-control {{ $errors->has('comuna') ? ' is-invalid' : '' }}" value="{{ old('comuna') }}" id="comuna" name="comuna" placeholder="Comuna">
-					</div>
-					<div class="col-4">
+				</div>
+				<div class="col-4">
 					<input type="text" class="form-control {{ $errors->has('calle') ? ' is-invalid' : '' }}" value="{{ old('calle') }}" id="calle" name="calle" placeholder="Calle">
-					</div>
-					<div class="col-4">
+				</div>
+				<div class="col-4">
 					<input type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{ old('numero') }}" id="numero" name="numero" placeholder="Numero">
-					</div>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('direccion_opcional') ? ' is-invalid' : '' }}" value="{{ old('direccion_opcional') }}" id="direccion_opcional" name="direccion_opcional" placeholder="Dirección opcional">
 			<small id="addressHelp" class="form-text text-muted">La dirección no será de visualización pública.</small>
 		</div>
-		
+
 		<div class="form-group">
-            <select name="patient_sex">
-                <option selected disabled>Por favor seleccione un genero / sexo </option>
-                @foreach($sex as $sexo)
-                <option value="{{ $sexo->id}}">{{ $sexo->descripcion}}</option>
-                @endforeach
-            </select>
-        </div>
+			<select class="form-control" name="patient_sex" required>
+				<option selected disabled>Por favor seleccione un genero / sexo </option>
+				@foreach($sex as $sexo)
+				<option value="{{ $sexo->id}}">{{ $sexo->descripcion}}</option>
+				@endforeach
+			</select>
+		</div>
 
 		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
 			<input id="datepicker" name="datepicker" width="276" required>
-			<script>			
+			<script>
 				var config = {
 					format: 'dd/mm/yyyy',
 					locale: 'es-es',
@@ -84,7 +84,7 @@
 			</script>
 		</div>
 		<button type="submit" class="btn btn-primary">Registrar</button>
-		<input type="button" href="javascript:validator()" value="Test" id="testing"/>
+		<input type="button" href="javascript:validator()" value="Test" id="testing" />
 	</form>
 </div>
 

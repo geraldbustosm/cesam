@@ -54,7 +54,7 @@
 
                     <nav id="sidebar">
                         <li class="nav-item">
-                            <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">person_add</i><span>Igreso de Datos</span></a>
+                            <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">person_add</i><span>Agregar Personas</span></a>
                             <ul class="collapse list-unstyled" id="people_Submenu">
                                 <li>
                                     <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><span>Ingresar paciente</span></a>
@@ -68,7 +68,7 @@
 
                     <nav id="sidebar">
                         <li class="nav-item">
-                            <a class="nav-link @yield('active-ingresardatos')" href="#data_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">add_box</i><span>Igreso de Datos</span></a>
+                            <a class="nav-link @yield('active-ingresardatos')" href="#data_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">add_box</i><span>Agregar &nbsp; Datos</span></a>
                             <ul class="collapse list-unstyled" id="data_Submenu">
                                 <li>
                                     <a class="nav-link @yield('active-ingresarespecialidad')" href="{{url('registrarespecialidad')}}"><span>Ingresar Especialidad </span></a>

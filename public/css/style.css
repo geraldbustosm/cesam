@@ -155,3 +155,8 @@ ul ul a {
 #sidebar ul {
     border-bottom: 1px solid #e1e5eb;
 }
+
+div.scrolling {
+    height: 65%;
+    overflow-y: scroll;
+  }

@@ -77,14 +77,14 @@ class AdminController extends Controller
     public static function existFunctionarySpeciality($idFunct,$idSp){   
         
         $value=false;
-        $doesClientHaveProduct = Speciality::where('id', $idSp)
-                    ->whereHas('functionary', function($q) use($idFunct) {
-                            $q->where('dbo.funcionarios.id', $idFunct);
-                    })
-                    ->count();
-        if($doesClientHaveProduct ){
-                $value = true ;
-            }
+        // $doesClientHaveProduct = Speciality::where('id', $idSp)
+        //             ->whereHas('functionary', function($q) use($idFunct) {
+        //                     $q->where('dbo.funcionarios.id', $idFunct);
+        //             })
+        //             ->count();
+        // if($doesClientHaveProduct ){
+        //         $value = true ;
+        //     }
           
         return $value;
     }

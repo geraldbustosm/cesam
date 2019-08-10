@@ -21,20 +21,26 @@
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
                 <div class="col">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th style="width: 3%;">#</th>
-                                <th style="width: 70%;">Especialidades</th>
-                                <th style="width: 10%;">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-                            <!-- Fill on js -->
-                        </tbody>
-                    </table>
+                    <div class="">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 3%;">#</th>
+                                    <th style="width: 70%;">Especialidades</th>
+                                    <th style="width: 10%;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Fill on js -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="div-full">
+                        <ul class="pagination justify-content-center" id="paginate">
+                            <!-- Generate in patientFilter.js->generatePaginationNum(); -->
+                        </ul>
+                    </div>
                 </div>
-
             </div>
         </div>
     </form>

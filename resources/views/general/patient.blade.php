@@ -39,5 +39,4 @@
 
 <!-- Adding script using on this view -->
 <script type="text/javascript" src="{{asset('js/patientFilter.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/calcAge.js')}}"></script>
 @endsection

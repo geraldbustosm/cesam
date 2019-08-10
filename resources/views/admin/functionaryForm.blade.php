@@ -24,9 +24,10 @@
 		@csrf
 		<div class="form-group">
 			
-            <input type="text" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="profesion" name="profesion" placeholder="Profesion: ">
+            <input type="text" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="profesion" name="profesion" placeholder="Profesion">
 
-        </div>
+		</div>
+		
         <div class="form-group">
 			<div class="form-row">
 				<div class="col-6">
@@ -37,6 +38,7 @@
 				</div>
                 
 			</div>
+
 		</div>
 		<div class="form-group">
 			<div class="form-row">
@@ -48,25 +50,17 @@
 				</div>
 			</div>
 		</div>
-		
-		
-       
+		       
         <div class="form-group">
-            <select name="user">
+            <select class="form-control" name="user" required>
                 <option selected disabled>Por favor seleccione un usuario para asignar al funcionario</option>
                 @foreach($user as $user)
                 <option value="{{ $user->id}}">{{ $user->nombre}}</option>
                 @endforeach
             </select>
         </div>
-        
-
-        
+                
 		<button type="submit" class="btn btn-primary">Registrar</button>
-		<input type="button" href="javascript:validator()" value="Test" id="testing"/>
 	</form>
 </div>
-
-<!-- Adding script using on this view -->
-<script src="{{asset('js/idValidator.js')}}"></script>
 @endsection
