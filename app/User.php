@@ -17,6 +17,7 @@ class User extends Authenticatable
      protected $primaryKey = 'rut';
     /**
      * The attributes that are mass assignable.
+     * agrege esta linea para ver los cambios
      *
      * @var array
      */
