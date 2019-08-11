@@ -7,7 +7,7 @@ var pagNav = document.getElementById('paginate');
 var tagA = document.getElementsByName('tagA');
 // Gobal variables
 var current_page = 1;
-var records_per_page = 6;
+var records_per_page = 2;
 var last_page = 1;
 
 function createRow(num, dato) {
@@ -145,21 +145,21 @@ function generatePaginationNum(n, m) {
 
 // Rotate the numbres of the pagination, so we see 9 pag always
 function numPerPagination() {
-    if (current_page < 5) {
-        if (last_page < 9) {
+    if (current_page < 3) {
+        if (last_page < 5) {
             generatePaginationNum(1, last_page);
         } else {
-            generatePaginationNum(1, 9);
+            generatePaginationNum(1, 5);
         }
     } else {
-        if (current_page + 3 >= last_page) {
-            if (last_page - 8 < 1) {
-                generatePaginationNum(1, last_page);
+        if (current_page + 2 >= last_page) {
+            if (last_page - 4 < 1) {
+                generatePagnationNum(1, last_page);
             } else {
-                generatePaginationNum(last_page - 8, last_page);
+                generatePaginationNum(last_page - 4, last_page);
             }
         } else {
-            generatePaginationNum(current_page - 4, current_page + 4);
+            generatePaginationNum(current_page - 2, current_page + 2);
         }
     }
 }
