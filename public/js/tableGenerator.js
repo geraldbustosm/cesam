@@ -7,7 +7,7 @@ var pagNav = document.getElementById('paginate');
 var tagA = document.getElementsByName('tagA');
 // Gobal variables
 var current_page = 1;
-var records_per_page = 2;
+var records_per_page = 6;
 var last_page = 1;
 
 function createRow(num, dato) {
