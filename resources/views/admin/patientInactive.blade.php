@@ -1,7 +1,7 @@
 @extends('layouts.main')
-@section('title','Pacientes')
+@section('title','Pacientes Inactivos')
 @section('active-pacientes','active')
-@section('active-pacientesactivos','active')
+@section('active-pacientesinactivos','active')
 @section('content')
 
 <h1>Pacientes</h1>
@@ -33,7 +33,7 @@
   </tbody>
 </table>
 
-<form name="onSubmit" method="post" action="{{ url('pacientes') }}">
+<form name="onSubmit" method="post" action="{{ url('pacientesinactivos') }}">
   @csrf
   <div class="form-group">
     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="{{ old('DNI') }}" id="DNI" name="DNI">

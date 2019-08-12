@@ -24,6 +24,12 @@ Route::post('registrar','AdminController@registerUser');
 
 Route::get('pacientes', 'AdminController@showPatients');
 
+Route::post('pacientes', 'AdminController@deletingPatient');
+
+Route::get('pacientesinactivos', 'AdminController@showInactivePatients');
+
+Route::post('pacientesinactivos', 'AdminController@activatePatient');
+
 Route::get('registrarpaciente', 'GeneralController@showAddPatient');
 
 Route::post('registrarpaciente', 'GeneralController@registerPatient');

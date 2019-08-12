@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Asignacion Especialidad')
+@section('active-ingresardatos','active')
 @section('active-asignarespecialidad','active')
 
 
@@ -54,7 +55,6 @@
         </table>
         
 		<button type="submit" class="btn btn-primary">Registrar</button>
-		<input type="button" href="javascript:validator()" value="Test" id="testing"/>
 	</form>
 </div>
 

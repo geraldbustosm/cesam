@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Functionary;
 use App\User;
 use App\Patient;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class AdminController extends Controller
 {
@@ -28,55 +30,74 @@ class AdminController extends Controller
         $this->middleware('checkrole:1');
     }
 
-    public function showPatients(){
-        $patients = Patient::all()->where('activa', 1);
+    public function showPatients()
+    {
+        $patients = Patient::where('activa', 1)->get();
         $prev = Prevition::all();
         $sex = Sex::all();
         return view('general.patient', ['patients' => $patients, 'prev' => $prev, 'sex' => $sex]);
     }
 
-    public function showPatientInfo(){
+    public function showInactivePatients()
+    {
+        $patients = Patient::where('activa', 0)->get();
+        $prev = Prevition::all();
+        $sex = Sex::all();
+        return view('admin.patientInactive', ['patients' => $patients, 'prev' => $prev, 'sex' => $sex]);
+    }
+
+    public function showPatientInfo()
+    {
         return view('admin.patientInfo');
     }
 
-    public function showClinicalfunctionary(){
+    public function showClinicalfunctionary()
+    {
         return view('admin.clinicalfunctionary');
     }
 
-    public function showAddUser(){
+    public function showAddUser()
+    {
         return view('admin.userForm');
     }
 
-    public function showTesting(){
-        $patients = DB::table('paciente')->paginate(5);        
+    public function showTesting()
+    {
+        $patients = DB::table('paciente')->paginate(5);
         return view('general.test', ['patients' => $patients]);
     }
 
-    public function showAddFunctionary(){
+    public function showAddFunctionary()
+    {
         $user = User::all()->where('activa', 1);
-        return view('admin.functionaryForm',compact('user'));
+        return view('admin.functionaryForm', compact('user'));
     }
 
-    public function showAddRelease(){
+    public function showAddRelease()
+    {
         return view('admin.releaseForm');
     }
 
-    public function showAddAtributes(){
+    public function showAddAtributes()
+    {
         return view('admin.atributesForm');
     }
 
-    public function showAddSex(){
+    public function showAddSex()
+    {
         return view('admin.sexForm');
     }
 
-    public function showAddSpeciality(){
+    public function showAddSpeciality()
+    {
         $speciality = Speciality::all()->where('activa', 1);
         return view('admin.specialityForm', ['specialitys' => $speciality]);
     }
 
-    public static function existFunctionarySpeciality($idFunct,$idSp){   
-        
-        $value=false;
+    public static function existFunctionarySpeciality($idFunct, $idSp)
+    {
+
+        $value = false;
         // $doesClientHaveProduct = Speciality::where('id', $idSp)
         //             ->whereHas('functionary', function($q) use($idFunct) {
         //                     $q->where('dbo.funcionarios.id', $idFunct);
@@ -85,42 +106,44 @@ class AdminController extends Controller
         // if($doesClientHaveProduct ){
         //         $value = true ;
         //     }
-          
+
         return $value;
     }
-    public function showAsignSpeciality(){   
+    public function showAsignSpeciality()
+    {
 
         $speciality = Speciality::orderBy('descripcion')
             ->get();
-        
-        $functionary = Functionary::orderBy('nombre1')            
+
+        $functionary = Functionary::orderBy('nombre1')
             ->get();
         $rows = [];
         $columns = [];
         $ids = [];
-        foreach($functionary as $index => $record) {
+        foreach ($functionary as $index => $record) {
             // Creamos un array vacio si las claves no existen
-            if(!isset($rows[$record->nombre1])) {
+            if (!isset($rows[$record->nombre1])) {
                 $rows[$record->nombre1] = [];
             }
         }
-        foreach($speciality as $index => $record) {
-            if(!in_array($record->profesion, $columns)) {
+        foreach ($speciality as $index => $record) {
+            if (!in_array($record->profesion, $columns)) {
                 $columns[] = $record->descripcion;
             }
         }
-        
-        foreach($functionary as $index => $record1) {
-            $ids [0]=$record1->id;
-            foreach($speciality as $index => $record2) {
-                    $ids [1]=$record2->id;           
-                    $rows[$record1->nombre1][$record2->descripcion] = $ids;
-            } 
+
+        foreach ($functionary as $index => $record1) {
+            $ids[0] = $record1->id;
+            foreach ($speciality as $index => $record2) {
+                $ids[1] = $record2->id;
+                $rows[$record1->nombre1][$record2->descripcion] = $ids;
+            }
         }
-        return view('admin.specialityAsign', compact('rows','columns'));
+        return view('admin.specialityAsign', compact('rows', 'columns'));
     }
 
-    public function registerUser(Request $request){
+    public function registerUser(Request $request)
+    {
 
         $validacion = $request->validate([
             'nombre' => 'required|string|max:255',
@@ -144,16 +167,16 @@ class AdminController extends Controller
         return redirect('registrar')->with('status', 'Usuario creado');
     }
 
-    public function registerFunctionary(Request $request){
+    public function registerFunctionary(Request $request)
+    {
 
-        $validacion = $request->validate
-        ([
+        $validacion = $request->validate([
             'nombre1' => 'required|string|max:255',
             'nombre2' => 'required|string|max:255',
             'apellido1' => 'required|string|max:255',
             'apellido2' => 'required|string|max:255',
             'profesion' => 'required|string|max:255',
-            'user' => 'required|integer|max:255'            
+            'user' => 'required|integer|max:255'
         ]);
 
         $functionary = new Functionary;
@@ -169,11 +192,11 @@ class AdminController extends Controller
 
         return redirect('registrarfuncionario')->with('status', 'Funcionario creado');
     }
-    public function registerRelease(Request $request){
+    public function registerRelease(Request $request)
+    {
 
-        $validacion = $request->validate
-        ([
-            'descripcion' => 'required|string|max:255'                      
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
         ]);
 
         $alta = new Release;
@@ -185,11 +208,11 @@ class AdminController extends Controller
         return redirect('registraralta')->with('status', 'Nueva alta creada');
     }
 
-    public function registerAtributes(Request $request){
+    public function registerAtributes(Request $request)
+    {
 
-        $validacion = $request->validate
-        ([
-            'descripcion' => 'required|string|max:255'                      
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
         ]);
 
         $atributo = new Atributes;
@@ -201,11 +224,11 @@ class AdminController extends Controller
         return redirect('registraratributos')->with('status', 'Nuevo atributo creado');
     }
 
-    public function registerSex(Request $request){
+    public function registerSex(Request $request)
+    {
 
-        $validacion = $request->validate
-        ([
-            'descripcion' => 'required|string|max:255'                      
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
         ]);
 
         $sex = new Sex;
@@ -218,11 +241,11 @@ class AdminController extends Controller
     }
 
 
-    public function registerSpeciality(Request $request){
+    public function registerSpeciality(Request $request)
+    {
 
-        $validacion = $request->validate
-        ([
-            'descripcion' => 'required|string|max:255'                      
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
         ]);
 
         $speciality = new Speciality;
@@ -234,4 +257,29 @@ class AdminController extends Controller
         return redirect('registrarespecialidad')->with('status', 'Nueva especialidad creada');
     }
 
+    public function deletingPatient(Request $request)
+    {
+
+        $validacion = $request->validate([
+            'DNI' => 'required|string|max:255'
+        ]);
+
+        $patient = Patient::where('DNI', $request->DNI)->get();
+        $patient[0]->activa = 0;
+        $patient[0]->save();
+        return redirect('pacientes')->with('status', 'Paciente ' . $request->DNI . ' eliminado');
+    }
+
+    public function activatePatient(Request $request)
+    {
+
+        $validacion = $request->validate([
+            'DNI' => 'required|string|max:255'
+        ]);
+
+        $patient = Patient::where('DNI', $request->DNI)->get();
+        $patient[0]->activa = 1;
+        $patient[0]->save();
+        return redirect('pacientesinactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
+    }
 }

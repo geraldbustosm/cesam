@@ -46,15 +46,26 @@
                         <a class="nav-link @yield('active-escritorio')" href="{{url('/')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('active-pacientes')" href="{{url('pacientes')}}"><i class="material-icons">people</i><span>Pacientes</span></a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link @yield('active-prestaciones')" href="{{url('fichas')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
                     </li>
 
                     <nav id="sidebar">
                         <li class="nav-item">
-                            <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">person_add</i><span>Agregar Personas</span></a>
+                            <a class="nav-link @yield('active-pacientes')" href="#patients_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Pacientes</span></a>
+                            <ul class="collapse list-unstyled" id="patients_Submenu">
+                                <li>
+                                    <a class="nav-link @yield('active-pacientesactivos')" href="{{url('pacientes')}}"><span>Pacientes Activos</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-pacientesinactivos')" href="{{url('pacientesinactivos')}}"><span>Pacientes Inactivos</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </nav>
+
+                    <nav id="sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">group_add</i><span>Agregar Personas</span></a>
                             <ul class="collapse list-unstyled" id="people_Submenu">
                                 <li>
                                     <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><span>Ingresar paciente</span></a>
