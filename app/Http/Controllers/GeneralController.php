@@ -22,12 +22,12 @@ class GeneralController extends Controller
     public function registerPatient(Request $request){
 
         $validation = $request->validate([
-            'id' => 'required|int|max:255|unique:paciente',
+            'id' => 'required|int|unique:paciente',
             //'id' => 'required|int|max:255',
             'nombre' => 'required|string|max:255',
             'pais' => 'required|string|max:255',
             'ciudad' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
+            'direccion' => 'string|max:255',
             'direccion_opcional' => 'string|max:255|nullable',
             'datepicker' => 'required|date_format:"d/m/Y"',
             ]);
