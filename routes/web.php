@@ -42,6 +42,10 @@ Route::get('registraralta', 'AdminController@showAddRelease');
 
 Route::post('registraralta', 'AdminController@registerRelease');
 
+Route::get('registrarprevision', 'AdminController@showAddPrevition');
+
+Route::post('registrarprevision', 'AdminController@registerPrevition');
+
 Route::get('registraratributos', 'AdminController@showAddAtributes');
 
 Route::post('registraratributos', 'AdminController@registerAtributes');

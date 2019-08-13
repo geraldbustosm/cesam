@@ -96,6 +96,9 @@
                                 <li>
                                     <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar Especialidad</span></a>
                                 </li>
+                                <li>
+                                    <a class="nav-link @yield('active-ingresarprevision')" href="{{url('registrarprevision')}}"><span>Ingresar prevision</span></a>
+                                </li>
                             </ul>
                         </li>
                     </nav>
