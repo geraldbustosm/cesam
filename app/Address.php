@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Sex extends Model
+class Address extends Model
 {
 	use Notifiable;
   /**
@@ -13,19 +13,14 @@ class Sex extends Model
    *
    * @var string
    */
-  public function patient()
-    {
-        return $this->hasMany('App\Patient');
-    }
-  protected $table = 'sexo';
+  protected $table = 'direccion';
   
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = 
-    [
-      'id','descripcion','activa'
-    ];
+  protected $fillable = [
+      'id','region', 'comuna', 'calle', 'numero'
+  ];
 }

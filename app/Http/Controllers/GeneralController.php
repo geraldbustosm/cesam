@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Patient;
+use App\Address;
 use App\Sex;
 
 class GeneralController extends Controller
@@ -26,7 +27,8 @@ class GeneralController extends Controller
             //'id' => 'required|int|max:255',
             'nombre' => 'required|string|max:255',
             'pais' => 'required|string|max:255',
-            'ciudad' => 'required|string|max:255',
+            'region' => 'required|string|max:255',
+            'numero' => 'required|int',
             'direccion' => 'string|max:255',
             'direccion_opcional' => 'string|max:255|nullable',
             'datepicker' => 'required|date_format:"d/m/Y"',
@@ -41,11 +43,26 @@ class GeneralController extends Controller
         $patient->nombre2 = $nombre[1];
         $patient->apellido1 = $nombre[2];
         $patient->apellido2 = $nombre[3];
-        $patient->sexo = $request->sexo;
-        $patient->fecha_nacimiento = "2019-07-19 06:19:51.029";
-        $patient->prevision_id = 1;
+        $patient->DNI = $request->id;
 
+        $patient->fecha_nacimiento = "2019-07-19 06:19:51.029";
+        
+        $patient->prevision_id = 1;
+        
+        $address = new Address;
+        $address->region = $request->region;
+        $address->comuna = $request->comuna;
+        $address->calle  = $request->calle ;
+        $address->numero = $request->numero;
+        
+        $patient->sexo_id = $request->patient_sex;
+        $address->save();
+        
         $patient->save();
+        $patient->address()->sync($address);
+        
+        
+        
         
         return redirect('registrarpaciente')->with('status', 'Usuario creado');
 

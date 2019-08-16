@@ -7,6 +7,7 @@ use App\Patient;
 use App\Release;
 use App\Atributes;
 use App\Sex;
+use App\Address;
 use App\Prevition;
 use App\Speciality;
 
@@ -101,15 +102,10 @@ class AdminController extends Controller
         $rows = [];
         $columns = [];
         $ids = [];
-        foreach($functionary as $index => $record) {
-            // Creamos un array vacio si las claves no existen
-            if(!isset($rows[$record->nombre1])) {
-                $rows[$record->nombre1] = [];
-            }
-        }
+        
         foreach($speciality as $index => $record) {
             if(!in_array($record->profesion, $columns)) {
-                $columns[] = $record->descripcion;
+                $columns[] = " | ".$record->descripcion." | ";
             }
         }
         
@@ -117,12 +113,45 @@ class AdminController extends Controller
             $ids [0]=$record1->id;
             foreach($speciality as $index => $record2) {
                     $ids [1]=$record2->id;           
-                    $rows[$record1->nombre1][$record2->descripcion] = $ids;
+                    $rows[$record1->nombre1." ".$record1->nombre2][$record2->descripcion] = $ids;
             } 
         }
         return view('admin.specialityAsign', compact('rows','columns'));
     }
-
+    public function AsignSpeciality(Request $request){   
+       
+        if (isset($_POST['enviar'])) {
+            if (is_array($_POST['asignations'])) {
+                $functionarys = Functionary::where('activa', 1)->get();
+                foreach ($functionarys as $func ){
+                    $func->speciality()->sync([]);
+                }
+                //$selected = '';              
+                foreach ($_POST['asignations'] as $key) {
+                    //$especialidadesPorFuncionario= array();
+                    $codigos= array();
+                    
+                    //$functionary = Functionary::find($id);
+                    foreach ( $key as $key2 => $value) {
+                            $speciality = Speciality::find($value[1]);
+                            //array_push($especialidadesPorFuncionario,$speciality->descripcion);
+                            array_push($codigos,$speciality->id);
+                            $functionary = Functionary::find($value[0]);
+                    }
+                    //$selected .= $functionary->nombre1." : ".implode( ", ",$especialidadesPorFuncionario).'<br> ';
+                    
+                    $functionary->speciality()->sync($codigos);
+                }
+            }
+            else {
+                $selected = 'Debes seleccionar un país';
+            }
+        
+            //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
+             return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
+        }
+       
+    }
     public function registerUser(Request $request){
 
         $validacion = $request->validate([
