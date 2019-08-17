@@ -14,6 +14,15 @@ class Patient extends Model
    * @var string
    */
   protected $table = 'paciente';
+
+  public function sex()
+  {
+    return $this->hasOne('App\Sex', 'sexo_id');
+  }
+  public function address()
+  {
+      return $this->belongsToMany(Address::class, 'paciente_posee_direccion', 'paciente_id', 'direccion_id');
+  }
   
   /**
    * The attributes that are mass assignable.
@@ -21,6 +30,6 @@ class Patient extends Model
    * @var array
    */
   protected $fillable = [
-      'id', 'DNI','nombre1', 'nombre2', 'apellido1', 'apellido2', 'sexo', 'fecha_nacimiento',
+      'id', 'DNI','nombre1', 'nombre2', 'apellido1', 'apellido2', 'sexo_id', 'fecha_nacimiento',
   ];
 }

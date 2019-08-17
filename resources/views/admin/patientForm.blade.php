@@ -34,7 +34,7 @@
 					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('ciudad') ? ' is-invalid' : '' }}" value="{{ old('ciudad') }}" id="ciudad" name="ciudad" placeholder="Ciudad">
+					<input type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" value="{{ old('region') }}" id="region" name="region" placeholder="Region">
 				</div>
 			</div>
 		</div>

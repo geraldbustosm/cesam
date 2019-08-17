@@ -4,15 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FunctionarySpeciality extends Model
+class ProvisionSpeciality extends Model
 {
-    protected $table = 'funcionario_posee_especialidad'; 
+    protected $table = 'prestacion_posee_especialidad'; 
     /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
   protected $fillable = [
-    'id', 'funcionarios_id','especialidad_id'
+    'id', 'prestacion_id','especialidad_id'
     ];
 }
+

@@ -1,7 +1,7 @@
 @extends('layouts.main')
-@section('title','Asignacion Especialidad')
+@section('title','Asignacion Especialidades-Prestaciones')
 @section('active-ingresardatos','active')
-@section('active-asignarespecialidad','active')
+@section('active-asignarespecialidadprestacion','active')
 
 
 @section('content')
@@ -14,14 +14,14 @@
         </ul>
     </div>
 @endif
-<h1>Asigne las especialidades a los Funcionarios</h1>
+<h1>Asigne las especialidades a las prestaciones</h1>
 <div class="div-full">
 	@if (session('status'))
 		<div class="alert alert-success" role="alert">
 			{{ session('status') }}
 		</div>
 	@endif
-	<form method="post" action="{{ url('asignarespecialidad') }}">
+	<form method="post" action="{{ url('asignarespecialidadprestacion') }}">
 		@csrf
         
 
@@ -46,7 +46,7 @@
                     <input type="checkbox" 
                            name="asignations[<?=strtoupper($nombre1[0]);?>][<?=strtoupper($nombre1[1]);?>]" 
                            value="<?=strtoupper($nombre1[0]).strtoupper($nombre1[1]);?>"                                  
-                           <?php if($provider::existFunctionarySpeciality($nombre1[0],$nombre1[1])) { echo 'checked';}?> 
+                           <?php if($provider::existProvisionSpeciality($nombre1[0],$nombre1[1])) { echo 'checked';}?> 
                     >
                     
                     </td>

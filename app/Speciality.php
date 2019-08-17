@@ -12,6 +12,10 @@ class Speciality extends Model
     {
         return $this->belongsToMany(Functionary::class, 'funcionario_posee_especialidad', 'especialidad_id','funcionarios_id');
     }
+  public function provision()
+    {
+        return $this->belongsToMany(Provision::class, 'prestacion_posee_especialidad', 'especialidad_id','prestacion_id');
+    }
 	
 	use Notifiable;
   /**
