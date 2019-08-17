@@ -14,74 +14,91 @@
 |
 */
 
+/***************************************************************************************************************************
+                                                    GENERAL
+****************************************************************************************************************************/
+
 Auth::routes();
 
 Route::get('/', 'GeneralController@index');
 
-Route::get('registrar', 'AdminController@showAddUser');
+/***************************************************************************************************************************
+                                                    ASIGNATIONS
+****************************************************************************************************************************/
+// Especialidad
+Route::get('asignarespecialidad', 'AdminController@showAsignSpeciality');
 
-Route::post('registrar','AdminController@registerUser');
+Route::post('asignarespecialidad', 'AdminController@AsignSpeciality');
+// Prestación por especialidad
+Route::get('asignarespecialidadprestacion', 'AdminController@showAsignProvision');
 
-Route::get('pacientes', 'AdminController@showPatients');
+Route::post('asignarespecialidadprestacion', 'AdminController@AsignProvision');
 
-Route::post('pacientes', 'AdminController@deletingPatient');
+/***************************************************************************************************************************
+                                                    VIEW INFO
+****************************************************************************************************************************/
+
+Route::get('fichas', 'AdminController@showClinicalRecords');
 
 Route::get('funcionarios', 'AdminController@showFunctionarys');
 
 //Route::post('funcionarios', 'AdminController@deletingPatient');
 
+Route::get('infopaciente', 'AdminController@showPatientInfo');
+
+Route::get('pacientes', 'AdminController@showPatients');
+
+Route::post('pacientes', 'AdminController@deletingPatient');
+
 Route::get('pacientesinactivos', 'AdminController@showInactivePatients');
 
 Route::post('pacientesinactivos', 'AdminController@activatePatient');
 
-Route::get('registrarpaciente', 'GeneralController@showAddPatient');
+/***************************************************************************************************************************
+                                                    REGISTERS
+****************************************************************************************************************************/
+// Usuario
+Route::get('registrar', 'AdminController@showAddUser');
 
-Route::post('registrarpaciente', 'GeneralController@registerPatient');
-
-Route::get('registrarfuncionario', 'AdminController@showAddFunctionary');
-
-Route::post('registrarfuncionario', 'AdminController@registerFunctionary');
-
+Route::post('registrar','AdminController@registerUser');
+// Alta
 Route::get('registraralta', 'AdminController@showAddRelease');
 
 Route::post('registraralta', 'AdminController@registerRelease');
-
-Route::get('registrarprevision', 'AdminController@showAddPrevition');
-
-Route::post('registrarprevision', 'AdminController@registerPrevition');
-
+// Atributos
 Route::get('registraratributos', 'AdminController@showAddAtributes');
 
 Route::post('registraratributos', 'AdminController@registerAtributes');
+// especialidad
+Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
 
+Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
+// Funcionario
+Route::get('registrarfuncionario', 'AdminController@showAddFunctionary');
+
+Route::post('registrarfuncionario', 'AdminController@registerFunctionary');
+// Paciente
+Route::get('registrarpaciente', 'GeneralController@showAddPatient');
+
+Route::post('registrarpaciente', 'GeneralController@registerPatient');
+// Prestación
+Route::get('registrarprestacion', 'AdminController@showAddProvision');
+
+Route::post('registrarprestacion', 'AdminController@registerProvision');
+// Previsión
+Route::get('registrarprevision', 'AdminController@showAddPrevition');
+
+Route::post('registrarprevision', 'AdminController@registerPrevition');
+// Sexo
 Route::get('registrarsexo', 'AdminController@showAddSex');
 
 Route::post('registrarsexo', 'AdminController@registerSex');
-
+// Tipo
 Route::get('registrartipo', 'AdminController@showAddType');
 
 Route::post('registrartipo', 'AdminController@registerType');
 
-Route::get('registrarprestacion', 'AdminController@showAddProvision');
-
-Route::post('registrarprestacion', 'AdminController@registerProvision');
-
-Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
-
-Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
-
-Route::get('asignarespecialidad', 'AdminController@showAsignSpeciality');
-
-Route::post('asignarespecialidad', 'AdminController@AsignSpeciality');
-
-Route::get('asignarespecialidadprestacion', 'AdminController@showAsignProvision');
-
-Route::post('asignarespecialidadprestacion', 'AdminController@AsignProvision');
-
-Route::get('infopaciente', 'AdminController@showPatientInfo');
-
-Route::get('fichas', 'AdminController@showClinicalRecords');
-
-Route::get('obtenerPacientesAjax', 'GeneralController@getPatientsAjax');
-
+/***************************************************************************************************************************
+                                                    TESTING SECTION
+****************************************************************************************************************************/
 Route::get('testing', 'AdminController@showTesting');

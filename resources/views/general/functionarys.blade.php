@@ -46,12 +46,14 @@
 </div>
 
 <script>
-  var functionaryArr = <?php echo json_encode($functionary); ?>;
+  var fullArray = <?php echo json_encode($functionary); ?>;
   var userArr = <?php echo json_encode($user); ?>;
   var specialityArr = <?php echo json_encode($speciality); ?>;
   var fsArr = <?php echo json_encode($fs); ?>;
 </script>
 
 <!-- Adding script using on this view -->
+<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/functionarysFilter.js')}}"></script>
 @endsection

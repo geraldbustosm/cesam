@@ -47,11 +47,13 @@
 </div>
 
 <script>
-  var patientsArr = <?php echo json_encode($patients); ?>;
+  var fullArray = <?php echo json_encode($patients); ?>;
   var prevArr = <?php echo json_encode($prev); ?>;
   var sexArr = <?php echo json_encode($sex); ?>;
 </script>
 
 <!-- Adding script using on this view -->
+<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/patientFilter.js')}}"></script>
 @endsection

@@ -65,7 +65,7 @@
 
                     <nav id="sidebar">
                         <li class="nav-item">
-                            <a class="nav-link @yield('active-pacientes')" href="#functionarys_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Funcionarios</span></a>
+                            <a class="nav-link @yield('active-funcionarios')" href="#functionarys_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Funcionarios</span></a>
                             <ul class="collapse list-unstyled" id="functionarys_Submenu">
                                 <li>
                                     <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Lista de funcionarios</span></a>
