@@ -222,7 +222,6 @@ function generatePaginationPrev() {
     pagNav.appendChild(listItem);
     spanItem.innerHTML = "&laquo;";
 }
-
 // Next pag button
 function generatePaginationNext() {
     // Create <li>
@@ -243,7 +242,6 @@ function generatePaginationNext() {
     pagNav.appendChild(listItem);
     spanItem.innerHTML = "&raquo;";
 }
-
 // Number pag buttons
 function generatePaginationNum(n, m) {
     pagNav.innerHTML = ""
@@ -275,7 +273,6 @@ function generatePaginationNum(n, m) {
     }
     generatePaginationNext();
 }
-
 // Rotate the numbres of the pagination, so we see 9 pag always
 function numPerPagination() {
     if (current_page < 5) {
@@ -299,7 +296,7 @@ function numPerPagination() {
 /***************************************************************************************************************************
                                                 ACTION BUTTONS
 ****************************************************************************************************************************/
-// Inactivate the patient
+// Deactivate the patient
 function delPatients() {
     for (var i = 0; i < delPatient.length; i++) {
         delPatient[i].addEventListener("click", function () {
@@ -311,7 +308,7 @@ function delPatients() {
         });
     }
 }
-// Re-Activate the patient
+// Reactivate the patient
 function actPatients() {
     for (var i = 0; i < actPatient.length; i++) {
         actPatient[i].addEventListener("click", function () {
