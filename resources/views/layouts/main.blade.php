@@ -65,6 +65,20 @@
 
                     <nav id="sidebar">
                         <li class="nav-item">
+                            <a class="nav-link @yield('active-pacientes')" href="#functionarys_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Funcionarios</span></a>
+                            <ul class="collapse list-unstyled" id="functionarys_Submenu">
+                                <li>
+                                    <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Lista de funcionarios</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-prestacionesrealizadas')" href="{{url('prestaciones')}}"><span>Prestaciones realizadas</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </nav>
+
+                    <nav id="sidebar">
+                        <li class="nav-item">
                             <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">group_add</i><span>Agregar Personas</span></a>
                             <ul class="collapse list-unstyled" id="people_Submenu">
                                 <li>

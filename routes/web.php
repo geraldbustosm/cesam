@@ -26,6 +26,10 @@ Route::get('pacientes', 'AdminController@showPatients');
 
 Route::post('pacientes', 'AdminController@deletingPatient');
 
+Route::get('funcionarios', 'AdminController@showFunctionarys');
+
+Route::post('funcionarios', 'AdminController@deletingPatient');
+
 Route::get('pacientesinactivos', 'AdminController@showInactivePatients');
 
 Route::post('pacientesinactivos', 'AdminController@activatePatient');

@@ -10,6 +10,7 @@ use App\Sex;
 use App\Address;
 use App\Prevition;
 use App\Speciality;
+use App\FunctionarySpeciality;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +35,14 @@ class AdminController extends Controller
         $prev = Prevition::all();
         $sex = Sex::all();
         return view('general.patient', ['patients' => $patients, 'prev' => $prev, 'sex' => $sex]);
+    }
+
+    public function showFunctionarys(){
+        $functionary = Functionary::all()->where('activa', 1);
+        $user = User::all();
+        $speciality = Speciality::all();
+        $fs = FunctionarySpeciality::all();
+        return view('general.functionarys', ['functionary' => $functionary, 'user' => $user, 'speciality'=>$speciality, 'fs'=>$fs]);
     }
 
     public function showPatientInfo(){
