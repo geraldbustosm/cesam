@@ -19,7 +19,7 @@ class CreatePrestacionTable extends Migration
             $table->double('frecuencia');
             $table->unsignedInteger('rangoEdad_inferior');
             $table->unsignedInteger('rangoEdad_superior');
-            $table->string('ps-fam');
+            $table->string('ps_fam');
             $table->string('glosaTrasadora');
             $table->string('codigo');
 

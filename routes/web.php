@@ -28,7 +28,7 @@ Route::post('pacientes', 'AdminController@deletingPatient');
 
 Route::get('funcionarios', 'AdminController@showFunctionarys');
 
-Route::post('funcionarios', 'AdminController@deletingPatient');
+//Route::post('funcionarios', 'AdminController@deletingPatient');
 
 Route::get('pacientesinactivos', 'AdminController@showInactivePatients');
 
@@ -58,6 +58,14 @@ Route::get('registrarsexo', 'AdminController@showAddSex');
 
 Route::post('registrarsexo', 'AdminController@registerSex');
 
+Route::get('registrartipo', 'AdminController@showAddType');
+
+Route::post('registrartipo', 'AdminController@registerType');
+
+Route::get('registrarprestacion', 'AdminController@showAddProvision');
+
+Route::post('registrarprestacion', 'AdminController@registerProvision');
+
 Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
 
 Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
@@ -65,6 +73,10 @@ Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
 Route::get('asignarespecialidad', 'AdminController@showAsignSpeciality');
 
 Route::post('asignarespecialidad', 'AdminController@AsignSpeciality');
+
+Route::get('asignarespecialidadprestacion', 'AdminController@showAsignProvision');
+
+Route::post('asignarespecialidadprestacion', 'AdminController@AsignProvision');
 
 Route::get('infopaciente', 'AdminController@showPatientInfo');
 

@@ -107,11 +107,21 @@
                                 <li>
                                     <a class="nav-link @yield('active-ingresaralta')" href="{{url('registraralta')}}"><span>Ingresar tipo de alta</span></a>
                                 </li>
+
+                                <li>
+                                    <a class="nav-link @yield('active-ingresarprevision')" href="{{url('registrarprevision')}}"><span>Ingresar Prevision</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-ingresartipo')" href="{{url('registrartipo')}}"><span>Ingresar Tipo de prestación</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrarprestacion')}}"><span>Ingresar Prestación</span></a>
+                                </li>
                                 <li>
                                     <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar Especialidad</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprevision')" href="{{url('registrarprevision')}}"><span>Ingresar prevision</span></a>
+                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignarespecialidadprestacion')}}"><span>Asignar Prestaciones-Especialidades</span></a>
                                 </li>
                             </ul>
                         </li>

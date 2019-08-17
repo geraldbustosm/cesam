@@ -11,6 +11,9 @@ use App\Address;
 use App\Prevition;
 use App\Speciality;
 use App\FunctionarySpeciality;
+use App\Provision;
+use App\Type;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -81,10 +84,19 @@ class AdminController extends Controller
     public function showAddSex(){
         return view('admin.sexForm');
     }
+    public function showAddType(){
+        return view('admin.typeForm');
+    }
 
     public function showAddSpeciality(){
         $speciality = Speciality::all()->where('activa', 1);
         return view('admin.specialityForm', ['specialitys' => $speciality]);
+    }
+
+    public function showAddProvision(){
+        $type = Type::all()->where('activa', 1);
+        return view('admin.provisionForm', ['type' => $type]);
+        //return view('admin.provisionForm');
     }
 
     public static function existFunctionarySpeciality($idFunct,$idSp){   
@@ -127,6 +139,7 @@ class AdminController extends Controller
         }
         return view('admin.specialityAsign', compact('rows','columns'));
     }
+    
     public function AsignSpeciality(Request $request){   
        
         if (isset($_POST['enviar'])) {
@@ -158,6 +171,81 @@ class AdminController extends Controller
         
             //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
              return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
+        }
+       
+    }
+
+    public static function existProvisionSpeciality($idprov,$idSp){   
+        
+        $value=false;
+        $doesProvisionHaveSpeciality= Speciality::where('id', $idSp)
+                    ->whereHas('provision', function($q) use($idprov) {
+                            $q->where('dbo.prestacion.id', $idprov);
+                    })
+                    ->count();
+        if($doesProvisionHaveSpeciality ){
+                $value = true ;
+            }
+          
+        return $value;
+    }
+    public function showAsignProvision(){   
+
+        $speciality = Speciality::orderBy('descripcion')
+            ->get();
+        
+        $provision = Provision::orderBy('glosaTrasadora')            
+            ->get();
+        $rows = [];
+        $columns = [];
+        $ids = [];
+        
+        foreach($speciality as $index => $record) {
+            if(!in_array($record->profesion, $columns)) {
+                $columns[] = " | ".$record->descripcion." | ";
+            }
+        }
+        
+        foreach($provision as $index => $record1) {
+            $ids [0]=$record1->id;
+            foreach($speciality as $index => $record2) {
+                    $ids [1]=$record2->id;           
+                    $rows[$record1->glosaTrasadora][$record2->descripcion] = $ids;
+            } 
+        }
+        return view('admin.provisionAsign', compact('rows','columns'));
+    }
+    public function AsignProvision(Request $request){   
+       
+        if (isset($_POST['enviar'])) {
+            if (is_array($_POST['asignations'])) {
+                $provisions = Provision::where('activa', 1)->get();
+                foreach ($provisions as $prov ){
+                    $prov->speciality()->sync([]);
+                }
+                //$selected = '';              
+                foreach ($_POST['asignations'] as $key) {
+                    //$especialidadesPorFuncionario= array();
+                    $codigos= array();
+                    
+                    //$functionary = Functionary::find($id);
+                    foreach ( $key as $key2 => $value) {
+                            $speciality = Speciality::find($value[1]);
+                            //array_push($especialidadesPorFuncionario,$speciality->descripcion);
+                            array_push($codigos,$speciality->id);
+                            $provision = Provision::find($value[0]);
+                    }
+                    //$selected .= $functionary->nombre1." : ".implode( ", ",$especialidadesPorFuncionario).'<br> ';
+                    
+                    $provision->speciality()->sync($codigos);
+                }
+            }
+            else {
+                //$selected = 'Debes seleccionar un país';
+            }
+        
+            //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
+             return redirect('asignarespecialidadprestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
         }
        
     }
@@ -258,6 +346,21 @@ class AdminController extends Controller
 
         return redirect('registrarsexo')->with('status', 'Nuevo Sexo / Genero creado');
     }
+    public function registerType(Request $request){
+
+        $validacion = $request->validate
+        ([
+            'descripcion' => 'required|string|max:255'                      
+        ]);
+
+        $type = new Type;
+
+        $type->descripcion = $request->descripcion;
+
+        $type->save();
+
+        return redirect('registrartipo')->with('status', 'Nuevo tipo de prestación creada');
+    }
 
 
     public function registerSpeciality(Request $request){
@@ -289,6 +392,28 @@ class AdminController extends Controller
         $prevition->save();
 
         return redirect('registrarprevision')->with('status', 'Nueva prevision creada');
+    }
+    public function registerProvision(Request $request){
+
+        $validacion = $request->validate
+        ([
+            'frecuencia' => 'required|int',
+            'glosa' => 'required|string|max:255',
+            'ps_fam' => 'required|string|max:255',                      
+        ]);
+
+        $provision = new Provision;
+
+        $provision->glosaTrasadora = $request->glosa;
+        $provision->frecuencia = $request->frecuencia;
+        $provision->ps_fam = $request->ps_fam;
+        $provision->codigo = $request->codigo;
+        $provision->rangoEdad_inferior = $request->edadInf;
+        $provision->rangoEdad_superior = $request->edadSup;
+        $provision->tipo_id = $request->type;
+        $provision->save();
+
+        return redirect('registrarprestacion')->with('status', 'Nueva prestacion creada');
     }
 
 }
