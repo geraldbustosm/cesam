@@ -79,7 +79,7 @@ class AdminController extends Controller
     }
 
     /***************************************************************************************************************************
-                                                    POST METHOD (REGIST & ASIG)
+                                             VIEWS       GET METHOD SHOW ADD
      ****************************************************************************************************************************/
     public function showAddUser()
     {
@@ -128,20 +128,7 @@ class AdminController extends Controller
         //return view('admin.provisionForm');
     }
 
-    public static function existFunctionarySpeciality($idFunct, $idSp)
-    {
-        $value = false;
-        $doesClientHaveProduct = Speciality::where('id', $idSp)
-            ->whereHas('functionary', function ($q) use ($idFunct) {
-                $q->where('dbo.funcionarios.id', $idFunct);
-            })
-            ->count();
-        if ($doesClientHaveProduct) {
-            $value = true;
-        }
-
-        return $value;
-    }
+    
 
     public function showAsignSpeciality()
     {
@@ -170,54 +157,8 @@ class AdminController extends Controller
         return view('admin.specialityAsign', compact('rows', 'columns'));
     }
 
-    public function AsignSpeciality(Request $request)
-    {
-        if (isset($_POST['enviar'])) {
-            if (is_array($_POST['asignations'])) {
-                $functionarys = Functionary::where('activa', 1)->get();
-                foreach ($functionarys as $func) {
-                    $func->speciality()->sync([]);
-                }
-                //$selected = '';              
-                foreach ($_POST['asignations'] as $key) {
-                    //$especialidadesPorFuncionario= array();
-                    $codigos = array();
-
-                    //$functionary = Functionary::find($id);
-                    foreach ($key as $key2 => $value) {
-                        $speciality = Speciality::find($value[1]);
-                        //array_push($especialidadesPorFuncionario,$speciality->descripcion);
-                        array_push($codigos, $speciality->id);
-                        $functionary = Functionary::find($value[0]);
-                    }
-                    //$selected .= $functionary->nombre1." : ".implode( ", ",$especialidadesPorFuncionario).'<br> ';
-
-                    $functionary->speciality()->sync($codigos);
-                }
-            } else {
-                $selected = 'Debes seleccionar un país';
-            }
-
-            //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
-            return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
-        }
-    }
-
-    public static function existProvisionSpeciality($idprov, $idSp)
-    {
-        $value = false;
-        $doesProvisionHaveSpeciality = Speciality::where('id', $idSp)
-            ->whereHas('provision', function ($q) use ($idprov) {
-                $q->where('dbo.prestacion.id', $idprov);
-            })
-            ->count();
-        if ($doesProvisionHaveSpeciality) {
-            $value = true;
-        }
-
-        return $value;
-    }
-
+   
+    
     public function showAsignProvision()
     {
         $speciality = Speciality::orderBy('descripcion')
@@ -245,39 +186,10 @@ class AdminController extends Controller
         return view('admin.provisionAsign', compact('rows', 'columns'));
     }
 
-    public function AsignProvision(Request $request)
-    {
-        if (isset($_POST['enviar'])) {
-            if (is_array($_POST['asignations'])) {
-                $provisions = Provision::where('activa', 1)->get();
-                foreach ($provisions as $prov) {
-                    $prov->speciality()->sync([]);
-                }
-                //$selected = '';              
-                foreach ($_POST['asignations'] as $key) {
-                    //$especialidadesPorFuncionario= array();
-                    $codigos = array();
-
-                    //$functionary = Functionary::find($id);
-                    foreach ($key as $key2 => $value) {
-                        $speciality = Speciality::find($value[1]);
-                        //array_push($especialidadesPorFuncionario,$speciality->descripcion);
-                        array_push($codigos, $speciality->id);
-                        $provision = Provision::find($value[0]);
-                    }
-                    //$selected .= $functionary->nombre1." : ".implode( ", ",$especialidadesPorFuncionario).'<br> ';
-
-                    $provision->speciality()->sync($codigos);
-                }
-            } else {
-                //$selected = 'Debes seleccionar un país';
-            }
-
-            //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
-            return redirect('asignarespecialidadprestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
-        }
-    }
-
+    
+/***************************************************************************************************************************
+                                                    POST METHOD (REGIST & ASIG)
+     ****************************************************************************************************************************/
     public function registerRelease(Request $request)
     {
         $validacion = $request->validate([
@@ -433,6 +345,55 @@ class AdminController extends Controller
 
         return redirect('registrarprestacion')->with('status', 'Nueva prestacion creada');
     }
+    public function AsignProvision(Request $request)
+    {
+        if (isset($_POST['enviar'])) {
+            $provisions = Provision::where('activa', 1)->get();
+            foreach ($provisions as $prov) {
+                $prov->speciality()->sync([]);
+            }
+            if (isset($_POST['asignations'])) {
+                if (is_array($_POST['asignations'])) {
+                    foreach ($_POST['asignations'] as $key) {
+                        $codigos = array();
+                        foreach ($key as $key2 => $value) {
+                            $str_arr = explode ("|", $value);  
+                            $speciality = Speciality::find($str_arr[1]);
+                            array_push($codigos, $speciality->id);
+                            $provision = Provision::find($str_arr[0]);
+                        }
+                        $provision->speciality()->sync($codigos);
+                    }
+                } 
+            }
+            return redirect('asignarespecialidadprestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
+        }
+    }
+    public function AsignSpeciality(Request $request)
+    {
+        if (isset($_POST['enviar'])) {
+            $functionarys = Functionary::where('activa', 1)->get();
+            foreach ($functionarys as $func) {
+                $func->speciality()->sync([]);
+            }    
+            if (isset($_POST['asignations'])) {
+                if (is_array($_POST['asignations'])) {                    
+                    foreach ($_POST['asignations'] as $key) {
+                        $codigos = array();
+                        foreach ($key as $key2 => $value) {
+                            $str_arr = explode ("|", $value);  
+                            $speciality = Speciality::find($str_arr[1]);
+                            array_push($codigos, $speciality->id);
+                            $functionary = Functionary::find($str_arr[0]);
+                        }
+                        $functionary->speciality()->sync($codigos);
+                    }
+                } 
+            }
+            return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
+        }
+    }
+
 
     /***************************************************************************************************************************
                                                     ACTIONS BUTTONS FUNCTIONS
@@ -453,4 +414,39 @@ class AdminController extends Controller
         $patient[0]->save();
         return redirect('pacientesinactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
     }
+
+    /***************************************************************************************************************************
+                                                    HELPERS AND LOGIC FUNCTIONS
+     ****************************************************************************************************************************/
+
+    public static function existFunctionarySpeciality($idFunct, $idSp)
+    {
+        $value = false;
+        $doesClientHaveProduct = Speciality::where('id', $idSp)
+            ->whereHas('functionary', function ($q) use ($idFunct) {
+                $q->where('dbo.funcionarios.id', $idFunct);
+            })
+            ->count();
+        if ($doesClientHaveProduct) {
+            $value = true;
+        }
+
+        return $value;
+    }
+
+    public static function existProvisionSpeciality($idprov, $idSp)
+    {
+        $value = false;
+        $doesProvisionHaveSpeciality = Speciality::where('id', $idSp)
+            ->whereHas('provision', function ($q) use ($idprov) {
+                $q->where('dbo.prestacion.id', $idprov);
+            })
+            ->count();
+        if ($doesProvisionHaveSpeciality) {
+            $value = true;
+        }
+
+        return $value;
+    }
+
 }
