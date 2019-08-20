@@ -173,12 +173,12 @@ class AdminController extends Controller
     public function AsignSpeciality(Request $request)
     {
         if (isset($_POST['enviar'])) {
+            $functionarys = Functionary::where('activa', 1)->get();
+            foreach ($functionarys as $func) {
+                $func->speciality()->sync([]);
+            }    
             if (isset($_POST['asignations'])) {
-                if (is_array($_POST['asignations'])) {
-                    $functionarys = Functionary::where('activa', 1)->get();
-                    foreach ($functionarys as $func) {
-                        $func->speciality()->sync([]);
-                    }    
+                if (is_array($_POST['asignations'])) {                    
                     foreach ($_POST['asignations'] as $key) {
                         $codigos = array();
                         foreach ($key as $key2 => $value) {
@@ -240,12 +240,12 @@ class AdminController extends Controller
     public function AsignProvision(Request $request)
     {
         if (isset($_POST['enviar'])) {
+            $provisions = Provision::where('activa', 1)->get();
+            foreach ($provisions as $prov) {
+                $prov->speciality()->sync([]);
+            }
             if (isset($_POST['asignations'])) {
                 if (is_array($_POST['asignations'])) {
-                    $provisions = Provision::where('activa', 1)->get();
-                    foreach ($provisions as $prov) {
-                        $prov->speciality()->sync([]);
-                    }
                     foreach ($_POST['asignations'] as $key) {
                         $codigos = array();
                         foreach ($key as $key2 => $value) {

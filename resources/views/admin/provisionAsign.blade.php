@@ -45,7 +45,7 @@
                     
                     <input type="checkbox" 
                            name="asignations[<?=strtoupper($nombre1[0]);?>][<?=strtoupper($nombre1[1]);?>]" 
-                           value="<?=strtoupper($nombre1[0]).strtoupper($nombre1[1]);?>"                                  
+                           value="<?=strtoupper($nombre1[0])."|".strtoupper($nombre1[1]);?>"                                  
                            <?php if($provider::existProvisionSpeciality($nombre1[0],$nombre1[1])) { echo 'checked';}?> 
                     >
                     
