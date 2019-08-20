@@ -17,10 +17,6 @@ class CreateFuncionariosTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('profesion');
-            $table->string('nombre1');
-            $table->string('nombre2');
-            $table->string('apellido1');
-            $table->string('apellido2');
 
             $table->unsignedBigInteger('user_id');
             

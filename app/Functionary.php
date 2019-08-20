@@ -28,6 +28,6 @@ class Functionary extends Model
    */
   protected $fillable = 
     [
-      'id','profesion','nombre1', 'nombre2', 'apellido1', 'user_id', 'activa'
+      'id','profesion', 'user_id', 'activa'
     ];
 }

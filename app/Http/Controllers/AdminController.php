@@ -396,20 +396,13 @@ class AdminController extends Controller
     public function registerFunctionary(Request $request)
     {
         $validacion = $request->validate([
-            'nombre1' => 'required|string|max:255',
-            'nombre2' => 'required|string|max:255',
-            'apellido1' => 'required|string|max:255',
-            'apellido2' => 'required|string|max:255',
             'profesion' => 'required|string|max:255',
             'user' => 'required|integer|max:255'
         ]);
 
         $functionary = new Functionary;
 
-        $functionary->nombre1 = $request->nombre1;
-        $functionary->nombre2 = $request->nombre2;
-        $functionary->apellido1 = $request->apellido1;
-        $functionary->apellido2 = $request->apellido2;
+        
         $functionary->profesion = $request->profesion;
         $functionary->user_id = $request->user;
 
