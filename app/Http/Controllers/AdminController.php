@@ -173,32 +173,24 @@ class AdminController extends Controller
     public function AsignSpeciality(Request $request)
     {
         if (isset($_POST['enviar'])) {
-            if (is_array($_POST['asignations'])) {
-                $functionarys = Functionary::where('activa', 1)->get();
-                foreach ($functionarys as $func) {
-                    $func->speciality()->sync([]);
-                }
-                //$selected = '';              
-                foreach ($_POST['asignations'] as $key) {
-                    //$especialidadesPorFuncionario= array();
-                    $codigos = array();
-
-                    //$functionary = Functionary::find($id);
-                    foreach ($key as $key2 => $value) {
-                        $speciality = Speciality::find($value[1]);
-                        //array_push($especialidadesPorFuncionario,$speciality->descripcion);
-                        array_push($codigos, $speciality->id);
-                        $functionary = Functionary::find($value[0]);
+            if (isset($_POST['asignations'])) {
+                if (is_array($_POST['asignations'])) {
+                    $functionarys = Functionary::where('activa', 1)->get();
+                    foreach ($functionarys as $func) {
+                        $func->speciality()->sync([]);
+                    }    
+                    foreach ($_POST['asignations'] as $key) {
+                        $codigos = array();
+                        foreach ($key as $key2 => $value) {
+                            $str_arr = explode ("|", $value);  
+                            $speciality = Speciality::find($str_arr[1]);
+                            array_push($codigos, $speciality->id);
+                            $functionary = Functionary::find($str_arr[0]);
+                        }
+                        $functionary->speciality()->sync($codigos);
                     }
-                    //$selected .= $functionary->nombre1." : ".implode( ", ",$especialidadesPorFuncionario).'<br> ';
-
-                    $functionary->speciality()->sync($codigos);
-                }
-            } else {
-                $selected = 'Debes seleccionar un país';
+                } 
             }
-
-            //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
             return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
         }
     }
@@ -248,32 +240,24 @@ class AdminController extends Controller
     public function AsignProvision(Request $request)
     {
         if (isset($_POST['enviar'])) {
-            if (is_array($_POST['asignations'])) {
-                $provisions = Provision::where('activa', 1)->get();
-                foreach ($provisions as $prov) {
-                    $prov->speciality()->sync([]);
-                }
-                //$selected = '';              
-                foreach ($_POST['asignations'] as $key) {
-                    //$especialidadesPorFuncionario= array();
-                    $codigos = array();
-
-                    //$functionary = Functionary::find($id);
-                    foreach ($key as $key2 => $value) {
-                        $speciality = Speciality::find($value[1]);
-                        //array_push($especialidadesPorFuncionario,$speciality->descripcion);
-                        array_push($codigos, $speciality->id);
-                        $provision = Provision::find($value[0]);
+            if (isset($_POST['asignations'])) {
+                if (is_array($_POST['asignations'])) {
+                    $provisions = Provision::where('activa', 1)->get();
+                    foreach ($provisions as $prov) {
+                        $prov->speciality()->sync([]);
                     }
-                    //$selected .= $functionary->nombre1." : ".implode( ", ",$especialidadesPorFuncionario).'<br> ';
-
-                    $provision->speciality()->sync($codigos);
-                }
-            } else {
-                //$selected = 'Debes seleccionar un país';
+                    foreach ($_POST['asignations'] as $key) {
+                        $codigos = array();
+                        foreach ($key as $key2 => $value) {
+                            $str_arr = explode ("|", $value);  
+                            $speciality = Speciality::find($str_arr[1]);
+                            array_push($codigos, $speciality->id);
+                            $provision = Provision::find($str_arr[0]);
+                        }
+                        $provision->speciality()->sync($codigos);
+                    }
+                } 
             }
-
-            //echo '<div>Has seleccionado: <br>'.$selected.'</div>';
             return redirect('asignarespecialidadprestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
         }
     }
