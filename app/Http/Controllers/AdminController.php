@@ -128,8 +128,6 @@ class AdminController extends Controller
         //return view('admin.provisionForm');
     }
 
-    
-
     public function showAsignSpeciality()
     {
         $speciality = Speciality::orderBy('descripcion')
@@ -157,8 +155,6 @@ class AdminController extends Controller
         return view('admin.specialityAsign', compact('rows', 'columns'));
     }
 
-   
-    
     public function showAsignProvision()
     {
         $speciality = Speciality::orderBy('descripcion')
@@ -186,11 +182,11 @@ class AdminController extends Controller
         return view('admin.provisionAsign', compact('rows', 'columns'));
     }
 
-    
-/***************************************************************************************************************************
+    /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
      ****************************************************************************************************************************/
-    public function registerRelease(Request $request)
+    
+     public function registerRelease(Request $request)
     {
         $validacion = $request->validate([
             'descripcion' => 'required|string|max:255'
@@ -299,7 +295,6 @@ class AdminController extends Controller
         $user->rol = $request->rol;
         $user->password = Hash::make($request->password);
 
-
         $user->save();
 
         return redirect('registrar')->with('status', 'Usuario creado');
@@ -314,7 +309,7 @@ class AdminController extends Controller
 
         $functionary = new Functionary;
 
-        
+
         $functionary->profesion = $request->profesion;
         $functionary->user_id = $request->user;
 
@@ -325,7 +320,6 @@ class AdminController extends Controller
 
     public function registerProvision(Request $request)
     {
-
         $validacion = $request->validate([
             'frecuencia' => 'required|int',
             'glosa' => 'required|string|max:255',
@@ -345,6 +339,7 @@ class AdminController extends Controller
 
         return redirect('registrarprestacion')->with('status', 'Nueva prestacion creada');
     }
+
     public function AsignProvision(Request $request)
     {
         if (isset($_POST['enviar'])) {
@@ -357,48 +352,48 @@ class AdminController extends Controller
                     foreach ($_POST['asignations'] as $key) {
                         $codigos = array();
                         foreach ($key as $key2 => $value) {
-                            $str_arr = explode ("|", $value);  
+                            $str_arr = explode("|", $value);
                             $speciality = Speciality::find($str_arr[1]);
                             array_push($codigos, $speciality->id);
                             $provision = Provision::find($str_arr[0]);
                         }
                         $provision->speciality()->sync($codigos);
                     }
-                } 
+                }
             }
             return redirect('asignarespecialidadprestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
         }
     }
+
     public function AsignSpeciality(Request $request)
     {
         if (isset($_POST['enviar'])) {
             $functionarys = Functionary::where('activa', 1)->get();
             foreach ($functionarys as $func) {
                 $func->speciality()->sync([]);
-            }    
+            }
             if (isset($_POST['asignations'])) {
-                if (is_array($_POST['asignations'])) {                    
+                if (is_array($_POST['asignations'])) {
                     foreach ($_POST['asignations'] as $key) {
                         $codigos = array();
                         foreach ($key as $key2 => $value) {
-                            $str_arr = explode ("|", $value);  
+                            $str_arr = explode("|", $value);
                             $speciality = Speciality::find($str_arr[1]);
                             array_push($codigos, $speciality->id);
                             $functionary = Functionary::find($str_arr[0]);
                         }
                         $functionary->speciality()->sync($codigos);
                     }
-                } 
+                }
             }
             return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
         }
     }
 
-
     /***************************************************************************************************************************
                                                     ACTIONS BUTTONS FUNCTIONS
      ****************************************************************************************************************************/
-
+    
     public function deletingPatient(Request $request)
     {
         $patient = Patient::where('DNI', $request->DNI)->get();
@@ -448,5 +443,4 @@ class AdminController extends Controller
 
         return $value;
     }
-
 }
