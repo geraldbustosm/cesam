@@ -14,6 +14,7 @@ use App\Speciality;
 use App\FunctionarySpeciality;
 use App\Provision;
 use App\Type;
+use App\Diagnosis;
 
 
 use Illuminate\Http\Request;
@@ -99,6 +100,10 @@ class AdminController extends Controller
     public function showAddPrevition()
     {
         return view('admin.previtionForm');
+    }
+    public function showAddDiagnosis()
+    {
+        return view('admin.diagnosisForm');
     }
 
     public function showAddAtributes()
@@ -276,6 +281,22 @@ class AdminController extends Controller
 
         return redirect('registrarprevision')->with('status', 'Nueva prevision creada');
     }
+    public function registerDiagnosis(Request $request)
+    {
+
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:382'
+        ]);
+
+        $diagnosis = new Diagnosis;
+
+        $diagnosis->descripcion = $request->descripcion;
+
+        $diagnosis->save();
+
+        return redirect('registrardiagnostico')->with('status', 'Nuevo diagnostico creado');
+
+    }
 
     public function registerUser(Request $request)
     {
@@ -339,6 +360,7 @@ class AdminController extends Controller
 
         return redirect('registrarprestacion')->with('status', 'Nueva prestacion creada');
     }
+  
 
     public function AsignProvision(Request $request)
     {
