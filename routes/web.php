@@ -105,6 +105,10 @@ Route::post('registrarsexo', 'AdminController@registerSex');
 Route::get('registrartipo', 'AdminController@showAddType');
 
 Route::post('registrartipo', 'AdminController@registerType');
+// SIGGES
+Route::get('registrarsigges', 'AdminController@showAddSIGGES');
+
+Route::post('registrarsigges', 'AdminController@registerSIGGES');
 
 /***************************************************************************************************************************
                                                     TESTING SECTION
