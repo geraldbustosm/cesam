@@ -118,6 +118,9 @@
                                     <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrarprograma')}}"><span>Ingresar Programa</span></a>
                                 </li>
                                 <li>
+                                    <a class="nav-link @yield('active-crearetapa')" href="{{url('crearetapa')}}"><span>crear una nueva Etapa</span></a>
+                                </li>
+                                <li>
                                     <a class="nav-link @yield('active-ingresartipo')" href="{{url('registrartipo')}}"><span>Ingresar Tipo de prestación</span></a>
                                 </li>
                                 <li>

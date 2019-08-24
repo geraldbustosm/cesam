@@ -17,7 +17,8 @@ use App\Type;
 use App\Diagnosis;
 use App\Program;
 use App\SiGGES;
-
+use App\Provenance;
+use App\Stage;
 
 
 use Illuminate\Http\Request;
@@ -100,6 +101,19 @@ class AdminController extends Controller
     {
         return view('admin.releaseForm');
     }
+    
+    public function showAddStage(){
+        $patient = Patient::all();
+        $functionary = Functionary::all();
+        $diagnosis = Diagnosis::all();
+        $program = Program::all();
+        $release = Release::all();
+        $Sigges = SiGGES::all();
+        $provenance = Provenance::all();
+        return view('admin.stageCreateForm', compact('patient','functionary','diagnosis','program','release','Sigges','provenance'));
+  
+        
+    }  
     public function showAddPrevition()
     {
         return view('admin.previtionForm');
@@ -201,7 +215,29 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
      ****************************************************************************************************************************/
-    
+    public function registerStage(Request $request){
+
+        $validation = $request->validate([
+            
+            ]);
+
+        echo $request->new_start;
+
+        $stage = new Stage;
+        
+        $stage->diagnostico_id = $request->diagnostico_id;
+        $stage->programa_id = $request->programa_id;
+        $stage->alta_id = $request->alta_id;
+        $stage->sigges_id = $request->sigges_id;
+        $stage->procedencia_id = $request->procedencia_id;
+        $stage->funcionario_id = $request->funcionario_id;
+        $stage->paciente_id = $request->paciente_id;
+        $stage->save();
+        
+        
+        return redirect('crearetapa')->with('status', 'etapa creada');
+
+    }
      public function registerRelease(Request $request)
     {
         $validacion = $request->validate([

@@ -20,6 +20,10 @@ class Stage extends Model
    *
    * @var array
    */
+  public function diagnosis()
+  {
+    return $this->hasOne('App\Diagnosis', 'diagnostico_id');
+  }
   protected $fillable = 
     [
       'id','diagnostico_id','programa_id','alta_id','sigges_id','procedencia_id','funcionario_id','paciente_id','activa'

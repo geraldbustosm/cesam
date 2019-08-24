@@ -93,6 +93,10 @@ Route::post('registrarprograma', 'AdminController@registerProgram');
 Route::get('registrarprevision', 'AdminController@showAddPrevition');
 
 Route::post('registrarprevision', 'AdminController@registerPrevition');
+// Etapa
+Route::get('crearetapa', 'AdminController@showAddStage');
+
+Route::post('crearetapa', 'AdminController@registerStage');
 // Diagnostico
 Route::get('registrardiagnostico', 'AdminController@showAddDiagnosis');
 
