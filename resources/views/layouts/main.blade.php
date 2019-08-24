@@ -112,6 +112,9 @@
                                     <a class="nav-link @yield('active-ingresarprevision')" href="{{url('registrarprevision')}}"><span>Ingresar Prevision</span></a>
                                 </li>
                                 <li>
+                                    <a class="nav-link @yield('active-ingresardiagnostico')" href="{{url('registrardiagnostico')}}"><span>Ingresar Diagnostico</span></a>
+                                </li>
+                                <li>
                                     <a class="nav-link @yield('active-ingresartipo')" href="{{url('registrartipo')}}"><span>Ingresar Tipo de prestación</span></a>
                                 </li>
                                 <li>

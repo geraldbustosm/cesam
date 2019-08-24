@@ -89,6 +89,10 @@ Route::post('registrarprestacion', 'AdminController@registerProvision');
 Route::get('registrarprevision', 'AdminController@showAddPrevition');
 
 Route::post('registrarprevision', 'AdminController@registerPrevition');
+// Diagnostico
+Route::get('registrardiagnostico', 'AdminController@showAddDiagnosis');
+
+Route::post('registrardiagnostico', 'AdminController@registerDiagnosis');
 // Sexo
 Route::get('registrarsexo', 'AdminController@showAddSex');
 
