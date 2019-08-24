@@ -13,6 +13,10 @@ class Patient extends Model
    *
    * @var string
    */
+  public function stage()
+    {
+        return $this->hasMany('App\Stage');
+    }
   protected $table = 'paciente';
 
   public function sex()

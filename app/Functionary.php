@@ -25,6 +25,10 @@ class Functionary extends Model
    *
    * @var string
    */
+  public function stage()
+    {
+        return $this->hasMany('App\Stage');
+    }
   protected $table = 'funcionarios';
   
   /**
