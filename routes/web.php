@@ -85,6 +85,10 @@ Route::post('registrarpaciente', 'GeneralController@registerPatient');
 Route::get('registrarprestacion', 'AdminController@showAddProvision');
 
 Route::post('registrarprestacion', 'AdminController@registerProvision');
+// Programa
+Route::get('registrarprograma', 'AdminController@showAddProgram');
+
+Route::post('registrarprograma', 'AdminController@registerProgram');
 // Previsión
 Route::get('registrarprevision', 'AdminController@showAddPrevition');
 
