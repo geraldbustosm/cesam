@@ -133,7 +133,7 @@ class AdminController extends Controller
         $speciality = Speciality::orderBy('descripcion')
             ->get();
 
-        $functionary = Functionary::orderBy('nombre1')
+        $functionary = Functionary::orderBy('profesion')
             ->get();
         $rows = [];
         $columns = [];
@@ -149,7 +149,7 @@ class AdminController extends Controller
             $ids[0] = $record1->id;
             foreach ($speciality as $index => $record2) {
                 $ids[1] = $record2->id;
-                $rows[$record1->nombre1 . " " . $record1->nombre2][$record2->descripcion] = $ids;
+                $rows[$record1->user->primer_nombre . " " . $record1->user->apellido_paterno][$record2->descripcion] = $ids;
             }
         }
         return view('admin.specialityAsign', compact('rows', 'columns'));
@@ -281,6 +281,10 @@ class AdminController extends Controller
     {
         $validacion = $request->validate([
             'nombre' => 'required|string|max:255',
+            'primer_nombre' => 'required|string|max:255',
+            'segundo_nombre' => 'required|string|max:255',
+            'apellido_materno' => 'required|string|max:255',
+            'apellido_paterno' => 'required|string|max:255',
             'rut' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'rol' => 'required|integer|max:255',
@@ -290,6 +294,10 @@ class AdminController extends Controller
         $user = new User;
 
         $user->nombre = $request->nombre;
+        $user->primer_nombre = $request->primer_nombre;
+        $user->segundo_nombre = $request->segundo_nombre;
+        $user->apellido_materno = $request->apellido_materno;
+        $user->apellido_paterno = $request->apellido_paterno;
         $user->rut = $request->rut;
         $user->email = $request->email;
         $user->rol = $request->rol;

@@ -5,12 +5,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Speciality;
+use App\User;
 
 class Functionary extends Model
 {
   public function speciality()
     {
         return $this->belongsToMany(Speciality::class, 'funcionario_posee_especialidad', 'funcionarios_id', 'especialidad_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTO(User::class,'user_id','id');
     }
     
 	use Notifiable;

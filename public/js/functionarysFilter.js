@@ -9,7 +9,7 @@ var searchbox = document.getElementById("searchbox");
                                                 FILL TABLE
 ****************************************************************************************************************************/
 // Write functionarys on the table
-function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6) {
+function createRow(num, dato1,  dato4, dato5, dato6) {
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
     // Create cells on the new row
@@ -25,6 +25,21 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6) {
             user = userArr[j].nombre;
         }
     }
+
+    // Getting name1
+    var userPrimerNombre;
+    for (var j = 0; j < userArr.length; j++) {
+        if (dato4 == userArr[j].id) {
+            userPrimerNombre = userArr[j].primer_nombre;
+        }
+    }
+     // Getting name2
+     var userApellidoPaterno;
+     for (var j = 0; j < userArr.length; j++) {
+         if (dato4 == userArr[j].id) {
+            userApellidoPaterno = userArr[j].apellido_paterno;
+         }
+     }
     // Getting speciality
     var speciality= "";
     for (var k = 0; k < fsArr.length; k++){
@@ -57,14 +72,15 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6) {
     } catch (ex) {
         tmp = "";
     }
-    // Adding cells content
+    //Adding cells content
     celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = user;
-    
-    celdas[2].innerHTML = dato2 + ' ' + dato3;
+    celdas[1].innerHTML = user; 
+    celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
     celdas[3].innerHTML = dato5;
     celdas[4].innerHTML = speciality;
     celdas[5].innerHTML = tmp;    
+    
+    
 }
 // Generate table with functionarys
 function changePage(page) {
@@ -79,8 +95,8 @@ function changePage(page) {
     for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
         try {
             // Insert the rows with functionarys info.
-            //        1  2                   3                        4                          5                        6                        
-            createRow(i, curArray[i].id, curArray[i].nombre1, curArray[i].apellido1, curArray[i].user_id, curArray[i].profesion );
+            //                        1  2                   3                        4                          5                        6                        
+            createRow(i, curArray[i].id, curArray[i].user_id, curArray[i].profesion );
         } catch (err) {
             // We exit if don't have equal number of functionarys and records for page.
             break;

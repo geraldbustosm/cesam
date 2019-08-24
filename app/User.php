@@ -15,6 +15,10 @@ class User extends Authenticatable
      */
 
      protected $primaryKey = 'rut';
+
+    public function functionary(){
+        return $this->hasOne(Functionary::class);
+    }
     /**
      * The attributes that are mass assignable.
      * agrege esta linea para ver los cambios
@@ -22,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nombre', 'rut', 'email', 'password', 'rol','id'
+        'nombre', 'primer_nombre', 'segundo_nombre','apellido_materno','apellido_paterno','rut', 'email', 'password', 'rol','id'
     ];
 
     /**

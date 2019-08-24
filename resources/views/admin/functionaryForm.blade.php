@@ -27,29 +27,6 @@
             <input type="text" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="profesion" name="profesion" placeholder="Profesion">
 
 		</div>
-		
-        <div class="form-group">
-			<div class="form-row">
-				<div class="col-6">
-				  <input type="text" class="form-control {{ $errors->has('nombre1') ? ' is-invalid' : '' }}" value="{{ old('nombre1') }}" id="nombre1" name="nombre1" placeholder="Primer Nombre">
-				</div>
-				<div class="col">
-				  <input type="text" class="form-control {{ $errors->has('nombre2') ? ' is-invalid' : '' }}" value="{{ old('nombre2') }}" id="nombre2" name="nombre2" placeholder="Segundo Nombre">
-				</div>
-                
-			</div>
-
-		</div>
-		<div class="form-group">
-			<div class="form-row">
-                <div class="col-6">
-				  <input type="text" class="form-control {{ $errors->has('apellido1') ? ' is-invalid' : '' }}" value="{{ old('apellido1') }}" id="apellido1" name="apellido1" placeholder="Apellido Paterno">
-				</div>
-				<div class="col">
-				  <input type="text" class="form-control {{ $errors->has('apellido2') ? ' is-invalid' : '' }}" value="{{ old('apellido2') }}" id="apellido2" name="apellido2" placeholder="Apellido Materno">
-				</div>
-			</div>
-		</div>
 		       
         <div class="form-group">
             <select class="form-control" name="user" required>
