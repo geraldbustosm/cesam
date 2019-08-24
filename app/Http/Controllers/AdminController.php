@@ -15,6 +15,7 @@ use App\FunctionarySpeciality;
 use App\Provision;
 use App\Type;
 use App\Diagnosis;
+use App\SiGGES;
 
 
 use Illuminate\Http\Request;
@@ -120,6 +121,11 @@ class AdminController extends Controller
         return view('admin.typeForm');
     }
 
+    public function showAddSIGGES()
+    {
+        return view('admin.siggesForm');
+    }
+
     public function showAddSpeciality()
     {
         $speciality = Speciality::where('activa', 1)->get();
@@ -130,7 +136,6 @@ class AdminController extends Controller
     {
         $type = Type::where('activa', 1)->get();
         return view('admin.provisionForm', ['type' => $type]);
-        //return view('admin.provisionForm');
     }
 
     public function showAsignSpeciality()
@@ -234,6 +239,20 @@ class AdminController extends Controller
         $sex->save();
 
         return redirect('registrarsexo')->with('status', 'Nuevo Sexo / Genero creado');
+    }
+    public function registerSIGGES(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $sigges = new SiGGES;
+
+        $sigges->descripcion = $request->descripcion;
+
+        $sigges->save();
+
+        return redirect('registrarsigges')->with('status', 'Nuevo tipo de SiGGES creado');
     }
 
     public function registerType(Request $request)

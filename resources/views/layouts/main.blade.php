@@ -121,6 +121,9 @@
                                     <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrarprestacion')}}"><span>Ingresar Prestación</span></a>
                                 </li>
                                 <li>
+                                    <a class="nav-link @yield('active-ingresarsigges')" href="{{url('registrarsigges')}}"><span>Ingresar SiGGES</span></a>
+                                </li>
+                                <li>
                                     <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar Especialidad</span></a>
                                 </li>
                                 <li>
