@@ -6,7 +6,7 @@ body{
     overflow-y:auto;
     height: 100%;
     background-color: white;
-    width: 10rem;
+    width: 12rem;
     z-index: 2; /* ocupo 2, para que le gane al z index de top-bar (z-index: 1) */
     -webkit-box-shadow: 26px 50px 26px -40px rgba(0,0,0,0.75);
     -moz-box-shadow: 26px 50px 26px -40px rgba(0,0,0,0.75);
@@ -14,7 +14,7 @@ body{
 }
 .page-content{
     padding-top: 6rem;
-    padding-left: 12rem;
+    padding-left: 14rem;
     padding-right: 2rem;
     padding-bottom: 2rem;
     display: flex;
@@ -33,7 +33,7 @@ body{
 .top-bar{    
     border-bottom: 1px solid #e1e5eb;
     width: 100%;
-    padding-left: 12rem;
+    padding-left: 14rem;
     padding-right: 2rem;
     padding-bottom: 1rem;
     padding-top: 1rem;
