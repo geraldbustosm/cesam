@@ -85,6 +85,7 @@ Route::post('registrarfuncionario', 'AdminController@registerFunctionary');
 Route::get('registrarpaciente', 'GeneralController@showAddPatient');
 
 Route::post('registrarpaciente', 'GeneralController@registerPatient');
+
 // Prestación
 Route::get('registrarprestacion', 'AdminController@showAddProvision');
 
@@ -117,6 +118,13 @@ Route::post('registrartipo', 'AdminController@registerType');
 Route::get('registrarsigges', 'AdminController@showAddSIGGES');
 
 Route::post('registrarsigges', 'AdminController@registerSIGGES');
+
+/***************************************************************************************************************************
+                                                    EDITS 
+****************************************************************************************************************************/
+// Editar paciente
+Route::get('pacientes/edit/{id}', 'AdminController@showEditPatient');
+Route::post('pacientes/edit', 'AdminController@editPatient');
 
 /***************************************************************************************************************************
                                                     TESTING SECTION
