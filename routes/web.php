@@ -73,6 +73,10 @@ Route::post('registraratributos', 'AdminController@registerAtributes');
 Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
 
 Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
+// procedencia
+Route::get('registrarprocedencia', 'AdminController@showAddProvenance');
+
+Route::post('registrarprocedencia', 'AdminController@registerProvenance');
 // Funcionario
 Route::get('registrarfuncionario', 'AdminController@showAddFunctionary');
 

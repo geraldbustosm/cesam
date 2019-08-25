@@ -101,6 +101,10 @@ class AdminController extends Controller
     {
         return view('admin.releaseForm');
     }
+    public function showAddProvenance()
+    {
+        return view('admin.provenanceForm');
+    }
     
     public function showAddStage(){
         $patient = Patient::all();
@@ -251,6 +255,20 @@ class AdminController extends Controller
         $alta->save();
 
         return redirect('registraralta')->with('status', 'Nueva alta creada');
+    }
+    public function registerProvenance(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $provenance = new Provenance;
+
+        $provenance->descripcion = $request->descripcion;
+
+        $provenance->save();
+
+        return redirect('registrarprocedencia')->with('status', 'Nueva procedencia creada');
     }
     public function registerProgram(Request $request)
     {
