@@ -217,6 +217,17 @@ class AdminController extends Controller
     }
 
     /***************************************************************************************************************************
+                                             VIEWS       GET METHOD SHOW EDIT
+     ****************************************************************************************************************************/
+    
+    public function showEditPatient($id){
+        $patient = Patient::where('id', $id)->get();
+        $prev = Prevition::all();
+        $sex = Sex::all();
+        return view('admin.editPatient', ['patient' => $patient, 'prev' => $prev, 'sex' => $sex]);
+    }
+
+    /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
      ****************************************************************************************************************************/
     public function registerStage(Request $request){
@@ -506,6 +517,10 @@ class AdminController extends Controller
             }
             return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
         }
+    }
+
+    public function editPatient(){
+
     }
 
     /***************************************************************************************************************************
