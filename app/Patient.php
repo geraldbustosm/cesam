@@ -13,12 +13,24 @@ class Patient extends Model
    *
    * @var string
    */
+  
   protected $table = 'paciente';
+
+  public function prevition()
+  {
+    return $this->hasOne('App\Prevition', 'id');
+  }
+
+  public function stage()
+  {
+    return $this->hasMany('App\Stage');
+  }
 
   public function sex()
   {
-    return $this->hasOne('App\Sex', 'sexo_id');
+    return $this->hasOne('App\Sex', 'id');
   }
+
   public function address()
   {
       return $this->belongsToMany(Address::class, 'paciente_posee_direccion', 'paciente_id', 'direccion_id');

@@ -13,6 +13,10 @@ class Provenance extends Model
      *
      * @var string
      */
+    public function stage()
+    {
+        return $this->hasMany('App\Stage');
+    }
     protected $table = 'procedencia';
 
     /**

@@ -13,6 +13,10 @@ class Program extends Model
      *
      * @var string
      */
+    public function stage()
+    {
+        return $this->hasMany('App\Stage');
+    }
     protected $table = 'programa';
 
     /**
@@ -22,6 +26,6 @@ class Program extends Model
      */
     protected $fillable =
     [
-        'id', 'descripcion', 'activa'
+        'id','especialidad', 'descripcion', 'activa'
     ];
 }

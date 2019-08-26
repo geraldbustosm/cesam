@@ -15,7 +15,10 @@ use App\FunctionarySpeciality;
 use App\Provision;
 use App\Type;
 use App\Diagnosis;
+use App\Program;
 use App\SiGGES;
+use App\Provenance;
+use App\Stage;
 
 
 use Illuminate\Http\Request;
@@ -81,7 +84,7 @@ class AdminController extends Controller
     }
 
     /***************************************************************************************************************************
-                                             VIEWS       GET METHOD SHOW ADD
+                                             VIEWS (GET METHOD - SHOW ADD)
      ****************************************************************************************************************************/
     public function showAddUser()
     {
@@ -96,40 +99,70 @@ class AdminController extends Controller
 
     public function showAddRelease()
     {
-        return view('admin.releaseForm');
+        $data = Release::orderBy('descripcion')->get();
+        return view('admin.releaseForm', ['data' => $data]);
     }
+    public function showAddProvenance()
+    {
+        $data = Provenance::orderBy('descripcion')->get();
+        return view('admin.provenanceForm', ['data' => $data]);
+    }
+    
+    public function showAddStage(){
+        $patient = Patient::all();
+        $functionary = Functionary::all();
+        $diagnosis = Diagnosis::all();
+        $program = Program::all();
+        $release = Release::all();
+        $Sigges = SiGGES::all();
+        $provenance = Provenance::all();
+        return view('admin.stageCreateForm', compact('patient','functionary','diagnosis','program','release','Sigges','provenance'));
+  
+        
+    }  
     public function showAddPrevition()
     {
-        return view('admin.previtionForm');
+        $data = Prevition::orderBy('descripcion')->get();
+        return view('admin.previtionForm', ['data' => $data]);
+    }
+    public function showAddProgram()
+    {
+        $data = Program::orderBy('descripcion')->get();
+        return view('admin.programForm', ['data' => $data]);
     }
     public function showAddDiagnosis()
     {
-        return view('admin.diagnosisForm');
+        $data = Diagnosis::orderBy('descripcion')->get();
+        return view('admin.diagnosisForm', ['data' => $data]);
     }
 
     public function showAddAtributes()
     {
-        return view('admin.atributesForm');
+        $data = Atributes::orderBy('descripcion')->get();
+        return view('admin.atributesForm', ['data' => $data]);
     }
 
     public function showAddSex()
     {
-        return view('admin.sexForm');
+        $data = Sex::orderBy('descripcion')->get();;
+        return view('admin.sexForm', ['data' => $data]);
     }
     public function showAddType()
     {
-        return view('admin.typeForm');
+        $data = Type::orderBy('descripcion')->get();;
+        return view('admin.typeForm', ['data' => $data]);
     }
 
     public function showAddSIGGES()
     {
-        return view('admin.siggesForm');
+        $data = SiGGES::orderBy('descripcion')->get();;
+        return view('admin.siggesForm', ['data' => $data]);
     }
 
     public function showAddSpeciality()
     {
-        $speciality = Speciality::where('activa', 1)->get();
-        return view('admin.specialityForm', ['specialitys' => $speciality]);
+        $data = Speciality::orderBy('descripcion')->get();
+        return view('admin.specialityForm', ['data' => $data]);
     }
 
     public function showAddProvision()
@@ -143,7 +176,7 @@ class AdminController extends Controller
         $speciality = Speciality::orderBy('descripcion')
             ->get();
 
-        $functionary = Functionary::orderBy('profesion')
+        $functionary = Functionary::orderBy('nombre1')
             ->get();
         $rows = [];
         $columns = [];
@@ -159,7 +192,7 @@ class AdminController extends Controller
             $ids[0] = $record1->id;
             foreach ($speciality as $index => $record2) {
                 $ids[1] = $record2->id;
-                $rows[$record1->user->primer_nombre . " " . $record1->user->apellido_paterno][$record2->descripcion] = $ids;
+                $rows[$record1->nombre1 . " " . $record1->nombre2][$record2->descripcion] = $ids;
             }
         }
         return view('admin.specialityAsign', compact('rows', 'columns'));
@@ -193,9 +226,56 @@ class AdminController extends Controller
     }
 
     /***************************************************************************************************************************
-                                                    POST METHOD (REGIST & ASIG)
+                                             VIEWS       GET METHOD SHOW EDIT
      ****************************************************************************************************************************/
     
+    public function showEditPatient($id){
+        $patient = Patient::find($id);
+        $prev = Prevition::all();
+        $sex = Sex::all();
+        $patient_prev = "";
+        $patient_sex = "";
+        $patient_birthday = "";
+
+        if($patient){
+            $patient_prev = Patient::find($id)->prevition;
+            $patient_sex = Patient::find($id)->sex;
+
+            // Change formate date to retrieve to the datapicker
+            $patient_birthday = explode("-", $patient->fecha_nacimiento);
+            $patient_birthday = join("/", array($patient_birthday[2],$patient_birthday[1],$patient_birthday[0]));
+
+        }
+
+        return view('admin.editPatient', ['patient' => $patient, 'patient_prev' => $patient_prev,'patient_sex' => $patient_sex, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
+    }
+
+    /***************************************************************************************************************************
+                                                    POST METHOD (REGIST & ASIG)
+     ****************************************************************************************************************************/
+    public function registerStage(Request $request){
+
+        $validation = $request->validate([
+            
+            ]);
+
+        echo $request->new_start;
+
+        $stage = new Stage;
+        
+        $stage->diagnostico_id = $request->diagnostico_id;
+        $stage->programa_id = $request->programa_id;
+        $stage->alta_id = $request->alta_id;
+        $stage->sigges_id = $request->sigges_id;
+        $stage->procedencia_id = $request->procedencia_id;
+        $stage->funcionario_id = $request->funcionario_id;
+        $stage->paciente_id = $request->paciente_id;
+        $stage->save();
+        
+        
+        return redirect('crearetapa')->with('status', 'etapa creada');
+
+    }
      public function registerRelease(Request $request)
     {
         $validacion = $request->validate([
@@ -209,6 +289,37 @@ class AdminController extends Controller
         $alta->save();
 
         return redirect('registraralta')->with('status', 'Nueva alta creada');
+    }
+    public function registerProvenance(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $provenance = new Provenance;
+
+        $provenance->descripcion = $request->descripcion;
+
+        $provenance->save();
+
+        return redirect('registrarprocedencia')->with('status', 'Nueva procedencia creada');
+    }
+    public function registerProgram(Request $request)
+    {
+        $validacion = $request->validate([
+            'especialidad' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255'
+
+        ]);
+
+        $program = new Program;
+
+        $program->descripcion = $request->descripcion;
+        $program->especialidad = $request->especialidad;
+
+        $program->save();
+
+        return redirect('registrarprograma')->with('status', 'Nuevo programa creado');
     }
 
     public function registerAtributes(Request $request)
@@ -321,10 +432,6 @@ class AdminController extends Controller
     {
         $validacion = $request->validate([
             'nombre' => 'required|string|max:255',
-            'primer_nombre' => 'required|string|max:255',
-            'segundo_nombre' => 'required|string|max:255',
-            'apellido_materno' => 'required|string|max:255',
-            'apellido_paterno' => 'required|string|max:255',
             'rut' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'rol' => 'required|integer|max:255',
@@ -334,10 +441,6 @@ class AdminController extends Controller
         $user = new User;
 
         $user->nombre = $request->nombre;
-        $user->primer_nombre = $request->primer_nombre;
-        $user->segundo_nombre = $request->segundo_nombre;
-        $user->apellido_materno = $request->apellido_materno;
-        $user->apellido_paterno = $request->apellido_paterno;
         $user->rut = $request->rut;
         $user->email = $request->email;
         $user->rol = $request->rol;
@@ -437,6 +540,10 @@ class AdminController extends Controller
             }
             return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
         }
+    }
+
+    public function editPatient(Request $request){
+        
     }
 
     /***************************************************************************************************************************

@@ -73,6 +73,10 @@ Route::post('registraratributos', 'AdminController@registerAtributes');
 Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
 
 Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
+// procedencia
+Route::get('registrarprocedencia', 'AdminController@showAddProvenance');
+
+Route::post('registrarprocedencia', 'AdminController@registerProvenance');
 // Funcionario
 Route::get('registrarfuncionario', 'AdminController@showAddFunctionary');
 
@@ -85,10 +89,18 @@ Route::post('registrarpaciente', 'GeneralController@registerPatient');
 Route::get('registrarprestacion', 'AdminController@showAddProvision');
 
 Route::post('registrarprestacion', 'AdminController@registerProvision');
+// Programa
+Route::get('registrarprograma', 'AdminController@showAddProgram');
+
+Route::post('registrarprograma', 'AdminController@registerProgram');
 // Previsión
 Route::get('registrarprevision', 'AdminController@showAddPrevition');
 
 Route::post('registrarprevision', 'AdminController@registerPrevition');
+// Etapa
+Route::get('crearetapa', 'AdminController@showAddStage');
+
+Route::post('crearetapa', 'AdminController@registerStage');
 // Diagnostico
 Route::get('registrardiagnostico', 'AdminController@showAddDiagnosis');
 
@@ -97,14 +109,21 @@ Route::post('registrardiagnostico', 'AdminController@registerDiagnosis');
 Route::get('registrarsexo', 'AdminController@showAddSex');
 
 Route::post('registrarsexo', 'AdminController@registerSex');
-// Tipo
-Route::get('registrartipo', 'AdminController@showAddType');
-
-Route::post('registrartipo', 'AdminController@registerType');
 // SIGGES
 Route::get('registrarsigges', 'AdminController@showAddSIGGES');
 
 Route::post('registrarsigges', 'AdminController@registerSIGGES');
+// Tipo
+Route::get('registrartipo', 'AdminController@showAddType');
+
+Route::post('registrartipo', 'AdminController@registerType');
+
+/***************************************************************************************************************************
+                                                    EDITS 
+****************************************************************************************************************************/
+// Editar paciente
+Route::get('pacientes/edit/{id}', 'AdminController@showEditPatient');
+Route::post('pacientes/edit', 'AdminController@editPatient');
 
 /***************************************************************************************************************************
                                                     NEW  ATTENDANCE

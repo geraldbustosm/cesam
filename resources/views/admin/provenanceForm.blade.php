@@ -1,22 +1,22 @@
 @extends('layouts.main')
-@section('title','Registrar diagnostico')
+@section('title','Registrar procedencia')
 @section('active-ingresardatos','active')
-@section('active-ingresardiagnostico','active')
+@section('active-ingresarprocedencia','active')
 
 @section('content')
-<h1>Registrar Diagnostico</h1>
+<h1>Registrar Procedencia</h1>
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrardiagnostico') }}">
+    <form method="post" action="{{ url('registrarprocedencia') }}">
         @csrf
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de diagnostico">
+                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de procedencia">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -26,7 +26,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Diagnósticos</th>
+                                    <th style="width: 70%;">Procedencias</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>
