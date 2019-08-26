@@ -107,6 +107,18 @@ Route::get('registrarsigges', 'AdminController@showAddSIGGES');
 Route::post('registrarsigges', 'AdminController@registerSIGGES');
 
 /***************************************************************************************************************************
+                                                    NEW  ATTENDANCE
+****************************************************************************************************************************/
+// SIGGES
+
+
+/***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
+Route::get('registraratencion', 'AdminController@showAddAttendance');
+
+Route::get('get-state-list','AdminController@getStateList');
+
+//Route::post('registraratencion', 'AdminController@registerSIGGES');
+
 Route::get('testing', 'AdminController@showTesting');

@@ -492,4 +492,27 @@ class AdminController extends Controller
 
         return $value;
     }
+
+    /***************************************************************************************************************************
+                                                    ATTENDANCE LOGIC
+     ****************************************************************************************************************************/
+    public function showAddAttendance()
+    {
+        $countries = DB::table("users")->pluck("nombre","id");
+        return view('general.attendanceForm',compact('countries'));
+        
+    }
+    
+    public function getStateList(Request $request)
+        {
+            //$states = DB::table("funcionarios")
+            //->where("user_id",$request->country_id)
+            //->pluck("profesion","id");
+            //$user = User::find(country_id);
+            //$states = $user->functionary()->get()->pluck("profesion","id");ctiona
+            $states = Functionary::all()->pluck("profesion","id");
+            return response()->json($states);
+        }
+
+    
 }
