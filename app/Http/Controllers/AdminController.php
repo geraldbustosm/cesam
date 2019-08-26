@@ -84,7 +84,7 @@ class AdminController extends Controller
     }
 
     /***************************************************************************************************************************
-                                             VIEWS       GET METHOD SHOW ADD
+                                             VIEWS (GET METHOD - SHOW ADD)
      ****************************************************************************************************************************/
     public function showAddUser()
     {
@@ -99,11 +99,13 @@ class AdminController extends Controller
 
     public function showAddRelease()
     {
-        return view('admin.releaseForm');
+        $data = Release::orderBy('descripcion')->get();
+        return view('admin.releaseForm', ['data' => $data]);
     }
     public function showAddProvenance()
     {
-        return view('admin.provenanceForm');
+        $data = Provenance::orderBy('descripcion')->get();
+        return view('admin.provenanceForm', ['data' => $data]);
     }
     
     public function showAddStage(){
@@ -120,40 +122,47 @@ class AdminController extends Controller
     }  
     public function showAddPrevition()
     {
-        return view('admin.previtionForm');
+        $data = Prevition::orderBy('descripcion')->get();
+        return view('admin.previtionForm', ['data' => $data]);
     }
     public function showAddProgram()
     {
-        return view('admin.programForm');
+        $data = Program::orderBy('descripcion')->get();
+        return view('admin.programForm', ['data' => $data]);
     }
     public function showAddDiagnosis()
     {
-        return view('admin.diagnosisForm');
+        $data = Diagnosis::orderBy('descripcion')->get();
+        return view('admin.diagnosisForm', ['data' => $data]);
     }
 
     public function showAddAtributes()
     {
-        return view('admin.atributesForm');
+        $data = Atributes::orderBy('descripcion')->get();
+        return view('admin.atributesForm', ['data' => $data]);
     }
 
     public function showAddSex()
     {
-        return view('admin.sexForm');
+        $data = Sex::orderBy('descripcion')->get();;
+        return view('admin.sexForm', ['data' => $data]);
     }
     public function showAddType()
     {
-        return view('admin.typeForm');
+        $data = Type::orderBy('descripcion')->get();;
+        return view('admin.typeForm', ['data' => $data]);
     }
 
     public function showAddSIGGES()
     {
-        return view('admin.siggesForm');
+        $data = SiGGES::orderBy('descripcion')->get();;
+        return view('admin.siggesForm', ['data' => $data]);
     }
 
     public function showAddSpeciality()
     {
-        $speciality = Speciality::where('activa', 1)->get();
-        return view('admin.specialityForm', ['specialitys' => $speciality]);
+        $data = Speciality::orderBy('descripcion')->get();
+        return view('admin.specialityForm', ['data' => $data]);
     }
 
     public function showAddProvision()

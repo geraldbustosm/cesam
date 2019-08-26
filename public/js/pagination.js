@@ -1,5 +1,5 @@
 /***************************************************************************************************************************
-                                                VARIABLES
+                                                    VARIABLES
 ****************************************************************************************************************************/
 var pagNav = document.getElementById('paginate');
 var tagA = document.getElementsByName('tagA');
@@ -102,7 +102,7 @@ function generatePaginationNum(n, m) {
         }
         // Adding ref to <a> with the numbre of pagination
         linkItem.id += n;
-        linkItem.name += "tagA"
+        linkItem.name += "tagA";
         linkItem.href += "javascript:aListener()";
         // Adding the number (text) on <a>
         linkItem.appendChild(document.createTextNode(n));

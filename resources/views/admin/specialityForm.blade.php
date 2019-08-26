@@ -45,9 +45,12 @@
         </div>
     </form>
 </div>
-
+<!-- Getting data -->
 <script>
-    var Arr = <?php echo json_encode($specialitys); ?>;
+    var fullArray = <?php echo json_encode($data); ?>;
 </script>
+<!-- Adding script using on this view -->
+<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/tableGenerator.js')}}"></script>
 @endsection

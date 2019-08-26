@@ -85,7 +85,6 @@ Route::post('registrarfuncionario', 'AdminController@registerFunctionary');
 Route::get('registrarpaciente', 'GeneralController@showAddPatient');
 
 Route::post('registrarpaciente', 'GeneralController@registerPatient');
-
 // Prestación
 Route::get('registrarprestacion', 'AdminController@showAddProvision');
 
@@ -110,14 +109,14 @@ Route::post('registrardiagnostico', 'AdminController@registerDiagnosis');
 Route::get('registrarsexo', 'AdminController@showAddSex');
 
 Route::post('registrarsexo', 'AdminController@registerSex');
-// Tipo
-Route::get('registrartipo', 'AdminController@showAddType');
-
-Route::post('registrartipo', 'AdminController@registerType');
 // SIGGES
 Route::get('registrarsigges', 'AdminController@showAddSIGGES');
 
 Route::post('registrarsigges', 'AdminController@registerSIGGES');
+// Tipo
+Route::get('registrartipo', 'AdminController@showAddType');
+
+Route::post('registrartipo', 'AdminController@registerType');
 
 /***************************************************************************************************************************
                                                     EDITS 
