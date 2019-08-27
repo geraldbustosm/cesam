@@ -61,7 +61,7 @@
 		</div>
         <div class="form-group">
 			<select class="form-control" name="alta_id" required>
-				<option selected disabled>Por favor seleccione un diagnostico </option>
+				<option selected disabled>Por favor seleccione un tipo de alta </option>
 				@foreach($release as $alta)
 				<option value="{{ $alta->id}}">{{ $alta->descripcion}}</option>
 				@endforeach
