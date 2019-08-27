@@ -3,7 +3,7 @@
 @section('active-ingresaratension','active')
 
 @section('content')
-<h1>Registrar usuario</h1>
+<h1>Registrar Atencion</h1>
 <div class="div-full">
     @if (session('status'))
         <div class="alert alert-success" role="alert">
@@ -33,88 +33,90 @@
 			</script>
 		</div>
         <div class="form-group">
+			<label for="datepicker">Hora de la atención</label>
+        </div>
+        <div class="form-group">
+			<label for="datepicker">Duración</label>
+        </div>
+        <div class="form-group">
         <label for="datepicker">Asistenscia: </label>
         <select name="select">
             <option value="1">Si </option> 
             <option value="0" selected>No</option>
         </select>
+        <div class="form-group">
+            <label for="title">Asigne el funcionario y la prestacion:</label>
+        </div>
         <div class="panel panel-default">
-        <div class="panel-heading">Ajax dynamic dependent country state city dropdown using jquery ajax in Laravel 5.6</div>
+        <div class="panel-heading">Seleccione el funcionario</div>
         <div class="panel-body">
             <div class="form-group">
-                <select id="country" name="category_id" class="form-control" style="width:350px" >
-                        <option value="" selected disabled>Select</option>
-                        @foreach($countries as $key => $country)
-                            <option value="{{$key}}"> {{$country}}</option>
+                <select id="functionary" name="category_id" class="form-control" style="width:350px" >
+                        <option value="" selected disabled>Seleccione un Funcinario</option>
+                        @foreach($users as $key => $user)
+                            <option value="{{$user->id}}"> {{$user->profesion}}</option>
                         @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label for="title">Select State:</label>
-                    <select name="state" id="state" class="form-control" style="width:350px">
-                    </select>
+                <label for="title">Seleccione la especialidad:</label>
+                <select name="speciality" id="speciality" class="form-control" style="width:350px"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Seleccione la prestación:</label>
+                <select name="city" id="city" class="form-control" style="width:350px"></select>
             </div>
         </div>
             
         <script type="text/javascript">
-            $('#country').change(function(){
-                var countryID = $(this).val();    
-                if(countryID){
+            $('#functionary').change(function(){
+                var functionaryID = $(this).val();    
+                if(functionaryID){
                     $.ajax({
                         type:"GET",
-                        url:"{{url('get-state-list')}}?country_id="+countryID,
+                        url:"{{url('get-speciality-list')}}?functionary_id="+functionaryID,
                         success:function(res){               
                             if(res){
-                                $("#state").empty();
-                                $("#state").append('<option>Select</option>');
+                                $("#speciality").empty();
+                                $("#speciality").append('<option>Seleccione por favor</option>');
                                 $.each(res,function(key,value){
-                                    $("#state").append('<option value="'+key+'">'+value+'</option>');
+                                    $("#speciality").append('<option value="'+value.id+'">'+value.descripcion+'</option>');
                                 });
                             }else{
-                                $("#state").empty();
+                                $("#speciality").empty();
                             }
                         }
                     });
                 }else{
-                    $("#state").empty();
+                    $("#speciality").empty();
+                    $("#city").empty(); 
                 }      
                 });
+
+            $('#speciality').on('change',function(){
+                var specialityID = $(this).val();    
+                if(specialityID){
+                    $.ajax({
+                        type:"GET",
+                        url:"{{url('get-provision-list')}}?speciality_id="+specialityID,
+                        success:function(res){               
+                            if(res){
+                                $("#city").empty();
+                                $.each(res,function(key,value){
+                                $("#city").append('<option value="'+key+'">'+value.glosaTrasadora+'</option>');
+                            });
+                            }else{
+                                $("#city").empty();
+                            }
+                        }
+                    });
+                    }else{}
+                    $("#city").empty();
+                    }                     
+            });
         </script>
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('primer_nombre') ? ' is-invalid' : '' }}" value="{{ old('primer_nombre') }}" id="primer_nombre" name="primer_nombre" placeholder="Primer Nombre">
-        </div>
 
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('segundo_nombre') ? ' is-invalid' : '' }}" value="{{ old('segundo_nombre') }}" id="segundo_nombre" name="segundo_nombre" placeholder="Segundo Nombre">
-        </div>
-        
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('apellido_paterno') ? ' is-invalid' : '' }}" value="{{ old('apellido_paterno') }}" id="apellido_paterno" name="apellido_paterno" placeholder="Apellido Paterno">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('apellido_materno') ? ' is-invalid' : '' }}" value="{{ old('apellido_materno') }}" id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno">
-        </div>
-
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="Rut o pasaporte">
-        </div>
-        <div class="form-group">
-            <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" id="email" name="email" placeholder="Correo">
-        </div>
-        <div class="form-group">
-            <select id="rol" name="rol" class="form-control">
-                <option value="0" disabled selected>Rol de usuario</option>
-                <option value="1">Administrador</option>
-                <option value="2">Funcionario</option>
-                <option value="3">Secretaria</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" placeholder="Contraseña">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirmar contraseña">
-        </div>
         <button type="submit" class="btn btn-primary">Registrar</button>
     </form>
 </div>

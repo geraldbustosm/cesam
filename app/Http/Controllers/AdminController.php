@@ -176,7 +176,7 @@ class AdminController extends Controller
         $speciality = Speciality::orderBy('descripcion')
             ->get();
 
-        $functionary = Functionary::orderBy('nombre1')
+        $functionary = Functionary::orderBy('profesion')
             ->get();
         $rows = [];
         $columns = [];
@@ -192,7 +192,7 @@ class AdminController extends Controller
             $ids[0] = $record1->id;
             foreach ($speciality as $index => $record2) {
                 $ids[1] = $record2->id;
-                $rows[$record1->nombre1 . " " . $record1->nombre2][$record2->descripcion] = $ids;
+                $rows[$record1->user->primer_nombre. " " . $record1->user->segundo_nombre][$record2->descripcion] = $ids;
             }
         }
         return view('admin.specialityAsign', compact('rows', 'columns'));
@@ -605,20 +605,22 @@ class AdminController extends Controller
      ****************************************************************************************************************************/
     public function showAddAttendance()
     {
-        $countries = DB::table("users")->pluck("nombre","id");
-        return view('general.attendanceForm',compact('countries'));
+        $users = Functionary::where('activa', 1)->get();
+        return view('general.attendanceForm',compact('users'));
         
     }
     
     public function getStateList(Request $request)
+    {
+        $functionary = Functionary::find($request->functionary_id);
+        $states =$functionary->speciality;
+        return response()->json($states);
+    }
+    public function getCityList(Request $request)
         {
-            //$states = DB::table("funcionarios")
-            //->where("user_id",$request->country_id)
-            //->pluck("profesion","id");
-            //$user = User::find(country_id);
-            //$states = $user->functionary()->get()->pluck("profesion","id");ctiona
-            $states = Functionary::all()->pluck("profesion","id");
-            return response()->json($states);
+            $specility = Speciality::find($request->speciality_id);
+            $cities = $specility->provision;
+            return response()->json($cities);
         }
 
     

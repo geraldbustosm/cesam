@@ -136,8 +136,7 @@ Route::post('pacientes/edit', 'AdminController@editPatient');
 ****************************************************************************************************************************/
 Route::get('registraratencion', 'AdminController@showAddAttendance');
 
-Route::get('get-state-list','AdminController@getStateList');
-
-//Route::post('registraratencion', 'AdminController@registerSIGGES');
+Route::get('get-speciality-list','AdminController@getStateList');
+Route::get('get-provision-list','AdminController@getCityList');
 
 Route::get('testing', 'AdminController@showTesting');
