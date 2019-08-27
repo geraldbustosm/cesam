@@ -109,16 +109,34 @@ Route::post('registrardiagnostico', 'AdminController@registerDiagnosis');
 Route::get('registrarsexo', 'AdminController@showAddSex');
 
 Route::post('registrarsexo', 'AdminController@registerSex');
-// Tipo
-Route::get('registrartipo', 'AdminController@showAddType');
-
-Route::post('registrartipo', 'AdminController@registerType');
 // SIGGES
 Route::get('registrarsigges', 'AdminController@showAddSIGGES');
 
 Route::post('registrarsigges', 'AdminController@registerSIGGES');
+// Tipo
+Route::get('registrartipo', 'AdminController@showAddType');
+
+Route::post('registrartipo', 'AdminController@registerType');
+
+/***************************************************************************************************************************
+                                                    EDITS 
+****************************************************************************************************************************/
+// Editar paciente
+Route::get('pacientes/edit/{id}', 'AdminController@showEditPatient');
+Route::post('pacientes/edit', 'AdminController@editPatient');
+
+/***************************************************************************************************************************
+                                                    NEW  ATTENDANCE
+****************************************************************************************************************************/
+// SIGGES
+
 
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
+Route::get('registraratencion', 'AdminController@showAddAttendance');
+
+Route::get('get-speciality-list','AdminController@getStateList');
+Route::get('get-provision-list','AdminController@getCityList');
+
 Route::get('testing', 'AdminController@showTesting');

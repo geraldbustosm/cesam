@@ -61,6 +61,4 @@
 	</form>
 </div>
 
-<!-- Adding script using on this view -->
-<script src="{{asset('js/idValidator.js')}}"></script>
 @endsection

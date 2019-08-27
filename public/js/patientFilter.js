@@ -40,13 +40,13 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
             tmp = ` <td> 
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
                     <a href='#'><i title='Añadir prestación' class='material-icons'>add</i></a>
-                    <a href='#' data-toggle='modal' data-target='#exampleModal'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='pacientes/edit/` + dato7 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='deletePatient' href='javascript:delPatients()'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='#' data-toggle='modal' data-target='#exampleModal'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='pacientes/edit/` + dato7 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='activatePatient' href='javascript:actPatients()'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }

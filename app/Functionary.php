@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Speciality;
 use App\User;
+use App\Provision;
 
 class Functionary extends Model
 {
@@ -18,6 +19,11 @@ class Functionary extends Model
     {
         return $this->belongsTO(User::class,'user_id','id');
     }
+    public function posibleProvisions()
+    {
+      return $this->hasManyThrough(Provision::class, Speciality::class);
+    }
+ 
     
 	use Notifiable;
   /**

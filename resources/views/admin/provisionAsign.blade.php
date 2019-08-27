@@ -60,7 +60,5 @@
         
 	</form>
 </div>
-
-<!-- Adding script using on this view -->
-<script src="{{asset('js/idValidator.js')}}"></script>
+<script>console.log("hola")</script>
 @endsection
