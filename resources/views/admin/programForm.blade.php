@@ -16,8 +16,12 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('especialidad') ? ' is-invalid' : '' }}" value="{{ old('especialidad') }}" id="especialidad" name="especialidad" placeholder="Tipo de especialidad">
-                    <br>
+                    <select class="form-control" name="programa_id" required>
+				        <option selected disabled>Por favor seleccione un programa </option>
+				        @foreach($program as $programa)
+				        <option value="{{ $programa->id}}">{{ $programa->descripcion}}</option>
+				        @endforeach
+			        </select>
                     <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de programa">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>

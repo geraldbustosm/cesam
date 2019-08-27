@@ -127,8 +127,9 @@ class AdminController extends Controller
     }
     public function showAddProgram()
     {
+        $program = Program::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data]);
+        return view('admin.programForm', ['data' => $data],compact('program'));
     }
     public function showAddDiagnosis()
     {
@@ -307,7 +308,6 @@ class AdminController extends Controller
     public function registerProgram(Request $request)
     {
         $validacion = $request->validate([
-            'especialidad' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255'
 
         ]);
@@ -315,7 +315,7 @@ class AdminController extends Controller
         $program = new Program;
 
         $program->descripcion = $request->descripcion;
-        $program->especialidad = $request->especialidad;
+        $program->especialidad = $request->programa_id;
 
         $program->save();
 
