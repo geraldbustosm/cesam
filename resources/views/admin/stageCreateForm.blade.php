@@ -1,6 +1,5 @@
 @extends('layouts.main')
 @section('title','Crear etapa')
-@section('active-ingresardatos','active')
 @section('active-crearetapa','active')
 
 @section('content')
@@ -85,7 +84,10 @@
 			</select>
 		</div>
 		<button type="submit" class="btn btn-primary">Registrar</button>
+		<input type="button" href="javascript:validator()" value="Test" id="testing" />
 	</form>
 </div>
 
+<!-- Adding script using on this view -->
+<script src="{{asset('js/idValidator.js')}}"></script>
 @endsection

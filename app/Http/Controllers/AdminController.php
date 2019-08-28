@@ -623,5 +623,30 @@ class AdminController extends Controller
             return response()->json($cities);
         }
 
+    public function registerAttendance(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $attendance = new Attendance;
+
+        $attendance->funcionario_id = $request->functionary_id;
+        $patienDNI='prueba';
+        $etapa = Patient::where('activa', 1)
+                          ->where('id', $patienDNI)
+                          ->first()->etapa;
+       
+        $attendance->etapa_id = $etapa->id;
+        $attendance->prestacion_id = $request->get('provision');
+        $attendance->fecha = "2019-07-19 06:19:51.029";
+        $attendance->asistencia = $request->get('selectA');
+        $attendance->hora = "06:19:51.029";
+        $attendance->duracion = "06:19:51.029";
+
+        $attendance->save();
+
+        return redirect('registraratencion')->with('status', 'Nueva Atencion Realizada');
     
+    }
 }

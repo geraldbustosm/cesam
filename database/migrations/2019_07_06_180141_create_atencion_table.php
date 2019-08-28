@@ -18,6 +18,8 @@ class CreateAtencionTable extends Migration
             $table->date('fecha');
             $table->boolean('asistencia');
             $table->timestamps();
+            $table->timestamps('hora');
+            $table->timestamps('duracion');
 
             $table->unsignedBigInteger('etapa_id');
             $table->unsignedBigInteger('funcionario_id');

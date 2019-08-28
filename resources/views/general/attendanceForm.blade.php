@@ -39,8 +39,8 @@
 			<label for="datepicker">Duración</label>
         </div>
         <div class="form-group">
-        <label for="datepicker">Asistenscia: </label>
-        <select name="select">
+        <label for="selectA">Asistenscia: </label>
+        <select name="selectA">
             <option value="1">Si </option> 
             <option value="0" selected>No</option>
         </select>
@@ -65,7 +65,7 @@
 
             <div class="form-group">
                 <label for="title">Seleccione la prestación:</label>
-                <select name="city" id="city" class="form-control" style="width:350px"></select>
+                <select name="provision" id="provision" class="form-control" style="width:350px"></select>
             </div>
         </div>
             
@@ -102,17 +102,17 @@
                         url:"{{url('get-provision-list')}}?speciality_id="+specialityID,
                         success:function(res){               
                             if(res){
-                                $("#city").empty();
+                                $("#provision").empty();
                                 $.each(res,function(key,value){
-                                $("#city").append('<option value="'+key+'">'+value.glosaTrasadora+'</option>');
+                                $("#provision").append('<option value="'+value.id+'">'+value.glosaTrasadora+'</option>');
                             });
                             }else{
-                                $("#city").empty();
+                                $("#provision").empty();
                             }
                         }
                     });
                     }else{
-                    $("#city").empty();
+                    $("#provision").empty();
                     }                     
             });
         </script>
