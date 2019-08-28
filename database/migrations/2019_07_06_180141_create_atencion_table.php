@@ -21,10 +21,10 @@ class CreateAtencionTable extends Migration
             $table->unsignedBigInteger('funcionario_id');
             $table->unsignedBigInteger('prestacion_id');
             $table->unsignedBigInteger('actividad_id');
-            $table->timestamp('hora');
-            $table->timestamp('duracion');
+            $table->time('hora');
+            $table->time('duracion');
             $table->timestamps();
-            
+
             $table->foreign('etapa_id')->references('id')->on('etapa');
             $table->foreign('funcionario_id')->references('id')->on('funcionarios');
             $table->foreign('prestacion_id')->references('id')->on('prestacion');
