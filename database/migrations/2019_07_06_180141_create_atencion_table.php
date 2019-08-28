@@ -26,7 +26,7 @@ class CreateAtencionTable extends Migration
             $table->unsignedBigInteger('prestacion_id');
             $table->unsignedBigInteger('actividad_id')->nullable();
 
-            $table->foreign('etapa_id')->references('id')->on('etapa');
+            $table->foreign('etapa_id')->references('id')->on('etapa')->nullable();
             $table->foreign('funcionario_id')->references('id')->on('funcionarios');
             $table->foreign('prestacion_id')->references('id')->on('prestacion');
             $table->foreign('actividad_id')->references('id')->on('actividad');
