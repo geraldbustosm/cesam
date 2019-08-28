@@ -17,13 +17,14 @@ class CreateAtencionTable extends Migration
             $table->bigIncrements('id');
             $table->date('fecha');
             $table->boolean('asistencia');
-            $table->timestamps();
-
             $table->unsignedBigInteger('etapa_id');
             $table->unsignedBigInteger('funcionario_id');
             $table->unsignedBigInteger('prestacion_id');
             $table->unsignedBigInteger('actividad_id');
-            $table->timestamps('hora');
+            $table->timestamp('hora');
+            $table->timestamp('duracion');
+            $table->timestamps();
+            
             $table->foreign('etapa_id')->references('id')->on('etapa');
             $table->foreign('funcionario_id')->references('id')->on('funcionarios');
             $table->foreign('prestacion_id')->references('id')->on('prestacion');
