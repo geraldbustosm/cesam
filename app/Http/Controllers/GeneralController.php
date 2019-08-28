@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Patient;
 use App\Address;
 use App\Sex;
+use App\Prevition;
 
 class GeneralController extends Controller
 {
@@ -18,7 +19,8 @@ class GeneralController extends Controller
     }
     public function showAddPatient(){
         $sex = Sex::all();
-        return view('admin.patientForm', compact('sex'));
+        $previtions = Prevition::all();
+        return view('admin.patientForm', compact('sex','previtions'));
     }
     public function registerPatient(Request $request){
 
@@ -38,7 +40,7 @@ class GeneralController extends Controller
 
         $nombre = explode(" ", $request->nombre);
         $patient = new Patient;
-        //$patient->id = rand(1,9999);
+    
         $patient->nombre1 = $nombre[0];
         $patient->nombre2 = $nombre[1];
         $patient->apellido1 = $nombre[2];
@@ -47,7 +49,7 @@ class GeneralController extends Controller
 
         $patient->fecha_nacimiento = "2019-07-19 06:19:51.029";
         
-        $patient->prevision_id = 1;
+        $patient->prevision_id = $request->prevition;
         
         $address = new Address;
         $address->region = $request->region;

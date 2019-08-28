@@ -82,6 +82,15 @@
 					var date = new Date(from[2], from[1] - 1, from[0]);
 				});
 			</script>
+
+		<div class="form-group">
+            <select class="form-control" name="prevition" required>
+                <option selected disabled>Por favor seleccione una prevision de salud</option>
+                @foreach($previtions as $prevition)
+                <option value="{{ $prevition->id}}">{{ $prevition->descripcion}}</option>
+                @endforeach
+            </select>
+        </div>
 		</div>
 		<button type="submit" class="btn btn-primary">Registrar</button>
 		<input type="button" href="javascript:validator()" value="Test" id="testing" />
