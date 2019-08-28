@@ -405,7 +405,7 @@ class AdminController extends Controller
 
         $prevition = new Prevition;
 
-        $prevition->nombre = $request->nombre;
+        $prevition->descripcion = $request->nombre;
 
         $prevition->save();
 
