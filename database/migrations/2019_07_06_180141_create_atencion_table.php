@@ -29,7 +29,7 @@ class CreateAtencionTable extends Migration
             $table->foreign('etapa_id')->references('id')->on('etapa');
             $table->foreign('funcionario_id')->references('id')->on('funcionarios');
             $table->foreign('prestacion_id')->references('id')->on('prestacion');
-            $table->foreign('actividad_id')->references('id')->on('actividad')->nullable();
+            $table->foreign('actividad_id')->references('id')->on('actividad');
             $table->boolean('activa')->default(1);
         });
     }
