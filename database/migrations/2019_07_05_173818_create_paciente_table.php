@@ -16,7 +16,7 @@ class CreatePacienteTable extends Migration
         Schema::create('paciente', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->string('DNI');  
+            $table->string('DNI')->unique();;  
             $table->string('nombre1');
             $table->string('nombre2');
             $table->string('apellido1');

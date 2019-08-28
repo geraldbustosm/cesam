@@ -59,6 +59,7 @@
 				@endforeach
 			</select>
 		</div>
+		<!--
         <div class="form-group">
 			<select class="form-control" name="alta_id" required>
 				<option selected disabled>Por favor seleccione un tipo de alta </option>
@@ -67,6 +68,7 @@
 				@endforeach
 			</select>
 		</div>
+		-->
         <div class="form-group">
 			<select class="form-control" name="sigges_id" required>
 				<option selected disabled>Por favor seleccione un sigges </option>

@@ -24,12 +24,12 @@ class CreateAtencionTable extends Migration
             $table->unsignedBigInteger('etapa_id');
             $table->unsignedBigInteger('funcionario_id');
             $table->unsignedBigInteger('prestacion_id');
-            $table->unsignedBigInteger('actividad_id');
+            $table->unsignedBigInteger('actividad_id')->nullable();
 
             $table->foreign('etapa_id')->references('id')->on('etapa');
             $table->foreign('funcionario_id')->references('id')->on('funcionarios');
             $table->foreign('prestacion_id')->references('id')->on('prestacion');
-            $table->foreign('actividad_id')->references('id')->on('actividad');
+            $table->foreign('actividad_id')->references('id')->on('actividad')->nullable();
             $table->boolean('activa')->default(1);
         });
     }

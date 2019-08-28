@@ -266,7 +266,7 @@ class AdminController extends Controller
         
         $stage->diagnostico_id = $request->diagnostico_id;
         $stage->programa_id = $request->programa_id;
-        $stage->alta_id = $request->alta_id;
+        //$stage->alta_id = $request->alta_id;
         $stage->sigges_id = $request->sigges_id;
         $stage->procedencia_id = $request->procedencia_id;
         $stage->funcionario_id = $request->funcionario_id;
@@ -633,9 +633,12 @@ class AdminController extends Controller
 
         $attendance->funcionario_id = $request->functionary_id;
         $patienDNI='prueba';
-        $etapa = Patient::where('activa', 1)
-                          ->where('id', $patienDNI)
-                          ->first()->etapa;
+        $patient = Patient::where('activa', 1)
+                    ->where('DNI', $patienDNI)
+                    ->first();
+        $etapa = Stage::where('activa', 1)
+                        ->where('paciente_id', $patient->id)
+                        ->first();
        
         $attendance->etapa_id = $etapa->id;
         $attendance->prestacion_id = $request->get('provision');
