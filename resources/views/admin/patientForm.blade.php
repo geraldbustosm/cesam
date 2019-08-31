@@ -83,6 +83,16 @@
 				});
 			</script>
 		</div>
+
+		<div class="form-group">
+			<select class="form-control" name="prevition" required>
+				<option selected disabled>Por favor seleccione una prevision de salud</option>
+				@foreach($previtions as $prevition)
+				<option value="{{ $prevition->id}}">{{ $prevition->descripcion}}</option>
+				@endforeach
+			</select>
+		</div>
+
 		<button type="submit" class="btn btn-primary">Registrar</button>
 		<input type="button" href="javascript:validator()" value="Test" id="testing" />
 	</form>

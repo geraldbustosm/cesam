@@ -17,7 +17,7 @@ class CreateSexoTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
 
-            $table->string('descripcion');
+            $table->string('descripcion')->unique();;
         });
     }
 

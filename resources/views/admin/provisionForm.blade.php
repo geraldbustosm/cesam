@@ -50,7 +50,7 @@
         </div>
         <div class="form-group">
             <select class="form-control" name="edadSup" required>
-                <option selected disabled>Por favor seleccione el rango de edad inferior</option>
+                <option selected disabled>Por favor seleccione el rango de edad superior</option>
                 <?php $last= 100; ?>
                 <?php $now = 0; ?>
                 @for ($i = $now; $i <= $last; $i++)

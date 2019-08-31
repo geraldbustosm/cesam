@@ -138,6 +138,10 @@
                                 <li>
                                     <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignarespecialidadprestacion')}}"><span>Asignar prestaciones-especialidades</span></a>
                                 </li>
+
+                                <li>
+                                    <a class="nav-link @yield('active-ingresaratencion')" href="{{url('registraratencion')}}"><span>Prueba Asignar Atencion con etapa</span></a>
+                                </li>
                             </ul>
                         </li>
                     </nav>

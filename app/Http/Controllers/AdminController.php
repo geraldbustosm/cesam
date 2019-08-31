@@ -84,7 +84,7 @@ class AdminController extends Controller
     }
 
     /***************************************************************************************************************************
-                                             VIEWS       GET METHOD SHOW ADD
+                                             VIEWS (GET METHOD - SHOW ADD)
      ****************************************************************************************************************************/
     public function showAddUser()
     {
@@ -99,11 +99,13 @@ class AdminController extends Controller
 
     public function showAddRelease()
     {
-        return view('admin.releaseForm');
+        $data = Release::orderBy('descripcion')->get();
+        return view('admin.releaseForm', ['data' => $data]);
     }
     public function showAddProvenance()
     {
-        return view('admin.provenanceForm');
+        $data = Provenance::orderBy('descripcion')->get();
+        return view('admin.provenanceForm', ['data' => $data]);
     }
     
     public function showAddStage(){
@@ -120,40 +122,48 @@ class AdminController extends Controller
     }  
     public function showAddPrevition()
     {
-        return view('admin.previtionForm');
+        $data = Prevition::orderBy('descripcion')->get();
+        return view('admin.previtionForm', ['data' => $data]);
     }
     public function showAddProgram()
     {
-        return view('admin.programForm');
+        $program = Program::all();
+        $data = Program::orderBy('descripcion')->get();
+        return view('admin.programForm', ['data' => $data],compact('program'));
     }
     public function showAddDiagnosis()
     {
-        return view('admin.diagnosisForm');
+        $data = Diagnosis::orderBy('descripcion')->get();
+        return view('admin.diagnosisForm', ['data' => $data]);
     }
 
     public function showAddAtributes()
     {
-        return view('admin.atributesForm');
+        $data = Atributes::orderBy('descripcion')->get();
+        return view('admin.atributesForm', ['data' => $data]);
     }
 
     public function showAddSex()
     {
-        return view('admin.sexForm');
+        $data = Sex::orderBy('descripcion')->get();;
+        return view('admin.sexForm', ['data' => $data]);
     }
     public function showAddType()
     {
-        return view('admin.typeForm');
+        $data = Type::orderBy('descripcion')->get();;
+        return view('admin.typeForm', ['data' => $data]);
     }
 
     public function showAddSIGGES()
     {
-        return view('admin.siggesForm');
+        $data = SiGGES::orderBy('descripcion')->get();;
+        return view('admin.siggesForm', ['data' => $data]);
     }
 
     public function showAddSpeciality()
     {
-        $speciality = Speciality::where('activa', 1)->get();
-        return view('admin.specialityForm', ['specialitys' => $speciality]);
+        $data = Speciality::orderBy('descripcion')->get();
+        return view('admin.specialityForm', ['data' => $data]);
     }
 
     public function showAddProvision()
@@ -167,7 +177,7 @@ class AdminController extends Controller
         $speciality = Speciality::orderBy('descripcion')
             ->get();
 
-        $functionary = Functionary::orderBy('nombre1')
+        $functionary = Functionary::orderBy('profesion')
             ->get();
         $rows = [];
         $columns = [];
@@ -183,7 +193,7 @@ class AdminController extends Controller
             $ids[0] = $record1->id;
             foreach ($speciality as $index => $record2) {
                 $ids[1] = $record2->id;
-                $rows[$record1->nombre1 . " " . $record1->nombre2][$record2->descripcion] = $ids;
+                $rows[$record1->user->primer_nombre. " " . $record1->user->segundo_nombre][$record2->descripcion] = $ids;
             }
         }
         return view('admin.specialityAsign', compact('rows', 'columns'));
@@ -253,7 +263,7 @@ class AdminController extends Controller
         
         $stage->diagnostico_id = $request->diagnostico_id;
         $stage->programa_id = $request->programa_id;
-        $stage->alta_id = $request->alta_id;
+        //$stage->alta_id = $request->alta_id;
         $stage->sigges_id = $request->sigges_id;
         $stage->procedencia_id = $request->procedencia_id;
         $stage->funcionario_id = $request->funcionario_id;
@@ -295,7 +305,6 @@ class AdminController extends Controller
     public function registerProgram(Request $request)
     {
         $validacion = $request->validate([
-            'especialidad' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255'
 
         ]);
@@ -303,7 +312,7 @@ class AdminController extends Controller
         $program = new Program;
 
         $program->descripcion = $request->descripcion;
-        $program->especialidad = $request->especialidad;
+        $program->especialidad = $request->programa_id;
 
         $program->save();
 
@@ -393,7 +402,7 @@ class AdminController extends Controller
 
         $prevition = new Prevition;
 
-        $prevition->nombre = $request->nombre;
+        $prevition->descripcion = $request->nombre;
 
         $prevition->save();
 
@@ -429,6 +438,10 @@ class AdminController extends Controller
         $user = new User;
 
         $user->nombre = $request->nombre;
+        $user->primer_nombre = $request->primer_nombre;
+        $user->segundo_nombre = $request->segundo_nombre;
+        $user->apellido_paterno = $request->apellido_paterno;
+        $user->apellido_materno = $request->apellido_materno;
         $user->rut = $request->rut;
         $user->email = $request->email;
         $user->rol = $request->rol;
@@ -586,5 +599,58 @@ class AdminController extends Controller
         }
 
         return $value;
+    }
+
+    /***************************************************************************************************************************
+                                                    ATTENDANCE LOGIC
+     ****************************************************************************************************************************/
+    public function showAddAttendance()
+    {
+        $users = Functionary::where('activa', 1)->get();
+        return view('general.attendanceForm',compact('users'));
+        
+    }
+    
+    public function getStateList(Request $request)
+    {
+        $functionary = Functionary::find($request->functionary_id);
+        $states =$functionary->speciality;
+        return response()->json($states);
+    }
+    public function getCityList(Request $request)
+        {
+            $specility = Speciality::find($request->speciality_id);
+            $cities = $specility->provision;
+            return response()->json($cities);
+        }
+
+    public function registerAttendance(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $attendance = new Attendance;
+
+        $attendance->funcionario_id = $request->functionary_id;
+        $patienDNI='prueba';
+        $patient = Patient::where('activa', 1)
+                    ->where('DNI', $patienDNI)
+                    ->first();
+        $etapa = Stage::where('activa', 1)
+                        ->where('paciente_id', $patient->id)
+                        ->first();
+       
+        $attendance->etapa_id = $etapa->id;
+        $attendance->prestacion_id = $request->get('provision');
+        $attendance->fecha = "2019-07-19 06:19:51.029";
+        $attendance->asistencia = $request->get('selectA');
+        $attendance->hora = "06:19:51.029";
+        $attendance->duracion = "06:19:51.029";
+
+        $attendance->save();
+
+        return redirect('registraratencion')->with('status', 'Nueva Atencion Realizada');
+    
     }
 }

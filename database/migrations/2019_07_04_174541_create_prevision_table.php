@@ -15,7 +15,7 @@ class CreatePrevisionTable extends Migration
     {
         Schema::create('prevision', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
+            $table->string('descripcion')->unique();
             $table->timestamps();
             $table->boolean('activa')->default(1);
         });

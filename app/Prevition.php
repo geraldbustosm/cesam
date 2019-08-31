@@ -22,7 +22,7 @@ class Prevition extends Model
      */
     protected $fillable =
     [
-        'id', 'nombre', 'activa'
+        'id', 'descripcion', 'activa'
     ];
 
     public function patients(){

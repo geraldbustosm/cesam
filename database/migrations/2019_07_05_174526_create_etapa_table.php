@@ -20,7 +20,7 @@ class CreateEtapaTable extends Migration
 
             $table->unsignedBigInteger('diagnostico_id');
             $table->unsignedBigInteger('programa_id');
-            $table->unsignedBigInteger('alta_id');
+            $table->unsignedBigInteger('alta_id')->nullable();
             $table->unsignedBigInteger('sigges_id');
             $table->unsignedBigInteger('procedencia_id');
             $table->unsignedBigInteger('funcionario_id');

@@ -15,7 +15,7 @@ class CreateAltaTable extends Migration
     {
         Schema::create('alta', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descripcion');
+            $table->string('descripcion')->unique();;
             $table->timestamps();
             $table->boolean('activa')->default(1);
         });

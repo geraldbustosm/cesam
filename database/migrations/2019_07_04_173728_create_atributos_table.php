@@ -16,7 +16,7 @@ class CreateAtributosTable extends Migration
         Schema::create('atributos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->string('descripcion');
+            $table->string('descripcion')->unique();;
             $table->integer('tipo')->nullable();
             
 
