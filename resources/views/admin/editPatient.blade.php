@@ -23,6 +23,9 @@
     @if ($patient)
     <form method="post" action="{{ url('pacientes/edit') }}"> 
 		@csrf
+		<!-- Enviamos el ID del paciente para luego actualizarlo -->
+		<input id="id" name="id" type="hidden" value="{{$patient->id}}">
+		
 		<div class="form-group">
             <label for="dni">Rut o pasaporte</label>
 			<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
@@ -34,11 +37,11 @@
 
 		<div class="form-group">
             <label for="prevision">Previsión</label>
-			<select class="form-control" name="patient_prev" required>
-                <option>{{$patient->prevition->descripcion}}</option>
+			<select class="form-control" name="prev" required>
+                <option value="{{$patient->prevition->id}}">{{$patient->prevition->descripcion}}</option>
 				@foreach($prev as $prevision)
                     @if ($prevision->descripcion != $patient->prevition->descripcion)
-				        <option value="{{ $prevision->id}}">{{ $prevision->descripcion}}</option>
+				        <option value="{{$prevision->id}}">{{$prevision->descripcion}}</option>
                     @endif
 				@endforeach
 			</select>
@@ -47,10 +50,10 @@
 		<div class="form-group">
             <label for="sex">Sexo</label>
 			<select class="form-control" name="sex" required>
-				<option>{{$patient->sex->descripcion}}</option>
+				<option value="{{$patient->sex->id}}">{{$patient->sex->descripcion}}</option>
 				 @foreach($sex as $sexo)
                     @if ($sexo->descripcion != $patient->sex->descripcion)
-				        <option value="{{ $sexo->id}}">{{ $sexo->descripcion}}</option>
+				        <option value="{{$sexo->id}}">{{ $sexo->descripcion}}</option>
                     @endif
 				@endforeach
 			</select>

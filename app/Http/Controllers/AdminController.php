@@ -545,6 +545,39 @@ class AdminController extends Controller
 
     public function editPatient(Request $request){
 
+        // URL to redirect when process finish.
+        $url = "pacientes/edit/" . $request->dni;
+
+        // Validate form data
+        $validation = $request->validate([
+            'dni' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            /*'pais' => 'required|string|max:255',
+            'region' => 'required|string|max:255',
+            'numero' => 'required|int',
+            'direccion' => 'string|max:255',
+            'direccion_opcional' => 'string|max:255|nullable',*/
+            'datepicker' => 'required|date_format:"d/m/Y"',
+            ]);
+        
+        // Find patient to edit
+        $patient = Patient::find($request->id);
+        
+        // If patient exist update his data
+        if($patient){
+            $nombre = explode(" ", $request->nombre);
+            $patient->nombre1 = $nombre[0];
+            $patient->nombre2 = $nombre[1];
+            $patient->apellido1 = $nombre[2];
+            $patient->apellido2 = $nombre[3];
+            $patient->DNI = $request->dni;
+            $patient->prevision_id = $request->prev;
+            $patient->sexo_id = $request->sex;
+
+            $patient->save();
+        }
+        return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
+
     }
 
     /***************************************************************************************************************************
