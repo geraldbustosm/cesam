@@ -123,6 +123,7 @@ Route::post('registrartipo', 'AdminController@registerType');
 ****************************************************************************************************************************/
 // Editar paciente
 Route::get('pacientes/edit/{dni}', 'AdminController@showEditPatient');
+
 Route::post('pacientes/edit', 'AdminController@editPatient');
 
 /***************************************************************************************************************************

@@ -233,8 +233,6 @@ class AdminController extends Controller
         $patient = Patient::where('DNI', $dni)->first();
         $prev = Prevition::all();
         $sex = Sex::all();
-        $patient_prev = "";
-        $patient_sex = "";
         $patient_birthday = "";
 
         if($patient){
@@ -243,7 +241,7 @@ class AdminController extends Controller
             $patient_birthday = join("/", array($patient_birthday[2], $patient_birthday[1], $patient_birthday[0]));
         }
 
-        return view('admin.editPatient', ['patient' => $patient, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
+        return view('admin.patientEdit', ['patient' => $patient, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
     }
 
     /***************************************************************************************************************************

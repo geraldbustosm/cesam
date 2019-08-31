@@ -21,12 +21,21 @@
 	@endif
     
     @if ($patient)
-    <form method="post" action="{{ url('pacientes/edit') }}"> 
+    <form name="onSubmit" method="post" action="{{ url('pacientes/edit') }}"> 
 		@csrf
 		<div class="form-group">
             <label for="dni">Rut o pasaporte</label>
 			<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
 		</div>
+		<div class="form-group">
+			<div class="alert alert-success" role="alert" id="success">
+				Rut / Pasaporte correcto!
+			</div>
+			<div class="alert alert-danger" role="alert" id="danger">
+				Rut inválido...
+			</div>
+		</div>
+
 		<div class="form-group">
             <label for="nombre">Nombre completo</label>
 			<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}} {{$patient->apellido1}} {{$patient->apellido2}}" id="nombre" name="nombre" placeholder="Nombre completo">
@@ -74,7 +83,32 @@
 				});
 			</script>
 		</div>
-		<button type="submit" class="btn btn-primary">Editar paciente</button>
+
+		<div class="form-group">
+			<div class="form-row">
+				<div class="col-7">
+					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
+				</div>
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" value="{{ old('region') }}" id="region" name="region" placeholder="Region">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="form-row">
+				<div class="col-4">
+					<input type="text" class="form-control {{ $errors->has('comuna') ? ' is-invalid' : '' }}" value="{{ old('comuna') }}" id="comuna" name="comuna" placeholder="Comuna">
+				</div>
+				<div class="col-4">
+					<input type="text" class="form-control {{ $errors->has('calle') ? ' is-invalid' : '' }}" value="{{ old('calle') }}" id="calle" name="calle" placeholder="Calle">
+				</div>
+				<div class="col-4">
+					<input type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{ old('numero') }}" id="numero" name="numero" placeholder="Numero">
+				</div>
+			</div>
+		</div>
+		
+		<button type="button" class="btn btn-primary" id="btnSubmit">Editar paciente</button>
 	</form>
 </div>
 @else
@@ -83,18 +117,4 @@
 
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
-<script>
-  var arr = <?php echo json_encode($patient); ?>;
-  console.log(arr);
-  var arr = <?php echo json_encode($prev); ?>;
-  console.log(arr);
-  var arr = <?php echo json_encode($sex); ?>;
-  console.log(arr);
-  var arr = <?php echo json_encode($patient_prev); ?>;
-  console.log(arr);
-  var arr = <?php echo json_encode($patient_sex); ?>;
-  console.log(arr);
-  var arr = <?php echo json_encode($patient_birthday); ?>;
-  console.log(arr);
-</script>
 @endsection

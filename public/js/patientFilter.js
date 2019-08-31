@@ -9,7 +9,7 @@ var searchbox = document.getElementById("searchbox");
                                                     FILL TABLE
 ****************************************************************************************************************************/
 // Write patients on the table
-function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7, dato8) {
+function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
     // Create cells on the new row
@@ -46,23 +46,14 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7, dato8) 
         if (active == 1) {
             tmp = ` <td> 
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-<<<<<<< HEAD
                     <a name='addingAttendance' href='javascript:addAttendance()'><i title='Añadir prestación' class='material-icons'>add</i></a>
-                    <a href='pacientes/edit/` + dato8 + `'><i title='Editar' class='material-icons'>create</i></a>
-=======
-                    <a href='#'><i title='Añadir prestación' class='material-icons'>add</i></a>
                     <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
->>>>>>> 36905bab62676324a3751302c34f00ff1f11a507
                     <a name='deletePatient' href='javascript:delPatients()'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-<<<<<<< HEAD
-                    <a href='pacientes/edit/` + dato8 + `'><i title='Editar' class='material-icons'>create</i></a>
-=======
                     <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
->>>>>>> 36905bab62676324a3751302c34f00ff1f11a507
                     <a name='activatePatient' href='javascript:actPatients()'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }
@@ -131,7 +122,7 @@ function changePage(page) {
     for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
         try {
             // Insert the rows with patients info.
-            createRow(i, curArray[i].DNI, curArray[i].nombre1, curArray[i].apellido1, curArray[i].apellido2, curArray[i].sexo_id, curArray[i].fecha_nacimiento, curArray[i].prevision_id, curArray[i].id);
+            createRow(i, curArray[i].DNI, curArray[i].nombre1, curArray[i].apellido1, curArray[i].apellido2, curArray[i].sexo_id, curArray[i].fecha_nacimiento, curArray[i].prevision_id);
         } catch (err) {
             // We exit if don't have equal number of patients and records for page.
             break;

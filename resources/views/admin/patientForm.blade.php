@@ -20,7 +20,7 @@
 		{{ session('status') }}
 	</div>
 	@endif
-	<form method="post" action="{{ url('registrarpaciente') }}" id="completeForm">
+	<form name="onSubmit" method="post" action="{{ url('registrarpaciente') }}">
 		@csrf
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Rut o pasaporte">

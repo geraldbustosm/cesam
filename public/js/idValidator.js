@@ -19,7 +19,7 @@ function validator() {
 	btn.addEventListener("click", function () {
 		var status = checkCountry(id, pais);
 		if(status){
-			document.getElementById("completeForm").submit;
+			document.onSubmit.submit();
 		}
 	});
 }
