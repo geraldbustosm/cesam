@@ -28,4 +28,8 @@ class Sex extends Model
     [
       'id','descripcion','activa'
     ];
+
+    public function patients(){
+      return $this->hasMany('App\Patient');
+  }
 }

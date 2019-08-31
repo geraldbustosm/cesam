@@ -220,8 +220,8 @@ class AdminController extends Controller
                                              VIEWS       GET METHOD SHOW EDIT
      ****************************************************************************************************************************/
     
-    public function showEditPatient($id){
-        $patient = Patient::find($id);
+    public function showEditPatient($dni){
+        $patient = Patient::where('DNI', $dni)->first();
         $prev = Prevition::all();
         $sex = Sex::all();
         $patient_prev = "";
@@ -229,16 +229,13 @@ class AdminController extends Controller
         $patient_birthday = "";
 
         if($patient){
-            $patient_prev = Patient::find($id)->prevition;
-            $patient_sex = Patient::find($id)->sex;
-
             // Change formate date to retrieve to the datapicker
             $patient_birthday = explode("-", $patient->fecha_nacimiento);
             $patient_birthday = join("/", array($patient_birthday[2],$patient_birthday[1],$patient_birthday[0]));
 
         }
 
-        return view('admin.editPatient', ['patient' => $patient, 'patient_prev' => $patient_prev,'patient_sex' => $patient_sex, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
+        return view('admin.editPatient', ['patient' => $patient, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
     }
 
     /***************************************************************************************************************************
@@ -534,7 +531,7 @@ class AdminController extends Controller
     }
 
     public function editPatient(Request $request){
-        
+
     }
 
     /***************************************************************************************************************************

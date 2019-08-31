@@ -16,8 +16,15 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
     var celdas = [];
     for (var i = 0; i < 7; i++) {
         celdas[i] = fila.insertCell(i);
-        if (i == 0) celdas[i].className = "bold-cell";
+        if (i == 0) {
+            celdas[i].className = "bold-cell";
+        }
     }
+
+    // Set width of columns
+    
+    celdas[0].style.width = "40%";
+
     // Getting sex
     var sex;
     for (var j = 0; j < sexArr.length; j++) {
@@ -40,13 +47,13 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
             tmp = ` <td> 
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
                     <a href='#'><i title='Añadir prestación' class='material-icons'>add</i></a>
-                    <a href='pacientes/edit/` + dato7 + `'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='deletePatient' href='javascript:delPatients()'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='pacientes/edit/` + dato7 + `'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='activatePatient' href='javascript:actPatients()'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }

@@ -35,10 +35,10 @@
 		<div class="form-group">
             <label for="prevision">Previsión</label>
 			<select class="form-control" name="patient_prev" required>
-                <option>{{$patient_prev->nombre}}</option>
+                <option>{{$patient->prevition->descripcion}}</option>
 				@foreach($prev as $prevision)
-                    @if ($prevision->nombre != $patient_prev->nombre)
-				        <option value="{{ $prevision->id}}">{{ $prevision->nombre}}</option>
+                    @if ($prevision->descripcion != $patient->prevition->descripcion)
+				        <option value="{{ $prevision->id}}">{{ $prevision->descripcion}}</option>
                     @endif
 				@endforeach
 			</select>
@@ -47,9 +47,9 @@
 		<div class="form-group">
             <label for="sex">Sexo</label>
 			<select class="form-control" name="sex" required>
-				<option>{{$patient_sex->descripcion}}</option>
-				@foreach($sex as $sexo)
-                    @if ($sexo->descripcion != $patient_sex->descripcion)
+				<option>{{$patient->sex->descripcion}}</option>
+				 @foreach($sex as $sexo)
+                    @if ($sexo->descripcion != $patient->sex->descripcion)
 				        <option value="{{ $sexo->id}}">{{ $sexo->descripcion}}</option>
                     @endif
 				@endforeach

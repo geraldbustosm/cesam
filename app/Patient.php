@@ -15,26 +15,6 @@ class Patient extends Model
    */
   
   protected $table = 'paciente';
-
-  public function prevition()
-  {
-    return $this->hasOne('App\Prevition', 'id');
-  }
-
-  public function stage()
-  {
-    return $this->hasMany('App\Stage');
-  }
-
-  public function sex()
-  {
-    return $this->hasOne('App\Sex', 'id');
-  }
-
-  public function address()
-  {
-      return $this->belongsToMany(Address::class, 'paciente_posee_direccion', 'paciente_id', 'direccion_id');
-  }
   
   /**
    * The attributes that are mass assignable.
@@ -44,4 +24,21 @@ class Patient extends Model
   protected $fillable = [
       'id', 'DNI','nombre1', 'nombre2', 'apellido1', 'apellido2', 'sexo_id', 'fecha_nacimiento',
   ];
+
+  public function stage()
+  {
+    return $this->hasMany('App\Stage');
+  }
+
+  public function address()
+  {
+      return $this->belongsToMany(Address::class, 'paciente_posee_direccion', 'paciente_id', 'direccion_id');
+  }
+
+  public function prevition(){
+    return $this->belongsTo('App\Prevition', 'prevision_id');
+  }
+  public function sex(){
+    return $this->belongsTo('App\Sex', 'sexo_id');
+  }
 }

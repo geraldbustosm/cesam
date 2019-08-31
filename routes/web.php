@@ -123,7 +123,7 @@ Route::post('registrarsigges', 'AdminController@registerSIGGES');
                                                     EDITS 
 ****************************************************************************************************************************/
 // Editar paciente
-Route::get('pacientes/edit/{id}', 'AdminController@showEditPatient');
+Route::get('pacientes/edit/{dni}', 'AdminController@showEditPatient');
 Route::post('pacientes/edit', 'AdminController@editPatient');
 
 /***************************************************************************************************************************

@@ -24,4 +24,8 @@ class Prevition extends Model
     [
         'id', 'nombre', 'activa'
     ];
+
+    public function patients(){
+        return $this->hasMany('App\Patient');
+    }
 }
