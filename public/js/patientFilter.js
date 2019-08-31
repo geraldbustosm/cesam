@@ -9,7 +9,7 @@ var searchbox = document.getElementById("searchbox");
                                                     FILL TABLE
 ****************************************************************************************************************************/
 // Write patients on the table
-function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
+function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7, dato8) {
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
     // Create cells on the new row
@@ -29,7 +29,7 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
     var prev;
     for (var k = 0; k < prevArr.length; k++) {
         if (dato7 == prevArr[k].id) {
-            prev = prevArr[k].nombre;
+            prev = prevArr[k].descripcion;
         }
     }
     // Action buttons by active status
@@ -39,14 +39,14 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
         if (active == 1) {
             tmp = ` <td> 
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='#'><i title='Añadir prestación' class='material-icons'>add</i></a>
-                    <a href='pacientes/edit/` + dato7 + `'><i title='Editar' class='material-icons'>create</i></a>
+                    <a name='addingAttendance' href='javascript:addAttendance()'><i title='Añadir prestación' class='material-icons'>add</i></a>
+                    <a href='pacientes/edit/` + dato8 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='deletePatient' href='javascript:delPatients()'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='pacientes/edit/` + dato7 + `'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='pacientes/edit/` + dato8 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='activatePatient' href='javascript:actPatients()'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }
@@ -115,7 +115,7 @@ function changePage(page) {
     for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
         try {
             // Insert the rows with patients info.
-            createRow(i, curArray[i].DNI, curArray[i].nombre1, curArray[i].apellido1, curArray[i].apellido2, curArray[i].sexo_id, curArray[i].fecha_nacimiento, curArray[i].prevision_id);
+            createRow(i, curArray[i].DNI, curArray[i].nombre1, curArray[i].apellido1, curArray[i].apellido2, curArray[i].sexo_id, curArray[i].fecha_nacimiento, curArray[i].prevision_id, curArray[i].id);
         } catch (err) {
             // We exit if don't have equal number of patients and records for page.
             break;
@@ -144,7 +144,7 @@ function filter(searchText) {
     init(1);
 }
 // Wait 0.8 sec by every keyup and then call filter function
-function search(data) {
+function search() {
     // Listener for every keyup
     searchbox.addEventListener("keyup", function () {
         // Reset count and release timer
@@ -176,8 +176,9 @@ function init(page) {
     // Actions
     delPatients();
     actPatients();
+    addAttendance();
 }
 // Start
 init(1);
-search(curArray);
+search();
 /********************************************************END*******************************************************************/

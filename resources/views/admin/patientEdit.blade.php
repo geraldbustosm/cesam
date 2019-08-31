@@ -35,10 +35,10 @@
 		<div class="form-group">
             <label for="prevision">Previsión</label>
 			<select class="form-control" name="patient_prev" required>
-                <option>{{$patient_prev->nombre}}</option>
+                <option>{{$patient_prev->descripcion}}</option>
 				@foreach($prev as $prevision)
-                    @if ($prevision->nombre != $patient_prev->nombre)
-				        <option value="{{ $prevision->id}}">{{ $prevision->nombre}}</option>
+                    @if ($prevision->descripcion != $patient_prev->descripcion)
+				        <option value="{{ $prevision->id}}">{{ $prevision->descripcion}}</option>
                     @endif
 				@endforeach
 			</select>
@@ -83,4 +83,18 @@
 
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
+<script>
+  var arr = <?php echo json_encode($patient); ?>;
+  console.log(arr);
+  var arr = <?php echo json_encode($prev); ?>;
+  console.log(arr);
+  var arr = <?php echo json_encode($sex); ?>;
+  console.log(arr);
+  var arr = <?php echo json_encode($patient_prev); ?>;
+  console.log(arr);
+  var arr = <?php echo json_encode($patient_sex); ?>;
+  console.log(arr);
+  var arr = <?php echo json_encode($patient_birthday); ?>;
+  console.log(arr);
+</script>
 @endsection

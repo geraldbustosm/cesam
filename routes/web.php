@@ -123,6 +123,7 @@ Route::post('registrartipo', 'AdminController@registerType');
 ****************************************************************************************************************************/
 // Editar paciente
 Route::get('pacientes/edit/{id}', 'AdminController@showEditPatient');
+
 Route::post('pacientes/edit', 'AdminController@editPatient');
 
 /***************************************************************************************************************************
@@ -135,6 +136,8 @@ Route::post('pacientes/edit', 'AdminController@editPatient');
                                                     TESTING SECTION
 ****************************************************************************************************************************/
 Route::get('registraratencion', 'AdminController@showAddAttendance');
+
+Route::post('registraratencion', 'AdminController@checkCurrStage');
 
 Route::get('get-speciality-list','AdminController@getStateList');
 Route::get('get-provision-list','AdminController@getCityList');
