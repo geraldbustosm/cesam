@@ -36,7 +36,7 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
     var prev;
     for (var k = 0; k < prevArr.length; k++) {
         if (dato7 == prevArr[k].id) {
-            prev = prevArr[k].nombre;
+            prev = prevArr[k].descripcion;
         }
     }
     // Action buttons by active status
@@ -46,7 +46,7 @@ function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
         if (active == 1) {
             tmp = ` <td> 
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='#'><i title='Añadir prestación' class='material-icons'>add</i></a>
+                    <a name='addingAttendance' href='javascript:addAttendance()'><i title='Añadir prestación' class='material-icons'>add</i></a>
                     <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
                     <a name='deletePatient' href='javascript:delPatients()'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
@@ -151,7 +151,7 @@ function filter(searchText) {
     init(1);
 }
 // Wait 0.8 sec by every keyup and then call filter function
-function search(data) {
+function search() {
     // Listener for every keyup
     searchbox.addEventListener("keyup", function () {
         // Reset count and release timer
@@ -183,8 +183,9 @@ function init(page) {
     // Actions
     delPatients();
     actPatients();
+    addAttendance();
 }
 // Start
 init(1);
-search(curArray);
+search();
 /********************************************************END*******************************************************************/

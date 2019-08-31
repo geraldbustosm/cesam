@@ -1,38 +1,62 @@
-function start() {
-	var test = document.getElementById("testing");
-	test.addEventListener("click", validator);
-}
-
+/***************************************************************************************************************************
+                                                    VARIABLES
+****************************************************************************************************************************/
+var alertSuccess = document.getElementById("success");
+var alertDanger = document.getElementById("danger");
+/***************************************************************************************************************************
+                                                    MAIN FUNCTION
+****************************************************************************************************************************/
 // Start the validation
 function validator() {
+	// Setting alerts display = none
+	alertDanger.style.display = "none";
+	alertSuccess.style.display = "none";
+	// Getting button for submit, country and Rut / Passport
 	var id = document.getElementById('id');
 	var pais = document.getElementById('pais');
-	checkCountry(id, pais);
-	
+	var btn = document.getElementById('btnSubmit');
+	// Listener for submit
+	btn.addEventListener("click", function () {
+		var status = checkCountry(id, pais);
+		if(status){
+			document.onSubmit.submit();
+		}
+	});
 }
-
+/***************************************************************************************************************************
+                                                    CHECK SECTION
+****************************************************************************************************************************/
 // Check origin country
 function checkCountry(id, country) {
 	if (country.value.includes('chile')) {
-		CheckRUT(id); // For Chilean check rut
+		// For Chilean check rut
+		CheckRUT(id);
 	}
 	else {
-		// For foreing check UID
+		var alertSuccess = document.getElementById("success");
+		alertSuccess.style.display = "block";
+		return true;
 	}
 }
-
-// Valid the RUT
+// Check RUT
 function CheckRUT(object) {
+	// Reset status of alerts
+	alertDanger.style.display = "none";
+	alertSuccess.style.display = "none";
+
 	var tmpstr = "";
 	var intlen = object.value
+
 	if (intlen.length > 0) {
 		crut = object.value
 		len = crut.length;
+
 		if (len < 2) {
-			alert('rut inválido')
+			alertDanger.style.display = "block";
 			object.focus()
 			return false;
 		}
+
 		for (i = 0; i < crut.length; i++)
 			if (crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-') {
 				tmpstr = tmpstr + crut.charAt(i);
@@ -74,14 +98,17 @@ function CheckRUT(object) {
 		}
 
 		if (dvr != dv.toLowerCase()) {
-			alert('El Rut Ingresado es Invalido')
+			alertDanger.style.display = "block";
 			object.focus()
 			return false;
 		}
+		alertSuccess.style.display = "block";
 		object.focus()
 		console.log(tmpstr);
 		return true;
 	}
 }
-
-start()
+/***************************************************************************************************************************
+                                                    LOAD FUNCTIONS
+****************************************************************************************************************************/
+validator()
