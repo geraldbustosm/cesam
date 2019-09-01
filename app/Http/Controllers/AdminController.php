@@ -127,9 +127,9 @@ class AdminController extends Controller
     }
     public function showAddProgram()
     {
-        $program = Program::all();
+        $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data],compact('program'));
+        return view('admin.programForm', ['data' => $data],compact('speciality'));
     }
     public function showAddDiagnosis()
     {
@@ -315,7 +315,7 @@ class AdminController extends Controller
         $program = new Program;
 
         $program->descripcion = $request->descripcion;
-        $program->especialidad = $request->programa_id;
+        $program->especialidad = $request->descripcion_espe;
 
         $program->save();
 
@@ -547,6 +547,7 @@ class AdminController extends Controller
     }
 
     public function editPatient(Request $request){
+        
         
     }
 

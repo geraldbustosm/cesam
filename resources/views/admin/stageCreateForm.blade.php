@@ -42,23 +42,53 @@
                 </div>
 			</div>
 		</div>
-
 		<div class="form-group">
-			<select class="form-control" name="diagnostico_id" required>
-				<option selected disabled>Por favor seleccione un diagnostico </option>
-				@foreach($diagnosis as $diagnostico)
-				<option value="{{ $diagnostico->id}}">{{ $diagnostico->descripcion}}</option>
-				@endforeach
-			</select>
+			<div class="form-row">
+				
+				<div class="col-4">
+					<select class="form-control" name="diagnostico_id" required>
+						<option selected disabled>Por favor seleccione un diagnostico </option>
+						@foreach($diagnosis as $diagnostico)
+						<option value="{{ $diagnostico->id}}">{{ $diagnostico->descripcion}}</option>
+						@endforeach
+					</select>
+				</div>
+				<div class="col-4">
+					<select class="form-control" name="programa_id" required>
+						<option selected disabled>Por favor seleccione un programa </option>
+						@foreach($program as $programa)
+						<option value="{{ $programa->id}}">{{ $programa->descripcion}}</option>
+						@endforeach
+					</select>
+                    
+                </div>
+			</div>
 		</div>
-        <div class="form-group">
-			<select class="form-control" name="programa_id" required>
-				<option selected disabled>Por favor seleccione un programa </option>
-				@foreach($program as $programa)
-				<option value="{{ $programa->id}}">{{ $programa->descripcion}}</option>
-				@endforeach
-			</select>
+		<div class="form-group">
+			<div class="form-row">
+				
+				<div class="col-4">
+					<select class="form-control" name="sigges_id" required>
+						<option selected disabled>Por favor seleccione un sigges </option>
+						@foreach($Sigges as $sigges)
+						<option value="{{ $sigges->id}}">{{ $sigges->descripcion}}</option>
+						@endforeach
+					</select>
+                  
+				</div>
+				<div class="col-4">
+					<select class="form-control" name="procedencia_id" required>
+						<option selected disabled>Por favor seleccione una procedencia </option>
+						@foreach($provenance as $procedencia)
+						<option value="{{ $procedencia->id}}">{{ $procedencia->descripcion}}</option>
+						@endforeach
+					</select>
+                    
+                </div>
+			</div>
 		</div>
+		
+        
 		<!--
         <div class="form-group">
 			<select class="form-control" name="alta_id" required>
@@ -69,22 +99,8 @@
 			</select>
 		</div>
 		-->
-        <div class="form-group">
-			<select class="form-control" name="sigges_id" required>
-				<option selected disabled>Por favor seleccione un sigges </option>
-				@foreach($Sigges as $sigges)
-				<option value="{{ $sigges->id}}">{{ $sigges->descripcion}}</option>
-				@endforeach
-			</select>
-		</div>
-        <div class="form-group">
-			<select class="form-control" name="procedencia_id" required>
-				<option selected disabled>Por favor seleccione una procedencia </option>
-				@foreach($provenance as $procedencia)
-				<option value="{{ $procedencia->id}}">{{ $procedencia->descripcion}}</option>
-				@endforeach
-			</select>
-		</div>
+      
+       
 		<button type="submit" class="btn btn-primary">Registrar</button>
 		<input type="button" href="javascript:validator()" value="Test" id="testing" />
 	</form>

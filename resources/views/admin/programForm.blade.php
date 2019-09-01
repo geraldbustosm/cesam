@@ -16,10 +16,10 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <select class="form-control" name="programa_id" required>
-				        <option selected disabled>Por favor seleccione un programa </option>
-				        @foreach($program as $programa)
-				        <option value="{{ $programa->id}}">{{ $programa->descripcion}}</option>
+                    <select class="form-control" name="descripcion_espe" required>
+				        <option selected disabled>Por favor seleccione un especialidad </option>
+				        @foreach($speciality as $especialidad)
+				        <option value="{{ $especialidad->descripcion}}">{{ $especialidad->descripcion}}</option>
 				        @endforeach
 			        </select>
                     <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de programa">
