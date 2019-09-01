@@ -61,4 +61,8 @@
 	</form>
 </div>
 
+<script>
+    document.getElementById('data_Submenu').className += ' show';
+</script>
+
 @endsection

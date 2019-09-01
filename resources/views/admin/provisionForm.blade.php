@@ -78,4 +78,8 @@
 		<button type="submit" class="btn btn-primary">Registrar</button>
 	</form>
 </div>
+
+<script>
+    document.getElementById('data_Submenu').className += ' show';
+</script>
 @endsection
