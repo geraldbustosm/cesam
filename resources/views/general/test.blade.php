@@ -22,8 +22,11 @@
 
   <h1>TEST</h1>
   <hr>
+  <script>
+    var data = <?php echo json_encode($patient); ?>;
+    console.log(data);
+  </script>
 
-  
   <script src="{{asset('js/popper.min.js')}}"></script>
   <script src="{{asset('js/bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>

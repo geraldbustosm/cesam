@@ -32,14 +32,20 @@
     <!-- Fill on js -->
   </tbody>
 </table>
-
+<!-- Submit section -->
 <form name="onSubmit" method="post" action="{{ url('pacientes') }}">
   @csrf
   <div class="form-group">
     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="{{ old('DNI') }}" id="DNI" name="DNI">
   </div>
 </form>
-
+<form name="onSubmitStage" method="post" action="{{ url('registraratencion') }}">
+  @csrf
+  <div class="form-group">
+    <input type="hidden" class="form-control {{ $errors->has('DNI_stage') ? ' is-invalid' : '' }}" value="{{ old('DNI_stage') }}" id="DNI_stage" name="DNI_stage">
+  </div>
+</form>
+<!-- End submit section -->
 <div class="div-full">
   <ul class="pagination justify-content-center" id="paginate">
     <!-- Generate in patientFilter.js->generatePaginationNum(); -->

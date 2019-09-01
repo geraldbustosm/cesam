@@ -107,8 +107,9 @@ class AdminController extends Controller
         $data = Provenance::orderBy('descripcion')->get();
         return view('admin.provenanceForm', ['data' => $data]);
     }
-    
-    public function showAddStage(){
+
+    public function showAddStage()
+    {
         $patient = Patient::all();
         $functionary = Functionary::all();
         $diagnosis = Diagnosis::all();
@@ -116,10 +117,8 @@ class AdminController extends Controller
         $release = Release::all();
         $Sigges = SiGGES::all();
         $provenance = Provenance::all();
-        return view('admin.stageCreateForm', compact('patient','functionary','diagnosis','program','release','Sigges','provenance'));
-  
-        
-    }  
+        return view('admin.stageCreateForm', compact('patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+    }
     public function showAddPrevition()
     {
         $data = Prevition::orderBy('descripcion')->get();
@@ -129,7 +128,7 @@ class AdminController extends Controller
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data],compact('speciality'));
+        return view('admin.programForm', ['data' => $data], compact('program'));
     }
     public function showAddDiagnosis()
     {
@@ -193,7 +192,7 @@ class AdminController extends Controller
             $ids[0] = $record1->id;
             foreach ($speciality as $index => $record2) {
                 $ids[1] = $record2->id;
-                $rows[$record1->user->primer_nombre. " " . $record1->user->segundo_nombre][$record2->descripcion] = $ids;
+                $rows[$record1->user->primer_nombre . " " . $record1->user->segundo_nombre][$record2->descripcion] = $ids;
             }
         }
         return view('admin.specialityAsign', compact('rows', 'columns'));
@@ -230,40 +229,33 @@ class AdminController extends Controller
                                              VIEWS       GET METHOD SHOW EDIT
      ****************************************************************************************************************************/
     
-    public function showEditPatient($id){
-        $patient = Patient::find($id);
+    public function showEditPatient($dni){
+        $patient = Patient::where('DNI', $dni)->first();
         $prev = Prevition::all();
         $sex = Sex::all();
-        $patient_prev = "";
-        $patient_sex = "";
         $patient_birthday = "";
 
         if($patient){
-            $patient_prev = Patient::find($id)->prevition;
-            $patient_sex = Patient::find($id)->sex;
-
             // Change formate date to retrieve to the datapicker
             $patient_birthday = explode("-", $patient->fecha_nacimiento);
-            $patient_birthday = join("/", array($patient_birthday[2],$patient_birthday[1],$patient_birthday[0]));
-
+            $patient_birthday = join("/", array($patient_birthday[2], $patient_birthday[1], $patient_birthday[0]));
         }
 
-        return view('admin.editPatient', ['patient' => $patient, 'patient_prev' => $patient_prev,'patient_sex' => $patient_sex, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
+        return view('admin.patientEdit', ['patient' => $patient, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
     }
 
     /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
      ****************************************************************************************************************************/
-    public function registerStage(Request $request){
+    public function registerStage(Request $request)
+    {
 
-        $validation = $request->validate([
-            
-            ]);
+        $validation = $request->validate([]);
 
         echo $request->new_start;
 
         $stage = new Stage;
-        
+
         $stage->diagnostico_id = $request->diagnostico_id;
         $stage->programa_id = $request->programa_id;
         //$stage->alta_id = $request->alta_id;
@@ -272,12 +264,11 @@ class AdminController extends Controller
         $stage->funcionario_id = $request->funcionario_id;
         $stage->paciente_id = $request->paciente_id;
         $stage->save();
-        
-        
-        return redirect('crearetapa')->with('status', 'etapa creada');
 
+
+        return redirect('crearetapa')->with('status', 'etapa creada');
     }
-     public function registerRelease(Request $request)
+    public function registerRelease(Request $request)
     {
         $validacion = $request->validate([
             'descripcion' => 'required|string|max:255'
@@ -425,7 +416,6 @@ class AdminController extends Controller
         $diagnosis->save();
 
         return redirect('registrardiagnostico')->with('status', 'Nuevo diagnostico creado');
-
     }
 
     public function registerUser(Request $request)
@@ -494,7 +484,7 @@ class AdminController extends Controller
 
         return redirect('registrarprestacion')->with('status', 'Nueva prestacion creada');
     }
-  
+
 
     public function AsignProvision(Request $request)
     {
@@ -547,14 +537,46 @@ class AdminController extends Controller
     }
 
     public function editPatient(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "pacientes/edit/" . $request->dni;
+
+        // Validate form data
+        $validation = $request->validate([
+            'dni' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            /*'pais' => 'required|string|max:255',
+            'region' => 'required|string|max:255',
+            'numero' => 'required|int',
+            'direccion' => 'string|max:255',
+            'direccion_opcional' => 'string|max:255|nullable',*/
+            'datepicker' => 'required|date_format:"d/m/Y"',
+            ]);
         
+        // Find patient to edit
+        $patient = Patient::find($request->id);
         
+        // If patient exist update his data
+        if($patient){
+            $nombre = explode(" ", $request->nombre);
+            $patient->nombre1 = $nombre[0];
+            $patient->nombre2 = $nombre[1];
+            $patient->apellido1 = $nombre[2];
+            $patient->apellido2 = $nombre[3];
+            $patient->DNI = $request->dni;
+            $patient->prevision_id = $request->prev;
+            $patient->sexo_id = $request->sex;
+
+            $patient->save();
+        }
+        return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
+
     }
 
     /***************************************************************************************************************************
                                                     ACTIONS BUTTONS FUNCTIONS
      ****************************************************************************************************************************/
-    
+
     public function deletingPatient(Request $request)
     {
         $patient = Patient::where('DNI', $request->DNI)->get();
@@ -608,25 +630,40 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     ATTENDANCE LOGIC
      ****************************************************************************************************************************/
+    public function checkCurrStage(Request $request)
+    {
+        $stage = Stage::where('paciente_id', $request->DNI_stage);
+        if ($stage) {
+            return view('general.test', ['patient' => 'no tiene ninguna etapa']);
+        } else {
+            $active = $stage->activa;
+            if ($active == 0) {
+                return view('general.test', ['patient' => 'no tiene etapa activa']);
+            } else {
+                return view('general.test', ['patient' => 'si posee una etapa activa']);
+            }
+        }
+    }
+
     public function showAddAttendance()
     {
         $users = Functionary::where('activa', 1)->get();
-        return view('general.attendanceForm',compact('users'));
-        
+        return view('general.attendanceForm', compact('users'));
     }
-    
+
     public function getStateList(Request $request)
     {
         $functionary = Functionary::find($request->functionary_id);
-        $states =$functionary->speciality;
+        $states = $functionary->speciality;
         return response()->json($states);
     }
+
     public function getCityList(Request $request)
-        {
-            $specility = Speciality::find($request->speciality_id);
-            $cities = $specility->provision;
-            return response()->json($cities);
-        }
+    {
+        $specility = Speciality::find($request->speciality_id);
+        $cities = $specility->provision;
+        return response()->json($cities);
+    }
 
     public function registerAttendance(Request $request)
     {
@@ -637,14 +674,14 @@ class AdminController extends Controller
         $attendance = new Attendance;
 
         $attendance->funcionario_id = $request->functionary_id;
-        $patienDNI='prueba';
+        $patienDNI = 'prueba';
         $patient = Patient::where('activa', 1)
-                    ->where('DNI', $patienDNI)
-                    ->first();
+            ->where('DNI', $patienDNI)
+            ->first();
         $etapa = Stage::where('activa', 1)
-                        ->where('paciente_id', $patient->id)
-                        ->first();
-       
+            ->where('paciente_id', $patient->id)
+            ->first();
+
         $attendance->etapa_id = $etapa->id;
         $attendance->prestacion_id = $request->get('provision');
         $attendance->fecha = "2019-07-19 06:19:51.029";
@@ -655,6 +692,5 @@ class AdminController extends Controller
         $attendance->save();
 
         return redirect('registraratencion')->with('status', 'Nueva Atencion Realizada');
-    
     }
 }

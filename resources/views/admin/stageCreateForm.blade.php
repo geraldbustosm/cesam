@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('title','Crear etapa')
+@section('active-ingresardatos','active')
 @section('active-crearetapa','active')
 
 @section('content')
@@ -106,6 +107,9 @@
 	</form>
 </div>
 
+<script>
+	document.getElementById('data_Submenu').className += ' show';
+</script>
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
 @endsection

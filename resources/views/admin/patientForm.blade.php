@@ -20,10 +20,18 @@
 		{{ session('status') }}
 	</div>
 	@endif
-	<form method="post" action="{{ url('registrarpaciente') }}">
+	<form name="onSubmit" method="post" action="{{ url('registrarpaciente') }}">
 		@csrf
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Rut o pasaporte">
+		</div>
+		<div class="form-group">
+			<div class="alert alert-success" role="alert" id="success">
+				Rut / Pasaporte correcto!
+			</div>
+			<div class="alert alert-danger" role="alert" id="danger">
+				Rut inválido...
+			</div>
 		</div>
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre completo">
@@ -66,6 +74,15 @@
 		</div>
 
 		<div class="form-group">
+			<select class="form-control" name="prevition" required>
+				<option selected disabled>Por favor seleccione una prevision de salud</option>
+				@foreach($previtions as $prevition)
+				<option value="{{ $prevition->id}}">{{ $prevition->descripcion}}</option>
+				@endforeach
+			</select>
+		</div>
+
+		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
 			<input id="datepicker" name="datepicker" width="276" required>
 			<script>
@@ -82,18 +99,9 @@
 					var date = new Date(from[2], from[1] - 1, from[0]);
 				});
 			</script>
-
-		<div class="form-group">
-            <select class="form-control" name="prevition" required>
-                <option selected disabled>Por favor seleccione una prevision de salud</option>
-                @foreach($previtions as $prevition)
-                <option value="{{ $prevition->id}}">{{ $prevition->descripcion}}</option>
-                @endforeach
-            </select>
-        </div>
 		</div>
-		<button type="submit" class="btn btn-primary">Registrar</button>
-		<input type="button" href="javascript:validator()" value="Test" id="testing" />
+
+		<button type="button" class="btn btn-primary" id="btnSubmit">Registrar</button>
 	</form>
 </div>
 
