@@ -48,6 +48,7 @@
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
+    document.getElementById('data_Submenu').style.display = "block";
 </script>
 <!-- Adding script using on this view -->
 <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
