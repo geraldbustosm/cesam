@@ -645,8 +645,8 @@ class AdminController extends Controller
         } else {
             $users = Functionary::where('activa', 1)->get();
             return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));  
+        }
     }
-
     public function showAddAttendance()
     {
         $users = Functionary::where('activa', 1)->get();
@@ -692,7 +692,7 @@ class AdminController extends Controller
         $attendance->duracion = "06:19:51.029";
 
         $attendance->save();
-
-        return redirect('registraratencion')->with('status', 'Nueva Atencion Realizada');
+        return View::make('general.test');
+        
     }
 }

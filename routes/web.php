@@ -139,6 +139,8 @@ Route::get('registraratencion', 'AdminController@showAddAttendance');
 
 Route::post('registraratencion', 'AdminController@checkCurrStage');
 
+Route::post('registraratencionOk', 'AdminController@registerAttendance');
+
 Route::get('get-speciality-list','AdminController@getStateList');
 Route::get('get-provision-list','AdminController@getCityList');
 
