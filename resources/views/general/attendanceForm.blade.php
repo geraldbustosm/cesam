@@ -11,7 +11,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <form method="post" action="{{ url('registrarespecialidad') }}">
+    <form method="post" action="{{ url('registraratencionOk') }}">
         @csrf
         <div class="form-group">
                     <p class = "titulo2" >Paciente: <?= $patient->nombre1." ".$patient->nombre2." ".$patient->apellido1." ".$patient->apellido2;?></p>
