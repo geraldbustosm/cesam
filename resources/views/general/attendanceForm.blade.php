@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title','Registrar nueva atención')
-@section('active-ingresaratension','active')
+@section('active-ingresaratencion','active')
+
 
 @section('content')
 <h1>Registrar Atencion</h1>
@@ -12,11 +13,12 @@
     @endif
     <form method="post" action="{{ url('registraratencion') }}">
         @csrf
+        <div class="form-group">
+                    <p class = "titulo2" >Paciente: <?= $patient->nombre1." ".$patient->nombre2." ".$patient->apellido1." ".$patient->apellido2;?></p>
+                </div>
         <div class="row">
             <div class = "column">
-                <div class="form-group">
-                <label class = "titulo2" >Paciente: </label>
-                </div>   
+                   
                 <div class="form-group">
                     <label for="datepicker">Fecha de la atención</label>
                     <input id="datepicker" name="datepicker" width="276" value  = "" required>
@@ -173,13 +175,14 @@
                             }                     
                     });
                 </script>
+                <div class="form-group" class = "register">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+                </div>
             </div>        
         </div>
         </form>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Registrar</button>
-        </div>
-   
+        
+       
 @endsection
 @push('styles')
     <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">

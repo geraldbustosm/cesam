@@ -632,17 +632,19 @@ class AdminController extends Controller
      ****************************************************************************************************************************/
     public function checkCurrStage(Request $request)
     {
-        $stage = Stage::where('paciente_id', $request->DNI_stage);
-        if ($stage) {
-            return view('general.test', ['patient' => 'no tiene ninguna etapa']);
+        $DNI = $request->DNI_stage;
+        $patient = Patient::where('DNI',$DNI)
+                            ->where('activa', 1)
+                            ->first();
+        $id_patient = $patient->id;
+        $stage = Stage::where('paciente_id',$id_patient)
+                        ->where('activa', 1)
+                        ->first();
+        if (empty($stage)) {
+            return view('general.test', ['patient' => 'no tiene ninguna etapa', 'DNI'=>$DNI]);
         } else {
-            $active = $stage->activa;
-            if ($active == 0) {
-                return view('general.test', ['patient' => 'no tiene etapa activa']);
-            } else {
-                return view('general.test', ['patient' => 'si posee una etapa activa']);
-            }
-        }
+            $users = Functionary::where('activa', 1)->get();
+            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));  
     }
 
     public function showAddAttendance()
