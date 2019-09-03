@@ -644,11 +644,7 @@ class AdminController extends Controller
             return view('general.test', ['patient' => 'no tiene ninguna etapa', 'DNI'=>$DNI]);
         } else {
             $users = Functionary::where('activa', 1)->get();
-<<<<<<< HEAD
             return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));   
-=======
-            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));  
->>>>>>> temp-branch
         }
     }
     public function showAddAttendance()
@@ -694,12 +690,7 @@ class AdminController extends Controller
         $attendance->duracion = "06:19:51.029";
 
         $attendance->save();
-<<<<<<< HEAD
 
         return view('general.test');
-=======
-        return View::make('general.test');
-        
->>>>>>> temp-branch
     }
 }
