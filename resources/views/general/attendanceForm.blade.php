@@ -11,7 +11,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <form method="post" action="{{ url('testing') }}">
+    <form method="post" action="{{ url('registrarespecialidad') }}">
         @csrf
         <div class="form-group">
                     <p class = "titulo2" >Paciente: <?= $patient->nombre1." ".$patient->nombre2." ".$patient->apellido1." ".$patient->apellido2;?></p>
@@ -176,7 +176,7 @@
                     });
                 </script>
                 <div class="form-group" class = "register">
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
             </div>        
         </div>

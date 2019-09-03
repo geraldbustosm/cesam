@@ -692,6 +692,6 @@ class AdminController extends Controller
 
         $attendance->save();
 
-        return view('general.test')->with('status', 'Nueva Atención Realizada');
+        return view('general.test');
     }
 }
