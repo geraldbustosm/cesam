@@ -113,7 +113,7 @@
                 </div>
                 <div class="panel-heading">Seleccione el funcionario</div>
                 <div class="form-group">
-                    <select id="functionary" name="category_id" class="form-control" style="width:350px" >
+                    <select id="functionary" name="functionary" class="form-control" style="width:350px" >
                             <option value="" selected disabled>Seleccione un Funcinario</option>
                             @foreach($users as $key => $user)
                                 <option value="{{$user->id}}"> {{$user->profesion}}</option>
@@ -176,6 +176,8 @@
                     });
                 </script>
                 <div class="form-group" class = "register">
+                <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?=$DNI;?>"  id="DNI" name="DNI">
+                <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?=$stage->id;?>"  id="id_stage" name="id_stage">
                 <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
             </div>        

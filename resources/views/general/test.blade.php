@@ -23,12 +23,7 @@
   <h1>TEST</h1>
   <hr>
   <script>
-    var data = <?php echo json_encode($patient); ?>;
-    console.log(data);
-    var data = <?php echo json_encode($DNI); ?>;
-    console.log(data);
-    var data = <?php echo json_encode($DNI); ?>;
-    console.log(data);
+   
   </script>
 
   <script src="{{asset('js/popper.min.js')}}"></script>

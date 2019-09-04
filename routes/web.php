@@ -140,6 +140,7 @@ Route::post('pacientes/edit', 'AdminController@editPatient');
 Route::post('registraratencion', 'AdminController@checkCurrStage');
 
 Route::post('registraratencionOk', 'AdminController@registerAttendance');
+//Route::post('registraratencionOk', 'AdminController@showTesting');
 
 Route::get('get-speciality-list','AdminController@getStateList');
 Route::get('get-provision-list','AdminController@getCityList');

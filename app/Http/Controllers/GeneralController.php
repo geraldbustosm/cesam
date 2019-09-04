@@ -46,8 +46,11 @@ class GeneralController extends Controller
         $patient->apellido1 = $nombre[2];
         $patient->apellido2 = $nombre[3];
         $patient->DNI = $request->id;
+        $var = $request->get('datepicker');
+        $date = str_replace('/', '-', $var);
+        $correctDate = date('Y-m-d', strtotime($date));
 
-        $patient->fecha_nacimiento = "2019-07-19 06:19:51.029";
+        $patient->fecha_nacimiento = $correctDate;
         
         $patient->prevision_id = $request->prevition;
         

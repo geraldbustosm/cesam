@@ -19,6 +19,7 @@ use App\Program;
 use App\SiGGES;
 use App\Provenance;
 use App\Stage;
+use App\Attendance;
 
 
 use Illuminate\Http\Request;
@@ -128,7 +129,7 @@ class AdminController extends Controller
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data], compact('program'));
+        return view('admin.programForm', ['data' => $data], compact('data','speciality'));
     }
     public function showAddDiagnosis()
     {
@@ -644,7 +645,7 @@ class AdminController extends Controller
             return view('general.test', ['patient' => 'no tiene ninguna etapa', 'DNI'=>$DNI]);
         } else {
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));   
+            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));   
         }
     }
     public function showAddAttendance()
@@ -670,25 +671,22 @@ class AdminController extends Controller
     public function registerAttendance(Request $request)
     {
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
+            
+         ]);
 
         $attendance = new Attendance;
-
-        $attendance->funcionario_id = $request->functionary_id;
-        $patienDNI = 'prueba';
         
-        $etapa = Stage::find($request->$stage->id)
-            ->where('paciente_id', $patient->id)
-            ->first();
-
-        $attendance->etapa_id = $etapa->id;
+        $attendance->funcionario_id = $request->functionary;
+        $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
-        $attendance->fecha = "2019-07-19 06:19:51.029";
+        $var = $request->get('datepicker');
+        $date = str_replace('/', '-', $var);
+        $correctDate = date('Y-m-d', strtotime($date));
+        $attendance->fecha = $correctDate ;
         $attendance->asistencia = $request->get('selectA');
-        $attendance->hora = "06:19:51.029";
-        $attendance->duracion = "06:19:51.029";
-
+        $attendance->hora = $request->get('timeInit');
+        $attendance->duracion = $request->get('duration');
+        
         $attendance->save();
 
         return view('general.test');
