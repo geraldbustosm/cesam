@@ -19,7 +19,6 @@ use App\Program;
 use App\SiGGES;
 use App\Provenance;
 use App\Stage;
-use App\Attendance;
 
 
 use Illuminate\Http\Request;
@@ -67,6 +66,15 @@ class AdminController extends Controller
         $speciality = Speciality::all();
         $fs = FunctionarySpeciality::all();
         return view('general.functionarys', ['functionary' => $functionary, 'user' => $user, 'speciality' => $speciality, 'fs' => $fs]);
+    }
+
+    public function showInactiveFunctionarys()
+    {
+        $functionary = Functionary::where('activa', 0)->get();
+        $user = User::all();
+        $speciality = Speciality::all();
+        $fs = FunctionarySpeciality::all();
+        return view('admin.funtionaryInactive', ['functionary' => $functionary, 'user' => $user, 'speciality' => $speciality, 'fs' => $fs]);
     }
 
     public function showPatientInfo()
@@ -129,7 +137,7 @@ class AdminController extends Controller
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data], compact('data','speciality'));
+        return view('admin.programForm', ['data' => $data], compact('program'));
     }
     public function showAddDiagnosis()
     {
@@ -586,12 +594,38 @@ class AdminController extends Controller
         return redirect('pacientes')->with('status', 'Paciente ' . $request->DNI . ' eliminado');
     }
 
+    public function deletingFunctionary(Request $request)
+    {
+        $user = User::where('id', $request->DNI)->get();
+        $user[0]->activa = 0;
+        $user[0]->save();
+
+        $functionary = Functionary::where('user_id', $request->DNI)->get();
+        $functionary[0]->activa = 0;
+        $functionary[0]->save();
+
+        return redirect('funcionarios')->with('status', 'Funcionario ' . $user[0]->rut . ' eliminado');
+    }
+
     public function activatePatient(Request $request)
     {
         $patient = Patient::where('DNI', $request->DNI)->get();
         $patient[0]->activa = 1;
         $patient[0]->save();
-        return redirect('pacientesinactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
+        return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
+    }
+
+    public function activateFunctionary(Request $request)
+    {
+        $user = User::where('id', $request->DNI)->get();
+        $user[0]->activa = 1;
+        $user[0]->save();
+
+        $functionary = Functionary::where('user_id', $request->DNI)->get();
+        $functionary[0]->activa = 1;
+        $functionary[0]->save();
+
+        return redirect('funcionarios/inactivos')->with('status', 'Funcionario ' . $user[0]->rut . ' re-incorporado');
     }
 
     /***************************************************************************************************************************
@@ -645,7 +679,7 @@ class AdminController extends Controller
             return view('general.test', ['patient' => 'no tiene ninguna etapa', 'DNI'=>$DNI]);
         } else {
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));   
+            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));  
         }
     }
     public function showAddAttendance()
@@ -671,24 +705,27 @@ class AdminController extends Controller
     public function registerAttendance(Request $request)
     {
         $validacion = $request->validate([
-            
-         ]);
+            'descripcion' => 'required|string|max:255'
+        ]);
 
         $attendance = new Attendance;
-        
-        $attendance->funcionario_id = $request->functionary;
-        $attendance->etapa_id = $request->id_stage;
-        $attendance->prestacion_id = $request->get('provision');
-        $var = $request->get('datepicker');
-        $date = str_replace('/', '-', $var);
-        $correctDate = date('Y-m-d', strtotime($date));
-        $attendance->fecha = $correctDate ;
-        $attendance->asistencia = $request->get('selectA');
-        $attendance->hora = $request->get('timeInit');
-        $attendance->duracion = $request->get('duration');
-        
-        $attendance->save();
 
-        return view('general.test');
+        $attendance->funcionario_id = $request->functionary_id;
+        $patienDNI = 'prueba';
+        
+        $etapa = Stage::find($request->$stage->id)
+            ->where('paciente_id', $patient->id)
+            ->first();
+
+        $attendance->etapa_id = $etapa->id;
+        $attendance->prestacion_id = $request->get('provision');
+        $attendance->fecha = "2019-07-19 06:19:51.029";
+        $attendance->asistencia = $request->get('selectA');
+        $attendance->hora = "06:19:51.029";
+        $attendance->duracion = "06:19:51.029";
+
+        $attendance->save();
+        return View::make('general.test');
+        
     }
 }

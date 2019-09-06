@@ -1,44 +1,39 @@
-// Get elements for action buttons
-var delPatient = document.getElementsByName('deletePatient');
-var actPatient = document.getElementsByName('activatePatient');
-var addAttend = document.getElementsByName('addingAttendance');
 /***************************************************************************************************************************
                                                     ACTION BUTTONS
 ****************************************************************************************************************************/
+// Set value on Form
+function setValue(DNI,idForm){
+    var tagID = document.getElementById(idForm);
+    tagID.value = DNI;
+}
+// Check modal for continue
+function confirmAction(DNI, idForm){
+    $('#confirmModal').modal('show')
+    var btn = document.getElementById('continueBtn');
+    btn.addEventListener("click", function(){
+        setValue(DNI,idForm);
+        document.onSubmit.submit();
+    });
+}
 // Deactivate the patient
-function delPatients() {
-    for (var i = 0; i < delPatient.length; i++) {
-        delPatient[i].addEventListener("click", function () {
-            var tmp = this.parentElement.parentElement;
-            var aux = tmp.children[1].id;
-            var n = document.getElementById('DNI');
-            n.value = aux;
-            document.onSubmit.submit();
-        });
-    }
+function delPatients(DNI) {
+    confirmAction(DNI, 'DNI');
+}
+// Deactivate the functionary
+function delFunctionarys(DNI){
+    confirmAction(DNI, 'DNI');
 }
 // Reactivate the patient
-function actPatients() {
-    for (var i = 0; i < actPatient.length; i++) {
-        actPatient[i].addEventListener("click", function () {
-            var tmp = this.parentElement.parentElement;
-            var aux = tmp.children[1].id;
-            var n = document.getElementById('DNI');
-            n.value = aux;
-            document.onSubmit.submit();
-        });
-    }
+function actPatients(DNI) {
+    confirmAction(DNI, 'DNI');
+}
+// Reactivate the functionary
+function actFunctionarys(DNI){
+    confirmAction(DNI, 'DNI')
 }
 // Add attendace to the patient
-function addAttendance(){
-    for (var i = 0; i < addAttend.length; i++) {
-        addAttend[i].addEventListener("click", function () {
-            var tmp = this.parentElement.parentElement;
-            var aux = tmp.children[1].id;
-            var n = document.getElementById('DNI_stage');
-            n.value = aux;
-            document.onSubmitStage.submit();
-        });
-    }
+function addAttendance(DNI){
+    setValue(DNI, 'DNI_stage')
+    document.onSubmitStage.submit();
 }
 /********************************************************END*******************************************************************/

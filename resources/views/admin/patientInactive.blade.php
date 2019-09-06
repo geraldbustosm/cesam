@@ -33,7 +33,7 @@
   </tbody>
 </table>
 
-<form name="onSubmit" method="post" action="{{ url('pacientesinactivos') }}">
+<form name="onSubmit" method="post" action="{{ url('pacientes/inactivos') }}">
   @csrf
   <div class="form-group">
     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="{{ old('DNI') }}" id="DNI" name="DNI">
@@ -46,10 +46,32 @@
   </ul>
 </div>
 
+<!-- Modal to continue with action -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Desea activar al paciente nuevamente?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   var fullArray = <?php echo json_encode($patients); ?>;
   var prevArr = <?php echo json_encode($prev); ?>;
   var sexArr = <?php echo json_encode($sex); ?>;
+  document.getElementById('patients_Submenu').className += ' show';
 </script>
 
 <!-- Adding script using on this view -->

@@ -37,22 +37,26 @@ Route::post('asignarespecialidadprestacion', 'AdminController@AsignProvision');
 /***************************************************************************************************************************
                                                     VIEW INFO
 ****************************************************************************************************************************/
-
+// Fichas
 Route::get('fichas', 'AdminController@showClinicalRecords');
-
+// Funcionarios
 Route::get('funcionarios', 'AdminController@showFunctionarys');
 
-//Route::post('funcionarios', 'AdminController@deletingPatient');
+Route::post('funcionarios', 'AdminController@deletingFunctionary');
 
+Route::get('funcionarios/inactivos', 'AdminController@showInactiveFunctionarys');
+
+Route::post('funcionarios/inactivos', 'AdminController@activateFunctionary');
+//
 Route::get('infopaciente', 'AdminController@showPatientInfo');
-
+// Pacientes
 Route::get('pacientes', 'AdminController@showPatients');
 
 Route::post('pacientes', 'AdminController@deletingPatient');
 
-Route::get('pacientesinactivos', 'AdminController@showInactivePatients');
+Route::get('pacientes/inactivos', 'AdminController@showInactivePatients');
 
-Route::post('pacientesinactivos', 'AdminController@activatePatient');
+Route::post('pacientes/inactivos', 'AdminController@activatePatient');
 
 /***************************************************************************************************************************
                                                     REGISTERS
@@ -140,7 +144,6 @@ Route::post('pacientes/edit', 'AdminController@editPatient');
 Route::post('registraratencion', 'AdminController@checkCurrStage');
 
 Route::post('registraratencionOk', 'AdminController@registerAttendance');
-//Route::post('registraratencionOk', 'AdminController@showTesting');
 
 Route::get('get-speciality-list','AdminController@getStateList');
 Route::get('get-provision-list','AdminController@getCityList');

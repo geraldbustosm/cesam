@@ -54,10 +54,10 @@
                             <a class="nav-link @yield('active-pacientes')" href="#patients_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Pacientes</span></a>
                             <ul class="collapse list-unstyled" id="patients_Submenu">
                                 <li>
-                                    <a class="nav-link @yield('active-pacientesactivos')" href="{{url('pacientes')}}"><span>Pacientes activos</span></a>
+                                    <a class="nav-link @yield('active-pacientesactivos')" href="{{url('pacientes')}}"><span>Pacientes</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-pacientesinactivos')" href="{{url('pacientesinactivos')}}"><span>Pacientes inactivos</span></a>
+                                    <a class="nav-link @yield('active-pacientesinactivos')" href="{{url('pacientes/inactivos')}}"><span>Pacientes inactivos</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -68,7 +68,10 @@
                             <a class="nav-link @yield('active-funcionarios')" href="#functionarys_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Funcionarios</span></a>
                             <ul class="collapse list-unstyled" id="functionarys_Submenu">
                                 <li>
-                                    <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Lista de funcionarios</span></a>
+                                    <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Funcionarios</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-funcionariosinactivos')" href="{{url('funcionarios/inactivos')}}"><span>Funcionarios inactivos</span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-prestacionesrealizadas')" href="{{url('prestaciones')}}"><span>Prestaciones realizadas</span></a>

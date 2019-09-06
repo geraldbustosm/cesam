@@ -15,6 +15,7 @@
 @endif
 <h1>Ingresar pacientes</h1>
 <div class="div-full">
+	<!-- Return alert for success query -->
 	@if (session('status'))
 	<div class="alert alert-success" role="alert">
 		{{ session('status') }}
@@ -22,9 +23,11 @@
 	@endif
 	<form name="onSubmit" method="post" action="{{ url('registrarpaciente') }}">
 		@csrf
+		<!-- UID -->
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Rut o pasaporte">
 		</div>
+		<!-- Check UID for Chilean -->
 		<div class="form-group">
 			<div class="alert alert-success" role="alert" id="success">
 				Rut / Pasaporte correcto!
@@ -33,9 +36,21 @@
 				Rut inválido...
 			</div>
 		</div>
+		<!-- Names -->
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre completo">
+			<div class="form-row">
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre completo">
+				</div>
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('apellido1') ? ' is-invalid' : '' }}" value="{{ old('apellido1') }}" id="apellido1" name="apellido1" placeholder="Primer apellido">
+				</div>
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('apellido2') ? ' is-invalid' : '' }}" value="{{ old('apellido2') }}" id="apellido2" name="apellido2" placeholder="Segundo Apellido">
+				</div>
+			</div>
 		</div>
+		<!-- Location -->
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
@@ -59,11 +74,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('direccion_opcional') ? ' is-invalid' : '' }}" value="{{ old('direccion_opcional') }}" id="direccion_opcional" name="direccion_opcional" placeholder="Dirección opcional">
-			<small id="addressHelp" class="form-text text-muted">La dirección no será de visualización pública.</small>
-		</div>
-
+		<!-- End location -->
+		<!-- Sex dropdown -->
 		<div class="form-group">
 			<select class="form-control" name="patient_sex" required>
 				<option selected disabled>Por favor seleccione un genero / sexo </option>
@@ -72,7 +84,7 @@
 				@endforeach
 			</select>
 		</div>
-
+		<!-- Prevition dropdown -->
 		<div class="form-group">
 			<select class="form-control" name="prevition" required>
 				<option selected disabled>Por favor seleccione una prevision de salud</option>
@@ -81,7 +93,7 @@
 				@endforeach
 			</select>
 		</div>
-
+		<!-- Birthdate datepicker -->
 		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
 			<input id="datepicker" name="datepicker" width="276" required>
@@ -92,12 +104,6 @@
 					uiLibrary: 'bootstrap4'
 				};
 				$('#datepicker').datepicker(config);
-
-				$("#datepicker").on("change", function() {
-					var from = $("#datepicker").val().split("/");
-					// Probar usando la id 'datepicker' en vez de var 'date'
-					var date = new Date(from[2], from[1] - 1, from[0]);
-				});
 			</script>
 		</div>
 
@@ -105,6 +111,7 @@
 	</form>
 </div>
 
+<script>document.getElementById('people_Submenu').className += ' show';</script>
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
 @endsection
