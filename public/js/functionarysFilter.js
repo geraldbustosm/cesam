@@ -40,29 +40,53 @@ function createRow(num, data) {
         celdas[i] = fila.insertCell(i);
         if (i == 0) celdas[i].className = "bold-cell";
     }
-    // Getting users
+    // Get Full Name
+    var userPrimerNombre = getFirstName(data);
+    var userApellidoPaterno = getLastName1(data);
+    // Get buttons
+    var actionBtns = getBtns(data);
+    //Adding cells content
+    celdas[0].innerHTML = num + 1;
+    celdas[1].innerHTML = getUser(data);
+    celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
+    celdas[3].innerHTML = data.profesion;
+    celdas[4].innerHTML = getSpeciality(data);
+    celdas[5].innerHTML = actionBtns;
+
+
+}
+// Getting users
+function getUser(data) {
     var user;
     for (var j = 0; j < userArr.length; j++) {
         if (data.user_id == userArr[j].id) {
             user = userArr[j].nombre;
         }
     }
-
-    // Getting name1
+    return user;
+}
+// Getting first name
+function getFirstName(data) {
     var userPrimerNombre;
     for (var j = 0; j < userArr.length; j++) {
         if (data.user_id == userArr[j].id) {
             userPrimerNombre = userArr[j].primer_nombre;
         }
     }
-    // Getting name2
+    return userPrimerNombre;
+}
+// Getting more names
+function getLastName1(data) {
     var userApellidoPaterno;
     for (var j = 0; j < userArr.length; j++) {
         if (data.user_id == userArr[j].id) {
             userApellidoPaterno = userArr[j].apellido_paterno;
         }
     }
-    // Getting speciality
+    return userApellidoPaterno;
+}
+// Getting speciality
+function getSpeciality(data) {
     var speciality = "";
     for (var k = 0; k < fsArr.length; k++) {
         if (data.id == fsArr[k].funcionarios_id) {
@@ -73,33 +97,29 @@ function createRow(num, data) {
             }
         }
     }
-    // Action buttons by active status
+    return speciality;
+}
+// Action buttons by active status
+function getBtns(data) {
     try {
         var active = data.activa;
-        var tmp;
+        var tmp = "";
         if (active == 1) {
             tmp = ` <td>
                     <a href='#' data-toggle='modal' data-target='#exampleModal'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:delFunctionarys(${data.user_id})'><i title='Borrar' class='material-icons'>delete</i></a>
-                    </td>`
+                    <a href='javascript:delFunctionary(${data.user_id})'><i title='Borrar' class='material-icons'>delete</i></a>
+                    </td>`;
+            return tmp;
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:actFunctionarys(${data.user_id})'><i title='Activar' class='material-icons'>person_add</i></a>
-                    </td>`
+                    <a href='javascript:actFunctionary(${data.user_id})'><i title='Activar' class='material-icons'>person_add</i></a>
+                    </td>`;
+            return tmp;
         }
     } catch (ex) {
-        tmp = "";
+        return tmp;
     }
-    //Adding cells content
-    celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = user;
-    celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
-    celdas[3].innerHTML = data.profesion;
-    celdas[4].innerHTML = speciality;
-    celdas[5].innerHTML = tmp;
-
-
 }
 /***************************************************************************************************************************
                                                 FILTER FUNCTIONARYS
@@ -122,14 +142,14 @@ function filter(searchText) {
     init(1);
 }
 // Wait 0.8 sec by every keyup and then call filter function
-function search(data) {
+function search() {
     // Listener for every keyup
-    searchbox.addEventListener("keyup", function () {
+    searchbox.addEventListener("keyup", function() {
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        var timer = setInterval(function () {
+        var timer = setInterval(function() {
             count--;
             if (count == 0) {
                 // Get text from searchbox item (id of tag)
@@ -154,4 +174,4 @@ function init(page) {
 }
 //Start
 init(1);
-search(fullArray);
+search();

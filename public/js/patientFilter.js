@@ -19,7 +19,7 @@ function changePage(page) {
     // Clean the table before re-filling
     tabla.innerHTML = "";
     // Re-filling table with patients
-    
+
     for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
         try {
             // Insert the rows with patients info.
@@ -72,7 +72,7 @@ function writeRut(DNI) {
     return tmpstr;
 }
 // Gender of patient
-function getGender(data){
+function getGender(data) {
     // Getting sex
     var gender;
     for (var j = 0; j < sexArr.length; j++) {
@@ -83,7 +83,7 @@ function getGender(data){
     return gender;
 }
 // Previton of patient
-function getPrevition(data){
+function getPrevition(data) {
     var prev;
     for (var k = 0; k < prevArr.length; k++) {
         if (data.prevision_id == prevArr[k].id) {
@@ -93,7 +93,7 @@ function getPrevition(data){
     return prev;
 }
 // Action buttons by active status
-function writeActionButtons(data){
+function writeActionButtons(data) {
     try {
         var active = data.activa;
         var tmp;
@@ -102,13 +102,13 @@ function writeActionButtons(data){
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
                     <a href='javascript:addAttendance(${data.DNI})'><i title='Añadir prestación' class='material-icons'>add</i></a>
                     <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:delPatients(${data.DNI})'><i title='Borrar' class='material-icons'>delete</i></a>
+                    <a href='javascript:delPatient(${data.DNI})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
                     <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:actPatients(${data.DNI})'><i title='Activar' class='material-icons'>person_add</i></a>
+                    <a href='javascript:actPatient(${data.DNI})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }
     } catch (ex) {
@@ -140,7 +140,7 @@ function getAge(bdate) {
 /***************************************************************************************************************************
                                                     FILTER PATIENTS
 ****************************************************************************************************************************/
-// Generate a new table whit patients that have 'searchText' on their ID
+// Generate a new table with patients that have 'searchText' on their ID
 function filter(searchText) {
     // Create a variable for patients matches with searchText, and another variable for the possition in the new array
     var newPatients = [];
@@ -160,12 +160,12 @@ function filter(searchText) {
 // Wait 0.8 sec by every keyup and then call filter function
 function search() {
     // Listener for every keyup
-    searchbox.addEventListener("keyup", function () {
+    searchbox.addEventListener("keyup", function() {
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        var timer = setInterval(function () {
+        var timer = setInterval(function() {
             count--;
             if (count == 0) {
                 // Get text from searchbox item (id of tag)

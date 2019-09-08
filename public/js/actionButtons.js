@@ -16,19 +16,19 @@ function confirmAction(DNI, idForm){
     });
 }
 // Deactivate the patient
-function delPatients(DNI) {
+function delPatient(DNI) {
     confirmAction(DNI, 'DNI');
 }
 // Deactivate the functionary
-function delFunctionarys(DNI){
+function delFunctionary(DNI){
     confirmAction(DNI, 'DNI');
 }
 // Reactivate the patient
-function actPatients(DNI) {
+function actPatient(DNI) {
     confirmAction(DNI, 'DNI');
 }
 // Reactivate the functionary
-function actFunctionarys(DNI){
+function actFunctionary(DNI){
     confirmAction(DNI, 'DNI')
 }
 // Add attendace to the patient

@@ -89,7 +89,23 @@ class AdminController extends Controller
 
     public function showTesting()
     {
-        return view('general.test');
+        $data = Diagnosis::orderBy('descripcion')->get();
+        return view('general.test', ['data' => $data]);
+    }
+
+    public function regTesting(Request $request, $id){
+        
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:382'
+        ]);
+
+        $diagnosis = new Diagnosis;
+
+        $diagnosis->descripcion = $request->descripcion;
+
+        $diagnosis->save();
+
+        return redirect('testing')->with('status', 'Nuevo diagnostico creado');
     }
 
     /***************************************************************************************************************************
@@ -109,12 +125,12 @@ class AdminController extends Controller
     public function showAddRelease()
     {
         $data = Release::orderBy('descripcion')->get();
-        return view('admin.releaseForm', ['data' => $data]);
+        return view('admin.releaseForm', ['data' => $data, 'table' => 'Altas']);
     }
     public function showAddProvenance()
     {
         $data = Provenance::orderBy('descripcion')->get();
-        return view('admin.provenanceForm', ['data' => $data]);
+        return view('admin.provenanceForm', ['data' => $data, 'table' => 'Procedencias']);
     }
 
     public function showAddStage()
@@ -131,7 +147,7 @@ class AdminController extends Controller
     public function showAddPrevition()
     {
         $data = Prevition::orderBy('descripcion')->get();
-        return view('admin.previtionForm', ['data' => $data]);
+        return view('admin.previtionForm', ['data' => $data, 'table' => 'Previsiones']);
     }
     public function showAddProgram()
     {
@@ -142,36 +158,36 @@ class AdminController extends Controller
     public function showAddDiagnosis()
     {
         $data = Diagnosis::orderBy('descripcion')->get();
-        return view('admin.diagnosisForm', ['data' => $data]);
+        return view('admin.diagnosisForm', ['data' => $data, 'table' => 'Diagnósticos']);
     }
 
     public function showAddAtributes()
     {
         $data = Atributes::orderBy('descripcion')->get();
-        return view('admin.atributesForm', ['data' => $data]);
+        return view('admin.atributesForm', ['data' => $data, 'table' => 'Atributos']);
     }
 
     public function showAddSex()
     {
         $data = Sex::orderBy('descripcion')->get();;
-        return view('admin.sexForm', ['data' => $data]);
+        return view('admin.sexForm', ['data' => $data, 'table' => 'Géneros']);
     }
     public function showAddType()
     {
         $data = Type::orderBy('descripcion')->get();;
-        return view('admin.typeForm', ['data' => $data]);
+        return view('admin.typeForm', ['data' => $data, 'table' => 'Tipo prestaciones']);
     }
 
     public function showAddSIGGES()
     {
         $data = SiGGES::orderBy('descripcion')->get();;
-        return view('admin.siggesForm', ['data' => $data]);
+        return view('admin.siggesForm', ['data' => $data, 'table' => 'Tipo GES']);
     }
 
     public function showAddSpeciality()
     {
         $data = Speciality::orderBy('descripcion')->get();
-        return view('admin.specialityForm', ['data' => $data]);
+        return view('admin.specialityForm', ['data' => $data, 'table' => 'Especialidades']);
     }
 
     public function showAddProvision()
@@ -289,7 +305,7 @@ class AdminController extends Controller
 
         $alta->save();
 
-        return redirect('registraralta')->with('status', 'Nueva alta creada');
+        return redirect('registrar/alta')->with('status', 'Nueva alta creada');
     }
     public function registerProvenance(Request $request)
     {
@@ -303,7 +319,7 @@ class AdminController extends Controller
 
         $provenance->save();
 
-        return redirect('registrarprocedencia')->with('status', 'Nueva procedencia creada');
+        return redirect('registrar/procedencia')->with('status', 'Nueva procedencia creada');
     }
     public function registerProgram(Request $request)
     {
@@ -334,7 +350,7 @@ class AdminController extends Controller
 
         $atributo->save();
 
-        return redirect('registraratributos')->with('status', 'Nuevo atributo creado');
+        return redirect('registrar/atributos')->with('status', 'Nuevo atributo creado');
     }
 
     public function registerSex(Request $request)
@@ -349,7 +365,7 @@ class AdminController extends Controller
 
         $sex->save();
 
-        return redirect('registrarsexo')->with('status', 'Nuevo Sexo / Genero creado');
+        return redirect('registrar/genero')->with('status', 'Nuevo Sexo / Genero creado');
     }
     public function registerSIGGES(Request $request)
     {
@@ -363,7 +379,7 @@ class AdminController extends Controller
 
         $sigges->save();
 
-        return redirect('registrarsigges')->with('status', 'Nuevo tipo de SiGGES creado');
+        return redirect('registrar/sigges')->with('status', 'Nuevo tipo de SiGGES creado');
     }
 
     public function registerType(Request $request)
@@ -378,7 +394,7 @@ class AdminController extends Controller
 
         $type->save();
 
-        return redirect('registrartipo')->with('status', 'Nuevo tipo de prestación creada');
+        return redirect('registrar/tipo')->with('status', 'Nuevo tipo de prestación creada');
     }
 
     public function registerSpeciality(Request $request)
@@ -393,7 +409,7 @@ class AdminController extends Controller
 
         $speciality->save();
 
-        return redirect('registrarespecialidad')->with('status', 'Nueva especialidad creada');
+        return redirect('registrar/especialidad')->with('status', 'Nueva especialidad creada');
     }
 
     public function registerPrevition(Request $request)
@@ -409,7 +425,7 @@ class AdminController extends Controller
 
         $prevition->save();
 
-        return redirect('registrarprevision')->with('status', 'Nueva prevision creada');
+        return redirect('registrar/prevision')->with('status', 'Nueva prevision creada');
     }
     public function registerDiagnosis(Request $request)
     {
@@ -424,7 +440,7 @@ class AdminController extends Controller
 
         $diagnosis->save();
 
-        return redirect('registrardiagnostico')->with('status', 'Nuevo diagnostico creado');
+        return redirect('registrar/diagnostico')->with('status', 'Nuevo diagnostico creado');
     }
 
     public function registerUser(Request $request)

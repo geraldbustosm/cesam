@@ -1,9 +1,9 @@
-@extends('layouts.main')
+@extends('admin.registerMain')
 @section('title','Registrar Atributos')
 @section('active-ingresardatos','active')
-@section('active-ingresaratributos','active')
+@section('active-registrar','active')
 
-@section('content')
+@section('sub-content')
 <h1>Registrar Atributos</h1>
 <div class="div-full">
     @if (session('status'))
@@ -11,7 +11,7 @@
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registraratributos') }}">
+    <form method="post" action="{{ url('registrar/atributos') }}">
         @csrf
         <div class="form-group">
             <div class="form-row">
@@ -21,6 +21,9 @@
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
                 <div class="col">
+                    <div>
+                        <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
+                    </div><br>
                     <div class="">
                         <table class="table table-striped">
                             <thead>
@@ -48,10 +51,7 @@
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
+    var table = <?php echo json_encode($table); ?>;
     document.getElementById('data_Submenu').className += ' show';
 </script>
-<!-- Adding script using on this view -->
-<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/tableGenerator.js')}}"></script>
 @endsection

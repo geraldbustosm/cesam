@@ -29,6 +29,10 @@ Route::get('/', 'GeneralController@index');
 Route::get('asignarespecialidad', 'AdminController@showAsignSpeciality');
 
 Route::post('asignarespecialidad', 'AdminController@AsignSpeciality');
+// Etapa
+Route::get('crearetapa', 'AdminController@showAddStage');
+
+Route::post('crearetapa', 'AdminController@registerStage');
 // Prestación por especialidad
 Route::get('asignarespecialidadprestacion', 'AdminController@showAsignProvision');
 
@@ -62,25 +66,27 @@ Route::post('pacientes/inactivos', 'AdminController@activatePatient');
                                                     REGISTERS
 ****************************************************************************************************************************/
 // Usuario
-Route::get('registrar', 'AdminController@showAddUser');
+Route::get('registrar/usuario', 'AdminController@showAddUser');
 
-Route::post('registrar','AdminController@registerUser');
+Route::post('registrar/usuario','AdminController@registerUser');
+// Registros simples
+Route::get('registrar', 'AdminController@showAddSpeciality');
 // Alta
-Route::get('registraralta', 'AdminController@showAddRelease');
+Route::get('registrar/alta', 'AdminController@showAddRelease');
 
-Route::post('registraralta', 'AdminController@registerRelease');
+Route::post('registrar/alta', 'AdminController@registerRelease');
 // Atributos
-Route::get('registraratributos', 'AdminController@showAddAtributes');
+Route::get('registrar/atributos', 'AdminController@showAddAtributes');
 
-Route::post('registraratributos', 'AdminController@registerAtributes');
+Route::post('registrar/atributos', 'AdminController@registerAtributes');
+// Diagnostico
+Route::get('registrar/diagnostico', 'AdminController@showAddDiagnosis');
+
+Route::post('registrar/diagnostico', 'AdminController@registerDiagnosis');
 // especialidad
-Route::get('registrarespecialidad', 'AdminController@showAddSpeciality');
+Route::get('registrar/especialidad', 'AdminController@showAddSpeciality');
 
-Route::post('registrarespecialidad', 'AdminController@registerSpeciality');
-// procedencia
-Route::get('registrarprocedencia', 'AdminController@showAddProvenance');
-
-Route::post('registrarprocedencia', 'AdminController@registerProvenance');
+Route::post('registrar/especialidad', 'AdminController@registerSpeciality');
 // Funcionario
 Route::get('registrarfuncionario', 'AdminController@showAddFunctionary');
 
@@ -93,35 +99,30 @@ Route::post('registrarpaciente', 'GeneralController@registerPatient');
 Route::get('registrarprestacion', 'AdminController@showAddProvision');
 
 Route::post('registrarprestacion', 'AdminController@registerProvision');
+// Previsión
+Route::get('registrar/prevision', 'AdminController@showAddPrevition');
+
+Route::post('registrar/prevision', 'AdminController@registerPrevition');
+// Procedencia
+Route::get('registrar/procedencia', 'AdminController@showAddProvenance');
+
+Route::post('registrar/procedencia', 'AdminController@registerProvenance');
 // Programa
 Route::get('registrarprograma', 'AdminController@showAddProgram');
 
 Route::post('registrarprograma', 'AdminController@registerProgram');
-// Previsión
-Route::get('registrarprevision', 'AdminController@showAddPrevition');
-
-Route::post('registrarprevision', 'AdminController@registerPrevition');
-// Etapa
-Route::get('crearetapa', 'AdminController@showAddStage');
-
-Route::post('crearetapa', 'AdminController@registerStage');
-// Diagnostico
-Route::get('registrardiagnostico', 'AdminController@showAddDiagnosis');
-
-Route::post('registrardiagnostico', 'AdminController@registerDiagnosis');
 // Sexo
-Route::get('registrarsexo', 'AdminController@showAddSex');
+Route::get('registrar/genero', 'AdminController@showAddSex');
 
-Route::post('registrarsexo', 'AdminController@registerSex');
+Route::post('registrar/genero', 'AdminController@registerSex');
 // SIGGES
-Route::get('registrarsigges', 'AdminController@showAddSIGGES');
+Route::get('registrar/sigges', 'AdminController@showAddSIGGES');
 
-Route::post('registrarsigges', 'AdminController@registerSIGGES');
+Route::post('registrar/sigges', 'AdminController@registerSIGGES');
 // Tipo
-Route::get('registrartipo', 'AdminController@showAddType');
+Route::get('registrar/tipo', 'AdminController@showAddType');
 
-Route::post('registrartipo', 'AdminController@registerType');
-
+Route::post('registrar/tipo', 'AdminController@registerType');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/
@@ -129,13 +130,6 @@ Route::post('registrartipo', 'AdminController@registerType');
 Route::get('pacientes/edit/{dni}', 'AdminController@showEditPatient');
 
 Route::post('pacientes/edit', 'AdminController@editPatient');
-
-/***************************************************************************************************************************
-                                                    NEW  ATTENDANCE
-****************************************************************************************************************************/
-// SIGGES
-
-
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
@@ -149,3 +143,4 @@ Route::get('get-speciality-list','AdminController@getStateList');
 Route::get('get-provision-list','AdminController@getCityList');
 
 Route::get('testing', 'AdminController@showTesting');
+Route::post('testing', 'AdminController@regTesting');
