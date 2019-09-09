@@ -104,9 +104,7 @@
                                 <li>
                                     <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrarprograma')}}"><span>Ingresar programa</span></a>
                                 </li>
-                                <li>
-                                    <a class="nav-link @yield('active-crearetapa')" href="{{url('crearetapa')}}"><span>Crear una nueva etapa</span></a>
-                                </li>
+                                
                                 <li>
                                     <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrarprestacion')}}"><span>Ingresar prestación</span></a>
                                 </li>
@@ -116,9 +114,7 @@
                                 <li>
                                     <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignarespecialidadprestacion')}}"><span>Asignar prestaciones-especialidades</span></a>
                                 </li>
-                                <li>
-                                    <a class="nav-link @yield('active-ingresaratencion')" href="{{url('registraratencion')}}"><span>Prueba Asignar Atencion con etapa</span></a>
-                                </li>
+                                
                             </ul>
                         </li>
                     </nav>

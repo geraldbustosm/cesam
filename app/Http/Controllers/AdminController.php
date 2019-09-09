@@ -154,7 +154,7 @@ class AdminController extends Controller
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data], compact('program'));
+        return view('admin.programForm', ['data' => $data], compact('speciality'));
     }
     public function showAddDiagnosis()
     {
@@ -760,7 +760,7 @@ class AdminController extends Controller
         $attendance->duracion = $request->get('duration');
 
         $attendance->save();
-        
+
         return view('admin.clinicalRecords');
         
     }
