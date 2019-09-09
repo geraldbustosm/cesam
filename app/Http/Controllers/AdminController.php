@@ -467,7 +467,7 @@ class AdminController extends Controller
 
         $user->save();
 
-        return redirect('registrar')->with('status', 'Usuario creado');
+        return redirect('registrar/usuario')->with('status', 'Usuario creado');
     }
 
     public function registerFunctionary(Request $request)
