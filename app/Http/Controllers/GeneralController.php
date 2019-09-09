@@ -25,14 +25,18 @@ class GeneralController extends Controller
     public function registerPatient(Request $request){
 
         $validation = $request->validate([
-            'id' => 'required|int|unique:paciente',
+            'id' => 'required|string',
             //'id' => 'required|int|max:255',
             'nombre' => 'required|string|max:255',
             'pais' => 'required|string|max:255',
             'region' => 'required|string|max:255',
+            'comuna' => 'required|string|max:255',
+            'calle' => 'required|string|max:255',
+            'numero' => 'required|int',
+            'patient_sex' => 'required',
+            'prevition' => 'required|int',
             'numero' => 'required|int',
             'direccion' => 'string|max:255',
-            'direccion_opcional' => 'string|max:255|nullable',
             'datepicker' => 'required|date_format:"d/m/Y"',
             ]);
 
@@ -43,8 +47,8 @@ class GeneralController extends Controller
     
         $patient->nombre1 = $nombre[0];
         $patient->nombre2 = $nombre[1];
-        $patient->apellido1 = $nombre[2];
-        $patient->apellido2 = $nombre[3];
+        $patient->apellido1 = $request->apellido1;
+        $patient->apellido2 = $request->apellido2;
         $patient->DNI = $request->id;
         $var = $request->get('datepicker');
         $date = str_replace('/', '-', $var);
