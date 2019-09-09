@@ -19,6 +19,7 @@ use App\Program;
 use App\SiGGES;
 use App\Provenance;
 use App\Stage;
+use App\Attendance;
 
 
 use Illuminate\Http\Request;
@@ -287,11 +288,18 @@ class AdminController extends Controller
         $stage->sigges_id = $request->sigges_id;
         $stage->procedencia_id = $request->procedencia_id;
         $stage->funcionario_id = $request->funcionario_id;
-        $stage->paciente_id = $request->paciente_id;
+        $stage->paciente_id = $request->idpatient;
         $stage->save();
+        $DNI=$request->idpatient;
+        $patient = Patient::where('id',$DNI)
+                ->where('activa', 1)
+                ->first();
+        $users = Functionary::where('activa', 1)->get();
+        return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));
+        //return view('general.test');
 
 
-        return redirect('crearetapa')->with('status', 'etapa creada');
+       // return redirect('crearetapa')->with('status', 'etapa creada');
     }
     public function registerRelease(Request $request)
     {
@@ -683,7 +691,7 @@ class AdminController extends Controller
      ****************************************************************************************************************************/
     public function checkCurrStage(Request $request)
     {
-        $DNI = $request->DNI_stage;
+        $DNI = $request->DNI_stage;//dni del paciente
         $patient = Patient::where('DNI',$DNI)
                             ->where('activa', 1)
                             ->first();
@@ -692,7 +700,20 @@ class AdminController extends Controller
                         ->where('activa', 1)
                         ->first();
         if (empty($stage)) {
-            return view('general.test', ['patient' => 'no tiene ninguna etapa', 'DNI'=>$DNI]);
+            
+            //$functionary = Functionary::where('activa', 1)->get();
+            $diagnosis = Diagnosis::where('activa', 1)->get();
+            $program = Program::where('activa', 1)->get();
+            $release = Release::where('activa', 1)->get();
+            $Sigges = SiGGES::where('activa', 1)->get();
+            $provenance = Provenance::all();
+            $funcionarios = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
+                      ->select('funcionarios.id','funcionarios.profesion','users.primer_nombre','users.apellido_paterno')
+                      ->where('funcionarios.activa', '=', 1)
+                      ->get();                            
+
+           // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+           return view('admin.stageCreateForm', ['patient' => 'no tiene ninguna etapa', 'idpatient'=>$id_patient])->with(compact('funcionarios', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
         } else {
             $users = Functionary::where('activa', 1)->get();
             return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));  
@@ -703,14 +724,14 @@ class AdminController extends Controller
         $users = Functionary::where('activa', 1)->get();
         return view('general.attendanceForm', compact('users'));
     }
-
+    // acuerdate de cambiar estas weas wn 
     public function getStateList(Request $request)
     {
         $functionary = Functionary::find($request->functionary_id);
         $states = $functionary->speciality;
         return response()->json($states);
     }
-
+    // y esto igual y los nombres
     public function getCityList(Request $request)
     {
         $specility = Speciality::find($request->speciality_id);
@@ -721,27 +742,26 @@ class AdminController extends Controller
     public function registerAttendance(Request $request)
     {
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            //'descripcion' => 'required|string|max:255'
         ]);
-
         $attendance = new Attendance;
 
-        $attendance->funcionario_id = $request->functionary_id;
-        $patienDNI = 'prueba';
-        
-        $etapa = Stage::find($request->$stage->id)
-            ->where('paciente_id', $patient->id)
-            ->first();
-
-        $attendance->etapa_id = $etapa->id;
+        $attendance->funcionario_id = $request->functionary;
+        $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
-        $attendance->fecha = "2019-07-19 06:19:51.029";
+
+        $var = $request->get('datepicker');
+        $date = str_replace('/', '-', $var);
+        $correctDate = date('Y-m-d', strtotime($date));
+        $attendance->fecha = $correctDate ;
+
         $attendance->asistencia = $request->get('selectA');
-        $attendance->hora = "06:19:51.029";
-        $attendance->duracion = "06:19:51.029";
+        $attendance->hora = $request->get('timeInit');
+        $attendance->duracion = $request->get('duration');
 
         $attendance->save();
-        return View::make('general.test');
+        
+        return view('admin.clinicalRecords');
         
     }
 }

@@ -25,19 +25,12 @@
 		<div class="form-group">
 			<div class="form-row">
 				
-				<div class="col-4">
-                    <select class="form-control" name="paciente_id" required>
-				        <option selected disabled>Por favor seleccione un paciente </option>
-				        @foreach($patient as $paciente)
-				        <option value="{{ $paciente->id}}">{{ $paciente->DNI}}</option>
-				        @endforeach
-			        </select>
-				</div>
+
 				<div class="col-4">
                     <select class="form-control" name="funcionario_id" required>
 				        <option selected disabled>Por favor seleccione un funcionario </option>
-				        @foreach($functionary as $funcionarios)
-				        <option value="{{ $funcionarios->id}}">{{ $funcionarios->user_id}}</option>
+				        @foreach($funcionarios as $funcionario)
+				        <option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno." (".$funcionario->profesion.")"}}</option>
 				        @endforeach 
 			        </select>
                 </div>
@@ -100,16 +93,16 @@
 			</select>
 		</div>
 		-->
-      
-       
+		<div class="form-group" class = "register">
+        <input type="hidden" class="form-control {{ $errors->has('idpatient') ? ' is-invalid' : '' }}" value="<?=$idpatient;?>"  id="idpatient" name="idpatient">
 		<button type="submit" class="btn btn-primary">Registrar</button>
 		<input type="button" href="javascript:validator()" value="Test" id="testing" />
+        </div>      
+       
+		
+		
 	</form>
 </div>
 
-<script>
-	document.getElementById('data_Submenu').className += ' show';
-</script>
-<!-- Adding script using on this view -->
-<script src="{{asset('js/idValidator.js')}}"></script>
+
 @endsection

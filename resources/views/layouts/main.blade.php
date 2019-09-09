@@ -111,6 +111,9 @@
                                     <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrarprestacion')}}"><span>Ingresar prestación</span></a>
                                 </li>
                                 <li>
+                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar funcionarios-especialidades</span></a>
+                                </li>
+                                <li>
                                     <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignarespecialidadprestacion')}}"><span>Asignar prestaciones-especialidades</span></a>
                                 </li>
                                 <li>
