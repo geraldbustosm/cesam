@@ -70,7 +70,7 @@ Route::get('registrar/usuario', 'AdminController@showAddUser');
 
 Route::post('registrar/usuario','AdminController@registerUser');
 // Registros simples
-Route::get('registrar', 'AdminController@showAddSpeciality');
+Route::get('registrar', 'AdminController@showAddRelease');
 // Alta
 Route::get('registrar/alta', 'AdminController@showAddRelease');
 

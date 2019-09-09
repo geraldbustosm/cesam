@@ -17,16 +17,20 @@
             <div class="form-row">
                 <div class="col-6">
                     <select class="form-control" name="descripcion_espe" required>
-				        <option selected disabled>Por favor seleccione un especialidad </option>
-				        @foreach($speciality as $especialidad)
-				        <option value="{{ $especialidad->descripcion}}">{{ $especialidad->descripcion}}</option>
-				        @endforeach
-			        </select>
+                        <option selected disabled>Por favor seleccione un especialidad </option>
+                        @foreach($speciality as $especialidad)
+                        <option value="{{ $especialidad->descripcion}}">{{ $especialidad->descripcion}}</option>
+                        @endforeach
+                    </select>
+                    <br>
                     <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de programa">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
                 <div class="col">
+                    <div>
+                        <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
+                    </div><br>
                     <div class="">
                         <table class="table table-striped">
                             <thead>
