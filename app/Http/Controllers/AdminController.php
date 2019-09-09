@@ -143,7 +143,7 @@ class AdminController extends Controller
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data], compact('speciality'));
+        return view('admin.programForm', compact('speciality', 'data'));
     }
     public function showAddDiagnosis()
     {
