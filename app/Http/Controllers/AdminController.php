@@ -49,7 +49,7 @@ class AdminController extends Controller
         $patients = Patient::where('activa', 1)->get();
         $prev = Prevition::all();
         $sex = Sex::all();
-        return view('general.patient', ['patients' => $patients, 'prev' => $prev, 'sex' => $sex]);
+        return view('general.patient', compact('patients', 'prev', 'sex'));
     }
 
     public function showInactivePatients()
@@ -57,7 +57,7 @@ class AdminController extends Controller
         $patients = Patient::where('activa', 0)->get();
         $prev = Prevition::all();
         $sex = Sex::all();
-        return view('admin.patientInactive', ['patients' => $patients, 'prev' => $prev, 'sex' => $sex]);
+        return view('admin.patientInactive', compact('patients', 'prev', 'sex'));
     }
 
     public function showFunctionarys()
@@ -66,7 +66,7 @@ class AdminController extends Controller
         $user = User::all();
         $speciality = Speciality::all();
         $fs = FunctionarySpeciality::all();
-        return view('general.functionarys', ['functionary' => $functionary, 'user' => $user, 'speciality' => $speciality, 'fs' => $fs]);
+        return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs'));
     }
 
     public function showInactiveFunctionarys()
@@ -75,7 +75,7 @@ class AdminController extends Controller
         $user = User::all();
         $speciality = Speciality::all();
         $fs = FunctionarySpeciality::all();
-        return view('admin.funtionaryInactive', ['functionary' => $functionary, 'user' => $user, 'speciality' => $speciality, 'fs' => $fs]);
+        return view('admin.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
     }
 
     public function showPatientInfo()
@@ -90,23 +90,12 @@ class AdminController extends Controller
 
     public function showTesting()
     {
-        $data = Diagnosis::orderBy('descripcion')->get();
-        return view('general.test', ['data' => $data]);
+        return view('general.test');
     }
 
-    public function regTesting(Request $request, $id){
-        
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:382'
-        ]);
+    public function regTesting(){
 
-        $diagnosis = new Diagnosis;
-
-        $diagnosis->descripcion = $request->descripcion;
-
-        $diagnosis->save();
-
-        return redirect('testing')->with('status', 'Nuevo diagnostico creado');
+        return redirect('testing');
     }
 
     /***************************************************************************************************************************
@@ -154,7 +143,7 @@ class AdminController extends Controller
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', ['data' => $data], compact('program'));
+        return view('admin.programForm', ['data' => $data], compact('speciality'));
     }
     public function showAddDiagnosis()
     {
@@ -194,7 +183,7 @@ class AdminController extends Controller
     public function showAddProvision()
     {
         $type = Type::where('activa', 1)->get();
-        return view('admin.provisionForm', ['type' => $type]);
+        return view('admin.provisionForm', compact('type'));
     }
 
     public function showAsignSpeciality()
@@ -267,7 +256,7 @@ class AdminController extends Controller
             $patient_birthday = join("/", array($patient_birthday[2], $patient_birthday[1], $patient_birthday[0]));
         }
 
-        return view('admin.patientEdit', ['patient' => $patient, 'patient_birthday' => $patient_birthday, 'prev' => $prev, 'sex' => $sex]);
+        return view('admin.patientEdit', compact('patient', 'patient_birthday', 'prev', 'sex'));
     }
 
     /***************************************************************************************************************************
@@ -296,10 +285,6 @@ class AdminController extends Controller
                 ->first();
         $users = Functionary::where('activa', 1)->get();
         return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));
-        //return view('general.test');
-
-
-       // return redirect('crearetapa')->with('status', 'etapa creada');
     }
     public function registerRelease(Request $request)
     {
