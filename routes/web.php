@@ -42,7 +42,7 @@ Route::post('asignarespecialidadprestacion', 'AdminController@AsignProvision');
                                                     VIEW INFO
 ****************************************************************************************************************************/
 // Fichas
-Route::get('fichas', 'AdminController@showClinicalRecords');
+Route::post('fichas', 'AdminController@showClinicalRecords');
 // Funcionarios
 Route::get('funcionarios', 'AdminController@showFunctionarys');
 
@@ -138,7 +138,7 @@ Route::post('pacientes/edit', 'AdminController@editPatient');
 Route::post('registraratencion', 'AdminController@checkCurrStage');
 
 Route::post('registraratencionOk', 'AdminController@registerAttendance');
-
+// cambia los nombres aca wn
 Route::get('get-speciality-list','AdminController@getStateList');
 Route::get('get-provision-list','AdminController@getCityList');
 
