@@ -263,11 +263,18 @@ class AdminController extends Controller
         $stage->sigges_id = $request->sigges_id;
         $stage->procedencia_id = $request->procedencia_id;
         $stage->funcionario_id = $request->funcionario_id;
-        $stage->paciente_id = $request->paciente_id;
+        $stage->paciente_id = $request->idpatient;
         $stage->save();
+        $DNI=$request->idpatient;
+        $patient = Patient::where('id',$DNI)
+                ->where('activa', 1)
+                ->first();
+        $users = Functionary::where('activa', 1)->get();
+        return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));
+        //return view('general.test');
 
 
-        return redirect('crearetapa')->with('status', 'etapa creada');
+       // return redirect('crearetapa')->with('status', 'etapa creada');
     }
     public function registerRelease(Request $request)
     {
@@ -633,7 +640,7 @@ class AdminController extends Controller
      ****************************************************************************************************************************/
     public function checkCurrStage(Request $request)
     {
-        $DNI = $request->DNI_stage;
+        $DNI = $request->DNI_stage;//dni del paciente
         $patient = Patient::where('DNI',$DNI)
                             ->where('activa', 1)
                             ->first();
@@ -642,7 +649,20 @@ class AdminController extends Controller
                         ->where('activa', 1)
                         ->first();
         if (empty($stage)) {
-            return view('general.test', ['patient' => 'no tiene ninguna etapa', 'DNI'=>$DNI]);
+            
+            //$functionary = Functionary::where('activa', 1)->get();
+            $diagnosis = Diagnosis::where('activa', 1)->get();
+            $program = Program::where('activa', 1)->get();
+            $release = Release::where('activa', 1)->get();
+            $Sigges = SiGGES::where('activa', 1)->get();
+            $provenance = Provenance::all();
+            $funcionarios = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
+                      ->select('funcionarios.id','funcionarios.profesion','users.primer_nombre','users.apellido_paterno')
+                      ->where('funcionarios.activa', '=', 1)
+                      ->get();                            
+
+           // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+           return view('admin.stageCreateForm', ['patient' => 'no tiene ninguna etapa', 'idpatient'=>$id_patient])->with(compact('funcionarios', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
         } else {
             $users = Functionary::where('activa', 1)->get();
             return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));   
