@@ -54,10 +54,10 @@
                             <a class="nav-link @yield('active-pacientes')" href="#patients_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Pacientes</span></a>
                             <ul class="collapse list-unstyled" id="patients_Submenu">
                                 <li>
-                                    <a class="nav-link @yield('active-pacientesactivos')" href="{{url('pacientes')}}"><span>Pacientes activos</span></a>
+                                    <a class="nav-link @yield('active-pacientesactivos')" href="{{url('pacientes')}}"><span>Pacientes</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-pacientesinactivos')" href="{{url('pacientesinactivos')}}"><span>Pacientes inactivos</span></a>
+                                    <a class="nav-link @yield('active-pacientesinactivos')" href="{{url('pacientes/inactivos')}}"><span>Pacientes inactivos</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -68,7 +68,10 @@
                             <a class="nav-link @yield('active-funcionarios')" href="#functionarys_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Funcionarios</span></a>
                             <ul class="collapse list-unstyled" id="functionarys_Submenu">
                                 <li>
-                                    <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Lista de funcionarios</span></a>
+                                    <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Funcionarios</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-funcionariosinactivos')" href="{{url('funcionarios/inactivos')}}"><span>Funcionarios inactivos</span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-prestacionesrealizadas')" href="{{url('prestaciones')}}"><span>Prestaciones realizadas</span></a>
@@ -96,49 +99,20 @@
                             <a class="nav-link @yield('active-ingresardatos')" href="#data_Submenu" data-toggle="collapse" class="dropdown-toggle" id="test123"><i class="material-icons">add_box</i><span>Agregar datos</span></a>
                             <ul class="collapse list-unstyled" id="data_Submenu">
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarespecialidad')" href="{{url('registrarespecialidad')}}"><span>Ingresar especialidad </span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-ingresarsexo')" href="{{url('registrarsexo')}}"><span>Ingresar genero/sexo </span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-ingresaratributos')" href="{{url('registraratributos')}}"><span>Ingresar atributos</span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-ingresaralta')" href="{{url('registraralta')}}"><span>Ingresar tipo de alta</span></a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link @yield('active-ingresarprevision')" href="{{url('registrarprevision')}}"><span>Ingresar prevision</span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-ingresardiagnostico')" href="{{url('registrardiagnostico')}}"><span>Ingresar diagnostico</span></a>
+                                    <a class="nav-link @yield('active-registrar')" href="{{url('registrar')}}"><span>Datos simples </span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrarprograma')}}"><span>Ingresar programa</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprocedencia')" href="{{url('registrarprocedencia')}}"><span>Ingresar procedencia</span></a>
-                                </li>
-                                <li>
                                     <a class="nav-link @yield('active-crearetapa')" href="{{url('crearetapa')}}"><span>Crear una nueva etapa</span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-ingresartipo')" href="{{url('registrartipo')}}"><span>Ingresar tipo de prestación</span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrarprestacion')}}"><span>Ingresar prestación</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarsigges')" href="{{url('registrarsigges')}}"><span>Ingresar SiGGES</span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar especialidad</span></a>
-                                </li>
-                                <li>
                                     <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignarespecialidadprestacion')}}"><span>Asignar prestaciones-especialidades</span></a>
                                 </li>
-
                                 <li>
                                     <a class="nav-link @yield('active-ingresaratencion')" href="{{url('registraratencion')}}"><span>Prueba Asignar Atencion con etapa</span></a>
                                 </li>

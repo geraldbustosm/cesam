@@ -5,70 +5,53 @@
 var tabla = document.getElementById('table-body');
 // Get the searchbox element for filter
 var searchbox = document.getElementById("searchbox");
+// Count of titles on table
+var maxColumns = document.getElementsByTagName('th').length;
 /***************************************************************************************************************************
                                                     FILL TABLE
 ****************************************************************************************************************************/
+// Generate table with patients
+function changePage(page) {
+    // Validate page so it can't be out of range.
+    if (page < 1) page = 1;
+    if (page > last_page) page = last_page;
+
+    // Clean the table before re-filling
+    tabla.innerHTML = "";
+    // Re-filling table with patients
+
+    for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
+        try {
+            // Insert the rows with patients info.
+            createRow(i, curArray[i]);
+        } catch (err) {
+            // We exit if don't have equal number of patients and records for page.
+            break;
+        }
+    }
+}
 // Write patients on the table
-function createRow(num, dato1, dato2, dato3, dato4, dato5, dato6, dato7) {
+function createRow(num, data) {
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
     // Create cells on the new row
     var celdas = [];
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < maxColumns; i++) {
         celdas[i] = fila.insertCell(i);
         if (i == 0) {
             celdas[i].className = "bold-cell";
         }
     }
-
-    // Set width of columns
-    
-    celdas[0].style.width = "40%";
-
-    // Getting sex
-    var sex;
-    for (var j = 0; j < sexArr.length; j++) {
-        if (dato5 == sexArr[j].id) {
-            sex = sexArr[j].descripcion;
-        }
-    }
-    // Getting prevition
-    var prev;
-    for (var k = 0; k < prevArr.length; k++) {
-        if (dato7 == prevArr[k].id) {
-            prev = prevArr[k].descripcion;
-        }
-    }
-    // Action buttons by active status
-    try {
-        var active = curArray[0].activa;
-        var tmp;
-        if (active == 1) {
-            tmp = ` <td> 
-                    <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a name='addingAttendance' href='javascript:addAttendance()'><i title='Añadir prestación' class='material-icons'>add</i></a>
-                    <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
-                    <a name='deletePatient' href='javascript:delPatients()'><i title='Borrar' class='material-icons'>delete</i></a>
-                    </td>`
-        } else {
-            tmp = ` <td>
-                    <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='pacientes/edit/` + dato1 + `'><i title='Editar' class='material-icons'>create</i></a>
-                    <a name='activatePatient' href='javascript:actPatients()'><i title='Activar' class='material-icons'>person_add</i></a>
-                    </td>`
-        }
-    } catch (ex) {
-        tmp = "";
-    }
+    // Getting info from patient
+    var sex = getGender(data);
     // Adding cells content
     celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = writeRut(dato1);
-    celdas[1].id = dato1;
-    celdas[2].innerHTML = dato2 + ' ' + dato3 + ' ' + dato4;
+    celdas[1].innerHTML = writeRut(data.DNI);
+    celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1 + ' ' + data.apellido2;
     celdas[3].innerHTML = sex;
-    celdas[4].innerHTML = getAge(dato6);
-    celdas[5].innerHTML = prev;
-    celdas[6].innerHTML = tmp;
+    celdas[4].innerHTML = getAge(data.fecha_nacimiento);
+    celdas[5].innerHTML = getPrevition(data);
+    celdas[6].innerHTML = writeActionButtons(data);
 }
 // Write DNI like rut standar format
 function writeRut(DNI) {
@@ -87,6 +70,51 @@ function writeRut(DNI) {
         }
     }
     return tmpstr;
+}
+// Gender of patient
+function getGender(data) {
+    // Getting sex
+    var gender;
+    for (var j = 0; j < sexArr.length; j++) {
+        if (data.sexo_id == sexArr[j].id) {
+            gender = sexArr[j].descripcion;
+        }
+    }
+    return gender;
+}
+// Previton of patient
+function getPrevition(data) {
+    var prev;
+    for (var k = 0; k < prevArr.length; k++) {
+        if (data.prevision_id == prevArr[k].id) {
+            prev = prevArr[k].descripcion;
+        }
+    }
+    return prev;
+}
+// Action buttons by active status
+function writeActionButtons(data) {
+    try {
+        var active = data.activa;
+        var tmp;
+        if (active == 1) {
+            tmp = ` <td> 
+                    <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
+                    <a href='javascript:addAttendance(${data.DNI})'><i title='Añadir prestación' class='material-icons'>add</i></a>
+                    <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='javascript:delPatient(${data.DNI})'><i title='Borrar' class='material-icons'>delete</i></a>
+                    </td>`
+        } else {
+            tmp = ` <td>
+                    <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
+                    <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='javascript:actPatient(${data.DNI})'><i title='Activar' class='material-icons'>person_add</i></a>
+                    </td>`
+        }
+    } catch (ex) {
+        tmp = "";
+    }
+    return tmp
 }
 // Calculate how many years have the patient
 function getAge(bdate) {
@@ -109,31 +137,10 @@ function getAge(bdate) {
     }
     return fullAge;
 }
-// Generate table with patients
-function changePage(page) {
-    // Validate page so it can't be out of range.
-    if (page < 1) page = 1;
-    if (page > last_page) page = last_page;
-
-    // Clean the table before re-filling
-    tabla.innerHTML = "";
-    // Re-filling table with patients
-    
-    for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
-        try {
-            // Insert the rows with patients info.
-            createRow(i, curArray[i].DNI, curArray[i].nombre1, curArray[i].apellido1, curArray[i].apellido2, curArray[i].sexo_id, curArray[i].fecha_nacimiento, curArray[i].prevision_id);
-        } catch (err) {
-            // We exit if don't have equal number of patients and records for page.
-            break;
-        }
-    }
-    
-}
 /***************************************************************************************************************************
                                                     FILTER PATIENTS
 ****************************************************************************************************************************/
-// Generate a new table whit patients that have 'searchText' on their ID
+// Generate a new table with patients that have 'searchText' on their ID
 function filter(searchText) {
     // Create a variable for patients matches with searchText, and another variable for the possition in the new array
     var newPatients = [];
@@ -153,12 +160,12 @@ function filter(searchText) {
 // Wait 0.8 sec by every keyup and then call filter function
 function search() {
     // Listener for every keyup
-    searchbox.addEventListener("keyup", function () {
+    searchbox.addEventListener("keyup", function() {
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        var timer = setInterval(function () {
+        var timer = setInterval(function() {
             count--;
             if (count == 0) {
                 // Get text from searchbox item (id of tag)
@@ -180,10 +187,6 @@ function init(page) {
     numPages();
     numPerPagination();
     aListener();
-    // Actions
-    delPatients();
-    actPatients();
-    addAttendance();
 }
 // Start
 init(1);

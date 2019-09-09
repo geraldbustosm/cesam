@@ -24,7 +24,7 @@
 		@csrf
         <div class="form-group">
 			<div class="form-row">
-				<div class="col-6">
+				<div class="col">
 				  <input type="text" class="form-control {{ $errors->has('glosa') ? ' is-invalid' : '' }}" value="{{ old('glosa') }}" id="glosa" name="glosa" placeholder="Glosa Trasadora">
 				</div>
 			</div>
@@ -32,7 +32,7 @@
 		</div>
 		<div class="form-group">
 			<div class="form-row">
-                <div class="col-6">
+                <div class="col">
 				  <input type="text" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{ old('codigo') }}" id="apellido1" name="codigo" placeholder="Codigo">
 				</div>
 			</div>
