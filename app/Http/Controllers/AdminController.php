@@ -90,7 +90,14 @@ class AdminController extends Controller
 
     public function showTesting()
     {
-        return view('general.test');
+        $main = Patient::all();
+        return view('general.test', ['main'=>json_encode($main)]);
+        //return view('general.test', compact('main'));
+    }
+    public function data()
+    {
+    $data = Patient::all()->toJson();
+        return $data;
     }
 
     public function regTesting(){

@@ -144,3 +144,5 @@ Route::get('get-provision-list','AdminController@getCityList');
 
 Route::get('testing', 'AdminController@showTesting');
 Route::post('testing', 'AdminController@regTesting');
+
+Route::get('data', 'AdminController@data')->name('data'); 
