@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-
+const Tabulator = require('tabulator-tables');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
