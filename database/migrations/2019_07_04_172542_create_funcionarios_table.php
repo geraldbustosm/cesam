@@ -17,8 +17,8 @@ class CreateFuncionariosTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('profesion');
-            $table->time('horasDeclaradas');
-            $table->time('horasRealizadas')->default('00:00');
+            $table->float('horasDeclaradas');
+            $table->float('horasRealizadas')->default('0');
 
             $table->unsignedBigInteger('user_id');
             

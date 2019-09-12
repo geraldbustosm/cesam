@@ -5,7 +5,7 @@
 
 
 @section('content')
-<h1>Registrar Atencion</h1>
+<h1>Despliegue de Infromación</h1>
 <div class="div-full">
     @if (session('status'))
         <div class="alert alert-success" role="alert">
@@ -19,18 +19,20 @@
     <form method="post" >
         @csrf
         <div class="box red"></div>
-        <div class="table-controls-legend">Descargar Información</div>
+        <div class="table-controls-legend"><h2>Descargar Información</h2></div>
+        <br>
         <div class="table-controls">
             <button id="download-csv">Descargar CSV</button>
             <button id="download-json">Descargar JSON</button>
             <button id="download-xlsx">Descargar XLSX</button>
             <button id="download-pdf">Descargar PDF</button>
         </div>
-        <div class="table-controls-legend">Parametros para filtrar</div>
-
+        <br><br>
+        <div class="table-controls-legend"><h3>Parametros para filtrar</h3></div>
+        <br>
         <div class="table-controls">
             <span>
-            <label>Field: </label>
+            <label>Columna: </label>
             <select id="filter-field">
                 <option></option>
                 <option value="nombre1">Nombre</option>
@@ -47,8 +49,8 @@
                 <option value="<=">&lt;=</option>
                 <option value=">">&gt;</option>
                 <option value=">=">&gt;=</option>
-                <option value="distinto">!=</option>
-                <option value="igual">like</option>
+                <option value="!=">distinto</option>
+                <option value="like">igual</option>
             </select>
             </span>
 
@@ -122,7 +124,7 @@
             $("#download-pdf").click(function(){
                 table.download("pdf", "data.pdf", {
                     orientation:"portrait", //set page orientation to portrait
-                    title:"Example Report", //add title to report
+                    title:"Reporte", //add title to report
                 });
             });
             </script>

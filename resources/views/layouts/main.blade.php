@@ -46,7 +46,7 @@
                         <a class="nav-link @yield('active-escritorio')" href="{{url('/')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('active-prestaciones')" href="{{url('fichas')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
+                        <a class="nav-link @yield('active-prestaciones')" href="{{url('testing')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
                     </li>
 
                     <nav id="sidebar">

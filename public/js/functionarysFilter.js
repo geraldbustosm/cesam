@@ -43,15 +43,23 @@ function createRow(num, data) {
     // Get Full Name
     var userPrimerNombre = getFirstName(data);
     var userApellidoPaterno = getLastName1(data);
+    // Get Hours 
+    var functionaryHoursAchived = parseFloat(data.horasRealizadas).toFixed(2); 
+    var functionaryHoursAsigned = parseFloat(data.horasDeclaradas).toFixed(2);
+    var porcentage = ((functionaryHoursAchived/functionaryHoursAsigned))*100;
+    porcentage = parseFloat(porcentage).toFixed(1);
+    var porcentageString=String(porcentage)+"%";
     // Get buttons
     var actionBtns = getBtns(data);
     //Adding cells content
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = getUser(data);
     celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
-    celdas[3].innerHTML = data.profesion;
-    celdas[4].innerHTML = getSpeciality(data);
-    celdas[5].innerHTML = actionBtns;
+    celdas[3].innerHTML = functionaryHoursAchived;  
+    celdas[4].innerHTML = porcentageString;
+    celdas[5].innerHTML = data.profesion;
+    celdas[6].innerHTML = getSpeciality(data);
+    celdas[7].innerHTML = actionBtns;
 
 
 }

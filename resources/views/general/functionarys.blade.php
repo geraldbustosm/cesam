@@ -22,6 +22,8 @@
       <th style="width: 3%;">#</th>
       <th style="width: 15%;">Usuario</th>
       <th style="width: 20%;">Nombre</th>
+      <th style="width: 20%;">Horas realizadas</th>
+      <th style="width: 20%;">Porcentaje</th>
       <th style="width: 10%;">Profesion</th>
       <th style="width: 30%">Especialidades</th>
       <th>Acciones</th>
