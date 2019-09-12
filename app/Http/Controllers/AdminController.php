@@ -266,6 +266,12 @@ class AdminController extends Controller
         return view('admin.patientEdit', compact('patient', 'patient_birthday', 'prev', 'sex'));
     }
 
+    public function showEditRelease($id){
+        $release = Release::find($id);
+
+        return view('admin.releaseEdit', compact('release'));
+    }
+
     /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
      ****************************************************************************************************************************/
@@ -596,6 +602,26 @@ class AdminController extends Controller
         }
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
 
+    }
+
+    public function editRelease(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "alta/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $release = Release::find($request->id);
+
+        if($release){
+            $release->descripcion = $request->descripcion;
+            $release->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del alta');
+        
     }
 
     /***************************************************************************************************************************

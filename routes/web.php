@@ -126,10 +126,14 @@ Route::post('registrar/tipo', 'AdminController@registerType');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/
-// Editar paciente
+// Paciente
 Route::get('pacientes/edit/{dni}', 'AdminController@showEditPatient');
 
 Route::post('pacientes/edit', 'AdminController@editPatient');
+
+// Alta
+Route::get('alta/edit/{id}', 'AdminController@showEditRelease');
+Route::put('alta/edit', 'AdminController@editRelease');
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
