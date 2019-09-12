@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Speciality;
 use App\User;
 use App\Provision;
+use App\Stage;
 
 class Functionary extends Model
 {

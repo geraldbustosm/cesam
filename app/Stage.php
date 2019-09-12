@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Attendance;
 
 class Stage extends Model
 {
@@ -24,6 +25,11 @@ class Stage extends Model
   {
     return $this->hasOne('App\Diagnosis', 'diagnostico_id');
   }
+  public function attendance()
+  {
+      return $this->hasMany(Attendance::class,'etapa_id');
+  }
+  
   protected $fillable = 
     [
       'id','diagnostico_id','programa_id','alta_id','sigges_id','procedencia_id','funcionario_id','paciente_id','activa'

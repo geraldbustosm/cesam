@@ -13,6 +13,7 @@
     @endif
     <form method="post" action="{{ url('registraratencionOk') }}">
         @csrf
+        <input type="hidden" id="id" name="id" value=<?= $patient->id;?>>
         <div class="form-group">
                     <p class = "titulo2" >Paciente: <?= $patient->nombre1." ".$patient->nombre2." ".$patient->apellido1." ".$patient->apellido2;?></p>
                 </div>

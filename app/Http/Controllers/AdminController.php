@@ -90,7 +90,7 @@ class AdminController extends Controller
 
     public function showTesting()
     {
-        $main = Patient::all();
+        $main = Functionary::all();
         return view('general.test', ['main'=>json_encode($main)]);
         //return view('general.test', compact('main'));
     }
@@ -963,6 +963,7 @@ class AdminController extends Controller
 
     public function registerAttendance(Request $request)
     {
+
         $validacion = $request->validate([
             //'descripcion' => 'required|string|max:255'
         ]);
@@ -991,7 +992,13 @@ class AdminController extends Controller
         $anterior   = $functionary->horasRealizadas;
         $functionary->horasRealizadas = $anterior+ $hours+$minutes/60;
         $functionary->save();
-        return view('admin.clinicalRecords');
+        
+        $idPatient=$request->get('id');
+        $patient = Patient::find($idPatient);
+        $stage   = Stage::find($request->id_stage);
+        $patientAtendances = $stage->attendance;
+        $att = Attendance::all();
+        return view('admin.clinicalRecords', compact('patient','stage','patientAtendances'));
         
     }
 }
