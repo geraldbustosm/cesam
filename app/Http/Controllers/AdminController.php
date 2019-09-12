@@ -271,6 +271,12 @@ class AdminController extends Controller
 
         return view('admin.releaseEdit', compact('release'));
     }
+    
+    public function showEditAttribute($id){
+        $attribute = Atributes::find($id);
+
+        return view('admin.attributeEdit', compact('attribute'));
+    }
 
     /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
@@ -621,6 +627,26 @@ class AdminController extends Controller
         }
 
         return redirect($url)->with('status', 'Se actualizó la descripción del alta');
+        
+    }
+
+    public function editAttribute(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "atributo/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $attribute = Atributes::find($request->id);
+
+        if($attribute){
+            $attribute->descripcion = $request->descripcion;
+            $attribute->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
         
     }
 

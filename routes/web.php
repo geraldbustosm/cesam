@@ -134,6 +134,11 @@ Route::put('pacientes/edit', 'AdminController@editPatient');
 // Alta
 Route::get('alta/edit/{id}', 'AdminController@showEditRelease');
 Route::put('alta/edit', 'AdminController@editRelease');
+
+// Atributos
+Route::get('atributo/edit/{id}', 'AdminController@showEditAttribute');
+Route::put('atributo/edit', 'AdminController@editAttribute');
+
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
