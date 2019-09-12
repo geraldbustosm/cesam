@@ -10,7 +10,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <form method="post" action="{{ url('registrar') }}">
+    <form method="post" action="{{ url('registrar/usuario') }}">
         @csrf
         <div class="form-group">
             <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre de usuario">

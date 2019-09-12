@@ -967,7 +967,8 @@ class AdminController extends Controller
             //'descripcion' => 'required|string|max:255'
         ]);
         $attendance = new Attendance;
-
+        $functionary = Functionary::find($request->functionary);
+        
         $attendance->funcionario_id = $request->functionary;
         $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
@@ -983,6 +984,13 @@ class AdminController extends Controller
 
         $attendance->save();
 
+        $duration   = $request->get('duration');
+        $vector     = explode(":",$duration);
+        $hours      = $vector[0];
+        $minutes    = $vector[1];
+        $anterior   = $functionary->horasRealizadas;
+        $functionary->horasRealizadas = $anterior+ $hours+$minutes/60;
+        $functionary->save();
         return view('admin.clinicalRecords');
         
     }

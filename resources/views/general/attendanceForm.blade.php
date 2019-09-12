@@ -96,6 +96,7 @@
                         }else{
                             alert("Error en la duración");
                         }
+                        alert(document.getElementById('duration').value);
                     }
                 </script>         
                 </div>
