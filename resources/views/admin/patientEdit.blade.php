@@ -23,6 +23,9 @@
     @if ($patient)
     <form name="onSubmit" method="post" action="{{ url('pacientes/edit') }}"> 
 		@csrf
+		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
+		<input type="hidden" name="_method" value="PUT">
+		
 		<!-- Enviamos el ID del paciente para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$patient->id}}">
 		

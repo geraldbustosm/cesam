@@ -129,7 +129,7 @@ Route::post('registrar/tipo', 'AdminController@registerType');
 // Paciente
 Route::get('pacientes/edit/{dni}', 'AdminController@showEditPatient');
 
-Route::post('pacientes/edit', 'AdminController@editPatient');
+Route::put('pacientes/edit', 'AdminController@editPatient');
 
 // Alta
 Route::get('alta/edit/{id}', 'AdminController@showEditRelease');
