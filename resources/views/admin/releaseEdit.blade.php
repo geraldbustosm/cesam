@@ -26,6 +26,7 @@
 
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
+		
 		<!-- Enviamos el ID del alta para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$release->id}}">
 
