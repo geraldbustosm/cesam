@@ -139,6 +139,34 @@ Route::put('alta/edit', 'AdminController@editRelease');
 Route::get('atributo/edit/{id}', 'AdminController@showEditAttribute');
 Route::put('atributo/edit', 'AdminController@editAttribute');
 
+// Diagnostico
+Route::get('diagnostico/edit/{id}', 'AdminController@showEditDiagnostic');
+Route::put('diagnostico/edit', 'AdminController@editDiagnostic');
+
+// Especialidades
+Route::get('especialidad/edit/{id}', 'AdminController@showEditSpeciality');
+Route::put('especialidad/edit', 'AdminController@editSpeciality');
+
+// Sexo
+Route::get('sexo/edit/{id}', 'AdminController@showEditSex');
+Route::put('sexo/edit', 'AdminController@editSex');
+
+// Previsiones
+Route::get('prevision/edit/{id}', 'AdminController@showEditPrevition');
+Route::put('prevision/edit', 'AdminController@editPrevition');
+
+// Procedencias
+Route::get('procedencia/edit/{id}', 'AdminController@showEditProvenance');
+Route::put('procedencia/edit', 'AdminController@editProvenance');
+
+// Tipo GES
+Route::get('sigges/edit/{id}', 'AdminController@showEditSiGGES');
+Route::put('sigges/edit', 'AdminController@editSiGGES');
+
+// Tipo prestaciones
+Route::get('prestacion/edit/{id}', 'AdminController@showEditType');
+Route::put('prestacion/edit', 'AdminController@editType');
+
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/

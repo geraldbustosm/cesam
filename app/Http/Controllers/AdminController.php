@@ -278,6 +278,43 @@ class AdminController extends Controller
         return view('admin.attributeEdit', compact('attribute'));
     }
 
+    public function showEditDiagnostic($id){
+        $diagnostic = Diagnosis::find($id);
+
+        return view('admin.diagnosticEdit', compact('diagnostic'));
+    }
+
+    public function showEditSpeciality($id){
+        $speciality = Speciality::find($id);
+
+        return view('admin.specialityEdit', compact('speciality'));
+    }
+    public function showEditSex($id){
+        $sex = Sex::find($id);
+
+        return view('admin.sexEdit', compact('sex'));
+    }
+    public function showEditPrevition($id){
+        $prevition = Prevition::find($id);
+
+        return view('admin.previtionEdit', compact('prevition'));
+    }
+    public function showEditProvenance($id){
+        $provenance = Provenance::find($id);
+
+        return view('admin.provenanceEdit', compact('provenance'));
+    }
+    public function showEditSiGGES($id){
+        $sigges = SiGGES::find($id);
+
+        return view('admin.siggesEdit', compact('sigges'));
+    }
+    public function showEditType($id){
+        $type = Type::find($id);
+
+        return view('admin.typeEdit', compact('type'));
+    }
+
     /***************************************************************************************************************************
                                                     POST METHOD (REGIST & ASIG)
      ****************************************************************************************************************************/
@@ -647,6 +684,146 @@ class AdminController extends Controller
         }
 
         return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
+        
+    }
+
+    public function editDiagnostic(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "diagnostico/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $diagnostic = Diagnosis::find($request->id);
+
+        if($diagnostic){
+            $diagnostic->descripcion = $request->descripcion;
+            $diagnostic->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del diagnostico');
+        
+    }
+
+    public function editSpeciality(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "especialidad/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $speciality = Speciality::find($request->id);
+
+        if($speciality){
+            $speciality->descripcion = $request->descripcion;
+            $speciality->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad');
+        
+    }
+
+    public function editSex(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "sexo/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $sex = Sex::find($request->id);
+
+        if($sex){
+            $sex->descripcion = $request->descripcion;
+            $sex->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
+        
+    }
+
+    public function editPrevition(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "prevision/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $prevition = Prevition::find($request->id);
+
+        if($prevition){
+            $prevition->descripcion = $request->descripcion;
+            $prevition->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción de la previsión');
+        
+    }
+
+    public function editProvenance(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "procedencia/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $provenance = Provenance::find($request->id);
+
+        if($provenance){
+            $provenance->descripcion = $request->descripcion;
+            $provenance->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción de la procedencia');
+        
+    }
+
+    public function editSiGGES(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "sigges/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $sigges = Sigges::find($request->id);
+
+        if($sigges){
+            $sigges->descripcion = $request->descripcion;
+            $sigges->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del tipo GES');
+        
+    }
+
+    public function editType(Request $request){
+
+        // URL to redirect when process finish.
+        $url = "prestacion/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $type = Type::find($request->id);
+
+        if($type){
+            $type->descripcion = $request->descripcion;
+            $type->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción de la prestación');
         
     }
 
