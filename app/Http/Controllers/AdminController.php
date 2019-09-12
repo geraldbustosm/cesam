@@ -90,9 +90,17 @@ class AdminController extends Controller
 
     public function showTesting()
     {
-        $main = Patient::all();
-        return view('general.test', ['main'=>json_encode($main)]);
+        
+        
         //return view('general.test', compact('main'));
+        
+        $patient = DB::table('paciente')
+            ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
+           // ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->select('paciente.*', 'prevision.descripcion')
+            ->where('paciente.activa', '=', 1)
+            ->get();
+        return view('general.test', ['main'=>json_encode($patient)]);    
     }
     public function data()
     {
