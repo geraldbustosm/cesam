@@ -531,6 +531,7 @@ class AdminController extends Controller
 
         $functionary->profesion = $request->profesion;
         $functionary->user_id = $request->user;
+        $functionary->horasDeclaradas = $request->declared_hours;
 
         $functionary->save();
 
