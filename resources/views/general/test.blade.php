@@ -94,8 +94,8 @@
                 height:"311px",
                 movableColumns: true,
                 columns:[
+                {title:"rut", field:"DNI"},
                 {title:"Nombre", field:"nombre1"},
-                {title:"Apellido", field:"apellido1"},
                 ],
             });
 
