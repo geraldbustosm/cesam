@@ -19,17 +19,12 @@
     <form method="post" >
         @csrf
         <div class="box red"></div>
-        <div class="table-controls-legend"><h2>Descargar Información</h2></div>
-        <br>
         <div class="table-controls">
-            <button id="download-csv">Descargar CSV</button>
-            <button id="download-json">Descargar JSON</button>
-            <button id="download-xlsx">Descargar XLSX</button>
-            <button id="download-pdf">Descargar PDF</button>
+            <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
+            <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
         </div>
-        <br><br>
-        <div class="table-controls-legend"><h3>Parametros para filtrar</h3></div>
         <br>
+        <div class="table-controls-legend"><h3>Parametros para filtrar</h3></div>
         <div class="table-controls">
             <span>
             <label>Columna: </label>
@@ -88,7 +83,6 @@
                 table.clearFilter();
             });
 
-
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
                 height:"311px",
@@ -105,16 +99,6 @@
             //load sample data into the table
             table.setData(tabledata);
 
-            //trigger download of data.csv file
-            $("#download-csv").click(function(){
-                table.download("csv", "data.csv");
-            });
-
-            //trigger download of data.json file
-            $("#download-json").click(function(){
-                table.download("json", "data.json");
-            });
-
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function(){
                 table.download("xlsx", "data.xlsx", {sheetName:"My Data"});
@@ -130,7 +114,6 @@
             </script>
         
     </form>
-
 @endsection
 @push('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

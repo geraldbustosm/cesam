@@ -1,22 +1,22 @@
-@extends('admin.registerMain')
-@section('title','Registrar SIGGES')
-@section('active-ingresardatos','active')
+@extends('admin.Views.registerMain')
+@section('title','Registrar prevision')
 @section('active-registrar','active')
+@section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Registrar SIGGES</h1>
+<h1>Registrar Prevision</h1>
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/sigges') }}">
+    <form method="post" action="{{ url('registrar/prevision') }}">
         @csrf
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de SiGGES">
+                    <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Tipo de prevision">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -29,7 +29,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Altas</th>
+                                    <th style="width: 70%;">Previciones</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -50,7 +50,7 @@
 </div>
 <!-- Getting data -->
 <script>
-    var fullArray = <?php echo json_encode($data); ?>;
+    var fullArray = <?php echo json_encode($data); ?>;    
     var table = <?php echo json_encode($table); ?>;
     document.getElementById('data_Submenu').className += ' show';
 </script>

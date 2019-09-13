@@ -85,10 +85,13 @@
                             <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">group_add</i><span>Agregar personas</span></a>
                             <ul class="collapse list-unstyled" id="people_Submenu">
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrarpaciente')}}"><span>Ingresar paciente</span></a>
+                                    <a class="nav-link @yield('active-ingresarpaciente')" href="{{url('registrar/paciente')}}"><span>Ingresar paciente</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarfuncionario')" href="{{url('registrarfuncionario')}}"><span>Ingresar funcionario</span></a>
+                                    <a class="nav-link @yield('active-ingresarfuncionario')" href="{{url('registrar/funcionario')}}"><span>Ingresar funcionario</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-ingresarusuario')" href="{{url('registrar/usuario')}}"><span>Ingresar usuario</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -102,16 +105,16 @@
                                     <a class="nav-link @yield('active-registrar')" href="{{url('registrar')}}"><span>Datos simples </span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrarprograma')}}"><span>Asignar programa a especialidad</span></a>
+                                    <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrar/programa')}}"><span>Asignar programa a especialidad</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrarprestacion')}}"><span>Asignar prestación</span></a>
+                                    <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrar/prestacion')}}"><span>Asignar prestación</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignarespecialidad')}}"><span>Asignar especialidades a funcionarios</span></a>
+                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignar/especialidad')}}"><span>Asignar especialidades a funcionarios</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignarespecialidadprestacion')}}"><span>Asignar especialidades a prestaciones</span></a>
+                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignar/especialidad-prestacion')}}"><span>Asignar especialidades a prestaciones</span></a>
                                 </li>
                             </ul>
                         </li>

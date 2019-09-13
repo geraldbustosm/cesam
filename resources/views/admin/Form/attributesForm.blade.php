@@ -1,4 +1,4 @@
-@extends('admin.registerMain')
+@extends('admin.Views.registerMain')
 @section('title','Registrar Atributos')
 @section('active-ingresardatos','active')
 @section('active-registrar','active')

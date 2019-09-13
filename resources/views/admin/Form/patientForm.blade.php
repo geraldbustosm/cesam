@@ -21,7 +21,7 @@
 		{{ session('status') }}
 	</div>
 	@endif
-	<form name="onSubmit" method="post" action="{{ url('registrarpaciente') }}">
+	<form name="onSubmit" method="post" action="{{ url('registrar/paciente') }}">
 		@csrf
 		<!-- UID -->
 		<div class="form-group">

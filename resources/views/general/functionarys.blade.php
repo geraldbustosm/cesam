@@ -37,7 +37,7 @@
 <form name="onSubmit" method="post" action="{{ url('funcionarios') }}">
   @csrf
   <div class="form-group">
-    <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="{{ old('DNI') }}" id="DNI" name="DNI">
+    <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
   </div>
 </form>
 

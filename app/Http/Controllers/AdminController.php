@@ -6,7 +6,7 @@ use App\Functionary;
 use App\User;
 use App\Patient;
 use App\Release;
-use App\Atributes;
+use App\Attributes;
 use App\Sex;
 use App\Address;
 use App\Prevition;
@@ -43,106 +43,79 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     VIEWS (GET METHOD)
      ****************************************************************************************************************************/
-
-    public function showPatients()
-    {
-        $patients = Patient::where('activa', 1)->get();
-        $prev = Prevition::all();
-        $sex = Sex::all();
-        return view('general.patient', compact('patients', 'prev', 'sex'));
-    }
-
-    public function showInactivePatients()
+    // Pacientes inactivos
+     public function showInactivePatients()
     {
         $patients = Patient::where('activa', 0)->get();
         $prev = Prevition::all();
         $sex = Sex::all();
-        return view('admin.patientInactive', compact('patients', 'prev', 'sex'));
+        return view('admin.Views.patientInactive', compact('patients', 'prev', 'sex'));
     }
-
-    public function showFunctionarys()
-    {
-        $functionary = Functionary::where('activa', 1)->get();
-        $user = User::all();
-        $speciality = Speciality::all();
-        $fs = FunctionarySpeciality::all();
-        return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs'));
-    }
-
+    // Funcionarios inactivos
     public function showInactiveFunctionarys()
     {
         $functionary = Functionary::where('activa', 0)->get();
         $user = User::all();
         $speciality = Speciality::all();
         $fs = FunctionarySpeciality::all();
-        return view('admin.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
+        return view('admin.Views.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
     }
-
-    public function showPatientInfo()
-    {
-        return view('admin.patientInfo');
-    }
-
-    public function showClinicalfunctionary()
-    {
-        return view('admin.clinicalfunctionary');
-    }
-
+    // Test
     public function showTesting()
     {
-<<<<<<< HEAD
-        $main = Functionary::all();
-        return view('general.test', ['main'=>json_encode($main)]);
-=======
-        
-        
->>>>>>> 389fa53d43f46e622ef8bb29ef6b736c6d3c0da9
-        //return view('general.test', compact('main'));
-        
         $patient = DB::table('paciente')
             ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
-           // ->join('orders', 'users.id', '=', 'orders.user_id')
+            // ->join('orders', 'users.id', '=', 'orders.user_id')
             ->select('paciente.*', 'prevision.descripcion')
             ->where('paciente.activa', '=', 1)
             ->get();
-        return view('general.test', ['main'=>json_encode($patient)]);    
+        return view('general.test', ['main' => json_encode($patient)]);
     }
+    // ???
     public function data()
     {
-    $data = Patient::all()->toJson();
+        $data = Patient::all()->toJson();
         return $data;
     }
-
-    public function regTesting(){
-
-        return redirect('testing');
-    }
-
     /***************************************************************************************************************************
-                                             VIEWS (GET METHOD - SHOW ADD)
+                                             VIEWS OF FORMS
      ****************************************************************************************************************************/
-    public function showAddUser()
+    // Usuario
+     public function showAddUser()
     {
-        return view('admin.userForm');
+        return view('admin.Form.userForm');
     }
-
-    public function showAddFunctionary()
-    {
-        $user = User::where('activa', 1)->get();
-        return view('admin.functionaryForm', compact('user'));
-    }
-
+    // Alta
     public function showAddRelease()
     {
         $data = Release::orderBy('descripcion')->get();
-        return view('admin.releaseForm', ['data' => $data, 'table' => 'Altas']);
+        return view('admin.Form.releaseForm', ['data' => $data, 'table' => 'Altas']);
     }
-    public function showAddProvenance()
+    // Atención
+    public function showAddAttendance()
     {
-        $data = Provenance::orderBy('descripcion')->get();
-        return view('admin.provenanceForm', ['data' => $data, 'table' => 'Procedencias']);
+        $users = Functionary::where('activa', 1)->get();
+        return view('general.attendanceForm', compact('users'));
     }
-
+    // Atributo
+    public function showAddAttributes()
+    {
+        $data = Attributes::orderBy('descripcion')->get();
+        return view('admin.Form.attributesForm', ['data' => $data, 'table' => 'Atributos']);
+    }    
+    // Diagnóstico
+    public function showAddDiagnosis()
+    {
+        $data = Diagnosis::orderBy('descripcion')->get();
+        return view('admin.Form.diagnosisForm', ['data' => $data, 'table' => 'Diagnósticos']);
+    }
+    // Especialidad
+    public function showAddSpeciality()
+    {
+        $data = Speciality::orderBy('descripcion')->get();
+        return view('admin.Form.specialityForm', ['data' => $data, 'table' => 'Especialidades']);
+    }
+    // Etapa
     public function showAddStage()
     {
         $patient = Patient::all();
@@ -152,60 +125,65 @@ class AdminController extends Controller
         $release = Release::all();
         $Sigges = SiGGES::all();
         $provenance = Provenance::all();
-        return view('admin.stageCreateForm', compact('patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+        return view('admin.Form.stageCreateForm', compact('patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+    }    
+    // Funcionario
+    public function showAddFunctionary()
+    {
+        $user = User::where('activa', 1)->get();
+        return view('admin.Form.functionaryForm', compact('user'));
     }
+    // Paciente
+    public function showAddPatient()
+    {
+        $sex = Sex::all();
+        $previtions = Prevition::all();
+        return view('admin.Form.patientForm', compact('sex', 'previtions'));
+    }
+    // Prestación
+    public function showAddProvision()
+    {
+        $type = Type::where('activa', 1)->get();
+        return view('admin.Form.provisionForm', compact('type'));
+    }
+    // Previsión
     public function showAddPrevition()
     {
         $data = Prevition::orderBy('descripcion')->get();
-        return view('admin.previtionForm', ['data' => $data, 'table' => 'Previsiones']);
+        return view('admin.Form.previtionForm', ['data' => $data, 'table' => 'Previsiones']);
     }
+    // Procedencia
+    public function showAddProvenance()
+    {
+        $data = Provenance::orderBy('descripcion')->get();
+        return view('admin.Form.provenanceForm', ['data' => $data, 'table' => 'Procedencias']);
+    }
+    // Programa
     public function showAddProgram()
     {
         $speciality = Speciality::all();
         $data = Program::orderBy('descripcion')->get();
-        return view('admin.programForm', compact('speciality', 'data'));
+        return view('admin.Form.programForm', compact('speciality', 'data'));
     }
-    public function showAddDiagnosis()
-    {
-        $data = Diagnosis::orderBy('descripcion')->get();
-        return view('admin.diagnosisForm', ['data' => $data, 'table' => 'Diagnósticos']);
-    }
-
-    public function showAddAtributes()
-    {
-        $data = Atributes::orderBy('descripcion')->get();
-        return view('admin.atributesForm', ['data' => $data, 'table' => 'Atributos']);
-    }
-
+    // Sexo / Género
     public function showAddSex()
     {
         $data = Sex::orderBy('descripcion')->get();;
-        return view('admin.sexForm', ['data' => $data, 'table' => 'Géneros']);
+        return view('admin.Form.sexForm', ['data' => $data, 'table' => 'Géneros']);
     }
-    public function showAddType()
-    {
-        $data = Type::orderBy('descripcion')->get();;
-        return view('admin.typeForm', ['data' => $data, 'table' => 'Tipo prestaciones']);
-    }
-
+    // SiGGES
     public function showAddSIGGES()
     {
         $data = SiGGES::orderBy('descripcion')->get();;
-        return view('admin.siggesForm', ['data' => $data, 'table' => 'Tipo GES']);
+        return view('admin.Form.siggesForm', ['data' => $data, 'table' => 'Tipo GES']);
     }
-
-    public function showAddSpeciality()
+    // Tipo
+    public function showAddType()
     {
-        $data = Speciality::orderBy('descripcion')->get();
-        return view('admin.specialityForm', ['data' => $data, 'table' => 'Especialidades']);
+        $data = Type::orderBy('descripcion')->get();;
+        return view('admin.Form.typeForm', ['data' => $data, 'table' => 'Tipo prestaciones']);
     }
-
-    public function showAddProvision()
-    {
-        $type = Type::where('activa', 1)->get();
-        return view('admin.provisionForm', compact('type'));
-    }
-
+    // Asignar Especialidad
     public function showAsignSpeciality()
     {
         $speciality = Speciality::orderBy('descripcion')
@@ -230,16 +208,14 @@ class AdminController extends Controller
                 $rows[$record1->user->primer_nombre . " " . $record1->user->segundo_nombre][$record2->descripcion] = $ids;
             }
         }
-        return view('admin.specialityAsign', compact('rows', 'columns'));
+        return view('admin.Asingment.specialityAsign', compact('rows', 'columns'));
     }
-
+    // Asignar Prestación
     public function showAsignProvision()
     {
-        $speciality = Speciality::orderBy('descripcion')
-            ->get();
+        $speciality = Speciality::orderBy('descripcion')->get();
+        $provision = Provision::orderBy('glosaTrasadora')->get();
 
-        $provision = Provision::orderBy('glosaTrasadora')
-            ->get();
         $rows = [];
         $columns = [];
         $ids = [];
@@ -257,254 +233,85 @@ class AdminController extends Controller
                 $rows[$record1->glosaTrasadora][$record2->descripcion] = $ids;
             }
         }
-        return view('admin.provisionAsign', compact('rows', 'columns'));
+        return view('admin.Asingment.provisionAsign', compact('rows', 'columns'));
     }
-
     /***************************************************************************************************************************
-                                             VIEWS       GET METHOD SHOW EDIT
+                                             VIEWS OF EDIT
      ****************************************************************************************************************************/
-    
-    public function showEditPatient($dni){
+    // Alta
+    public function showEditRelease($id)
+    {
+        $release = Release::find($id);
+        return view('admin.Edit.releaseEdit', compact('release'));
+    }
+    // Atributo
+    public function showEditAttribute($id)
+    {
+        $attribute = Attributes::find($id);
+        return view('admin.Edit.attributeEdit', compact('attribute'));
+    }
+    // Diagnóstico
+    public function showEditDiagnostic($id)
+    {
+        $diagnostic = Diagnosis::find($id);
+        return view('admin.Edit.diagnosticEdit', compact('diagnostic'));
+    }
+    // Especialidad
+    public function showEditSpeciality($id)
+    {
+        $speciality = Speciality::find($id);
+        return view('admin.Edit.specialityEdit', compact('speciality'));
+    }
+    // Paciente
+    public function showEditPatient($dni)
+    {
         $patient = Patient::where('DNI', $dni)->first();
         $prev = Prevition::all();
         $sex = Sex::all();
         $patient_birthday = "";
 
-        if($patient){
+        if ($patient) {
             // Change formate date to retrieve to the datapicker
             $patient_birthday = explode("-", $patient->fecha_nacimiento);
             $patient_birthday = join("/", array($patient_birthday[2], $patient_birthday[1], $patient_birthday[0]));
         }
 
-        return view('admin.patientEdit', compact('patient', 'patient_birthday', 'prev', 'sex'));
+        return view('admin.Edit.patientEdit', compact('patient', 'patient_birthday', 'prev', 'sex'));
     }
-
-    public function showEditRelease($id){
-        $release = Release::find($id);
-
-        return view('admin.releaseEdit', compact('release'));
-    }
-    
-    public function showEditAttribute($id){
-        $attribute = Atributes::find($id);
-
-        return view('admin.attributeEdit', compact('attribute'));
-    }
-
-    public function showEditDiagnostic($id){
-        $diagnostic = Diagnosis::find($id);
-
-        return view('admin.diagnosticEdit', compact('diagnostic'));
-    }
-
-    public function showEditSpeciality($id){
-        $speciality = Speciality::find($id);
-
-        return view('admin.specialityEdit', compact('speciality'));
-    }
-    public function showEditSex($id){
-        $sex = Sex::find($id);
-
-        return view('admin.sexEdit', compact('sex'));
-    }
-    public function showEditPrevition($id){
+    // Previsión
+    public function showEditPrevition($id)
+    {
         $prevition = Prevition::find($id);
-
-        return view('admin.previtionEdit', compact('prevition'));
+        return view('admin.Edit.previtionEdit', compact('prevition'));
     }
-    public function showEditProvenance($id){
+    // Procedencia
+    public function showEditProvenance($id)
+    {
         $provenance = Provenance::find($id);
-
-        return view('admin.provenanceEdit', compact('provenance'));
+        return view('admin.Edit.provenanceEdit', compact('provenance'));
     }
-    public function showEditSiGGES($id){
+    // Sexo / género
+    public function showEditSex($id)
+    {
+        $sex = Sex::find($id);
+        return view('admin.Edit.sexEdit', compact('sex'));
+    }
+    // SiGGES
+    public function showEditSiGGES($id)
+    {
         $sigges = SiGGES::find($id);
-
-        return view('admin.siggesEdit', compact('sigges'));
+        return view('admin.Edit.siggesEdit', compact('sigges'));
     }
-    public function showEditType($id){
+    // Tipo
+    public function showEditType($id)
+    {
         $type = Type::find($id);
-
-        return view('admin.typeEdit', compact('type'));
+        return view('admin.Edit.typeEdit', compact('type'));
     }
-
     /***************************************************************************************************************************
-                                                    POST METHOD (REGIST & ASIG)
+                                                    FORMS (POST)
      ****************************************************************************************************************************/
-    public function registerStage(Request $request)
-    {
-
-        $validation = $request->validate([]);
-
-        echo $request->new_start;
-
-        $stage = new Stage;
-
-        $stage->diagnostico_id = $request->diagnostico_id;
-        $stage->programa_id = $request->programa_id;
-        //$stage->alta_id = $request->alta_id;
-        $stage->sigges_id = $request->sigges_id;
-        $stage->procedencia_id = $request->procedencia_id;
-        $stage->funcionario_id = $request->funcionario_id;
-        $stage->paciente_id = $request->idpatient;
-        $stage->save();
-        $DNI=$request->idpatient;
-        $patient = Patient::where('id',$DNI)
-                ->where('activa', 1)
-                ->first();
-        $users = Functionary::where('activa', 1)->get();
-        return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI, 'stage_id'=>$stage->id])->with( compact('stage','users','patient'));
-    }
-    public function registerRelease(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $alta = new Release;
-
-        $alta->descripcion = $request->descripcion;
-
-        $alta->save();
-
-        return redirect('registrar/alta')->with('status', 'Nueva alta creada');
-    }
-    public function registerProvenance(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $provenance = new Provenance;
-
-        $provenance->descripcion = $request->descripcion;
-
-        $provenance->save();
-
-        return redirect('registrar/procedencia')->with('status', 'Nueva procedencia creada');
-    }
-    public function registerProgram(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-
-        ]);
-
-        $program = new Program;
-
-        $program->descripcion = $request->descripcion;
-        $program->especialidad = $request->descripcion_espe;
-
-        $program->save();
-
-        return redirect('registrarprograma')->with('status', 'Nuevo programa creado');
-    }
-
-    public function registerAtributes(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $atributo = new Atributes;
-
-        $atributo->descripcion = $request->descripcion;
-
-        $atributo->save();
-
-        return redirect('registrar/atributos')->with('status', 'Nuevo atributo creado');
-    }
-
-    public function registerSex(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $sex = new Sex;
-
-        $sex->descripcion = $request->descripcion;
-
-        $sex->save();
-
-        return redirect('registrar/genero')->with('status', 'Nuevo Sexo / Genero creado');
-    }
-    public function registerSIGGES(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $sigges = new SiGGES;
-
-        $sigges->descripcion = $request->descripcion;
-
-        $sigges->save();
-
-        return redirect('registrar/sigges')->with('status', 'Nuevo tipo de SiGGES creado');
-    }
-
-    public function registerType(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $type = new Type;
-
-        $type->descripcion = $request->descripcion;
-
-        $type->save();
-
-        return redirect('registrar/tipo')->with('status', 'Nuevo tipo de prestación creada');
-    }
-
-    public function registerSpeciality(Request $request)
-    {
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-        ]);
-
-        $speciality = new Speciality;
-
-        $speciality->descripcion = $request->descripcion;
-
-        $speciality->save();
-
-        return redirect('registrar/especialidad')->with('status', 'Nueva especialidad creada');
-    }
-
-    public function registerPrevition(Request $request)
-    {
-
-        $validacion = $request->validate([
-            'nombre' => 'required|string|max:255'
-        ]);
-
-        $prevition = new Prevition;
-
-        $prevition->descripcion = $request->nombre;
-
-        $prevition->save();
-
-        return redirect('registrar/prevision')->with('status', 'Nueva prevision creada');
-    }
-    public function registerDiagnosis(Request $request)
-    {
-
-        $validacion = $request->validate([
-            'descripcion' => 'required|string|max:382'
-        ]);
-
-        $diagnosis = new Diagnosis;
-
-        $diagnosis->descripcion = $request->descripcion;
-
-        $diagnosis->save();
-
-        return redirect('registrar/diagnostico')->with('status', 'Nuevo diagnostico creado');
-    }
-
+    // Usuario
     public function registerUser(Request $request)
     {
         $validacion = $request->validate([
@@ -531,7 +338,132 @@ class AdminController extends Controller
 
         return redirect('registrar/usuario')->with('status', 'Usuario creado');
     }
+    // Alta
+    public function registerRelease(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
 
+        $alta = new Release;
+
+        $alta->descripcion = $request->descripcion;
+
+        $alta->save();
+
+        return redirect('registrar/alta')->with('status', 'Nueva alta creada');
+    }
+    // Atención
+    public function registerAttendance(Request $request)
+    {
+        $validacion = $request->validate([
+            //'descripcion' => 'required|string|max:255'
+        ]);
+        $attendance = new Attendance;
+        $functionary = Functionary::find($request->functionary);
+
+        $attendance->funcionario_id = $request->functionary;
+        $attendance->etapa_id = $request->id_stage;
+        $attendance->prestacion_id = $request->get('provision');
+
+        $var = $request->get('datepicker');
+        $date = str_replace('/', '-', $var);
+        $correctDate = date('Y-m-d', strtotime($date));
+        $attendance->fecha = $correctDate;
+
+        $attendance->asistencia = $request->get('selectA');
+        $attendance->hora = $request->get('timeInit');
+        $attendance->duracion = $request->get('duration');
+
+        $attendance->save();
+
+        $duration   = $request->get('duration');
+        $vector     = explode(":", $duration);
+        $hours      = $vector[0];
+        $minutes    = $vector[1];
+        $anterior   = $functionary->horasRealizadas;
+        $functionary->horasRealizadas = $anterior + $hours + $minutes / 60;
+        $functionary->save();
+
+        $idPatient = $request->get('id');
+        $patient = Patient::find($idPatient);
+        $stage   = Stage::find($request->id_stage);
+        $patientAtendances = $stage->attendance;
+        $att = Attendance::all();
+        return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+    }
+    // Atributo
+    public function registerAttributes(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $atributo = new Attributes;
+
+        $atributo->descripcion = $request->descripcion;
+
+        $atributo->save();
+
+        return redirect('registrar/atributos')->with('status', 'Nuevo atributo creado');
+    }
+    // Diagnóstico
+    public function registerDiagnosis(Request $request)
+    {
+
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:382'
+        ]);
+
+        $diagnosis = new Diagnosis;
+
+        $diagnosis->descripcion = $request->descripcion;
+
+        $diagnosis->save();
+
+        return redirect('registrar/diagnostico')->with('status', 'Nuevo diagnostico creado');
+    }
+    // Especialidad
+    public function registerSpeciality(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $speciality = new Speciality;
+
+        $speciality->descripcion = $request->descripcion;
+
+        $speciality->save();
+
+        return redirect('registrar/especialidad')->with('status', 'Nueva especialidad creada');
+    }
+    // Etapa
+    public function registerStage(Request $request)
+    {
+
+        $validation = $request->validate([]);
+
+        echo $request->new_start;
+
+        $stage = new Stage;
+
+        $stage->diagnostico_id = $request->diagnostico_id;
+        $stage->programa_id = $request->programa_id;
+        //$stage->alta_id = $request->alta_id;
+        $stage->sigges_id = $request->sigges_id;
+        $stage->procedencia_id = $request->procedencia_id;
+        $stage->funcionario_id = $request->funcionario_id;
+        $stage->paciente_id = $request->idpatient;
+        $stage->save();
+        $DNI = $request->idpatient;
+        $patient = Patient::where('id', $DNI)
+            ->where('activa', 1)
+            ->first();
+        $users = Functionary::where('activa', 1)->get();
+        return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI' => $DNI, 'stage_id' => $stage->id])->with(compact('stage', 'users', 'patient'));
+    }
+    // Funcionario
     public function registerFunctionary(Request $request)
     {
         $validacion = $request->validate([
@@ -541,16 +473,115 @@ class AdminController extends Controller
 
         $functionary = new Functionary;
 
-
         $functionary->profesion = $request->profesion;
         $functionary->user_id = $request->user;
         $functionary->horasDeclaradas = $request->declared_hours;
 
         $functionary->save();
 
-        return redirect('registrarfuncionario')->with('status', 'Funcionario creado');
+        return redirect('registrar/funcionario')->with('status', 'Funcionario creado');
     }
+    // Paciente
+    public function registerPatient(Request $request)
+    {
 
+        $validation = $request->validate([
+            'id' => 'required|string',
+            //'id' => 'required|int|max:255',
+            'nombre' => 'required|string|max:255',
+            'pais' => 'required|string|max:255',
+            'region' => 'required|string|max:255',
+            'comuna' => 'required|string|max:255',
+            'calle' => 'required|string|max:255',
+            'numero' => 'required|int',
+            'patient_sex' => 'required',
+            'prevition' => 'required|int',
+            'numero' => 'required|int',
+            'direccion' => 'string|max:255',
+            'datepicker' => 'required|date_format:"d/m/Y"',
+        ]);
+
+        echo $request->new_start;
+
+        $nombre = explode(" ", $request->nombre);
+        $patient = new Patient;
+
+        $patient->nombre1 = $nombre[0];
+        $patient->nombre2 = $nombre[1];
+        $patient->apellido1 = $request->apellido1;
+        $patient->apellido2 = $request->apellido2;
+        $patient->DNI = $request->id;
+        $var = $request->get('datepicker');
+        $date = str_replace('/', '-', $var);
+        $correctDate = date('Y-m-d', strtotime($date));
+
+        $patient->fecha_nacimiento = $correctDate;
+
+        $patient->prevision_id = $request->prevition;
+
+        $address = new Address;
+        $address->region = $request->region;
+        $address->comuna = $request->comuna;
+        $address->calle  = $request->calle;
+        $address->numero = $request->numero;
+
+        $patient->sexo_id = $request->patient_sex;
+        $address->save();
+
+        $patient->save();
+        $patient->address()->sync($address);
+
+        return redirect('registrar/paciente')->with('status', 'Usuario creado');
+    }
+    // Previsión
+    public function registerPrevition(Request $request)
+    {
+
+        $validacion = $request->validate([
+            'nombre' => 'required|string|max:255'
+        ]);
+
+        $prevition = new Prevition;
+
+        $prevition->descripcion = $request->nombre;
+
+        $prevition->save();
+
+        return redirect('registrar/prevision')->with('status', 'Nueva prevision creada');
+    }
+    // Procedencia
+    public function registerProvenance(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $provenance = new Provenance;
+
+        $provenance->descripcion = $request->descripcion;
+
+        $provenance->save();
+
+        return redirect('registrar/procedencia')->with('status', 'Nueva procedencia creada');
+    }
+    // Programa
+    public function registerProgram(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+
+        ]);
+
+        $program = new Program;
+
+        $program->descripcion = $request->descripcion;
+        $program->especialidad = $request->descripcion_espe;
+
+        $program->save();
+
+        return redirect('registrar/programa')->with('status', 'Nuevo programa creado');
+    }
+    // Prestación
     public function registerProvision(Request $request)
     {
         $validacion = $request->validate([
@@ -570,10 +601,54 @@ class AdminController extends Controller
         $provision->tipo_id = $request->type;
         $provision->save();
 
-        return redirect('registrarprestacion')->with('status', 'Nueva prestacion creada');
+        return redirect('registrar/prestacion')->with('status', 'Nueva prestacion creada');
     }
+    // Sexo / género
+    public function registerSex(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
 
+        $sex = new Sex;
 
+        $sex->descripcion = $request->descripcion;
+
+        $sex->save();
+
+        return redirect('registrar/genero')->with('status', 'Nuevo Sexo / Genero creado');
+    }
+    // SiGGES
+    public function registerSIGGES(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $sigges = new SiGGES;
+
+        $sigges->descripcion = $request->descripcion;
+
+        $sigges->save();
+
+        return redirect('registrar/sigges')->with('status', 'Nuevo tipo de SiGGES creado');
+    }
+    // Tipo
+    public function registerType(Request $request)
+    {
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $type = new Type;
+
+        $type->descripcion = $request->descripcion;
+
+        $type->save();
+
+        return redirect('registrar/tipo')->with('status', 'Nuevo tipo de prestación creada');
+    }
+    // Asignar prestación
     public function AsignProvision(Request $request)
     {
         if (isset($_POST['enviar'])) {
@@ -595,10 +670,10 @@ class AdminController extends Controller
                     }
                 }
             }
-            return redirect('asignarespecialidadprestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
+            return redirect('asignar/especialidad-prestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
         }
     }
-
+    // Asignar especialidad
     public function AsignSpeciality(Request $request)
     {
         if (isset($_POST['enviar'])) {
@@ -620,12 +695,93 @@ class AdminController extends Controller
                     }
                 }
             }
-            return redirect('asignarespecialidad')->with('status', 'Especialidades actualizadas');
+            return redirect('asignar/especialidad')->with('status', 'Especialidades actualizadas');
         }
     }
+    /***************************************************************************************************************************
+                                                    EDIT (POST)
+     ****************************************************************************************************************************/
+    // Alta
+    public function editRelease(Request $request)
+    {
+        // URL to redirect when process finish.
+        $url = "alta/edit/" . $request->id;
 
-    public function editPatient(Request $request){
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
 
+        $release = Release::find($request->id);
+
+        if ($release) {
+            $release->descripcion = $request->descripcion;
+            $release->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del alta');
+    }
+    // Atributo
+    public function editAttribute(Request $request)
+    {
+
+        // URL to redirect when process finish.
+        $url = "atributo/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $attribute = Attributes::find($request->id);
+
+        if ($attribute) {
+            $attribute->descripcion = $request->descripcion;
+            $attribute->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
+    }
+    // Diagnóstico
+    public function editDiagnostic(Request $request)
+    {
+
+        // URL to redirect when process finish.
+        $url = "diagnostico/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $diagnostic = Diagnosis::find($request->id);
+
+        if ($diagnostic) {
+            $diagnostic->descripcion = $request->descripcion;
+            $diagnostic->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del diagnostico');
+    }
+    // Especialidad
+    public function editSpeciality(Request $request)
+    {
+        // URL to redirect when process finish.
+        $url = "especialidad/edit/" . $request->id;
+
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        $speciality = Speciality::find($request->id);
+
+        if ($speciality) {
+            $speciality->descripcion = $request->descripcion;
+            $speciality->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad');
+    }
+    // Paciente
+    public function editPatient(Request $request)
+    {
         // URL to redirect when process finish.
         $url = "pacientes/edit/" . $request->dni;
 
@@ -639,13 +795,13 @@ class AdminController extends Controller
             'direccion' => 'string|max:255',
             'direccion_opcional' => 'string|max:255|nullable',*/
             'datepicker' => 'required|date_format:"d/m/Y"',
-            ]);
-        
+        ]);
+
         // Find patient to edit
         $patient = Patient::find($request->id);
-        
+
         // If patient exist update his data
-        if($patient){
+        if ($patient) {
             $nombre = explode(" ", $request->nombre);
             $patient->nombre1 = $nombre[0];
             $patient->nombre2 = $nombre[1];
@@ -658,111 +814,10 @@ class AdminController extends Controller
             $patient->save();
         }
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
-
     }
-
-    public function editRelease(Request $request){
-
-        // URL to redirect when process finish.
-        $url = "alta/edit/" . $request->id;
-
-        $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
-        ]);
-
-        $release = Release::find($request->id);
-
-        if($release){
-            $release->descripcion = $request->descripcion;
-            $release->save();
-        }
-
-        return redirect($url)->with('status', 'Se actualizó la descripción del alta');
-        
-    }
-
-    public function editAttribute(Request $request){
-
-        // URL to redirect when process finish.
-        $url = "atributo/edit/" . $request->id;
-
-        $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
-        ]);
-
-        $attribute = Atributes::find($request->id);
-
-        if($attribute){
-            $attribute->descripcion = $request->descripcion;
-            $attribute->save();
-        }
-
-        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
-        
-    }
-
-    public function editDiagnostic(Request $request){
-
-        // URL to redirect when process finish.
-        $url = "diagnostico/edit/" . $request->id;
-
-        $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
-        ]);
-
-        $diagnostic = Diagnosis::find($request->id);
-
-        if($diagnostic){
-            $diagnostic->descripcion = $request->descripcion;
-            $diagnostic->save();
-        }
-
-        return redirect($url)->with('status', 'Se actualizó la descripción del diagnostico');
-        
-    }
-
-    public function editSpeciality(Request $request){
-
-        // URL to redirect when process finish.
-        $url = "especialidad/edit/" . $request->id;
-
-        $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
-        ]);
-
-        $speciality = Speciality::find($request->id);
-
-        if($speciality){
-            $speciality->descripcion = $request->descripcion;
-            $speciality->save();
-        }
-
-        return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad');
-        
-    }
-
-    public function editSex(Request $request){
-
-        // URL to redirect when process finish.
-        $url = "sexo/edit/" . $request->id;
-
-        $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
-        ]);
-
-        $sex = Sex::find($request->id);
-
-        if($sex){
-            $sex->descripcion = $request->descripcion;
-            $sex->save();
-        }
-
-        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
-        
-    }
-
-    public function editPrevition(Request $request){
-
+    // Previsión
+    public function editPrevition(Request $request)
+    {
         // URL to redirect when process finish.
         $url = "prevision/edit/" . $request->id;
 
@@ -772,16 +827,16 @@ class AdminController extends Controller
 
         $prevition = Prevition::find($request->id);
 
-        if($prevition){
+        if ($prevition) {
             $prevition->descripcion = $request->descripcion;
             $prevition->save();
         }
 
         return redirect($url)->with('status', 'Se actualizó la descripción de la previsión');
-        
     }
-
-    public function editProvenance(Request $request){
+    // Procedencia
+    public function editProvenance(Request $request)
+    {
 
         // URL to redirect when process finish.
         $url = "procedencia/edit/" . $request->id;
@@ -792,17 +847,35 @@ class AdminController extends Controller
 
         $provenance = Provenance::find($request->id);
 
-        if($provenance){
+        if ($provenance) {
             $provenance->descripcion = $request->descripcion;
             $provenance->save();
         }
 
         return redirect($url)->with('status', 'Se actualizó la descripción de la procedencia');
-        
     }
+    // Sexo / género
+    public function editSex(Request $request)
+    {
+        // URL to redirect when process finish.
+        $url = "sexo/edit/" . $request->id;
 
-    public function editSiGGES(Request $request){
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
 
+        $sex = Sex::find($request->id);
+
+        if ($sex) {
+            $sex->descripcion = $request->descripcion;
+            $sex->save();
+        }
+
+        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
+    }
+    // SiGGES
+    public function editSiGGES(Request $request)
+    {
         // URL to redirect when process finish.
         $url = "sigges/edit/" . $request->id;
 
@@ -812,17 +885,16 @@ class AdminController extends Controller
 
         $sigges = Sigges::find($request->id);
 
-        if($sigges){
+        if ($sigges) {
             $sigges->descripcion = $request->descripcion;
             $sigges->save();
         }
 
         return redirect($url)->with('status', 'Se actualizó la descripción del tipo GES');
-        
     }
-
-    public function editType(Request $request){
-
+    // Tipo
+    public function editType(Request $request)
+    {
         // URL to redirect when process finish.
         $url = "prestacion/edit/" . $request->id;
 
@@ -832,40 +904,17 @@ class AdminController extends Controller
 
         $type = Type::find($request->id);
 
-        if($type){
+        if ($type) {
             $type->descripcion = $request->descripcion;
             $type->save();
         }
 
         return redirect($url)->with('status', 'Se actualizó la descripción de la prestación');
-        
     }
-
     /***************************************************************************************************************************
                                                     ACTIONS BUTTONS FUNCTIONS
      ****************************************************************************************************************************/
-
-    public function deletingPatient(Request $request)
-    {
-        $patient = Patient::where('DNI', $request->DNI)->get();
-        $patient[0]->activa = 0;
-        $patient[0]->save();
-        return redirect('pacientes')->with('status', 'Paciente ' . $request->DNI . ' eliminado');
-    }
-
-    public function deletingFunctionary(Request $request)
-    {
-        $user = User::where('id', $request->DNI)->get();
-        $user[0]->activa = 0;
-        $user[0]->save();
-
-        $functionary = Functionary::where('user_id', $request->DNI)->get();
-        $functionary[0]->activa = 0;
-        $functionary[0]->save();
-
-        return redirect('funcionarios')->with('status', 'Funcionario ' . $user[0]->rut . ' eliminado');
-    }
-
+    // Activate
     public function activatePatient(Request $request)
     {
         $patient = Patient::where('DNI', $request->DNI)->get();
@@ -873,24 +922,38 @@ class AdminController extends Controller
         $patient[0]->save();
         return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
     }
-
     public function activateFunctionary(Request $request)
     {
-        $user = User::where('id', $request->DNI)->get();
-        $user[0]->activa = 1;
-        $user[0]->save();
-
-        $functionary = Functionary::where('user_id', $request->DNI)->get();
+        $functionary = Functionary::where('id', $request->id)->get();
         $functionary[0]->activa = 1;
         $functionary[0]->save();
 
+        $user = User::where('id', $functionary[0]->user_id)->get();
+
         return redirect('funcionarios/inactivos')->with('status', 'Funcionario ' . $user[0]->rut . ' re-incorporado');
     }
+     // Deactivate
+    public function deletingPatient(Request $request)
+    {
+        $patient = Patient::where('DNI', $request->DNI)->get();
+        $patient[0]->activa = 0;
+        $patient[0]->save();
+        return redirect('pacientes')->with('status', 'Paciente ' . $request->DNI . ' eliminado');
+    }
+    public function deletingFunctionary(Request $request)
+    {
+        $functionary = Functionary::where('id', $request->id)->get();
+        $functionary[0]->activa = 0;
+        $functionary[0]->save();
 
+        $user = User::where('id', $functionary[0]->user_id)->get();
+
+        return redirect('funcionarios')->with('status', 'Funcionario ' . $user[0]->rut . ' eliminado');
+    }
     /***************************************************************************************************************************
                                                     HELPERS AND LOGIC FUNCTIONS
      ****************************************************************************************************************************/
-
+    // Check for a speciality linked to the functionary (parameter)
     public static function existFunctionarySpeciality($idFunct, $idSp)
     {
         $value = false;
@@ -905,7 +968,7 @@ class AdminController extends Controller
 
         return $value;
     }
-
+    // Check provision for the speciality (parameter)
     public static function existProvisionSpeciality($idprov, $idSp)
     {
         $value = false;
@@ -920,22 +983,21 @@ class AdminController extends Controller
 
         return $value;
     }
-
     /***************************************************************************************************************************
                                                     ATTENDANCE LOGIC
      ****************************************************************************************************************************/
-    public function checkCurrStage(Request $request)
+    // Check for an active stage for the patient (parameter)
+     public function checkCurrStage(Request $request)
     {
-        $DNI = $request->DNI_stage;//dni del paciente
-        $patient = Patient::where('DNI',$DNI)
-                            ->where('activa', 1)
-                            ->first();
+        $DNI = $request->DNI_stage; //dni del paciente
+        $patient = Patient::where('DNI', $DNI)
+            ->where('activa', 1)
+            ->first();
         $id_patient = $patient->id;
-        $stage = Stage::where('paciente_id',$id_patient)
-                        ->where('activa', 1)
-                        ->first();
+        $stage = Stage::where('paciente_id', $id_patient)
+            ->where('activa', 1)
+            ->first();
         if (empty($stage)) {
-            
             //$functionary = Functionary::where('activa', 1)->get();
             $diagnosis = Diagnosis::where('activa', 1)->get();
             $program = Program::where('activa', 1)->get();
@@ -943,75 +1005,28 @@ class AdminController extends Controller
             $Sigges = SiGGES::where('activa', 1)->get();
             $provenance = Provenance::all();
             $funcionarios = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
-                      ->select('funcionarios.id','funcionarios.profesion','users.primer_nombre','users.apellido_paterno')
-                      ->where('funcionarios.activa', '=', 1)
-                      ->get();                            
-
-           // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
-           return view('admin.stageCreateForm', ['patient' => 'no tiene ninguna etapa', 'idpatient'=>$id_patient])->with(compact('funcionarios', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+                ->select('funcionarios.id', 'funcionarios.profesion', 'users.primer_nombre', 'users.apellido_paterno')
+                ->where('funcionarios.activa', '=', 1)
+                ->get();
+            // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+            return view('admin.Form.stageCreateForm', ['patient' => 'no tiene ninguna etapa', 'idpatient' => $id_patient])->with(compact('funcionarios', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
         } else {
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI'=>$DNI])->with( compact('stage','users','patient'));  
+            return view('general.attendanceForm', ['patient' => 'si posee una etapa activa', 'DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
         }
     }
-    public function showAddAttendance()
-    {
-        $users = Functionary::where('activa', 1)->get();
-        return view('general.attendanceForm', compact('users'));
-    }
     // acuerdate de cambiar estas weas wn 
-    public function getStateList(Request $request)
+    public function getSpecialityPerFunctionary(Request $request)
     {
         $functionary = Functionary::find($request->functionary_id);
-        $states = $functionary->speciality;
-        return response()->json($states);
+        $speciality = $functionary->speciality;
+        return response()->json($speciality);
     }
     // y esto igual y los nombres
-    public function getCityList(Request $request)
+    public function getProvisionPerFunctionary(Request $request)
     {
         $specility = Speciality::find($request->speciality_id);
-        $cities = $specility->provision;
-        return response()->json($cities);
-    }
-
-    public function registerAttendance(Request $request)
-    {
-
-        $validacion = $request->validate([
-            //'descripcion' => 'required|string|max:255'
-        ]);
-        $attendance = new Attendance;
-        $functionary = Functionary::find($request->functionary);
-        
-        $attendance->funcionario_id = $request->functionary;
-        $attendance->etapa_id = $request->id_stage;
-        $attendance->prestacion_id = $request->get('provision');
-
-        $var = $request->get('datepicker');
-        $date = str_replace('/', '-', $var);
-        $correctDate = date('Y-m-d', strtotime($date));
-        $attendance->fecha = $correctDate ;
-
-        $attendance->asistencia = $request->get('selectA');
-        $attendance->hora = $request->get('timeInit');
-        $attendance->duracion = $request->get('duration');
-
-        $attendance->save();
-
-        $duration   = $request->get('duration');
-        $vector     = explode(":",$duration);
-        $hours      = $vector[0];
-        $minutes    = $vector[1];
-        $anterior   = $functionary->horasRealizadas;
-        $functionary->horasRealizadas = $anterior+ $hours+$minutes/60;
-        $functionary->save();
-        
-        $idPatient=$request->get('id');
-        $patient = Patient::find($idPatient);
-        $stage   = Stage::find($request->id_stage);
-        $patientAtendances = $stage->attendance;
-        $att = Attendance::all();
-        return view('admin.clinicalRecords', compact('patient','stage','patientAtendances'));
-        
+        $provision = $specility->provision;
+        return response()->json($provision);
     }
 }

@@ -136,7 +136,7 @@
                         if(functionaryID){
                             $.ajax({
                                 type:"GET",
-                                url:"{{url('get-speciality-list')}}?functionary_id="+functionaryID,
+                                url:"{{url('lista-especialidades')}}?functionary_id="+functionaryID,
                                 success:function(res){               
                                     if(res){
                                         $("#speciality").empty();
@@ -160,7 +160,7 @@
                         if(specialityID){
                             $.ajax({
                                 type:"GET",
-                                url:"{{url('get-provision-list')}}?speciality_id="+specialityID,
+                                url:"{{url('lista-prestaciones')}}?speciality_id="+specialityID,
                                 success:function(res){               
                                     if(res){
                                         $("#provision").empty();

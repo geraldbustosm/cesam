@@ -2,16 +2,16 @@
                                                     ACTION BUTTONS
 ****************************************************************************************************************************/
 // Set value on Form
-function setValue(DNI,idForm){
+function setValue(UID, idForm) {
     var tagID = document.getElementById(idForm);
-    tagID.value = DNI;
+    tagID.value = UID;
 }
 // Check modal for continue
-function confirmAction(DNI, idForm){
+function confirmAction(UID, idForm) {
     $('#confirmModal').modal('show')
     var btn = document.getElementById('continueBtn');
-    btn.addEventListener("click", function(){
-        setValue(DNI,idForm);
+    btn.addEventListener("click", function() {
+        setValue(UID, idForm);
         document.onSubmit.submit();
     });
 }
@@ -20,19 +20,19 @@ function delPatient(DNI) {
     confirmAction(DNI, 'DNI');
 }
 // Deactivate the functionary
-function delFunctionary(DNI){
-    confirmAction(DNI, 'DNI');
+function delFunctionary(id) {
+    confirmAction(id, 'id');
 }
 // Reactivate the patient
 function actPatient(DNI) {
     confirmAction(DNI, 'DNI');
 }
 // Reactivate the functionary
-function actFunctionary(DNI){
-    confirmAction(DNI, 'DNI')
+function actFunctionary(id) {
+    confirmAction(id, 'id')
 }
 // Add attendace to the patient
-function addAttendance(DNI){
+function addAttendance(DNI) {
     setValue(DNI, 'DNI_stage')
     document.onSubmitStage.submit();
 }

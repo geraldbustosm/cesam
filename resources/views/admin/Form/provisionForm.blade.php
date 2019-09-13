@@ -20,7 +20,7 @@
 			{{ session('status') }}
 		</div>
 	@endif
-	<form method="post" action="{{ url('registrarprestacion') }}">
+	<form method="post" action="{{ url('registrar/prestacion') }}">
 		@csrf
         <div class="form-group">
 			<div class="form-row">
@@ -37,7 +37,6 @@
 				</div>
 			</div>
 		</div>
-		       
         <div class="form-group">
             <select class="form-control" name="edadInf" required>
                 <option selected disabled>Por favor seleccione el rango de edad inferior</option>
@@ -58,7 +57,6 @@
                  @endfor
             </select>
         </div>
-
         <div class="form-group">
             <input type="text" class="form-control {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="frecuencia" name="frecuencia" placeholder="Frecuencia">
 		</div>
@@ -73,8 +71,7 @@
                 @endforeach
             </select>
         </div>
-        
-                
+            
 		<button type="submit" class="btn btn-primary">Registrar</button>
 	</form>
 </div>

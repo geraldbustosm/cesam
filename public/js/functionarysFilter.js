@@ -44,18 +44,18 @@ function createRow(num, data) {
     var userPrimerNombre = getFirstName(data);
     var userApellidoPaterno = getLastName1(data);
     // Get Hours 
-    var functionaryHoursAchived = parseFloat(data.horasRealizadas).toFixed(2); 
+    var functionaryHoursAchived = parseFloat(data.horasRealizadas).toFixed(2);
     var functionaryHoursAsigned = parseFloat(data.horasDeclaradas).toFixed(2);
-    var porcentage = ((functionaryHoursAchived/functionaryHoursAsigned))*100;
+    var porcentage = ((functionaryHoursAchived / functionaryHoursAsigned)) * 100;
     porcentage = parseFloat(porcentage).toFixed(1);
-    var porcentageString=String(porcentage)+"%";
+    var porcentageString = String(porcentage) + "%";
     // Get buttons
     var actionBtns = getBtns(data);
     //Adding cells content
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = getUser(data);
     celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
-    celdas[3].innerHTML = functionaryHoursAchived;  
+    celdas[3].innerHTML = functionaryHoursAchived;
     celdas[4].innerHTML = porcentageString;
     celdas[5].innerHTML = data.profesion;
     celdas[6].innerHTML = getSpeciality(data);
@@ -114,14 +114,13 @@ function getBtns(data) {
         var tmp = "";
         if (active == 1) {
             tmp = ` <td>
-                    <a href='#' data-toggle='modal' data-target='#exampleModal'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:delFunctionary(${data.user_id})'><i title='Borrar' class='material-icons'>delete</i></a>
+                    <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='javascript:delFunctionary(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`;
             return tmp;
         } else {
             tmp = ` <td>
-                    <a href='#'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:actFunctionary(${data.user_id})'><i title='Activar' class='material-icons'>person_add</i></a>
+                    <a href='javascript:actFunctionary(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`;
             return tmp;
         }

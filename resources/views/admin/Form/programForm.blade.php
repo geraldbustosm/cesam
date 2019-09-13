@@ -1,22 +1,29 @@
-@extends('admin.registerMain')
-@section('title','Registrar procedencia')
+@extends('layouts.main')
+@section('title','Registrar programa')
 @section('active-ingresardatos','active')
-@section('active-registrar','active')
+@section('active-ingresarprograma','active')
 
-@section('sub-content')
-<h1>Registrar Procedencia</h1>
+@section('content')
+<h1>Registrar Programa</h1>
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/procedencia') }}">
+    <form method="post" action="{{ url('registrar/programa') }}">
         @csrf
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de procedencia">
+                    <select class="form-control" name="descripcion_espe" required>
+                        <option selected disabled>Por favor seleccione un especialidad </option>
+                        @foreach($speciality as $especialidad)
+                        <option value="{{ $especialidad->descripcion}}">{{ $especialidad->descripcion}}</option>
+                        @endforeach
+                    </select>
+                    <br>
+                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de programa">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -29,7 +36,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Procedencias</th>
+                                    <th style="width: 70%;">Programas</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -51,8 +58,10 @@
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
-    var table = <?php echo json_encode($table); ?>;
-    console.log(table);
     document.getElementById('data_Submenu').className += ' show';
 </script>
+<!-- Adding script using on this view -->
+<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/tableGenerator.js')}}"></script>
 @endsection

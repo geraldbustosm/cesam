@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title','Registrar usuario')
-@section('active-pacientes','active')
+@section('active-ingresarpersonas','active')
+@section('active-ingresarusuario','active')
 
 @section('content')
 <h1>Registrar usuario</h1>
@@ -54,4 +55,6 @@
         <button type="submit" class="btn btn-primary">Registrar</button>
     </form>
 </div>
+
+<script>document.getElementById('people_Submenu').className += ' show';</script>
 @endsection

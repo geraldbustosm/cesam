@@ -107,7 +107,6 @@ function writeActionButtons(data) {
         } else {
             tmp = ` <td>
                     <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
-                    <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
                     <a href='javascript:actPatient(${data.DNI})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }

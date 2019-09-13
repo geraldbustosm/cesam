@@ -1,22 +1,22 @@
-@extends('admin.registerMain')
-@section('title','Registrar Tipo Prestacion')
-@section('active-ingresardatos','active')
+@extends('admin.Views.registerMain')
+@section('title','Registrar Especialidad')
 @section('active-registrar','active')
+@section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Registrar Tipo de prestación</h1>
+<h1>Registrar Especialidad Medica</h1>
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/tipo') }}">
+    <form method="post" action="{{ url('registrar/especialidad') }}">
         @csrf
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de prestación">
+                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Especialidad Medica">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -29,7 +29,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Prestaciones</th>
+                                    <th style="width: 70%;">Especialidades</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>

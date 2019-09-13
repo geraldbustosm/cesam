@@ -20,7 +20,7 @@
 			{{ session('status') }}
 		</div>
 	@endif
-	<form method="post" action="{{ url('registrarfuncionario') }}">
+	<form method="post" action="{{ url('registrar/funcionario') }}">
 		@csrf
 		<div class="form-group">
             <input type="text" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="profesion" name="profesion" placeholder="Profesion">
@@ -41,4 +41,6 @@
 		<button type="submit" class="btn btn-primary">Registrar</button>
 	</form>
 </div>
+
+<script>document.getElementById('people_Submenu').className += ' show';</script>
 @endsection
