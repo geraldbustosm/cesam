@@ -56,7 +56,7 @@ class GeneralController extends Controller
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
         return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs'));
     }
-    //
+    // Ficha
     public function showClinicalRecords($DNI)
     {
         // Get patient
