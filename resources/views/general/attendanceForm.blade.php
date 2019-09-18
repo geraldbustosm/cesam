@@ -11,7 +11,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <form method="post" action="{{ url('registraratencionOk') }}">
+    <form method="post" action="{{ url('ficha') }}">
         @csrf
         <input type="hidden" id="id" name="id" value=<?= $patient->id;?>>
         <div class="form-group">

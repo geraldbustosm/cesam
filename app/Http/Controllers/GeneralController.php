@@ -11,9 +11,13 @@ use App\User;
 use App\Sex;
 use App\Prevition;
 
+use App\Attendance;
+use App\Stage;
+
 class GeneralController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
@@ -21,7 +25,7 @@ class GeneralController extends Controller
                                                     VIEWS FOR GENERAL USER
      ****************************************************************************************************************************/
     // Inicio
-     public function index()
+    public function index()
     {
         // Redirect to the view
         return view('general.home');
@@ -51,5 +55,26 @@ class GeneralController extends Controller
         $fs = FunctionarySpeciality::all();
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
         return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs'));
+    }
+    //
+    public function showClinicalRecords($DNI)
+    {
+        // Get patient
+        $patient = Patient::where('DNI', $DNI)->get();
+        // Set patient out of array (like object)
+        $patient = $patient[0];
+        // Get patient id
+        $patient_id = $patient->id;
+        // Get the stage
+        $stage = Stage::where('paciente_id', $patient_id)
+            ->where('activa', 1)
+            ->get();
+        // Set stage like object
+        $stage = $stage[0];
+        // Get array of attendance from the active stage
+        $patientAtendances = $stage->attendance;
+        $att = Attendance::all();
+        // Redirect to the view with successful status
+        return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
     }
 }

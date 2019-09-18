@@ -99,7 +99,7 @@ function writeActionButtons(data) {
         var tmp;
         if (active == 1) {
             tmp = ` <td> 
-                    <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
+                    <a href='ficha/${data.DNI}'><i title='Ver ficha' class='material-icons'>description</i></a>
                     <a href='javascript:addAttendance(${data.DNI})'><i title='Añadir prestación' class='material-icons'>add</i></a>
                     <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
                     <a href='javascript:delPatient(${data.DNI})'><i title='Borrar' class='material-icons'>delete</i></a>

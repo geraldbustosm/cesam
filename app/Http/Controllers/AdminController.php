@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Functionary;
-use App\User;
-use App\Patient;
-use App\Release;
-use App\Attributes;
-use App\Sex;
 use App\Address;
-use App\Prevition;
-use App\Speciality;
-use App\FunctionarySpeciality;
-use App\Provision;
-use App\Type;
-use App\Diagnosis;
-use App\Program;
-use App\SiGGES;
-use App\Provenance;
-use App\Stage;
 use App\Attendance;
-
+use App\Attributes;
+use App\Diagnosis;
+use App\Functionary;
+use App\FunctionarySpeciality;
+use App\Patient;
+use App\Prevition;
+use App\Program;
+use App\Provenance;
+use App\Provision;
+use App\Release;
+use App\User;
+use App\SiGGES;
+use App\Sex;
+use App\Speciality;
+use App\Stage;
+use App\Type;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

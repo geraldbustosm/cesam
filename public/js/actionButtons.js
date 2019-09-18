@@ -3,15 +3,22 @@
 ****************************************************************************************************************************/
 // Set value on Form
 function setValue(UID, idForm) {
+    // Get hidded input for submit
     var tagID = document.getElementById(idForm);
+    // Set value with DNI or Rut from functionary
     tagID.value = UID;
 }
 // Check modal for continue
 function confirmAction(UID, idForm) {
-    $('#confirmModal').modal('show')
+    // Show modal
+    $('#confirmModal').modal('show');
+    // Get continue button from modal
     var btn = document.getElementById('continueBtn');
+    // When is clicked
     btn.addEventListener("click", function() {
+        // Call function set Value
         setValue(UID, idForm);
+        // Submit the data
         document.onSubmit.submit();
     });
 }
