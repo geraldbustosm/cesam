@@ -36,11 +36,32 @@ function createRow(num, data) {
         celdas[i] = fila.insertCell(i);
         if (i == 0) celdas[i].className = "bold-cell";
     }
+    if (data.descripcion) {
+        // If have 'descripcion' is a 'simple data'
+        simpleData(data);
+    } else {
+        // else is a provision
+        provisionData(data);
+    }
+}
+// Write the description of each simple data into HTML
+function simpleData(data) {
     var descripcion = data.descripcion;
     // Adding cells content
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = descripcion;
     celdas[2].innerHTML = `
+        <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+        <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+}
+// Write the information of provision into HTML
+function provisionData(data) {
+    var glosa = data.glosaTrasadora;
+    // Adding cells content
+    celdas[0].innerHTML = num + 1;
+    celdas[1].innerHTML = glosa;
+    celdas[2].innerHTML = data.codigo;
+    celdas[3].innerHTML = `
         <a href='#'><i title='Editar' class='material-icons'>create</i></a>
         <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
 }

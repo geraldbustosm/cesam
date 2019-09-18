@@ -29,7 +29,7 @@
 				<div class="col-4">
                     <select class="form-control" name="funcionario_id" required>
 				        <option selected disabled>Por favor seleccione un funcionario </option>
-				        @foreach($funcionarios as $funcionario)
+				        @foreach($functionarys as $funcionario)
 				        <option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno." (".$funcionario->profesion.")"}}</option>
 				        @endforeach 
 			        </select>
@@ -82,7 +82,6 @@
 			</div>
 		</div>
 		
-        
 		<!--
         <div class="form-group">
 			<select class="form-control" name="alta_id" required>
@@ -96,11 +95,7 @@
 		<div class="form-group" class = "register">
         <input type="hidden" class="form-control {{ $errors->has('idpatient') ? ' is-invalid' : '' }}" value="<?=$idpatient;?>"  id="idpatient" name="idpatient">
 		<button type="submit" class="btn btn-primary">Registrar</button>
-		<input type="button" href="javascript:validator()" value="Test" id="testing" />
         </div>      
-       
-		
-		
 	</form>
 </div>
 

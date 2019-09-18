@@ -136,9 +136,9 @@ Route::put('prestacion/edit', 'AdminController@editType');
 Route::post('registrar/atencion', 'AdminController@checkCurrStage');
 
 Route::post('registraratencionOk', 'AdminController@registerAttendance');
-// cambia los nombres aca wn
+
 Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary');
-Route::get('lista-prestaciones','AdminController@getProvisionPerFunctionary');
+Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
 
 Route::get('testing', 'AdminController@showTesting');
 Route::post('testing', 'AdminController@regTesting');

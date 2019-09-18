@@ -4,6 +4,7 @@
 @section('active-asignarespecialidadprestacion','active')
 
 @section('content')
+<!-- Alerts of errors -->
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -13,8 +14,10 @@
         </ul>
     </div>
 @endif
+
 <h1>Asigne las especialidades a las prestaciones</h1>
 <div class="div-full">
+    <!-- Successful alert -->
 	@if (session('status'))
 		<div class="alert alert-success" role="alert">
 			{{ session('status') }}
