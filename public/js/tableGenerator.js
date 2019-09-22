@@ -9,6 +9,7 @@ var searchbox = document.getElementById("searchbox");
 /***************************************************************************************************************************
                                                     FILL TABLE
 ****************************************************************************************************************************/
+// Re-write all table when change page on pagination
 function changePage(page) {
     // Validate page so it can't be out of range.
     if (page < 1) page = 1;
@@ -26,7 +27,7 @@ function changePage(page) {
         }
     }
 }
-
+// Write values on cells
 function createRow(num, data) {
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
@@ -97,15 +98,18 @@ function search() {
         }, 800);
     });
 }
-
+// Navigation bar for registMain view
 function topNav() {
+    // Get top navbar element
     var nav = document.getElementById('topNav');
     var tagA = nav.getElementsByTagName('a');
-
+    // Check on wich view we are (searching table)
     for (i = 0; i < nav.childElementCount; i++) {
         if (tagA[i].firstChild.nodeValue == table) {
+            // Mark the tag with the same table name with tag
             tagA[i].className += " active";
         } else {
+            // For everything else unmark
             tagA[i].className = "nav-link";
         }
     }

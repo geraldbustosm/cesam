@@ -29,7 +29,7 @@ function nextPage() {
 // Change the current pag
 function aListener() {
     for (var i = 0; i < tagA.length; i++) {
-        tagA[i].addEventListener("click", function () {
+        tagA[i].addEventListener("click", function() {
             current_page = Number(this.id);
             init(current_page);
         });
@@ -42,56 +42,47 @@ function numPages() {
 /***************************************************************************************************************************
                                                 BUTTONS OF PAGINATION
 ****************************************************************************************************************************/
-// Prev pag button
-function generatePaginationPrev() {
+var listItem;
+var linkItem;
+var spanItem;
+// Next-Prev pagination buttons
+function createElements(val, max) {
     // Create <li>
-    var listItem = document.createElement('li');
+    listItem = document.createElement('li');
     // Create <a>
-    var linkItem = document.createElement('a');
+    linkItem = document.createElement('a');
     // Adding class to both tags
-    listItem.className += "page-item";
     linkItem.className += "page-link";
+    listItem.className += "page-item";
     // Adding ref to <a> with the numbre of pagination
-    linkItem.href += "javascript:prevPage()";
-    var spanItem = document.createElement('span');
+    if (val == 'right') {
+        linkItem.href += "javascript:nextPage()";
+    } else if (val == 'left') {
+        linkItem.href += "javascript:prevPage()";
+    }
+    spanItem = document.createElement('span');
     // Adding the number (text) on <a>
     linkItem.appendChild(spanItem);
     // Adding <a> on his own <li>
     listItem.appendChild(linkItem);
     // Finally add <li> item on <ul>
     pagNav.appendChild(listItem);
-    spanItem.innerHTML = "&laquo;";
-}
-// Next pag button
-function generatePaginationNext() {
-    // Create <li>
-    var listItem = document.createElement('li');
-    // Create <a>
-    var linkItem = document.createElement('a');
-    // Adding class to both tags
-    listItem.className += "page-item";
-    linkItem.className += "page-link";
-    // Adding ref to <a> with the numbre of pagination
-    linkItem.href += "javascript:nextPage()";
-    var spanItem = document.createElement('span');
-    // Adding the number (text) on <a>
-    linkItem.appendChild(spanItem);
-    // Adding <a> on his own <li>
-    listItem.appendChild(linkItem);
-    // Finally add <li> item on <ul>
-    pagNav.appendChild(listItem);
-    spanItem.innerHTML = "&raquo;";
+    if (val == 'right') {
+        spanItem.innerHTML = "&raquo;";
+    } else if (val == 'left') {
+        spanItem.innerHTML = "&laquo;";
+    }
 }
 // Number pag buttons
 function generatePaginationNum(n, m) {
     pagNav.innerHTML = ""
-    generatePaginationPrev();
+    createElements('left');
     // Iterative method for list item creation
     for (n; n <= m; n++) {
         // Create <li>
-        var listItem = document.createElement('li');
+        listItem = document.createElement('li');
         // Create <a>
-        var linkItem = document.createElement('a');
+        linkItem = document.createElement('a');
         // Adding class to both tags
         linkItem.className += "page-link";
         // Using a conditional for listItem
@@ -111,7 +102,7 @@ function generatePaginationNum(n, m) {
         // Finally add <li> item on <ul>
         pagNav.appendChild(listItem);
     }
-    generatePaginationNext();
+    createElements('right');
 }
 // Rotate the numbres of the pagination, so we see 9 pag always
 function numPerPagination() {
@@ -132,5 +123,11 @@ function numPerPagination() {
             generatePaginationNum(current_page - 4, current_page + 4);
         }
     }
+}
+// Change records per page
+function changeTotalRecords() {
+    var new_records = document.getElementById("elements").value;
+    records_per_page = new_records;
+    init(1);
 }
 /********************************************************END*******************************************************************/

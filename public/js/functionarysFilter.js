@@ -60,8 +60,6 @@ function createRow(num, data) {
     celdas[5].innerHTML = data.profesion;
     celdas[6].innerHTML = getSpeciality(data);
     celdas[7].innerHTML = actionBtns;
-
-
 }
 // Getting users
 function getUser(data) {

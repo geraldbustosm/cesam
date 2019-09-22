@@ -34,13 +34,17 @@ class GeneralController extends Controller
     public function showPatients()
     {
         // Get patients from database where 'activa' attribute is 1 bits
-        $patients = Patient::where('activa', 1)->get();
+        $patients = Patient::where('activa', 1)
+                            ->select('DNI','nombre1','nombre2','apellido1','apellido2','fecha_nacimiento','prevision_id','sexo_id','activa')
+                            ->get();
+        // Count patients
+        $cantPatients = $patients->count();
         // Get the list of previtions
         $prev = Prevition::all();
         // Get the list of genders
         $sex = Sex::all();
         // Redirect to the view with list of: active patients, all previtions and all genders
-        return view('general.patient', compact('patients', 'prev', 'sex'));
+        return view('general.patient', compact('patients', 'prev', 'sex', 'cantPatients'));
     }
     // Funcionario
     public function showFunctionarys()
@@ -73,7 +77,6 @@ class GeneralController extends Controller
         $stage = $stage[0];
         // Get array of attendance from the active stage
         $patientAtendances = $stage->attendance;
-        $att = Attendance::all();
         // Redirect to the view with successful status
         return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
     }

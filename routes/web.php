@@ -35,6 +35,7 @@ Route::post('asignar/especialidad-prestacion', 'AdminController@AsignProvision')
                                                     VIEW INFO
 ****************************************************************************************************************************/
 // Fichas
+Route::post('ficha', 'AdminController@registerAttendance');
 Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords');
 // Funcionarios
 Route::get('funcionarios', 'GeneralController@showFunctionarys');
@@ -134,8 +135,6 @@ Route::put('prestacion/edit', 'AdminController@editType');
 //Route::get('registraratencion', 'AdminController@showAddAttendance');
 
 Route::post('registrar/atencion', 'AdminController@checkCurrStage');
-
-Route::post('ficha', 'AdminController@registerAttendance');
 
 Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary');
 Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
