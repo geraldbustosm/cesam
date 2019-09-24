@@ -116,7 +116,7 @@
                 <div class="panel-heading">Seleccione el funcionario</div>
                 <div class="form-group">
                     <select id="functionary" name="functionary" class="form-control" style="width:350px" >
-                            <option value="" selected disabled>Seleccione un Funcinario</option>
+                            <option value="" selected disabled>Seleccione un Funcionario</option>
                             @foreach($users as $key => $user)
                                 <option value="{{$user->id}}"> {{$user->profesion}}</option>
                             @endforeach
@@ -129,6 +129,14 @@
                 <div class="form-group">
                     <label for="title">Seleccione la prestación:</label>
                     <select name="provision" id="provision" class="form-control" style="width:350px"></select>
+                </div>
+                
+                <div class="alert alert-danger " role="alert" name="errorAge" id="errorAge" >
+                   La edad del paciente no esta en el rango de la prestación!!!
+                </div>
+                <div class="form-group">
+                    <label for="title">Seleccione la actividad:</label>
+                    <select name="activity" id="activity" class="form-control" style="width:350px"></select>
                 </div>
                 <script type="text/javascript">
                     $('#functionary').change(function(){
@@ -151,7 +159,7 @@
                             });
                         }else{
                             $("#speciality").empty();
-                            $("#city").empty(); 
+                            $("#functionary").empty(); 
                         }      
                         });
 
@@ -174,6 +182,57 @@
                             });
                             }else{
                             $("#provision").empty();
+                            }                     
+                    });
+
+                    $('#speciality').on('change',function(){
+                        var specialityID = $(this).val();    
+                        if(specialityID){
+                            $.ajax({
+                                type:"GET",
+                                url:"{{url('lista-actividades')}}?speciality_id="+specialityID,
+                                success:function(res){               
+                                    if(res){
+                                        $("#activity").empty();
+                                        $.each(res,function(key,value){
+                                        $("#activity").append('<option value="'+value.id+'">'+value.descripcion+'</option>');
+                                    });
+                                    }else{
+                                        $("#activity").empty();
+                                    }
+                                }
+                            });
+                            }else{
+                            $("#activity").empty();
+                            }                     
+                    });
+                    $('#provision').on('change',function(){
+                        var provisionID = $(this).val();
+                        alert(provisionID);
+                        if(provisionID){
+                            $.ajax({
+                                type:"GET",
+                                url:"{{url('age-check')}}?speciality_id="+provisionID,
+                                success:function(res){      
+                                    if(res){
+                                        alert(res);      
+                                        $('#errorAge').addClass('invisible');
+                                        /*
+                                        var returnedData = JSON.parse(response);
+                                            if (returnedData=='1'){
+                                               //$('#errorAge').hide().
+                                               elemento = document.getElementById("errorAge");
+                                               elemento.hide();
+                                            }
+                                        */
+                                    }else{
+                                        
+                                        $('#errorAge').addClass('invisible');
+                                    }
+                                }
+                            });
+                            }else{
+                            $("#activity").empty();
                             }                     
                     });
                 </script>

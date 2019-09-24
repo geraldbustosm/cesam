@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
 use App\Address;
 use App\Attendance;
 use App\Attributes;
@@ -93,6 +94,14 @@ class AdminController extends Controller
     {
         // Redirect to the view
         return view('admin.Form.userForm');
+    }
+    // Actividades
+    public function showAddActivity()
+    {
+        // Get activitis in alfabetic order
+        $data = Activity::orderBy('descripcion')->get();
+        // Redirect to the view with list of activitis (standard name: data) and name of table in spanish (standard name: table)
+        return view('admin.Form.activityForm', ['data' => $data, 'table' => 'Actividades']);
     }
     // Alta
     public function showAddRelease()
@@ -260,6 +269,40 @@ class AdminController extends Controller
         // Redirect to the view with specialitys per each functionary
         return view('admin.Asingment.specialityAsign', compact('rows', 'columns'));
     }
+    // Asignar Actividad
+    public function showAsignActivity()
+    {
+        // Get specialitys in alfabetic order
+        $speciality = Speciality::orderBy('descripcion')->get();
+        // Get activity's in alfabetic order
+        $activity = Activity::orderBy('descripcion')->get();
+        // Create some variables
+        $rows = [];
+        $columns = [];
+        $ids = [];
+        // First loop (by speciality)
+        foreach ($speciality as $index => $record) {
+            // Get uniques profesions
+            if (!in_array($record->profesion, $columns)) {
+                // Add the profesion into columns
+                $columns[] = " | " . $record->descripcion . " | ";
+            }
+        }
+        // Second loop (by activity)
+        foreach ($activity as $index => $record1) {
+            // Get the activity and add it into the first position of ids
+            $ids[0] = $record1->id;
+            // Third loop (by speciality)
+            foreach ($speciality as $index => $record2) {
+                // Get the speciality_id and add it into the second position of ids
+                $ids[1] = $record2->id;
+                // Get unique code and name of provision and add it into rows
+                $rows[$record1->descripcion][$record2->descripcion] = $ids;
+            }
+        }
+        // Redirect to the view with specialitys per each provision
+        return view('admin.Asingment.activityAsign', compact('rows', 'columns'));
+    }
     // Asignar Prestación
     public function showAsignProvision()
     {
@@ -423,6 +466,24 @@ class AdminController extends Controller
         // Redirect to the view with successful status
         return redirect('registrar/usuario')->with('status', 'Usuario creado');
     }
+    // Actividades
+    public function registerActivity(Request $request)
+    {
+        // Check the format of each variable of 'request'
+        $validacion = $request->validate([
+            'descripcion' => 'required|string|max:255'
+        ]);
+        // Create a new 'object' activity
+        $activity = new Activity;
+        // Set the variables to the object activity
+        // the variables name of object must be the same that database for save it
+        // descripcion
+        $activity->descripcion = $request->descripcion;
+        // Pass the activity to database
+        $activity->save();
+        // Redirect to the view with successful status
+        return redirect('registrar/actividad')->with('status', 'Nueva actividad creada');
+    }
     // Alta
     public function registerRelease(Request $request)
     {
@@ -539,6 +600,9 @@ class AdminController extends Controller
         $speciality->descripcion = $request->descripcion;
         // Pass the new speciality to database
         $speciality->save();
+        $codigos= Provision::where('activa' ,'=' ,1)->get('id');
+        $speciality->provision()->sync($codigos);
+
         // Redirect to the view with successful status
         return redirect('registrar/especialidad')->with('status', 'Nueva especialidad creada');
     }
@@ -727,6 +791,8 @@ class AdminController extends Controller
         $provision->rangoEdad_superior = $request->edadSup;
         $provision->tipo_id = $request->type;
         $provision->save();
+        $codigos =  Speciality::where('activa' ,'=' ,1)->get('id');
+        $provision->speciality()->sync($codigos);
         // Redirect to the view with successful status
         return redirect('registrar/prestacion')->with('status', 'Nueva prestacion creada');
     }
@@ -780,6 +846,31 @@ class AdminController extends Controller
         $type->save();
         // Redirect to the view with successful status
         return redirect('registrar/tipo')->with('status', 'Nuevo tipo de prestación creada');
+    }
+    // Asignar Actividad
+    public function AsignActivity(Request $request)
+    {
+        if (isset($_POST['enviar'])) {
+            $activity = Activity::where('activa', 1)->get();
+            foreach ($activity as $acty) {
+                $acty->speciality()->sync([]);
+            }
+            if (isset($_POST['asignations'])) {
+                if (is_array($_POST['asignations'])) {
+                    foreach ($_POST['asignations'] as $key) {
+                        $codigos = array();
+                        foreach ($key as $key2 => $value) {
+                            $str_arr = explode("|", $value);
+                            $speciality = Speciality::find($str_arr[1]);
+                            array_push($codigos, $speciality->id);
+                            $activity = Activity::find($str_arr[0]);
+                        }
+                        $activity->speciality()->sync($codigos);
+                    }
+                }
+            }
+            return redirect('asignar/especialidad-actividad')->with('status', 'Especialidades y Prestaciones actualizadas');
+        }
     }
     // Asignar prestación
     public function AsignProvision(Request $request)
@@ -1143,6 +1234,25 @@ class AdminController extends Controller
         // Return the boolean
         return $value;
     }
+    // Check activity for the speciality (parameter)
+    // Called from activityAsing
+    public static function existActivitySpeciality($idprov, $idSp)
+    {
+        // Create boolean variable
+        $value = false;
+        // Query to check if speciality have a activity
+        $doesActivityHaveSpeciality = Speciality::where('id', $idSp)
+            ->whereHas('activity', function ($q) use ($idprov) {
+                $q->where('dbo.actividad.id', $idprov);
+            })
+            ->count();
+        // If found it then change the boolean as True
+        if ($doesActivityHaveSpeciality) {
+            $value = true;
+        }
+        // Return the boolean
+        return $value;
+    }
     // Check provision for the speciality (parameter)
     // Called from provisionAsing
     public static function existProvisionSpeciality($idprov, $idSp)
@@ -1221,5 +1331,49 @@ class AdminController extends Controller
         $provision = $specility->provision;
         // Return provisions
         return response()->json($provision);
+    }
+    // Return a activitys from one speciality
+    public function getActivityPerSpeciality(Request $request)
+    {
+        // Get the speciality
+        $specility = Speciality::find($request->speciality_id);
+        // Create a variable for send to the view
+        $activity = $specility->activity;
+        // Return activity's
+        return response()->json($activity);
+    }
+
+    public function checkAge(Request $request)
+    {
+        // Get the patient
+        //$idPatient = $request->get('id');
+        $patient = Patient::find(1);
+        // Get the provision
+        $provison = Provision::find($request->provision_id);
+        //Check if age of patient in years is on the range of provision
+        $date = ($patient->fecha_nacimiento);
+        $time = strtotime($date);
+        $newformat = date('Y-m-d',$time);
+        //$date = DateTime::createFromFormat('Y-m-d', $date);
+        //$date->format('Y-m-d H:i:s');
+        $curTime = new \DateTime();
+        $now = $curTime->format("Y-m-d");
+        //$diff  = $now->diff( $newformat);
+        //$interval = $now1->diff($dateTime1);
+        //$years= $interval->y;
+        $response = gettype($now);
+        /*
+        if (($provison->rangoEdad_inferior <= $years) && ($years <= $provison->rangoEdad_superior))
+        {
+            $response = 1;
+        }      
+        else
+        {
+            $response = 1;
+        }
+        */
+        // Return provisions
+        return response()->json( $response);
+
     }
 }

@@ -7,6 +7,9 @@
 <div>
     <ul class="nav" id="topNav">
         <li class="nav-item">
+            <a class="nav-link" href="{{url('registrar/actividad')}}">Actividades</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{url('registrar/alta')}}">Altas</a>
         </li>
         <li class="nav-item">

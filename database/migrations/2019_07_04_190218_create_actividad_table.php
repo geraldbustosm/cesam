@@ -11,18 +11,15 @@ class CreateActividadTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public  function up()
     {
         Schema::create('actividad', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('asistencia');
-            $table->date('fecha');
             $table->unsignedInteger('codigo_grupal')->nullable();
             $table->timestamps();
+            $table->string('descripcion');
+            $table->string('codigo')->nullable();
 
-            $table->unsignedBigInteger('especialidad_id')->nullable();
-
-            $table->foreign('especialidad_id')->references('id')->on('especialidad');
             $table->boolean('activa')->default(1);
         });
     }

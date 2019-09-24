@@ -22,12 +22,17 @@ Route::get('/', 'GeneralController@index');
 /***************************************************************************************************************************
                                                     ASIGNATIONS
 ****************************************************************************************************************************/
+
+
 // Especialidad
 Route::get('asignar/especialidad', 'AdminController@showAsignSpeciality');
 Route::post('asignar/especialidad', 'AdminController@AsignSpeciality');
 // Etapa
 Route::get('crearetapa', 'AdminController@showAddStage');
 Route::post('crearetapa', 'AdminController@registerStage');
+// Actividad por especialidad
+Route::get('asignar/especialidad-actividad', 'AdminController@showAsignActivity');
+Route::post('asignar/especialidad-actividad', 'AdminController@AsignActivity');
 // Prestación por especialidad
 Route::get('asignar/especialidad-prestacion', 'AdminController@showAsignProvision');
 Route::post('asignar/especialidad-prestacion', 'AdminController@AsignProvision');
@@ -56,6 +61,9 @@ Route::get('registrar/usuario', 'AdminController@showAddUser');
 Route::post('registrar/usuario','AdminController@registerUser');
 // Registros simples
 Route::get('registrar', 'AdminController@showAddRelease');
+// Actividades
+Route::get('registrar/actividad', 'AdminController@showAddActivity');
+Route::post('registrar/actividad', 'AdminController@registerActivity');
 // Alta
 Route::get('registrar/alta', 'AdminController@showAddRelease');
 Route::post('registrar/alta', 'AdminController@registerRelease');
@@ -139,6 +147,9 @@ Route::post('ficha', 'AdminController@registerAttendance');
 
 Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary');
 Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
+Route::get('lista-actividades','AdminController@getActivityPerSpeciality');
+Route::get('age-check','AdminController@checkAge');
+
 
 Route::get('testing', 'AdminController@showTesting');
 Route::post('testing', 'AdminController@regTesting');
