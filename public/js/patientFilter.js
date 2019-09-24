@@ -77,6 +77,7 @@ function getGender(data) {
     var gender;
     for (var j = 0; j < sexArr.length; j++) {
         if (data.sexo_id == sexArr[j].id) {
+            // Get the name of gender / sexuality
             gender = sexArr[j].descripcion;
         }
     }
@@ -87,6 +88,7 @@ function getPrevition(data) {
     var prev;
     for (var k = 0; k < prevArr.length; k++) {
         if (data.prevision_id == prevArr[k].id) {
+            // Get the name of prevition
             prev = prevArr[k].descripcion;
         }
     }
@@ -98,6 +100,7 @@ function writeActionButtons(data) {
         var active = data.activa;
         var tmp;
         if (active == 1) {
+            // Generate action buttons for active patients
             tmp = ` <td> 
                     <a href='ficha/${data.DNI}'><i title='Ver ficha' class='material-icons'>description</i></a>
                     <a href='javascript:addAttendance(${data.DNI})'><i title='Añadir prestación' class='material-icons'>add</i></a>
@@ -105,8 +108,10 @@ function writeActionButtons(data) {
                     <a href='javascript:delPatient(${data.DNI})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
+            // Generate action buttons for deactive patients
             tmp = ` <td>
-                    <a href='#'><i title='Ver ficha' class='material-icons'>description</i></a>
+                    <a href='/ficha/${data.DNI}'><i title='Ver ficha' class='material-icons'>description</i></a>
+                    <a href='/pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
                     <a href='javascript:actPatient(${data.DNI})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }

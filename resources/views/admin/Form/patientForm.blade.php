@@ -101,7 +101,9 @@
 				var config = {
 					format: 'dd/mm/yyyy',
 					locale: 'es-es',
-					uiLibrary: 'bootstrap4'
+					uiLibrary: 'bootstrap4',
+					maxDate: new Date,
+					startView: 3,
 				};
 				$('#datepicker').datepicker(config);
 			</script>
@@ -111,7 +113,9 @@
 	</form>
 </div>
 
-<script>document.getElementById('people_Submenu').className += ' show';</script>
+<script>
+	document.getElementById('people_Submenu').className += ' show';
+</script>
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
 @endsection

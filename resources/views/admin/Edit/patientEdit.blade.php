@@ -19,18 +19,18 @@
 		{{ session('status') }}
 	</div>
 	@endif
-    
-    @if ($patient)
-    <form name="onSubmit" method="post" action="{{ url('pacientes/edit') }}"> 
+
+	@if ($patient)
+	<form name="onSubmit" method="post" action="{{ url('pacientes/edit') }}">
 		@csrf
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
-		
+
 		<!-- Enviamos el ID del paciente para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$patient->id}}">
-		
+
 		<div class="form-group">
-            <label for="dni">Rut o pasaporte</label>
+			<label for="dni">Rut o pasaporte</label>
 			<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
 		</div>
 		<div class="form-group">
@@ -42,51 +42,57 @@
 			</div>
 		</div>
 
+		<!-- Names -->
 		<div class="form-group">
-            <label for="nombre">Nombre completo</label>
-			<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}} {{$patient->apellido1}} {{$patient->apellido2}}" id="nombre" name="nombre" placeholder="Nombre completo">
+			<label for="nombre">Nombre completo</label>
+			<div class="form-row">
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}}" id="nombre" name="nombres" placeholder="Nombres">
+				</div>
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('apellido1') ? ' is-invalid' : '' }}" value="{{$patient->apellido1}}" id="apellido1" name="apellido1" placeholder="Primer apellido">
+				</div>
+				<div class="col">
+					<input type="text" class="form-control {{ $errors->has('apellido2') ? ' is-invalid' : '' }}" value="{{$patient->apellido2}}" id="apellido2" name="apellido2" placeholder="Segundo Apellido">
+				</div>
+			</div>
 		</div>
 
 		<div class="form-group">
-            <label for="prevision">Previsión</label>
+			<label for="prevision">Previsión</label>
 			<select class="form-control" name="prev" required>
-                <option value="{{$patient->prevition->id}}">{{$patient->prevition->descripcion}}</option>
+				<option value="{{$patient->prevition->id}}">{{$patient->prevition->descripcion}}</option>
 				@foreach($prev as $prevision)
-                    @if ($prevision->descripcion != $patient->prevition->descripcion)
-				        <option value="{{$prevision->id}}">{{$prevision->descripcion}}</option>
-                    @endif
+				@if ($prevision->descripcion != $patient->prevition->descripcion)
+				<option value="{{$prevision->id}}">{{$prevision->descripcion}}</option>
+				@endif
 				@endforeach
 			</select>
-           </div>
+		</div>
 
 		<div class="form-group">
-            <label for="sex">Sexo</label>
+			<label for="sex">Sexo</label>
 			<select class="form-control" name="sex" required>
 				<option value="{{$patient->sex->id}}">{{$patient->sex->descripcion}}</option>
-				 @foreach($sex as $sexo)
-                    @if ($sexo->descripcion != $patient->sex->descripcion)
-				        <option value="{{$sexo->id}}">{{ $sexo->descripcion}}</option>
-                    @endif
+				@foreach($sex as $sexo)
+				@if ($sexo->descripcion != $patient->sex->descripcion)
+				<option value="{{$sexo->id}}">{{ $sexo->descripcion}}</option>
+				@endif
 				@endforeach
 			</select>
 		</div>
 
 		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
-			<input id="datepicker" name="datepicker" value="{{$patient_birthday}}" width="276" required>
+			<input id="datepicker" name="datepicker" value="{{$patient_birthdate}}" width="276" required>
 			<script>
 				var config = {
-					format: 'dd-mm-yyyy',
+					format: 'dd/mm/yyyy',
 					locale: 'es-es',
-					uiLibrary: 'bootstrap4'
+					uiLibrary: 'bootstrap4',
+					maxDate: new Date,
 				};
 				$('#datepicker').datepicker(config);
-
-				$("#datepicker").on("change", function() {
-					var from = $("#datepicker").val().split("/");
-					// Probar usando la id 'datepicker' en vez de var 'date'
-					var date = new Date(from[2], from[1] - 1, from[0]);
-				});
 			</script>
 		</div>
 
@@ -113,12 +119,14 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<button type="button" class="btn btn-primary" id="btnSubmit">Editar paciente</button>
 	</form>
 </div>
 @else
-<div class="alert alert-danger" role="alert"><p>No se encontró al paciente</p></div>
+<div class="alert alert-danger" role="alert">
+	<p>No se encontró al paciente</p>
+</div>
 @endif
 
 <!-- Adding script using on this view -->

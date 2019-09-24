@@ -7,37 +7,41 @@
 <h1>Registrar usuario</h1>
 <div class="div-full">
     @if (session('status'))
-        <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-        </div>
+    <div class="alert alert-success" role="alert">
+        {{ session('status') }}
+    </div>
     @endif
     <form method="post" action="{{ url('registrar/usuario') }}">
         @csrf
+        <!-- Nickname -->
         <div class="form-group">
             <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre de usuario">
         </div>
-        
+        <!-- Names -->
         <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('primer_nombre') ? ' is-invalid' : '' }}" value="{{ old('primer_nombre') }}" id="primer_nombre" name="primer_nombre" placeholder="Primer Nombre">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" class="form-control {{ $errors->has('primer_nombre') ? ' is-invalid' : '' }}" value="{{ old('primer_nombre') }}" id="primer_nombre" name="primer_nombre" placeholder="Primer Nombre"> </div>
+                <div class="col">
+                    <input type="text" class="form-control {{ $errors->has('segundo_nombre') ? ' is-invalid' : '' }}" value="{{ old('segundo_nombre') }}" id="segundo_nombre" name="segundo_nombre" placeholder="Segundo Nombre">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control {{ $errors->has('apellido_paterno') ? ' is-invalid' : '' }}" value="{{ old('apellido_paterno') }}" id="apellido_paterno" name="apellido_paterno" placeholder="Apellido Paterno">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control {{ $errors->has('apellido_materno') ? ' is-invalid' : '' }}" value="{{ old('apellido_materno') }}" id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno">
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('segundo_nombre') ? ' is-invalid' : '' }}" value="{{ old('segundo_nombre') }}" id="segundo_nombre" name="segundo_nombre" placeholder="Segundo Nombre">
-        </div>
-        
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('apellido_paterno') ? ' is-invalid' : '' }}" value="{{ old('apellido_paterno') }}" id="apellido_paterno" name="apellido_paterno" placeholder="Apellido Paterno">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('apellido_materno') ? ' is-invalid' : '' }}" value="{{ old('apellido_materno') }}" id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno">
-        </div>
-
+        <!-- UID -->
         <div class="form-group">
             <input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="Rut o pasaporte">
         </div>
+        <!-- Email -->
         <div class="form-group">
             <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" id="email" name="email" placeholder="Correo">
         </div>
+        <!-- Role -->
         <div class="form-group">
             <select id="rol" name="rol" class="form-control">
                 <option value="0" disabled selected>Rol de usuario</option>
@@ -46,6 +50,7 @@
                 <option value="3">Secretaria</option>
             </select>
         </div>
+        <!-- Password -->
         <div class="form-group">
             <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" placeholder="Contraseña">
         </div>
@@ -56,5 +61,7 @@
     </form>
 </div>
 
-<script>document.getElementById('people_Submenu').className += ' show';</script>
+<script>
+    document.getElementById('people_Submenu').className += ' show';
+</script>
 @endsection

@@ -9,6 +9,7 @@ var searchbox = document.getElementById("searchbox");
 /***************************************************************************************************************************
                                                     FILL TABLE
 ****************************************************************************************************************************/
+// Re-write all table when change page on pagination
 function changePage(page) {
     // Validate page so it can't be out of range.
     if (page < 1) page = 1;
@@ -26,7 +27,7 @@ function changePage(page) {
         }
     }
 }
-
+// Write values on cells
 function createRow(num, data) {
     // Create a new row at the end
     var fila = tabla.insertRow(tabla.rows.length);
@@ -38,32 +39,24 @@ function createRow(num, data) {
     }
     if (data.descripcion) {
         // If have 'descripcion' is a 'simple data'
-        simpleData(data);
+        var descripcion = data.descripcion;
+        // Adding cells content
+        celdas[0].innerHTML = num + 1;
+        celdas[1].innerHTML = descripcion;
+        celdas[2].innerHTML = `
+        <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+        <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
     } else {
         // else is a provision
-        provisionData(data);
+        var glosa = data.glosaTrasadora;
+        // Adding cells content
+        celdas[0].innerHTML = num + 1;
+        celdas[1].innerHTML = glosa;
+        celdas[2].innerHTML = data.codigo;
+        celdas[3].innerHTML = `
+        <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+        <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
     }
-}
-// Write the description of each simple data into HTML
-function simpleData(data) {
-    var descripcion = data.descripcion;
-    // Adding cells content
-    celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = descripcion;
-    celdas[2].innerHTML = `
-        <a href='#'><i title='Editar' class='material-icons'>create</i></a>
-        <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
-}
-// Write the information of provision into HTML
-function provisionData(data) {
-    var glosa = data.glosaTrasadora;
-    // Adding cells content
-    celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = glosa;
-    celdas[2].innerHTML = data.codigo;
-    celdas[3].innerHTML = `
-        <a href='#'><i title='Editar' class='material-icons'>create</i></a>
-        <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
 }
 /***************************************************************************************************************************
                                                 FILTER DATA
@@ -105,15 +98,18 @@ function search() {
         }, 800);
     });
 }
-
+// Navigation bar for registMain view
 function topNav() {
+    // Get top navbar element
     var nav = document.getElementById('topNav');
     var tagA = nav.getElementsByTagName('a');
-
+    // Check on wich view we are (searching table)
     for (i = 0; i < nav.childElementCount; i++) {
         if (tagA[i].firstChild.nodeValue == table) {
+            // Mark the tag with the same table name with tag
             tagA[i].className += " active";
         } else {
+            // For everything else unmark
             tagA[i].className = "nav-link";
         }
     }

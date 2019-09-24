@@ -98,7 +98,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="div-full">
                         <ul class="pagination justify-content-center" id="paginate">
                             <!-- Generate in patientFilter.js->generatePaginationNum(); -->

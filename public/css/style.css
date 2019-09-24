@@ -63,7 +63,7 @@ body {
 .nav-link {
     display: flex;
     align-items: center;
-    color: #bcc0ca;
+    color: #93969e;
     padding: 27px 0px 27px 23px;
     border-bottom: 1px solid #e1e5eb;
     -o-transition: .3s;
@@ -74,11 +74,11 @@ body {
 }
 
 .nav-link.disabled {
-    color: #bcc0ca;
+    color: #93969e;
 }
 
 nav ul li a:hover {
-    color: #9e9e9e;
+    color: #616161;
     background-color: #f7f7f7;
 }
 
@@ -87,7 +87,7 @@ nav ul li a:hover {
 }
 
 a {
-    color: #bcc0ca;
+    color: #93969e;
     -o-transition: .3s;
     -ms-transition: .3s;
     -moz-transition: .3s;
@@ -96,12 +96,12 @@ a {
 }
 
 a:hover {
-    color: #9e9e9e;
+    color: #616161;
     text-decoration: none;
 }
 
 #saludo {
-    color: #bcc0ca;
+    color: #93969e;
 }
 
 .nav-link i {

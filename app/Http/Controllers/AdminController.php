@@ -44,7 +44,7 @@ class AdminController extends Controller
                                                     VIEWS FOR ADMIN ROLE ONLY
      ****************************************************************************************************************************/
     // Pacientes inactivos
-     public function showInactivePatients()
+    public function showInactivePatients()
     {
         // Get patients from database where 'activa' attribute is 0 bits
         $patients = Patient::where('activa', 0)->get();
@@ -90,7 +90,7 @@ class AdminController extends Controller
                                              VIEWS OF FORMS (ONLY ADMIN)
      ****************************************************************************************************************************/
     // Usuario
-     public function showAddUser()
+    public function showAddUser()
     {
         // Redirect to the view
         return view('admin.Form.userForm');
@@ -126,7 +126,7 @@ class AdminController extends Controller
         $data = Attributes::orderBy('descripcion')->get();
         // Redirect to the view with list of attriutes (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.attributesForm', ['data' => $data, 'table' => 'Atributos']);
-    }    
+    }
     // Diagnóstico
     public function showAddDiagnosis()
     {
@@ -156,7 +156,7 @@ class AdminController extends Controller
         $provenance = Provenance::all();
         // Redirect to the view with list of: patients, functionarys, diagnosis, programs, releases, sigges and provenances
         return view('admin.Form.stageCreateForm', compact('patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
-    }    
+    }
     // Funcionario
     public function showAddFunctionary()
     {
@@ -183,7 +183,7 @@ class AdminController extends Controller
         // Get provisions
         $data = Provision::all();
         // Redirect to the view with list of types
-        return view('admin.Form.provisionForm', compact('type','data'));
+        return view('admin.Form.provisionForm', compact('type', 'data'));
     }
     // Previsión
     public function showAddPrevition()
@@ -548,7 +548,6 @@ class AdminController extends Controller
         // Get the active stage
         $stage   = Stage::find($request->id_stage);
         $patientAtendances = $stage->attendance;
-        $att = Attendance::all();
         // Redirect to the view with successful status
         return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
     }
@@ -667,7 +666,6 @@ class AdminController extends Controller
         // Check the format of each variable of 'request'
         $validation = $request->validate([
             'id' => 'required|string',
-            //'id' => 'required|int|max:255',
             'nombre' => 'required|string|max:255',
             'pais' => 'required|string|max:255',
             'region' => 'required|string|max:255',
@@ -1021,12 +1019,13 @@ class AdminController extends Controller
         // Validate the request variables
         $validation = $request->validate([
             'dni' => 'required|string|max:255',
-            'nombre' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
+            'apellido1' => 'required|string|max:255',
+            'apellido2' => 'required|string|max:255',
             /*'pais' => 'required|string|max:255',
             'region' => 'required|string|max:255',
             'numero' => 'required|int',
-            'direccion' => 'string|max:255',
-            'direccion_opcional' => 'string|max:255|nullable',*/
+            'direccion' => 'string|max:255|nullable',*/
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
         // Get the patient that want to update
@@ -1035,14 +1034,19 @@ class AdminController extends Controller
         if ($patient) {
             // Set some variables with inputs of view
             // patient -> DNI, nombre1, nombre2, apellido1, apellido2, sexo_id, prevision_id
-            $nombre = explode(" ", $request->nombre);
+            $nombre = explode(" ", $request->nombres);
             $patient->nombre1 = $nombre[0];
             $patient->nombre2 = $nombre[1];
-            $patient->apellido1 = $nombre[2];
-            $patient->apellido2 = $nombre[3];
+            $patient->apellido1 = $request->apellido1;
+            $patient->apellido2 = $request->apellido2;
             $patient->DNI = $request->dni;
             $patient->prevision_id = $request->prev;
             $patient->sexo_id = $request->sex;
+            // Change datepicker format to database format
+            $var = $request->get('datepicker');
+            $date = str_replace('/', '-', $var);
+            $correctDate = date('Y-m-d', strtotime($date));
+            $patient->fecha_nacimiento = $correctDate;
             // Pass the new info for update
             $patient->save();
         }
@@ -1187,7 +1191,7 @@ class AdminController extends Controller
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('funcionarios/inactivos')->with('status', 'Funcionario ' . $user[0]->rut . ' re-incorporado');
     }
-     // Deactivate
+    // Deactivate
     public function deletingPatient(Request $request)
     {
         // Get the patient
@@ -1276,7 +1280,7 @@ class AdminController extends Controller
                                                     ATTENDANCE LOGIC
      ****************************************************************************************************************************/
     // Check for an active stage for the patient (parameter)
-     public function checkCurrStage(Request $request)
+    public function checkCurrStage(Request $request)
     {
         // Set variable with patient DNI (rut)
         $DNI = $request->DNI_stage;
@@ -1351,17 +1355,17 @@ class AdminController extends Controller
         // Get the provision
         $provison = Provision::find($request->provision_id);
         //Check if age of patient in years is on the range of provision
-        $date = ($patient->fecha_nacimiento);
-        $time = strtotime($date);
-        $newformat = date('Y-m-d',$time);
+        //$date = ($patient->fecha_nacimiento);
+        //$time = strtotime($date);
+        //$newformat = date('Y-m-d',$time);
         //$date = DateTime::createFromFormat('Y-m-d', $date);
         //$date->format('Y-m-d H:i:s');
-        $curTime = new \DateTime();
-        $now = $curTime->format("Y-m-d");
+        //$curTime = new \DateTime();
+        //$now = $curTime->format("Y-m-d");
         //$diff  = $now->diff( $newformat);
         //$interval = $now1->diff($dateTime1);
         //$years= $interval->y;
-        $response = gettype($now);
+        $response = "Hola";
         /*
         if (($provison->rangoEdad_inferior <= $years) && ($years <= $provison->rangoEdad_superior))
         {
