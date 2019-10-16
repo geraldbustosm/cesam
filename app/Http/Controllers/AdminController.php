@@ -269,6 +269,41 @@ class AdminController extends Controller
         // Redirect to the view with specialitys per each functionary
         return view('admin.Asingment.specialityAsign', compact('rows', 'columns'));
     }
+     // Asignar Especialidad
+     public function showAsignType()
+     {
+         // Get specialitys in alfabetic order
+         $speciality = Speciality::orderBy('descripcion')->get();
+         // Get functionarys in alfabetic order by profesions
+         $type = Type::orderBy('descripcion')->get();
+         // Create some variables
+         $rows = [];
+         $columns = [];
+         $ids = [];
+         
+         // First loop (by speciality)
+         foreach ($type as $index => $record) {
+             // Get uniques profesions
+             if (!in_array($record->descripcion, $columns)) {
+                 // Add the profesion into columns
+                 $columns[] = " | " . $record->descripcion . " | ";
+             }
+         }
+         // Second loop (by functionary)
+         foreach ($speciality as $index => $record1) {
+             // Get the functionary_id and add it into the first position of ids
+             $ids[0] = $record1->id;
+             // Third loop (by speciality)
+             foreach ($type as $index => $record2) {
+                 // Get the speciality_id and add it into the second position of ids
+                 $ids[1] = $record2->id;
+                 // Get full name of functionary and add it into rows
+                 $rows[$record1->descripcion][$record2->descripcion] = $ids;
+             }
+         }
+         // Redirect to the view with specialitys per each functionary
+         return view('admin.Asingment.typeAsign', compact('rows', 'columns'));
+     }
     // Asignar Actividad
     public function showAsignActivity()
     {
@@ -479,6 +514,8 @@ class AdminController extends Controller
         // the variables name of object must be the same that database for save it
         // descripcion
         $activity->descripcion = $request->descripcion;
+         // descripcion
+         $activity->actividad_abre_canasta = $request->input('openCanasta',0);
         // Pass the activity to database
         $activity->save();
         // Redirect to the view with successful status
@@ -920,6 +957,31 @@ class AdminController extends Controller
             return redirect('asignar/especialidad')->with('status', 'Especialidades actualizadas');
         }
     }
+     // Asignar especialidad a tipo que abre canasta
+     public function AsignType(Request $request)
+     {
+         if (isset($_POST['enviar'])) {
+             $speciality = Speciality::where('activa', 1)->get();
+             foreach ($speciality as $func) {
+                 $func->type()->sync([]);
+             }
+             if (isset($_POST['asignations'])) {
+                 if (is_array($_POST['asignations'])) {
+                     foreach ($_POST['asignations'] as $key) {
+                         $codigos = array();
+                         foreach ($key as $key2 => $value) {
+                             $str_arr = explode("|", $value);
+                             $type = Type::find($str_arr[1]);
+                             array_push($codigos, $type->id);
+                             $speciality = Speciality::find($str_arr[0]);
+                         }
+                         $speciality->type()->sync($codigos);
+                     }
+                 }
+             }
+             return redirect('asignar/especialidad-tipo')->with('status', 'Especialidades actualizadas');
+         }
+     }
     /***************************************************************************************************************************
                                                     EDIT (POST)
      ****************************************************************************************************************************/
@@ -1233,6 +1295,25 @@ class AdminController extends Controller
             ->count();
         // If found it then change the boolean as True
         if ($doesClientHaveProduct) {
+            $value = true;
+        }
+        // Return the boolean
+        return $value;
+    }
+        // Check for a speciality linked to the functionary (parameter)
+    // Called from specialityAsing
+    public static function existTypeSpeciality( $idSp,$idType)
+    {
+        // Create boolean variable
+        $value = false;
+        // Query to check if speciality have a functionary
+        $doesSpecialityHaveType = Speciality::where('id', $idSp)
+            ->whereHas('type', function ($q) use ($idType) {
+                $q->where('dbo.tipo_prestacion.id', $idType);
+            })
+            ->count();
+        // If found it then change the boolean as True
+        if ($doesSpecialityHaveType) {
             $value = true;
         }
         // Return the boolean

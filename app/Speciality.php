@@ -20,6 +20,10 @@ class Speciality extends Model
     {
         return $this->belongsToMany(Activity::class, 'actividad_posee_especialidad', 'especialidad_id','actividad_id');
     }
+  public function type()
+    {
+        return $this->belongsToMany(Type::class, 'tipo_posee_especialidad_canasta',  'especialidad_id','tipo_id');
+    }
 	use Notifiable;
   /**
    * The table associated with the model.

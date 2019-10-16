@@ -36,6 +36,9 @@ Route::post('asignar/especialidad-actividad', 'AdminController@AsignActivity');
 // Prestación por especialidad
 Route::get('asignar/especialidad-prestacion', 'AdminController@showAsignProvision');
 Route::post('asignar/especialidad-prestacion', 'AdminController@AsignProvision');
+// Tipo por especialidad que abre canasata
+Route::get('asignar/especialidad-tipo', 'AdminController@showAsignType');
+Route::post('asignar/especialidad-tipo', 'AdminController@AsignType');
 /***************************************************************************************************************************
                                                     VIEW INFO
 ****************************************************************************************************************************/

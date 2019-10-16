@@ -119,6 +119,9 @@
                                 <li>
                                     <a class="nav-link @yield('active-asignarespecialidadactividad')" href="{{url('asignar/especialidad-actividad')}}"><span>Asignar especialidades a actividades</span></a>
                                 </li>
+                                <li>
+                                    <a class="nav-link @yield('active-asignartipo')" href="{{url('asignar/especialidad-tipo')}}"><span>Asignar especialidades a tipos de prestaciones, que abren canasta</span></a>
+                                </li>
                             </ul>
                         </li>
                     </nav>

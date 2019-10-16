@@ -18,8 +18,10 @@
                 <div class="col-6">
                     <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de Actividad">
                     <br>
-                    <input type="text" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{ old('codigo') }}" id="codigo" name="codigo" placeholder="Codigo">
-                    <br>
+                    <div class="form-group form-check">
+                        <input type="checkbox" name="openCanasta"  id ="openCanasta" value ="1">
+                        <label class="form-check-label" for= "openCanasta"> ¿actividad abre canasta?</label>
+                    </div>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
                 <div class="col">
@@ -32,6 +34,7 @@
                                 <tr>
                                     <th style="width: 3%;">#</th>
                                     <th style="width: 70%;">Actividades</th>
+                                    <th style="width: 10%;">Canasta</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -54,6 +57,7 @@
 <script>
     var fullArray = <?php echo json_encode($data); ?>;    
     var table = <?php echo json_encode($table); ?>;
+    console.log(table);
     document.getElementById('data_Submenu').className += ' show';
 </script>
 @endsection

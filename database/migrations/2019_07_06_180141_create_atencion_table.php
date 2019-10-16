@@ -23,6 +23,7 @@ class CreateAtencionTable extends Migration
             $table->unsignedBigInteger('actividad_id')->nullable()->default(null);;
             $table->time('hora');
             $table->time('duracion');
+            $table->boolean('abre_canasta')->default(0);
             $table->timestamps();
 
             $table->foreign('etapa_id')->references('id')->on('etapa');

@@ -18,7 +18,7 @@ class CreateActividadTable extends Migration
             $table->unsignedInteger('codigo_grupal')->nullable();
             $table->timestamps();
             $table->string('descripcion');
-            $table->string('codigo')->nullable();
+            $table->boolean('actividad_abre_canasta')->default(0);
 
             $table->boolean('activa')->default(1);
         });

@@ -19,6 +19,10 @@ class Type extends Model
     }
   protected $table = 'tipo_prestacion';
   
+  public function speciality()
+    {
+        return $this->belongsToMany(Speciality::class, 'tipo_posee_especialidad_canasta', 'tipo_id', 'especialidad_id');
+    }
   /**
    * The attributes that are mass assignable.
    *
