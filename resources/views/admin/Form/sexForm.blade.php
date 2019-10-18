@@ -6,6 +6,13 @@
 @section('sub-content')
 <h1>Registrar Sexo o Genero</h1>
 <div class="div-full">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        {{ $error }}
+        @endforeach
+    </div>
+    @endif
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
@@ -16,7 +23,7 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col">
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Sexo o Genero">
+                    <input type="text" class="form-control {{ $errors->has('sexuality') ? ' is-invalid' : '' }}" value="{{ old('sexuality') }}" id="sexuality" name="sexuality" placeholder="Sexo o Genero">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>

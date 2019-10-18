@@ -4,17 +4,17 @@
 @section('active-ingresarpaciente','active')
 
 @section('content')
-@if ($errors->any())
-<div class="alert alert-danger">
-	<ul>
-		@foreach ($errors->all() as $error)
-		<li>{{ $error }}</li>
-		@endforeach
-	</ul>
-</div>
-@endif
 <h1>Ingresar pacientes</h1>
 <div class="div-full">
+	@if ($errors->any())
+	<div class="alert alert-danger">
+		<ul>
+			@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+			@endforeach
+		</ul>
+	</div>
+	@endif
 	<!-- Return alert for success query -->
 	@if (session('status'))
 	<div class="alert alert-success" role="alert">
@@ -25,7 +25,7 @@
 		@csrf
 		<!-- UID -->
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id" placeholder="Rut o pasaporte">
+			<input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="Rut o pasaporte">
 		</div>
 		<!-- Check UID for Chilean -->
 		<div class="form-group">
@@ -40,13 +40,13 @@
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre completo">
+					<input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" id="name" name="name" placeholder="Nombre completo">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('apellido1') ? ' is-invalid' : '' }}" value="{{ old('apellido1') }}" id="apellido1" name="apellido1" placeholder="Primer apellido">
+					<input type="text" class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }}" value="{{ old('last_name') }}" id="last_name" name="last_name" placeholder="Primer apellido">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('apellido2') ? ' is-invalid' : '' }}" value="{{ old('apellido2') }}" id="apellido2" name="apellido2" placeholder="Segundo Apellido">
+					<input type="text" class="form-control {{ $errors->has('second_last_name') ? ' is-invalid' : '' }}" value="{{ old('second_last_name') }}" id="second_last_name" name="second_last_name" placeholder="Segundo Apellido">
 				</div>
 			</div>
 		</div>

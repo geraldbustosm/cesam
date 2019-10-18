@@ -64,7 +64,7 @@ Route::post('pacientes/inactivos', 'AdminController@activatePatient');
 Route::get('registrar/usuario', 'AdminController@showAddUser');
 Route::post('registrar/usuario','AdminController@registerUser');
 // Registros simples
-Route::get('registrar', 'AdminController@showAddRelease');
+Route::get('registrar', 'AdminController@showAddActivity');
 // Actividades
 Route::get('registrar/actividad', 'AdminController@showAddActivity');
 Route::post('registrar/actividad', 'AdminController@registerActivity');

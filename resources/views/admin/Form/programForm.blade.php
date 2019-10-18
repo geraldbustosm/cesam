@@ -6,6 +6,15 @@
 @section('content')
 <h1>Registrar Programa</h1>
 <div class="div-full">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
@@ -16,14 +25,14 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <select class="form-control" name="descripcion_espe" required>
+                    <select class="form-control" name="especiality">
                         <option selected disabled>Por favor seleccione un especialidad </option>
                         @foreach($speciality as $especialidad)
                         <option value="{{ $especialidad->descripcion}}">{{ $especialidad->descripcion}}</option>
                         @endforeach
                     </select>
                     <br>
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de programa">
+                    <input type="text" class="form-control {{ $errors->has('program') ? ' is-invalid' : '' }}" value="{{ old('program') }}" id="program" name="program" placeholder="Tipo de programa">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>

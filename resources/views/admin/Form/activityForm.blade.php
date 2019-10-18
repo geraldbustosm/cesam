@@ -6,6 +6,13 @@
 @section('sub-content')
 <h1>Registrar Actividades</h1>
 <div class="div-full">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        {{ $error }}
+        @endforeach
+    </div>
+    @endif
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
@@ -16,11 +23,11 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de Actividad">
+                    <input type="text" class="form-control {{ $errors->has('activity') ? ' is-invalid' : '' }}" value="{{ old('activity') }}" id="activity" name="activity" placeholder="Tipo de Actividad">
                     <br>
                     <div class="form-group form-check">
-                        <input type="checkbox" name="openCanasta"  id ="openCanasta" value ="1">
-                        <label class="form-check-label" for= "openCanasta"> ¿actividad abre canasta?</label>
+                        <input type="checkbox" name="openCanasta" id="openCanasta" value="1">
+                        <label class="form-check-label" for="openCanasta"> ¿actividad abre canasta?</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -55,7 +62,7 @@
 </div>
 <!-- Getting data -->
 <script>
-    var fullArray = <?php echo json_encode($data); ?>;    
+    var fullArray = <?php echo json_encode($data); ?>;
     var table = <?php echo json_encode($table); ?>;
     console.log(table);
     document.getElementById('data_Submenu').className += ' show';
