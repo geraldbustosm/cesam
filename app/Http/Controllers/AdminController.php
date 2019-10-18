@@ -267,7 +267,7 @@ class AdminController extends Controller
             }
         }
         // Redirect to the view with specialitys per each functionary
-        return view('admin.Asingment.specialityAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.specialityAsign', compact('rows', 'columns'));
     }
     // Asignar Especialidad
     public function showAsignType()
@@ -302,7 +302,7 @@ class AdminController extends Controller
             }
         }
         // Redirect to the view with specialitys per each functionary
-        return view('admin.Asingment.typeAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.typeAsign', compact('rows', 'columns'));
     }
     // Asignar Actividad
     public function showAsignActivity()
@@ -336,7 +336,7 @@ class AdminController extends Controller
             }
         }
         // Redirect to the view with specialitys per each provision
-        return view('admin.Asingment.activityAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.activityAsign', compact('rows', 'columns'));
     }
     // Asignar Prestación
     public function showAsignProvision()
@@ -370,7 +370,7 @@ class AdminController extends Controller
             }
         }
         // Redirect to the view with specialitys per each provision
-        return view('admin.Asingment.provisionAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.provisionAsign', compact('rows', 'columns'));
     }
     /***************************************************************************************************************************
                                              VIEWS OF EDIT (ONLY ADMIN)
@@ -1286,7 +1286,7 @@ class AdminController extends Controller
                                                     HELPERS AND LOGIC FUNCTIONS
      ****************************************************************************************************************************/
     // Check for a speciality linked to the functionary (parameter)
-    // Called from specialityAsing
+    // Called from specialityAsign
     public static function existFunctionarySpeciality($idFunct, $idSp)
     {
         // Create boolean variable
@@ -1305,7 +1305,7 @@ class AdminController extends Controller
         return $value;
     }
     // Check for a speciality linked to the functionary (parameter)
-    // Called from specialityAsing
+    // Called from specialityAsign
     public static function existTypeSpeciality($idSp, $idType)
     {
         // Create boolean variable
@@ -1324,7 +1324,7 @@ class AdminController extends Controller
         return $value;
     }
     // Check activity for the speciality (parameter)
-    // Called from activityAsing
+    // Called from activityAsign
     public static function existActivitySpeciality($idprov, $idSp)
     {
         // Create boolean variable
@@ -1343,7 +1343,7 @@ class AdminController extends Controller
         return $value;
     }
     // Check provision for the speciality (parameter)
-    // Called from provisionAsing
+    // Called from provisionAsign
     public static function existProvisionSpeciality($idprov, $idSp)
     {
         // Create boolean variable
