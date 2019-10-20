@@ -110,7 +110,7 @@ Route::post('registrar/tipo', 'AdminController@registerType');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/
-// Alta
+// Actividad
 Route::get('actividad/edit/{id}', 'AdminController@showEditActivity');
 Route::put('actividad/edit', 'AdminController@editActivity');
 // Paciente
