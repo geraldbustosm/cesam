@@ -375,7 +375,18 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                              VIEWS OF EDIT (ONLY ADMIN)
      ****************************************************************************************************************************/
-    // Alta
+    // Actividad
+
+    public function showEditActivity($id){
+        
+        // Get the specific activity
+        $activity = Activity::find($id);
+
+        // Redirect to the view with selected activity
+        return view('admin.Edit.activityEdit', compact('activity'));
+    }
+
+     // Alta
     public function showEditRelease($id)
     {
         // Get the specific release
@@ -989,6 +1000,35 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     EDIT (POST)
      ****************************************************************************************************************************/
+    // Actividad
+    public function editActivity(Request $request)
+    {
+        // URL to redirect when process finish.
+        $url = "actividad/edit/" . $request->id;
+        // Validate the request variable
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+        // Get the release that want to update
+        $activity = Activity::find($request->id);
+        // If found it then update the data
+        if ($activity) {
+            // Set the variable 'descripcion'
+            // the variables name of object must be the same that database for save it
+            $activity->descripcion = $request->descripcion;
+
+            // Set variable openCanasta when that option was clicked
+            if($request->openCanasta){
+                $activity->actividad_abre_canasta = 1;
+            }else{
+                $activity->actividad_abre_canasta = 0;
+            }
+            // Pass the new info for update
+            $activity->save();
+        }
+        // Redirect to the URL with successful status
+        return redirect($url)->with('status', 'Se actualizó la información de la actividad');
+    }
     // Alta
     public function editRelease(Request $request)
     {
