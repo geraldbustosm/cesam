@@ -27,7 +27,7 @@
                     <br>
                     <div class="form-group form-check">
                         <input type="checkbox" name="openCanasta" id="openCanasta" value="1">
-                        <label class="form-check-label" for="openCanasta"> ¿actividad abre canasta?</label>
+                        <label class="form-check-label" for="openCanasta"> Abre canasta</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
