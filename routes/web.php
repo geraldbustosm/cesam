@@ -69,8 +69,8 @@ Route::get('registrar', 'ActivityController@showAddActivity');
 Route::get('registrar/actividad', 'ActivityController@showAddActivity');
 Route::post('registrar/actividad', 'ActivityController@registerActivity');
 // Alta
-Route::get('registrar/alta', 'AdminController@showAddRelease');
-Route::post('registrar/alta', 'AdminController@registerRelease');
+Route::get('registrar/alta', 'ReleaseController@showAddRelease');
+Route::post('registrar/alta', 'ReleaseController@registerRelease');
 // Atributos
 Route::get('registrar/atributos', 'AdminController@showAddAttributes');
 Route::post('registrar/atributos', 'AdminController@registerAttributes');
@@ -117,8 +117,8 @@ Route::put('actividad/edit', 'ActivityController@editActivity');
 Route::get('pacientes/edit/{dni}', 'PatientController@showEditPatient');
 Route::put('pacientes/edit', 'PatientController@editPatient');
 // Alta
-Route::get('alta/edit/{id}', 'AdminController@showEditRelease');
-Route::put('alta/edit', 'AdminController@editRelease');
+Route::get('alta/edit/{id}', 'ReleaseController@showEditRelease');
+Route::put('alta/edit', 'ReleaseController@editRelease');
 // Atributos
 Route::get('atributo/edit/{id}', 'AdminController@showEditAttribute');
 Route::put('atributo/edit', 'AdminController@editAttribute');
