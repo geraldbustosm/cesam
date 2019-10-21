@@ -16,7 +16,7 @@ class CheckRole
      */
     public function handle($request, Closure $next, $role)
     {
-        if(Auth::user()->rol != 1){
+        if(Auth::user()->rol != $role){
             return redirect('/');
         }
         return $next($request);

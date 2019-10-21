@@ -10,7 +10,6 @@ use App\FunctionarySpeciality;
 use App\User;
 use App\Sex;
 use App\Prevition;
-
 use App\Attendance;
 use App\Stage;
 
