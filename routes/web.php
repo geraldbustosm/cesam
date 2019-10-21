@@ -31,8 +31,8 @@ Route::post('asignar/especialidad', 'AdminController@AsignSpeciality');
 Route::get('crearetapa', 'AdminController@showAddStage');
 Route::post('crearetapa', 'AdminController@registerStage');
 // Actividad por especialidad
-Route::get('asignar/especialidad-actividad', 'AdminController@showAsignActivity');
-Route::post('asignar/especialidad-actividad', 'AdminController@AsignActivity');
+Route::get('asignar/especialidad-actividad', 'ActivityController@showAsignActivity');
+Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity');
 // Prestación por especialidad
 Route::get('asignar/especialidad-prestacion', 'AdminController@showAsignProvision');
 Route::post('asignar/especialidad-prestacion', 'AdminController@AsignProvision');
@@ -64,10 +64,10 @@ Route::post('pacientes/inactivos', 'PatientController@activatePatient');
 Route::get('registrar/usuario', 'UserController@showAddUser');
 Route::post('registrar/usuario','UserController@registerUser');
 // Registros simples
-Route::get('registrar', 'AdminController@showAddActivity');
+Route::get('registrar', 'ActivityController@showAddActivity');
 // Actividades
-Route::get('registrar/actividad', 'AdminController@showAddActivity');
-Route::post('registrar/actividad', 'AdminController@registerActivity');
+Route::get('registrar/actividad', 'ActivityController@showAddActivity');
+Route::post('registrar/actividad', 'ActivityController@registerActivity');
 // Alta
 Route::get('registrar/alta', 'AdminController@showAddRelease');
 Route::post('registrar/alta', 'AdminController@registerRelease');
@@ -111,8 +111,8 @@ Route::post('registrar/tipo', 'AdminController@registerType');
                                                     EDITS 
 ****************************************************************************************************************************/
 // Actividad
-Route::get('actividad/edit/{id}', 'AdminController@showEditActivity');
-Route::put('actividad/edit', 'AdminController@editActivity');
+Route::get('actividad/edit/{id}', 'ActivityController@showEditActivity');
+Route::put('actividad/edit', 'ActivityController@editActivity');
 // Paciente
 Route::get('pacientes/edit/{dni}', 'PatientController@showEditPatient');
 Route::put('pacientes/edit', 'PatientController@editPatient');
