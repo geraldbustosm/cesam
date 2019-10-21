@@ -46,8 +46,8 @@ Route::post('asignar/especialidad-tipo', 'AdminController@AsignType');
 Route::post('ficha', 'AdminController@registerAttendance');
 Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords');
 // Funcionarios
-Route::get('funcionarios', 'GeneralController@showFunctionarys');
-Route::post('funcionarios', 'AdminController@deletingFunctionary');
+Route::get('funcionarios', 'FunctionaryController@showFunctionarys');
+Route::post('funcionarios', 'FunctionaryController@deletingFunctionary');
 
 Route::get('funcionarios/inactivos', 'AdminController@showInactiveFunctionarys');
 Route::post('funcionarios/inactivos', 'AdminController@activateFunctionary');
@@ -61,8 +61,8 @@ Route::post('pacientes/inactivos', 'PatientController@activatePatient');
                                                     REGISTERS
 ****************************************************************************************************************************/
 // Usuario
-Route::get('registrar/usuario', 'AdminController@showAddUser');
-Route::post('registrar/usuario','AdminController@registerUser');
+Route::get('registrar/usuario', 'UserController@showAddUser');
+Route::post('registrar/usuario','UserController@registerUser');
 // Registros simples
 Route::get('registrar', 'AdminController@showAddActivity');
 // Actividades
@@ -81,8 +81,8 @@ Route::post('registrar/diagnostico', 'AdminController@registerDiagnosis');
 Route::get('registrar/especialidad', 'AdminController@showAddSpeciality');
 Route::post('registrar/especialidad', 'AdminController@registerSpeciality');
 // Funcionario
-Route::get('registrar/funcionario', 'AdminController@showAddFunctionary');
-Route::post('registrar/funcionario', 'AdminController@registerFunctionary');
+Route::get('registrar/funcionario', 'FunctionaryController@showAddFunctionary');
+Route::post('registrar/funcionario', 'FunctionaryController@registerFunctionary');
 // Paciente
 Route::get('registrar/paciente', 'PatientController@showAddPatient');
 Route::post('registrar/paciente', 'PatientController@registerPatient');
