@@ -43,7 +43,7 @@ Route::post('asignar/especialidad-tipo', 'AdminController@AsignType');
                                                     VIEW INFO
 ****************************************************************************************************************************/
 // Fichas
-Route::post('ficha', 'AdminController@registerAttendance');
+Route::post('ficha', 'AttendanceController@registerAttendance');
 Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords');
 // Funcionarios
 Route::get('funcionarios', 'FunctionaryController@showFunctionarys');
