@@ -337,7 +337,7 @@ class AdminController extends Controller
             }
         }
         // Redirect to the view with specialitys per each provision
-        return view('admin.Asingment.activityAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.activityAsign', compact('rows', 'columns'));
     }
     // Asignar Prestación
     public function showAsignProvision()
@@ -371,12 +371,23 @@ class AdminController extends Controller
             }
         }
         // Redirect to the view with specialitys per each provision
-        return view('admin.Asingment.provisionAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.provisionAsign', compact('rows', 'columns'));
     }
     /***************************************************************************************************************************
                                              VIEWS OF EDIT (ONLY ADMIN)
      ****************************************************************************************************************************/
-    // Alta
+    // Actividad
+
+    public function showEditActivity($id){
+        
+        // Get the specific activity
+        $activity = Activity::find($id);
+
+        // Redirect to the view with selected activity
+        return view('admin.Edit.activityEdit', compact('activity'));
+    }
+
+     // Alta
     public function showEditRelease($id)
     {
         // Get the specific release
@@ -507,16 +518,16 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'activity' => 'required|string|max:255'
         ]);
         // Create a new 'object' activity
         $activity = new Activity;
         // Set the variables to the object activity
         // the variables name of object must be the same that database for save it
         // descripcion
-        $activity->descripcion = $request->descripcion;
-         // descripcion
-         $activity->actividad_abre_canasta = $request->input('openCanasta',0);
+        $activity->descripcion = $request->activity;
+        // descripcion
+        $activity->actividad_abre_canasta = $request->input('openCanasta', 0);
         // Pass the activity to database
         $activity->save();
         // Redirect to the view with successful status
@@ -527,14 +538,14 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'medical_discharge' => 'required|string|max:255'
         ]);
         // Create a new 'object' release
         $release = new Release;
         // Set the variables to the object release
         // the variables name of object must be the same that database for save it
         // descripcion
-        $release->descripcion = $request->descripcion;
+        $release->descripcion = $request->medical_discharge;
         // Pass the release to database
         $release->save();
         // Redirect to the view with successful status
@@ -602,13 +613,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'attribute' => 'required|string|max:255'
         ]);
         // Create a new 'object' attribute
         $attribute = new Attributes;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $attribute->descripcion = $request->descripcion;
+        $attribute->descripcion = $request->attribute;
         // Pass the new attribute to database
         $attribute->save();
         // Redirect to the view with successful status
@@ -619,13 +630,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:382'
+            'diagnosis' => 'required|string|max:382'
         ]);
         // Create a new 'object' diagnosis
         $diagnosis = new Diagnosis;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $diagnosis->descripcion = $request->descripcion;
+        $diagnosis->descripcion = $request->diagnosis;
         // Pass the new diagnosis to database
         $diagnosis->save();
         // Redirect to the view with successful status
@@ -636,16 +647,16 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'medical_speciality' => 'required|string|max:255'
         ]);
         // Create a new 'object' speciality
         $speciality = new Speciality;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $speciality->descripcion = $request->descripcion;
+        $speciality->descripcion = $request->medical_speciality;
         // Pass the new speciality to database
         $speciality->save();
-        $codigos= Provision::where('activa' ,'=' ,1)->get('id');
+        $codigos = Provision::where('activa', '=', 1)->get('id');
         $speciality->provision()->sync($codigos);
 
         // Redirect to the view with successful status
@@ -711,8 +722,9 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validation = $request->validate([
-            'id' => 'required|string',
-            'nombre' => 'required|string|max:255',
+            'rut' => 'required|string|unique:paciente,DNI',
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'pais' => 'required|string|max:255',
             'region' => 'required|string|max:255',
             'comuna' => 'required|string|max:255',
@@ -721,13 +733,12 @@ class AdminController extends Controller
             'patient_sex' => 'required',
             'prevition' => 'required|int',
             'numero' => 'required|int',
-            'direccion' => 'string|max:255',
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
 
         echo $request->new_start;
         // Separate the name string into array
-        $nombre = explode(" ", $request->nombre);
+        $nombre = explode(" ", $request->name);
         // Create the new 'oject' patient
         $patient = new Patient;
         // Set some variables with inputs of view
@@ -768,13 +779,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'nombre' => 'required|string|max:255'
+            'prevition' => 'required|string|max:255'
         ]);
         // Create the 'object' prevition
         $prevition = new Prevition;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $prevition->descripcion = $request->nombre;
+        $prevition->descripcion = $request->prevition;
         // Pass the prevition to database
         $prevition->save();
         // Redirect to the view with the successful status
@@ -785,13 +796,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'provenance' => 'required|string|max:255'
         ]);
         // Create the new 'object' provenance
         $provenance = new Provenance;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $provenance->descripcion = $request->descripcion;
+        $provenance->descripcion = $request->provenance;
         // Pass the provenance to database
         $provenance->save();
         // Redirect to the view with successful status
@@ -802,15 +813,15 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
-
+            'program' => 'required|string|max:255',
+            'especiality' => 'required'
         ]);
         // Create the new 'object' program
         $program = new Program;
         // Set the variable 'descripcion' and 'especialidad'
         // the variables name of object must be the same that database for save it
-        $program->descripcion = $request->descripcion;
-        $program->especialidad = $request->descripcion_espe;
+        $program->descripcion = $request->program;
+        $program->especialidad = $request->especiality;
         // Pass the program to database
         $program->save();
         // Redirect to the view with successful status
@@ -824,6 +835,10 @@ class AdminController extends Controller
             'frecuencia' => 'required|int',
             'glosa' => 'required|string|max:255',
             'ps_fam' => 'required|string|max:255',
+            'codigo' => 'required|string|max:255',
+            'lower_age' => 'required',
+            'senior_age' => 'required',
+            'medical_provision_type' => 'required'
         ]);
         // Create the new 'object' provision
         $provision = new Provision;
@@ -834,11 +849,11 @@ class AdminController extends Controller
         $provision->frecuencia = $request->frecuencia;
         $provision->ps_fam = $request->ps_fam;
         $provision->codigo = $request->codigo;
-        $provision->rangoEdad_inferior = $request->edadInf;
-        $provision->rangoEdad_superior = $request->edadSup;
-        $provision->tipo_id = $request->type;
+        $provision->rangoEdad_inferior = $request->lower_age;
+        $provision->rangoEdad_superior = $request->senior_age;
+        $provision->tipo_id = $request->medical_provision_type;
         $provision->save();
-        $codigos =  Speciality::where('activa' ,'=' ,1)->get('id');
+        $codigos =  Speciality::where('activa', '=', 1)->get('id');
         $provision->speciality()->sync($codigos);
         // Redirect to the view with successful status
         return redirect('registrar/prestacion')->with('status', 'Nueva prestacion creada');
@@ -848,13 +863,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'sexuality' => 'required|string|max:255'
         ]);
         // Create the new 'object' sex
         $sex = new Sex;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $sex->descripcion = $request->descripcion;
+        $sex->descripcion = $request->sexuality;
         // Pass the gender to database
         $sex->save();
         // Redirect to the view with successful status
@@ -865,13 +880,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'sigges' => 'required|string|max:255'
         ]);
         // Create the new 'object' sigges
         $sigges = new SiGGES;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $sigges->descripcion = $request->descripcion;
+        $sigges->descripcion = $request->sigges;
         // Pass the sigges to databes
         $sigges->save();
         // Redirect to the view with successful status
@@ -882,13 +897,13 @@ class AdminController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'descripcion' => 'required|string|max:255'
+            'medical_provision_type' => 'required|string|max:255'
         ]);
         // Create the new 'object' type (of GES)
         $type = new Type;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $type->descripcion = $request->descripcion;
+        $type->descripcion = $request->medical_provision_type;
         // Pass the type to database
         $type->save();
         // Redirect to the view with successful status
@@ -969,34 +984,63 @@ class AdminController extends Controller
             return redirect('asignar/especialidad')->with('status', 'Especialidades actualizadas');
         }
     }
-     // Asignar especialidad a tipo que abre canasta
-     public function AsignType(Request $request)
-     {
-         if (isset($_POST['enviar'])) {
-             $speciality = Speciality::where('activa', 1)->get();
-             foreach ($speciality as $func) {
-                 $func->type()->sync([]);
-             }
-             if (isset($_POST['asignations'])) {
-                 if (is_array($_POST['asignations'])) {
-                     foreach ($_POST['asignations'] as $key) {
-                         $codigos = array();
-                         foreach ($key as $key2 => $value) {
-                             $str_arr = explode("|", $value);
-                             $type = Type::find($str_arr[1]);
-                             array_push($codigos, $type->id);
-                             $speciality = Speciality::find($str_arr[0]);
-                         }
-                         $speciality->type()->sync($codigos);
-                     }
-                 }
-             }
-             return redirect('asignar/especialidad-tipo')->with('status', 'Especialidades actualizadas');
-         }
-     }
+    // Asignar especialidad a tipo que abre canasta
+    public function AsignType(Request $request)
+    {
+        if (isset($_POST['enviar'])) {
+            $speciality = Speciality::where('activa', 1)->get();
+            foreach ($speciality as $func) {
+                $func->type()->sync([]);
+            }
+            if (isset($_POST['asignations'])) {
+                if (is_array($_POST['asignations'])) {
+                    foreach ($_POST['asignations'] as $key) {
+                        $codigos = array();
+                        foreach ($key as $key2 => $value) {
+                            $str_arr = explode("|", $value);
+                            $type = Type::find($str_arr[1]);
+                            array_push($codigos, $type->id);
+                            $speciality = Speciality::find($str_arr[0]);
+                        }
+                        $speciality->type()->sync($codigos);
+                    }
+                }
+            }
+            return redirect('asignar/especialidad-tipo')->with('status', 'Especialidades actualizadas');
+        }
+    }
     /***************************************************************************************************************************
                                                     EDIT (POST)
      ****************************************************************************************************************************/
+    // Actividad
+    public function editActivity(Request $request)
+    {
+        // URL to redirect when process finish.
+        $url = "actividad/edit/" . $request->id;
+        // Validate the request variable
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+        // Get the release that want to update
+        $activity = Activity::find($request->id);
+        // If found it then update the data
+        if ($activity) {
+            // Set the variable 'descripcion'
+            // the variables name of object must be the same that database for save it
+            $activity->descripcion = $request->descripcion;
+
+            // Set variable openCanasta when that option was clicked
+            if($request->openCanasta){
+                $activity->actividad_abre_canasta = 1;
+            }else{
+                $activity->actividad_abre_canasta = 0;
+            }
+            // Pass the new info for update
+            $activity->save();
+        }
+        // Redirect to the URL with successful status
+        return redirect($url)->with('status', 'Se actualizó la información de la actividad');
+    }
     // Alta
     public function editRelease(Request $request)
     {
@@ -1294,7 +1338,7 @@ class AdminController extends Controller
                                                     HELPERS AND LOGIC FUNCTIONS
      ****************************************************************************************************************************/
     // Check for a speciality linked to the functionary (parameter)
-    // Called from specialityAsing
+    // Called from specialityAsign
     public static function existFunctionarySpeciality($idFunct, $idSp)
     {
         // Create boolean variable
@@ -1312,9 +1356,9 @@ class AdminController extends Controller
         // Return the boolean
         return $value;
     }
-        // Check for a speciality linked to the functionary (parameter)
-    // Called from specialityAsing
-    public static function existTypeSpeciality( $idSp,$idType)
+    // Check for a speciality linked to the functionary (parameter)
+    // Called from specialityAsign
+    public static function existTypeSpeciality($idSp, $idType)
     {
         // Create boolean variable
         $value = false;
@@ -1332,7 +1376,7 @@ class AdminController extends Controller
         return $value;
     }
     // Check activity for the speciality (parameter)
-    // Called from activityAsing
+    // Called from activityAsign
     public static function existActivitySpeciality($idprov, $idSp)
     {
         // Create boolean variable
@@ -1351,7 +1395,7 @@ class AdminController extends Controller
         return $value;
     }
     // Check provision for the speciality (parameter)
-    // Called from provisionAsing
+    // Called from provisionAsign
     public static function existProvisionSpeciality($idprov, $idSp)
     {
         // Create boolean variable
@@ -1470,7 +1514,6 @@ class AdminController extends Controller
         }
         */
         // Return provisions
-        return response()->json( $response);
-
+        return response()->json($response);
     }
 }

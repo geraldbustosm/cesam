@@ -105,10 +105,10 @@
                                     <a class="nav-link @yield('active-registrar')" href="{{url('registrar')}}"><span>Datos simples </span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrar/programa')}}"><span>Asignar programa a especialidad</span></a>
+                                    <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrar/prestacion')}}"><span>Ingresar prestación</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprestacion')" href="{{url('registrar/prestacion')}}"><span>Asignar prestación</span></a>
+                                    <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrar/programa')}}"><span>Asignar programa a especialidad</span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignar/especialidad')}}"><span>Asignar especialidades a funcionarios</span></a>
@@ -120,7 +120,7 @@
                                     <a class="nav-link @yield('active-asignarespecialidadactividad')" href="{{url('asignar/especialidad-actividad')}}"><span>Asignar especialidades a actividades</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-asignartipo')" href="{{url('asignar/especialidad-tipo')}}"><span>Asignar especialidades a tipos de prestaciones, que abren canasta</span></a>
+                                    <a class="nav-link @yield('active-asignartipo')" href="{{url('asignar/especialidad-tipo')}}"><span>Asignar especialidades a tipo prestación</span></a>
                                 </li>
                             </ul>
                         </li>

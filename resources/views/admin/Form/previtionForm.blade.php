@@ -6,6 +6,13 @@
 @section('sub-content')
 <h1>Registrar Prevision</h1>
 <div class="div-full">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+        {{ $error }}
+        @endforeach
+    </div>
+    @endif
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
@@ -16,7 +23,7 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Tipo de prevision">
+                    <input type="text" class="form-control {{ $errors->has('prevition') ? ' is-invalid' : '' }}" value="{{ old('prevition') }}" id="prevition" name="prevition" placeholder="Tipo de previsión">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -50,7 +57,7 @@
 </div>
 <!-- Getting data -->
 <script>
-    var fullArray = <?php echo json_encode($data); ?>;    
+    var fullArray = <?php echo json_encode($data); ?>;
     var table = <?php echo json_encode($table); ?>;
     document.getElementById('data_Submenu').className += ' show';
 </script>

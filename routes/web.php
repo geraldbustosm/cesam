@@ -64,7 +64,7 @@ Route::post('pacientes/inactivos', 'AdminController@activatePatient');
 Route::get('registrar/usuario', 'AdminController@showAddUser');
 Route::post('registrar/usuario','AdminController@registerUser');
 // Registros simples
-Route::get('registrar', 'AdminController@showAddRelease');
+Route::get('registrar', 'AdminController@showAddActivity');
 // Actividades
 Route::get('registrar/actividad', 'AdminController@showAddActivity');
 Route::post('registrar/actividad', 'AdminController@registerActivity');
@@ -110,6 +110,9 @@ Route::post('registrar/tipo', 'AdminController@registerType');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/
+// Actividad
+Route::get('actividad/edit/{id}', 'AdminController@showEditActivity');
+Route::put('actividad/edit', 'AdminController@editActivity');
 // Paciente
 Route::get('pacientes/edit/{dni}', 'AdminController@showEditPatient');
 Route::put('pacientes/edit', 'AdminController@editPatient');

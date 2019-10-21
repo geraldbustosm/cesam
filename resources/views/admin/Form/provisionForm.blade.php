@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control" name="edadInf" required>
+                        <select class="form-control" name="lower_age" required>
                             <option selected disabled>Por favor seleccione el rango de edad inferior</option>
                             @for ($i = 0; $i <= 120; $i++) <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control" name="edadSup" required>
+                        <select class="form-control" name="senior_age" required>
                             <option selected disabled>Por favor seleccione el rango de edad superior</option>
                             @for ($i = 0; $i <= 120; $i++) <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control" name="type" required>
+                        <select class="form-control" name="medical_provision_type" required>
                             <option selected disabled>Por favor seleccione el tipo de prestación</option>
                             @foreach($type as $type)
                             <option value="{{ $type->id}}">{{ $type->descripcion}}</option>
