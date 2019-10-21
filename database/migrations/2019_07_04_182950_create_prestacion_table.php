@@ -21,7 +21,7 @@ class CreatePrestacionTable extends Migration
             $table->unsignedInteger('rangoEdad_superior');
             $table->string('ps_fam');
             $table->string('glosaTrasadora');
-            $table->string('codigo')->unique();;
+            $table->string('codigo')->unique();
 
             $table->unsignedBigInteger('tipo_id');
 

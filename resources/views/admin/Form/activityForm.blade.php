@@ -19,7 +19,7 @@
                     <input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{ old('descripcion') }}" id="descripcion" name="descripcion" placeholder="Tipo de Actividad">
                     <br>
                     <div class="form-group form-check">
-                        <input type="checkbox" name="openCanasta"  id ="openCanasta" value ="1">
+                        <input type="checkbox" name="openCanasta" class="form-check-input" id ="openCanasta" value ="1">
                         <label class="form-check-label" for= "openCanasta"> ¿actividad abre canasta?</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Registrar</button>

@@ -233,7 +233,8 @@
                 <div class="form-group" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <button type="submit" name="register" id ="register" value="1" class="btn btn-primary">Registrar</button>
+                    <button type="submit" name="register" id ="register" value="2" class="btn btn-primary">Agregar Otro</button>
                 </div>
             </div>
         </div>

@@ -251,7 +251,7 @@ class AdminController extends Controller
             // Get uniques profesions
             if (!in_array($record->profesion, $columns)) {
                 // Add the profesion into columns
-                $columns[] = " | " . $record->descripcion . " | ";
+                $columns[] = $record->descripcion;
             }
         }
         // Second loop (by functionary)
@@ -286,7 +286,8 @@ class AdminController extends Controller
              // Get uniques profesions
              if (!in_array($record->descripcion, $columns)) {
                  // Add the profesion into columns
-                 $columns[] = " | " . $record->descripcion . " | ";
+                 //$columns[] =  $record->descripcion ;
+                 array_push($columns, $record->descripcion);
              }
          }
          // Second loop (by functionary)
@@ -320,7 +321,7 @@ class AdminController extends Controller
             // Get uniques profesions
             if (!in_array($record->profesion, $columns)) {
                 // Add the profesion into columns
-                $columns[] = " | " . $record->descripcion . " | ";
+                array_push($columns, $record->descripcion);
             }
         }
         // Second loop (by activity)
@@ -585,8 +586,16 @@ class AdminController extends Controller
         // Get the active stage
         $stage   = Stage::find($request->id_stage);
         $patientAtendances = $stage->attendance;
-        // Redirect to the view with successful status
-        return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+
+        if($request->register==1){
+            // Redirect to the view with successful status
+            return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+        }
+        if($request->register==2){
+            // Get active functionarys
+            $users = Functionary::where('activa', 1)->get();
+            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('stage', 'users', 'patient'));
+        }
     }
     // Atributo
     public function registerAttributes(Request $request)
@@ -725,7 +734,10 @@ class AdminController extends Controller
         // the variables name of object must be the same that database for save it
         // patient -> DNI, nombre1, nombre2, apellido1, apellido2, sexo_id, fecha_nacimiento, prevision_id
         $patient->nombre1 = $nombre[0];
-        $patient->nombre2 = $nombre[1];
+        $patient->nombre2 = "-";
+        if(count($nombre)==2){
+            $patient->nombre2 = $nombre[1];
+        }
         $patient->apellido1 = $request->apellido1;
         $patient->apellido2 = $request->apellido2;
         $patient->DNI = $request->id;

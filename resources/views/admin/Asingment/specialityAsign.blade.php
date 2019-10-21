@@ -14,6 +14,7 @@
         </ul>
     </div>
 @endif
+<link rel="stylesheet" href="{{asset('css/table.css')}}">
 <h1>Asigne las especialidades a los Funcionarios</h1>
 <div class="div-full">
 	@if (session('status'))
@@ -23,39 +24,39 @@
 	@endif
 	<form method="post" action="{{ url('asignar/especialidad') }}">
 		@csrf
-        
-
-        <table>
-            <thead>
-                <tr>
-                    <th><!-- Empty for the left top corner of the table --></th>
-                    @foreach($columns as $column)
-                    <th>{{ $column }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($rows as $kriteria1 => $columns)
-                <tr>
-                    <td><strong>{{ " ".$kriteria1." " }}</strong></td>
-                    @foreach($columns as $kriteria2 => $nombre1)
-                    @inject('provider', 'App\Http\Controllers\AdminController')
-                    
-                    <td>                  
-                    
-                    <input type="checkbox" 
-                           name="asignations[<?=strtoupper($nombre1[0]);?>][<?=strtoupper($nombre1[1]);?>]" 
-                           value="<?=strtoupper($nombre1[0])."|".strtoupper($nombre1[1]);?>"                                  
-                           <?php if($provider::existFunctionarySpeciality($nombre1[0],$nombre1[1])) { echo 'checked';}?> 
-                    >
-                    
-                    </td>
-                    @endforeach
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-        
+        <div style="overflow-x:auto;">
+            <table  class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th><!-- Empty for the left top corner of the table --></th>
+                        @foreach($columns as $column)
+                        <th>{{ $column }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach($rows as $kriteria1 => $columns)
+                    <tr>
+                        <td><strong>{{ " ".$kriteria1." " }}</strong></td>
+                        @foreach($columns as $kriteria2 => $nombre1)
+                        @inject('provider', 'App\Http\Controllers\AdminController')
+                        
+                        <td>                  
+                        <label class="pure-material-checkbox">    
+                        <input type="checkbox" 
+                            name="asignations[<?=strtoupper($nombre1[0]);?>][<?=strtoupper($nombre1[1]);?>]" 
+                            value="<?=strtoupper($nombre1[0])."|".strtoupper($nombre1[1]);?>"                                  
+                            <?php if($provider::existFunctionarySpeciality($nombre1[0],$nombre1[1])) { echo 'checked';}?> 
+                        >
+                        <span></span>
+                        </label>
+                        </td>
+                        @endforeach
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
 		<button type="submit" name= "enviar" class="btn btn-primary">Registrar</button>
         
 	</form>
