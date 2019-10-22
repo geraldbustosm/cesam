@@ -34,8 +34,8 @@ Route::post('crearetapa', 'StageController@registerStage');
 Route::get('asignar/especialidad-actividad', 'ActivityController@showAsignActivity');
 Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity');
 // Prestación por especialidad
-Route::get('asignar/especialidad-prestacion', 'AdminController@showAsignProvision');
-Route::post('asignar/especialidad-prestacion', 'AdminController@AsignProvision');
+Route::get('asignar/especialidad-prestacion', 'ProvisionController@showAsignProvision');
+Route::post('asignar/especialidad-prestacion', 'ProvisionController@AsignProvision');
 // Tipo por especialidad que abre canasata
 Route::get('asignar/especialidad-tipo', 'AdminController@showAsignType');
 Route::post('asignar/especialidad-tipo', 'AdminController@AsignType');
@@ -87,14 +87,14 @@ Route::post('registrar/funcionario', 'FunctionaryController@registerFunctionary'
 Route::get('registrar/paciente', 'PatientController@showAddPatient');
 Route::post('registrar/paciente', 'PatientController@registerPatient');
 // Prestación
-Route::get('registrar/prestacion', 'AdminController@showAddProvision');
-Route::post('registrar/prestacion', 'AdminController@registerProvision');
+Route::get('registrar/prestacion', 'ProvisionController@showAddProvision');
+Route::post('registrar/prestacion', 'ProvisionController@registerProvision');
 // Previsión
-Route::get('registrar/prevision', 'AdminController@showAddPrevition');
-Route::post('registrar/prevision', 'AdminController@registerPrevition');
+Route::get('registrar/prevision', 'PrevitionController@showAddPrevition');
+Route::post('registrar/prevision', 'PrevitionController@registerPrevition');
 // Procedencia
-Route::get('registrar/procedencia', 'AdminController@showAddProvenance');
-Route::post('registrar/procedencia', 'AdminController@registerProvenance');
+Route::get('registrar/procedencia', 'ProvenanceController@showAddProvenance');
+Route::post('registrar/procedencia', 'ProvenanceController@registerProvenance');
 // Programa
 Route::get('registrar/programa', 'AdminController@showAddProgram');
 Route::post('registrar/programa', 'AdminController@registerProgram');
@@ -132,11 +132,11 @@ Route::put('especialidad/edit', 'SpecialityController@editSpeciality');
 Route::get('sexo/edit/{id}', 'AdminController@showEditSex');
 Route::put('sexo/edit', 'AdminController@editSex');
 // Previsiones
-Route::get('prevision/edit/{id}', 'AdminController@showEditPrevition');
-Route::put('prevision/edit', 'AdminController@editPrevition');
+Route::get('prevision/edit/{id}', 'PrevitionController@showEditPrevition');
+Route::put('prevision/edit', 'PrevitionController@editPrevition');
 // Procedencias
-Route::get('procedencia/edit/{id}', 'AdminController@showEditProvenance');
-Route::put('procedencia/edit', 'AdminController@editProvenance');
+Route::get('procedencia/edit/{id}', 'ProvenanceController@showEditProvenance');
+Route::put('procedencia/edit', 'ProvenanceController@editProvenance');
 // Tipo GES
 Route::get('sigges/edit/{id}', 'AdminController@showEditSiGGES');
 Route::put('sigges/edit', 'AdminController@editSiGGES');
