@@ -36,12 +36,14 @@ class PatientController extends Controller
     {
         // Get patients from database where 'activa' attribute is 0 bits
         $patients = Patient::where('activa', 0)->get();
+        // Count patients
+        $cantPatients = $patients->count();
         // Get the list of previtions
         $prev = Prevition::all();
         // Get the list of genders
         $sex = Sex::all();
         // Redirect to the view with list of: inactive patients, all previtions and all genders
-        return view('admin.Views.patientInactive', compact('patients', 'prev', 'sex'));
+        return view('admin.Views.patientInactive', compact('patients', 'prev', 'sex', 'cantPatients'));
     }
 
     /***************************************************************************************************************************
