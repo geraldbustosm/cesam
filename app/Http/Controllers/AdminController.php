@@ -52,8 +52,10 @@ class AdminController extends Controller
         $prev = Prevition::all();
         // Get the list of genders
         $sex = Sex::all();
+        // Count patients
+        $cantPatients = $patients->count();
         // Redirect to the view with list of: inactive patients, all previtions and all genders
-        return view('admin.Views.patientInactive', compact('patients', 'prev', 'sex'));
+        return view('admin.Views.patientInactive', compact('patients', 'prev', 'sex', 'cantPatients'));
     }
     // Funcionarios inactivos
     public function showInactiveFunctionarys()
