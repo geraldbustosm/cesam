@@ -25,11 +25,11 @@ Route::get('/', 'GeneralController@index');
 
 
 // Especialidad
-Route::get('asignar/especialidad', 'AdminController@showAsignSpeciality');
-Route::post('asignar/especialidad', 'AdminController@AsignSpeciality');
+Route::get('asignar/especialidad', 'SpecialityController@showAsignSpeciality');
+Route::post('asignar/especialidad', 'SpecialityController@AsignSpeciality');
 // Etapa
-Route::get('crearetapa', 'AdminController@showAddStage');
-Route::post('crearetapa', 'AdminController@registerStage');
+Route::get('crearetapa', 'StageController@showAddStage');
+Route::post('crearetapa', 'StageController@registerStage');
 // Actividad por especialidad
 Route::get('asignar/especialidad-actividad', 'ActivityController@showAsignActivity');
 Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity');
@@ -72,14 +72,14 @@ Route::post('registrar/actividad', 'ActivityController@registerActivity');
 Route::get('registrar/alta', 'ReleaseController@showAddRelease');
 Route::post('registrar/alta', 'ReleaseController@registerRelease');
 // Atributos
-Route::get('registrar/atributos', 'AdminController@showAddAttributes');
-Route::post('registrar/atributos', 'AdminController@registerAttributes');
+Route::get('registrar/atributos', 'AttributesController@showAddAttributes');
+Route::post('registrar/atributos', 'AttributesController@registerAttributes');
 // Diagnostico
-Route::get('registrar/diagnostico', 'AdminController@showAddDiagnosis');
-Route::post('registrar/diagnostico', 'AdminController@registerDiagnosis');
+Route::get('registrar/diagnostico', 'DiagnosisController@showAddDiagnosis');
+Route::post('registrar/diagnostico', 'DiagnosisController@registerDiagnosis');
 // especialidad
-Route::get('registrar/especialidad', 'AdminController@showAddSpeciality');
-Route::post('registrar/especialidad', 'AdminController@registerSpeciality');
+Route::get('registrar/especialidad', 'SpecialityController@showAddSpeciality');
+Route::post('registrar/especialidad', 'SpecialityController@registerSpeciality');
 // Funcionario
 Route::get('registrar/funcionario', 'FunctionaryController@showAddFunctionary');
 Route::post('registrar/funcionario', 'FunctionaryController@registerFunctionary');
@@ -120,14 +120,14 @@ Route::put('pacientes/edit', 'PatientController@editPatient');
 Route::get('alta/edit/{id}', 'ReleaseController@showEditRelease');
 Route::put('alta/edit', 'ReleaseController@editRelease');
 // Atributos
-Route::get('atributo/edit/{id}', 'AdminController@showEditAttribute');
-Route::put('atributo/edit', 'AdminController@editAttribute');
+Route::get('atributo/edit/{id}', 'AttributesController@showEditAttribute');
+Route::put('atributo/edit', 'AttributesController@editAttribute');
 // Diagnostico
-Route::get('diagnostico/edit/{id}', 'AdminController@showEditDiagnostic');
-Route::put('diagnostico/edit', 'AdminController@editDiagnostic');
+Route::get('diagnostico/edit/{id}', 'DiagnosisController@showEditDiagnostic');
+Route::put('diagnostico/edit', 'DiagnosisController@editDiagnostic');
 // Especialidades
-Route::get('especialidad/edit/{id}', 'AdminController@showEditSpeciality');
-Route::put('especialidad/edit', 'AdminController@editSpeciality');
+Route::get('especialidad/edit/{id}', 'SpecialityController@showEditSpeciality');
+Route::put('especialidad/edit', 'SpecialityController@editSpeciality');
 // Sexo
 Route::get('sexo/edit/{id}', 'AdminController@showEditSex');
 Route::put('sexo/edit', 'AdminController@editSex');

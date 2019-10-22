@@ -20,7 +20,7 @@
 		{{ session('status') }}
 	</div>
 	@endif
-	<form method="post" action="{{ url('crearetapa') }}">
+	<form method="post" action="{{ url('crear/etapa') }}">
 		@csrf
 		<div class="form-group">
 			<div class="form-row">
