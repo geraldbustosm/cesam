@@ -96,14 +96,14 @@ Route::post('registrar/prevision', 'PrevitionController@registerPrevition');
 Route::get('registrar/procedencia', 'ProvenanceController@showAddProvenance');
 Route::post('registrar/procedencia', 'ProvenanceController@registerProvenance');
 // Programa
-Route::get('registrar/programa', 'AdminController@showAddProgram');
-Route::post('registrar/programa', 'AdminController@registerProgram');
+Route::get('registrar/programa', 'ProgramController@showAddProgram');
+Route::post('registrar/programa', 'ProgramController@registerProgram');
 // Sexo
-Route::get('registrar/genero', 'AdminController@showAddSex');
-Route::post('registrar/genero', 'AdminController@registerSex');
+Route::get('registrar/genero', 'SexController@showAddSex');
+Route::post('registrar/genero', 'SexController@registerSex');
 // SIGGES
-Route::get('registrar/sigges', 'AdminController@showAddSIGGES');
-Route::post('registrar/sigges', 'AdminController@registerSIGGES');
+Route::get('registrar/sigges', 'SiGGESController@showAddSIGGES');
+Route::post('registrar/sigges', 'SiGGESController@registerSIGGES');
 // Tipo
 Route::get('registrar/tipo', 'AdminController@showAddType');
 Route::post('registrar/tipo', 'AdminController@registerType');
@@ -129,8 +129,8 @@ Route::put('diagnostico/edit', 'DiagnosisController@editDiagnostic');
 Route::get('especialidad/edit/{id}', 'SpecialityController@showEditSpeciality');
 Route::put('especialidad/edit', 'SpecialityController@editSpeciality');
 // Sexo
-Route::get('sexo/edit/{id}', 'AdminController@showEditSex');
-Route::put('sexo/edit', 'AdminController@editSex');
+Route::get('sexo/edit/{id}', 'SexController@showEditSex');
+Route::put('sexo/edit', 'SexController@editSex');
 // Previsiones
 Route::get('prevision/edit/{id}', 'PrevitionController@showEditPrevition');
 Route::put('prevision/edit', 'PrevitionController@editPrevition');
@@ -138,8 +138,8 @@ Route::put('prevision/edit', 'PrevitionController@editPrevition');
 Route::get('procedencia/edit/{id}', 'ProvenanceController@showEditProvenance');
 Route::put('procedencia/edit', 'ProvenanceController@editProvenance');
 // Tipo GES
-Route::get('sigges/edit/{id}', 'AdminController@showEditSiGGES');
-Route::put('sigges/edit', 'AdminController@editSiGGES');
+Route::get('sigges/edit/{id}', 'SiGGESController@showEditSiGGES');
+Route::put('sigges/edit', 'SiGGESController@editSiGGES');
 // Tipo prestaciones
 Route::get('prestacion/edit/{id}', 'AdminController@showEditType');
 Route::put('prestacion/edit', 'AdminController@editType');
