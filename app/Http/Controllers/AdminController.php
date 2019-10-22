@@ -44,7 +44,7 @@ class AdminController extends Controller
                                                     VIEWS FOR ADMIN ROLE ONLY
      ****************************************************************************************************************************/
     // Pacientes inactivos
-    public function showInactivePatients()
+    /*public function showInactivePatients()
     {
         // Get patients from database where 'activa' attribute is 0 bits
         $patients = Patient::where('activa', 0)->get();
@@ -87,12 +87,12 @@ class AdminController extends Controller
     {
         $data = Patient::all()->toJson();
         return $data;
-    }
+    }*/
     /***************************************************************************************************************************
                                              VIEWS OF FORMS (ONLY ADMIN)
      ****************************************************************************************************************************/
     // Usuario
-    public function showAddUser()
+    /*public function showAddUser()
     {
         // Redirect to the view
         return view('admin.Form.userForm');
@@ -375,12 +375,13 @@ class AdminController extends Controller
         // Redirect to the view with specialitys per each provision
         return view('admin.Asignment.provisionAsign', compact('rows', 'columns'));
     }
+    */
     /***************************************************************************************************************************
                                              VIEWS OF EDIT (ONLY ADMIN)
      ****************************************************************************************************************************/
     // Actividad
 
-    public function showEditActivity($id){
+    /*public function showEditActivity($id){
         
         // Get the specific activity
         $activity = Activity::find($id);
@@ -482,11 +483,12 @@ class AdminController extends Controller
         // Redirect to the view with selected type
         return view('admin.Edit.typeEdit', compact('type'));
     }
+    */
     /***************************************************************************************************************************
                                                     FORMS (POST)
      ****************************************************************************************************************************/
     // Usuario
-    public function registerUser(Request $request)
+    /*public function registerUser(Request $request)
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
@@ -1011,11 +1013,12 @@ class AdminController extends Controller
             return redirect('asignar/especialidad-tipo')->with('status', 'Especialidades actualizadas');
         }
     }
+    */
     /***************************************************************************************************************************
                                                     EDIT (POST)
      ****************************************************************************************************************************/
     // Actividad
-    public function editActivity(Request $request)
+    /*public function editActivity(Request $request)
     {
         // URL to redirect when process finish.
         $url = "actividad/edit/" . $request->id;
@@ -1131,8 +1134,9 @@ class AdminController extends Controller
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad');
     }
+    */
     // Paciente
-    public function editPatient(Request $request)
+    /*public function editPatient(Request $request)
     {
         // URL to redirect when process finish.
         $url = "pacientes/edit/" . $request->dni;
@@ -1142,12 +1146,17 @@ class AdminController extends Controller
             'nombres' => 'required|string|max:255',
             'apellido1' => 'required|string|max:255',
             'apellido2' => 'required|string|max:255',
-            /*'pais' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
-            'numero' => 'required|int',
-            'direccion' => 'string|max:255|nullable',*/
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
+        */
+            /* add this things adter
+                'pais' => 'required|string|max:255',
+                'region' => 'required|string|max:255',
+                'numero' => 'required|int',
+                'direccion' => 'string|max:255|nullable',
+            */
+        /*
+
         // Get the patient that want to update
         $patient = Patient::find($request->id);
         // If found it then update the data
@@ -1283,11 +1292,12 @@ class AdminController extends Controller
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizó la descripción de la prestación');
     }
+    */
     /***************************************************************************************************************************
                                                     ACTIONS BUTTONS FUNCTIONS
      ****************************************************************************************************************************/
     // Activate
-    public function activatePatient(Request $request)
+    /*public function activatePatient(Request $request)
     {
         // Get the patient
         $patient = Patient::where('DNI', $request->DNI)->get();
@@ -1336,6 +1346,7 @@ class AdminController extends Controller
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('funcionarios')->with('status', 'Funcionario ' . $user[0]->rut . ' eliminado');
     }
+    */
     /***************************************************************************************************************************
                                                     HELPERS AND LOGIC FUNCTIONS
      ****************************************************************************************************************************/
