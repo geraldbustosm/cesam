@@ -1249,7 +1249,7 @@ class AdminController extends Controller
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the gender that want to update
-        $sigges = Sigges::find($request->id);
+        $sigges = SiGGES::find($request->id);
         // If found it then update the data
         if ($sigges) {
             // Set the variable 'descripcion'

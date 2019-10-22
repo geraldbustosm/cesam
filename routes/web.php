@@ -37,8 +37,8 @@ Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity'
 Route::get('asignar/especialidad-prestacion', 'ProvisionController@showAsignProvision');
 Route::post('asignar/especialidad-prestacion', 'ProvisionController@AsignProvision');
 // Tipo por especialidad que abre canasata
-Route::get('asignar/especialidad-tipo', 'AdminController@showAsignType');
-Route::post('asignar/especialidad-tipo', 'AdminController@AsignType');
+Route::get('asignar/especialidad-tipo', 'TypeController@showAsignType');
+Route::post('asignar/especialidad-tipo', 'TypeController@AsignType');
 /***************************************************************************************************************************
                                                     VIEW INFO
 ****************************************************************************************************************************/
@@ -105,8 +105,8 @@ Route::post('registrar/genero', 'SexController@registerSex');
 Route::get('registrar/sigges', 'SiGGESController@showAddSIGGES');
 Route::post('registrar/sigges', 'SiGGESController@registerSIGGES');
 // Tipo
-Route::get('registrar/tipo', 'AdminController@showAddType');
-Route::post('registrar/tipo', 'AdminController@registerType');
+Route::get('registrar/tipo', 'TypeController@showAddType');
+Route::post('registrar/tipo', 'TypeController@registerType');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/
@@ -141,8 +141,8 @@ Route::put('procedencia/edit', 'ProvenanceController@editProvenance');
 Route::get('sigges/edit/{id}', 'SiGGESController@showEditSiGGES');
 Route::put('sigges/edit', 'SiGGESController@editSiGGES');
 // Tipo prestaciones
-Route::get('prestacion/edit/{id}', 'AdminController@showEditType');
-Route::put('prestacion/edit', 'AdminController@editType');
+Route::get('prestacion/edit/{id}', 'TypeController@showEditType');
+Route::put('prestacion/edit', 'TypeController@editType');
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
