@@ -49,8 +49,8 @@ Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords');
 Route::get('funcionarios', 'FunctionaryController@showFunctionarys');
 Route::post('funcionarios', 'FunctionaryController@deletingFunctionary');
 
-Route::get('funcionarios/inactivos', 'AdminController@showInactiveFunctionarys');
-Route::post('funcionarios/inactivos', 'AdminController@activateFunctionary');
+Route::get('funcionarios/inactivos', 'FunctionaryController@showInactiveFunctionarys');
+Route::post('funcionarios/inactivos', 'FunctionaryController@activateFunctionary');
 // Pacientes
 Route::get('pacientes', 'PatientController@showPatients')->middleware('checkrole:1');
 Route::post('pacientes', 'PatientController@deletingPatient');
