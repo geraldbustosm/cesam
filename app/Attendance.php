@@ -36,6 +36,6 @@ class Attendance extends Model
   }
   protected $fillable = 
     [
-      'id','funcionario_id','etapa_id','prestacion_id','fecha','asistencia','hora','duracion','activa'
+      'id','funcionario_id','etapa_id','prestacion_id','fecha','asistencia','hora','duracion','activa','abre_canasta'
     ];
 }

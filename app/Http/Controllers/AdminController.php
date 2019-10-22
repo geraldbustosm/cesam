@@ -357,7 +357,7 @@ class AdminController extends Controller
             // Get uniques profesions
             if (!in_array($record->profesion, $columns)) {
                 // Add the profesion into columns
-                $columns[] = " | " . $record->descripcion . " | ";
+                $columns[] =  $record->descripcion ;
             }
         }
         // Second loop (by provision)

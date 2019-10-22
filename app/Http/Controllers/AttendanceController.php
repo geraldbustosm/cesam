@@ -60,6 +60,15 @@ class AttendanceController extends Controller
         $correctDate = date('Y-m-d', strtotime($date));
         $attendance->fecha = $correctDate;
         // Pass the attendance to database
+        $canasta=0;
+        if(TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0){
+            if (Activity::find( $request->get('activity'))->where('actividad_abre_canasta',1)->count() > 0){
+                if ($request->get('selectA')==1){
+                    $canasta=1;
+                    $attendance->abre_canasta=$canasta;
+                }
+            }
+        }  
         $attendance->save();
         // Update variable for functionary
         // functionary -> horasRealizadas
@@ -81,6 +90,7 @@ class AttendanceController extends Controller
         $patientAtendances = $stage->attendance;
 
         if($request->register==1){
+
             // Redirect to the view with successful status
             return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
         }
