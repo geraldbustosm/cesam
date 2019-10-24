@@ -11,25 +11,32 @@
         {{ session('status') }}
     </div>
     @endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <form method="post" action="{{ url('registrar/usuario') }}">
         @csrf
         <!-- Nickname -->
         <div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{ old('nombre') }}" id="nombre" name="nombre" placeholder="Nombre de usuario">
+            <input type="text" class="form-control {{ $errors->has('nick') ? ' is-invalid' : '' }}" value="{{ old('nick') }}" id="nick" name="nick" placeholder="Nombre de usuario">
         </div>
         <!-- Names -->
         <div class="form-group">
             <div class="form-row">
                 <div class="col">
-                    <input type="text" class="form-control {{ $errors->has('primer_nombre') ? ' is-invalid' : '' }}" value="{{ old('primer_nombre') }}" id="primer_nombre" name="primer_nombre" placeholder="Primer Nombre"> </div>
-                <div class="col">
-                    <input type="text" class="form-control {{ $errors->has('segundo_nombre') ? ' is-invalid' : '' }}" value="{{ old('segundo_nombre') }}" id="segundo_nombre" name="segundo_nombre" placeholder="Segundo Nombre">
+                    <input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{ old('name') }}" id="name" name="name" placeholder="Primer Nombre">
                 </div>
                 <div class="col">
-                    <input type="text" class="form-control {{ $errors->has('apellido_paterno') ? ' is-invalid' : '' }}" value="{{ old('apellido_paterno') }}" id="apellido_paterno" name="apellido_paterno" placeholder="Apellido Paterno">
+                    <input type="text" class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }}" value="{{ old('last_name') }}" id="last_name" name="last_name" placeholder="Apellido Paterno">
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control {{ $errors->has('apellido_materno') ? ' is-invalid' : '' }}" value="{{ old('apellido_materno') }}" id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno">
+                <div class="col">
+                    <input type="text" class="form-control {{ $errors->has('second_last_name') ? ' is-invalid' : '' }}" value="{{ old('second_last_name') }}" id="second_last_name" name="second_last_name" placeholder="Apellido Materno">
                 </div>
             </div>
         </div>
@@ -44,7 +51,7 @@
         <!-- Role -->
         <div class="form-group">
             <select id="rol" name="rol" class="form-control">
-                <option value="0" disabled selected>Rol de usuario</option>
+                <option disabled selected>Rol de usuario</option>
                 <option value="1">Administrador</option>
                 <option value="2">Funcionario</option>
                 <option value="3">Secretaria</option>

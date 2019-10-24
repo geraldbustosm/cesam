@@ -34,7 +34,10 @@ class UserController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nick' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'second_last_name' => 'required|string|max:255',
             'rut' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'rol' => 'required|integer|max:255',
@@ -42,14 +45,19 @@ class UserController extends Controller
         ]);
         // Create a new 'object' user
         $user = new User;
-        // Set the variables to the object user
-        // the variables name of object must be the same that database
+        // Separate the name string into array
+        $nombre = explode(" ", $request->name);
+        // Set some variables with inputs of view
+        // the variables name of object must be the same that database for save it
         // nombre, primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, rut, email, rol, password
-        $user->nombre = $request->nombre;
-        $user->primer_nombre = $request->primer_nombre;
-        $user->segundo_nombre = $request->segundo_nombre;
-        $user->apellido_paterno = $request->apellido_paterno;
-        $user->apellido_materno = $request->apellido_materno;
+        $user->primer_nombre = $nombre[0];
+        $user->segundo_nombre = " ";
+        if(count($nombre)==2){
+            $user->segundo_nombre = $nombre[1];
+        }
+        $user->nombre = $request->nick;
+        $user->apellido_paterno = $request->last_name;
+        $user->apellido_materno = $request->second_last_name;
         $user->rut = $request->rut;
         $user->email = $request->email;
         $user->rol = $request->rol;

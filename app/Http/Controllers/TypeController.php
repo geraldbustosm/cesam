@@ -67,7 +67,7 @@ class TypeController extends Controller
             }
         }
         // Redirect to the view with specialitys per each functionary
-        return view('admin.Asingment.typeAsign', compact('rows', 'columns'));
+        return view('admin.Asignment.typeAsign', compact('rows', 'columns'));
      }
     /***************************************************************************************************************************
                                                     CREATE PROCESS

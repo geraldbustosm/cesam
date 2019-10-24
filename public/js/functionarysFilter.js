@@ -118,6 +118,7 @@ function getBtns(data) {
             return tmp;
         } else {
             tmp = ` <td>
+                    <a href='#'><i title='Editar' class='material-icons'>create</i></a>
                     <a href='javascript:actFunctionary(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`;
             return tmp;

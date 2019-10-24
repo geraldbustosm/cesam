@@ -22,14 +22,12 @@ Route::get('/', 'GeneralController@index');
 /***************************************************************************************************************************
                                                     ASIGNATIONS
 ****************************************************************************************************************************/
-
-
 // Especialidad
 Route::get('asignar/especialidad', 'SpecialityController@showAsignSpeciality');
 Route::post('asignar/especialidad', 'SpecialityController@AsignSpeciality');
 // Etapa
-Route::get('crearetapa', 'StageController@showAddStage');
-Route::post('crearetapa', 'StageController@registerStage');
+Route::get('crear/etapa', 'StageController@showAddStage');
+Route::post('crear/etapa', 'StageController@registerStage');
 // Actividad por especialidad
 Route::get('asignar/especialidad-actividad', 'ActivityController@showAsignActivity');
 Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity');
@@ -71,6 +69,8 @@ Route::post('registrar/actividad', 'ActivityController@registerActivity');
 // Alta
 Route::get('registrar/alta', 'ReleaseController@showAddRelease');
 Route::post('registrar/alta', 'ReleaseController@registerRelease');
+// Atención
+Route::post('registrar/atencion', 'AdminController@checkCurrStage');
 // Atributos
 Route::get('registrar/atributos', 'AttributesController@showAddAttributes');
 Route::post('registrar/atributos', 'AttributesController@registerAttributes');
@@ -146,10 +146,6 @@ Route::put('prestacion/edit', 'TypeController@editType');
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
-//Route::get('registraratencion', 'AdminController@showAddAttendance');
-
-Route::post('registrar/atencion', 'AdminController@checkCurrStage');
-
 Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary');
 Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
 Route::get('lista-actividades','AdminController@getActivityPerSpeciality');
@@ -157,6 +153,4 @@ Route::get('age-check','AdminController@checkAge');
 
 
 Route::get('testing', 'AdminController@showTesting');
-Route::post('testing', 'AdminController@regTesting');
-
-Route::get('data', 'AdminController@data')->name('data'); 
+Route::post('testing', 'AdminController@regTesting'); 

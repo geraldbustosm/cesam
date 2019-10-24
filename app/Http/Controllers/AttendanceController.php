@@ -10,16 +10,13 @@ use App\Stage;
 
 class AttendanceController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
-                                                    SHOW
-    ****************************************************************************************************************************/
-
-    /***************************************************************************************************************************
                                                     CREATE FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showAddAttendance()
     {
         // Get active functionarys
@@ -29,11 +26,11 @@ class AttendanceController extends Controller
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
-    ****************************************************************************************************************************/
-    
+     ****************************************************************************************************************************/
+
     /***************************************************************************************************************************
                                                     CREATE PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function registerAttendance(Request $request)
     {
         // Check the format of each variable of 'request'
@@ -60,15 +57,15 @@ class AttendanceController extends Controller
         $correctDate = date('Y-m-d', strtotime($date));
         $attendance->fecha = $correctDate;
         // Pass the attendance to database
-        $canasta=0;
-        if(TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0){
-            if (Activity::find( $request->get('activity'))->where('actividad_abre_canasta',1)->count() > 0){
-                if ($request->get('selectA')==1){
-                    $canasta=1;
-                    $attendance->abre_canasta=$canasta;
+        $canasta = 0;
+        if (TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0) {
+            if (Activity::find($request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
+                if ($request->get('selectA') == 1) {
+                    $canasta = 1;
+                    $attendance->abre_canasta = $canasta;
                 }
             }
-        }  
+        }
         $attendance->save();
         // Update variable for functionary
         // functionary -> horasRealizadas
@@ -89,23 +86,15 @@ class AttendanceController extends Controller
         $stage   = Stage::find($request->id_stage);
         $patientAtendances = $stage->attendance;
 
-        if($request->register==1){
+        if ($request->register == 1) {
 
             // Redirect to the view with successful status
             return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
         }
-        if($request->register==2){
+        if ($request->register == 2) {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
             return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('stage', 'users', 'patient'));
         }
     }
-    /***************************************************************************************************************************
-                                                    EDIT PROCESS
-    ****************************************************************************************************************************/
-    
-    /***************************************************************************************************************************
-                                                    OTHER PROCESS
-    ****************************************************************************************************************************/
-   
 }

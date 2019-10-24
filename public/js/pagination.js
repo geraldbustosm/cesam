@@ -46,7 +46,7 @@ var listItem;
 var linkItem;
 var spanItem;
 // Next-Prev pagination buttons
-function createElements(val, max) {
+function createElements(val) {
     // Create <li>
     listItem = document.createElement('li');
     // Create <a>

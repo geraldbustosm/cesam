@@ -24,21 +24,19 @@
 		@csrf
 		<div class="form-group">
 			<div class="form-row">
-				
-
 				<div class="col-4">
-                    <select class="form-control" name="funcionario_id" required>
-				        <option selected disabled>Por favor seleccione un funcionario </option>
-				        @foreach($functionarys as $funcionario)
-				        <option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno." (".$funcionario->profesion.")"}}</option>
-				        @endforeach 
-			        </select>
-                </div>
+					<select class="form-control" name="funcionario_id" required>
+						<option selected disabled>Por favor seleccione un funcionario </option>
+						@foreach($functionarys as $funcionario)
+						<option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno." (".$funcionario->profesion.")"}}</option>
+						@endforeach
+					</select>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="form-row">
-				
+
 				<div class="col-4">
 					<select class="form-control" name="diagnostico_id" required>
 						<option selected disabled>Por favor seleccione un diagnostico </option>
@@ -54,13 +52,13 @@
 						<option value="{{ $programa->id}}">{{ $programa->descripcion}}</option>
 						@endforeach
 					</select>
-                    
-                </div>
+
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="form-row">
-				
+
 				<div class="col-4">
 					<select class="form-control" name="sigges_id" required>
 						<option selected disabled>Por favor seleccione un sigges </option>
@@ -68,7 +66,7 @@
 						<option value="{{ $sigges->id}}">{{ $sigges->descripcion}}</option>
 						@endforeach
 					</select>
-                  
+
 				</div>
 				<div class="col-4">
 					<select class="form-control" name="procedencia_id" required>
@@ -77,25 +75,14 @@
 						<option value="{{ $procedencia->id}}">{{ $procedencia->descripcion}}</option>
 						@endforeach
 					</select>
-                    
-                </div>
+
+				</div>
 			</div>
 		</div>
-		
-		<!--
-        <div class="form-group">
-			<select class="form-control" name="alta_id" required>
-				<option selected disabled>Por favor seleccione un tipo de alta </option>
-				@foreach($release as $alta)
-				<option value="{{ $alta->id}}">{{ $alta->descripcion}}</option>
-				@endforeach
-			</select>
+		<div class="form-group" class="register">
+			<input type="hidden" class="form-control {{ $errors->has('idpatient') ? ' is-invalid' : '' }}" value="<?= $idpatient; ?>" id="idpatient" name="idpatient">
+			<button type="submit" class="btn btn-primary">Registrar</button>
 		</div>
-		-->
-		<div class="form-group" class = "register">
-        <input type="hidden" class="form-control {{ $errors->has('idpatient') ? ' is-invalid' : '' }}" value="<?=$idpatient;?>"  id="idpatient" name="idpatient">
-		<button type="submit" class="btn btn-primary">Registrar</button>
-        </div>      
 	</form>
 </div>
 

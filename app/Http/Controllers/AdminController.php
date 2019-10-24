@@ -43,6 +43,17 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     VIEWS FOR ADMIN ROLE ONLY
      ****************************************************************************************************************************/
+    // Test
+    public function showTesting()
+    {
+        $patient = DB::table('paciente')
+            ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
+            // ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->select('paciente.*', 'prevision.descripcion')
+            ->where('paciente.activa', '=', 1)
+            ->get();
+        return view('general.test', ['main' => json_encode($patient)]);
+    }
     // Pacientes inactivos
     /*public function showInactivePatients()
     {
@@ -71,23 +82,13 @@ class AdminController extends Controller
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
         return view('admin.Views.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
     }
-    // Test
-    public function showTesting()
-    {
-        $patient = DB::table('paciente')
-            ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
-            // ->join('orders', 'users.id', '=', 'orders.user_id')
-            ->select('paciente.*', 'prevision.descripcion')
-            ->where('paciente.activa', '=', 1)
-            ->get();
-        return view('general.test', ['main' => json_encode($patient)]);
-    }
     // ???
     public function data()
     {
         $data = Patient::all()->toJson();
         return $data;
-    }*/
+    }
+    */
     /***************************************************************************************************************************
                                              VIEWS OF FORMS (ONLY ADMIN)
      ****************************************************************************************************************************/
@@ -1149,13 +1150,13 @@ class AdminController extends Controller
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
         */
-            /* add this things adter
+    /* add this things adter
                 'pais' => 'required|string|max:255',
                 'region' => 'required|string|max:255',
                 'numero' => 'required|int',
                 'direccion' => 'string|max:255|nullable',
             */
-        /*
+    /*
 
         // Get the patient that want to update
         $patient = Patient::find($request->id);
@@ -1446,25 +1447,29 @@ class AdminController extends Controller
             ->first();
         // If have no active stage
         if (empty($stage)) {
-            //$functionary = Functionary::where('activa', 1)->get();
-            // Get diagnosis, program, release, sigges, provenance
-            $diagnosis = Diagnosis::where('activa', 1)->get();
-            $program = Program::where('activa', 1)->get();
-            $release = Release::where('activa', 1)->get();
-            $Sigges = SiGGES::where('activa', 1)->get();
-            $provenance = Provenance::all();
-            // Get the functionarys with user info (personal information)
-            $functionarys = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
-                ->select('funcionarios.id', 'funcionarios.profesion', 'users.primer_nombre', 'users.apellido_paterno')
-                ->where('funcionarios.activa', '=', 1)
-                ->get();
-            // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
-            return view('admin.Form.stageCreateForm', ['idpatient' => $id_patient])->with(compact('functionarys', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+            return $this->CreateStage($id_patient);
         } else {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
             return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
         }
+    }
+    // Create a new stage for a patient
+    public function CreateStage($patient_id)
+    {
+        //$functionary = Functionary::where('activa', 1)->get();
+        // Get diagnosis, program, release, sigges, provenance
+        $diagnosis = Diagnosis::where('activa', 1)->get();
+        $program = Program::where('activa', 1)->get();
+        $Sigges = SiGGES::where('activa', 1)->get();
+        $provenance = Provenance::all();
+        // Get the functionarys with user info (personal information)
+        $functionarys = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->select('funcionarios.id', 'funcionarios.profesion', 'users.primer_nombre', 'users.apellido_paterno')
+            ->where('funcionarios.activa', 1)
+            ->get();
+        // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+        return view('admin.Form.stageCreateForm', ['idpatient' => $patient_id])->with(compact('functionarys', 'diagnosis', 'program', 'Sigges', 'provenance'));
     }
     // Return a specialitys from one functionary
     public function getSpecialityPerFunctionary(Request $request)
