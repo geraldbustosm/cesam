@@ -1,7 +1,6 @@
 @extends('layouts.main')
 @section('title','Crear etapa')
 @section('active-ingresardatos','active')
-@section('active-crearetapa','active')
 
 @section('content')
 @if ($errors->any())

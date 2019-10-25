@@ -26,7 +26,6 @@ Route::get('/', 'GeneralController@index');
 Route::get('asignar/especialidad', 'SpecialityController@showAsignSpeciality');
 Route::post('asignar/especialidad', 'SpecialityController@AsignSpeciality');
 // Etapa
-Route::get('crear/etapa', 'StageController@showAddStage');
 Route::post('crear/etapa', 'StageController@registerStage');
 // Actividad por especialidad
 Route::get('asignar/especialidad-actividad', 'ActivityController@showAsignActivity');
@@ -46,13 +45,13 @@ Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords');
 // Funcionarios
 Route::get('funcionarios', 'FunctionaryController@showFunctionarys');
 Route::post('funcionarios', 'FunctionaryController@deletingFunctionary');
-
+// Funcionarios desactivados
 Route::get('funcionarios/inactivos', 'FunctionaryController@showInactiveFunctionarys');
 Route::post('funcionarios/inactivos', 'FunctionaryController@activateFunctionary');
 // Pacientes
 Route::get('pacientes', 'PatientController@showPatients')->middleware('checkrole:1');
 Route::post('pacientes', 'PatientController@deletingPatient');
-
+// Pacientes desactivados
 Route::get('pacientes/inactivos', 'PatientController@showInactivePatients');
 Route::post('pacientes/inactivos', 'PatientController@activatePatient');
 /***************************************************************************************************************************
@@ -69,8 +68,8 @@ Route::post('registrar/actividad', 'ActivityController@registerActivity');
 // Alta
 Route::get('registrar/alta', 'ReleaseController@showAddRelease');
 Route::post('registrar/alta', 'ReleaseController@registerRelease');
-// Atención
-Route::post('registrar/atencion', 'AdminController@checkCurrStage');
+// Atención / Etapa
+Route::post('registrar/atencion', 'StageController@checkCurrStage');
 // Atributos
 Route::get('registrar/atributos', 'AttributesController@showAddAttributes');
 Route::post('registrar/atributos', 'AttributesController@registerAttributes');
@@ -150,7 +149,6 @@ Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary')
 Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
 Route::get('lista-actividades','AdminController@getActivityPerSpeciality');
 Route::get('age-check','AdminController@checkAge');
-
 
 Route::get('testing', 'AdminController@showTesting');
 Route::post('testing', 'AdminController@regTesting'); 

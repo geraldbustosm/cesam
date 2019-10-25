@@ -1431,6 +1431,7 @@ class AdminController extends Controller
                                                     ATTENDANCE LOGIC
      ****************************************************************************************************************************/
     // Check for an active stage for the patient (parameter)
+    /*
     public function checkCurrStage(Request $request)
     {
         // Set variable with patient DNI (rut)
@@ -1469,7 +1470,7 @@ class AdminController extends Controller
             ->get();
         // return view('admin.stageCreateForm', compact('id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
         return view('admin.Form.stageCreateForm', ['idpatient' => $patient_id])->with(compact('functionarys', 'diagnosis', 'program', 'Sigges', 'provenance'));
-    }
+    }*/
     // Return a specialitys from one functionary
     public function getSpecialityPerFunctionary(Request $request)
     {
@@ -1500,7 +1501,7 @@ class AdminController extends Controller
         // Return activity's
         return response()->json($activity);
     }
-
+    // 
     public function checkAge(Request $request)
     {
         // Get the patient
