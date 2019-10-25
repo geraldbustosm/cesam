@@ -1447,7 +1447,7 @@ class AdminController extends Controller
             ->first();
         // If have no active stage
         if (empty($stage)) {
-            return $this->shiwAddStage($id_patient);
+            return $this->showAddStage($id_patient);
         } else {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
@@ -1455,7 +1455,7 @@ class AdminController extends Controller
         }
     }
     // Create a new stage for a patient
-    public function shiwAddStage($patient_id)
+    public function showAddStage($patient_id)
     {
         // Get diagnosis, program, release, sigges, provenance
         $diagnosis = Diagnosis::where('activa', 1)->get();
