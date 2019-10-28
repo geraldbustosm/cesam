@@ -52,8 +52,12 @@ class AdminController extends Controller
             ->join('atencion', 'etapa.id', '=', 'atencion.etapa_id')
             // ->join('orders', 'users.id', '=', 'orders.user_id')
             ->where('paciente.activa', '=', 1)
-            ->selectRaw('IF abre_canasta THEN "yes" ELSE "no" AS canasta')
-            ->select('paciente.*', 'prevision.*','etapa.*','atencion.*')
+            ->select('paciente.*', 
+                    'prevision.*',
+                    'etapa.*',
+                    'atencion.*',
+                    DB::raw("(CASE WHEN atencion.abre_canasta = 1 THEN 'SI' ELSE 'NO' END) AS canasta")
+            )
             ->selectRaw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad')
             ->get();
         
