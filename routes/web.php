@@ -151,4 +151,3 @@ Route::get('lista-actividades','AdminController@getActivityPerSpeciality');
 Route::get('age-check','AdminController@checkAge');
 
 Route::get('testing', 'AdminController@showTesting');
-Route::post('testing', 'AdminController@regTesting'); 

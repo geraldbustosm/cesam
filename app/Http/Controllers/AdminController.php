@@ -22,6 +22,7 @@ use App\Speciality;
 use App\Stage;
 use App\Type;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -48,15 +49,39 @@ class AdminController extends Controller
     {
         $patient = DB::table('paciente')
             ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
+            ->join('sexo', 'paciente.sexo_id', '=', 'sexo.id')
             ->join('etapa', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('atencion', 'etapa.id', '=', 'atencion.etapa_id')
-            // ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'funcionarios.id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->join('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
+            ->join('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
+            ->join('programa', 'programa.id', '=', 'etapa.programa_id')
+            ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->where('paciente.activa', '=', 1)
-            ->select('paciente.*', 'prevision.*','etapa.*','atencion.*',
-            DB::raw("(CASE WHEN atencion.abre_canasta = 1 THEN 'SI' ELSE 'NO' END) AS canasta"))
+            ->select(
+                'paciente.*',
+                'prevision.*',
+                'etapa.*',
+                'atencion.*',
+                'actividad.descripcion as actividad',
+                'procedencia.descripcion as procedencia',
+                'especialidad.*',
+                'prestacion.*',
+                'sexo.descripcion as sexo',
+                'tipo_prestacion.descripcion as tipo',
+                'programa.descripcion as programa',
+                DB::raw("(CASE WHEN atencion.abre_canasta = 1 THEN 'SI' ELSE 'NO' END) AS canasta"),
+                DB::raw("(CASE WHEN atencion.asistencia = 1 THEN 'SI' ELSE 'NO' END) AS asistencia"),
+                DB::raw("CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
+            )
             ->selectRaw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->get();
-        
+
         return view('general.test', ['main' => json_encode($patient)]);
     }
     // Pacientes inactivos
@@ -1510,32 +1535,25 @@ class AdminController extends Controller
     public function checkAge(Request $request)
     {
         // Get the patient
-        //$idPatient = $request->get('id');
         $patient = Patient::find(1);
         // Get the provision
-        $provison = Provision::find($request->provision_id);
-        //Check if age of patient in years is on the range of provision
-        //$date = ($patient->fecha_nacimiento);
-        //$time = strtotime($date);
-        //$newformat = date('Y-m-d',$time);
-        //$date = DateTime::createFromFormat('Y-m-d', $date);
-        //$date->format('Y-m-d H:i:s');
-        //$curTime = new \DateTime();
-        //$now = $curTime->format("Y-m-d");
-        //$diff  = $now->diff( $newformat);
-        //$interval = $now1->diff($dateTime1);
-        //$years= $interval->y;
-        $response = "Hola";
-        /*
-        if (($provison->rangoEdad_inferior <= $years) && ($years <= $provison->rangoEdad_superior))
-        {
+        $provision = Provision::find($request->provision_id);
+        // Get age fo patient
+        $years = Carbon::parse($patient->fecha_nacimiento)->age;
+        // Get ranges
+        $inf = $provision->rangoEdad_inferior;
+        $sup = $provision->rangoEdad_superior;
+        // Default
+        $response = 0;
+        // Check if age is in range
+        if (($inf <= $years) && ($years <= $sup)) {
             $response = 1;
-        }      
-        else
-        {
+        } else {
+            $response = -1;
+        }
+        if (($inf == 0) && ($sup == 0)) {
             $response = 1;
         }
-        */
         // Return provisions
         return response()->json($response);
     }

@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.5/jspdf.plugin.autotable.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
-    <form method="post" >
+    <form>
         @csrf
         <div class="box red"></div>
         <div class="table-controls">
@@ -88,14 +88,28 @@
                 height:"311px",
                 movableColumns: true,
                 columns:[
-                {title:"RUT", field:"DNI"},
+                {title:"Programa", field:"programa"},
+                {title:"Procedencia", field:"procedencia"},
+                {title:"Fecha Nacimiento", field:"fecha_nacimiento"},
+                {title:"Edad", field:"edad"},
+                {title:"Sexo", field:"sexo"},
                 {title:"Nombre", field:"nombre1"},
                 {title:"Apellido Paterno", field:"apellido1"},
                 {title:"Apellido Materno", field:"apellido2"},
-                {title:"Edad", field:"edad"},
-                {title:"Prevision", field:"descripcion"},
-                {title:"Fecha Atencion", field:"fecha"},
                 {title:"Abre Canasta", field:"canasta"},
+                {title:"Fecha Atencion", field:"fecha"},
+                {title:"RUT", field:"DNI"},
+                {title:"Prestación", field:"codigo"},
+                {title:"Glosa trazadora", field:"glosaTrasadora"},
+                {title:"Tipo", field:"tipo"},
+                {title:"PS-FAM", field:"ps_fam"},
+                {title:"Especialidad de prestación", field:""},
+                {title:"Actividad", field:"actividad"},
+                {title:"Tipo de usuario", field:""},
+                {title:"Asistencia", field:"asistencia"},
+                {title:"# atención mensual", field:""},
+                {title:"Funcionario", field:"nombre_funcionario"},
+                {title:"Especialidad del funcionario", field:"descripcion"},
                 ],
             });
 

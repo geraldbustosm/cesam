@@ -52,6 +52,7 @@ class AttendanceController extends Controller
         $attendance->prestacion_id = $request->get('provision');
         $attendance->asistencia = $request->get('selectA');
         $attendance->hora = $request->get('timeInit');
+        $attendance->actividad_id = $request->get('activity');
         $attendance->duracion = $request->get('duration');
         // Re-format database date to datepicker type
         $var = $request->get('datepicker');

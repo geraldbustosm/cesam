@@ -108,11 +108,11 @@
                 </div>
                 <div class="panel-heading">Seleccione el funcionario</div>
                 <div class="form-group">
-                    <select id="functionary" name="functionary" class="form-control" style="width:350px" >
-                            <option value="" selected disabled>Seleccione un Funcionario</option>
-                            @foreach($users as $key => $user)
-                                <option value="{{$user->id}}"> {{$user->profesion}}</option>
-                            @endforeach
+                    <select id="functionary" name="functionary" class="form-control" style="width:350px">
+                        <option value="" selected disabled>Seleccione un Funcionario</option>
+                        @foreach($users as $key => $user)
+                        <option value="{{$user->id}}"> {{$user->profesion}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">
@@ -123,15 +123,16 @@
                     <label for="title">Seleccione la prestación:</label>
                     <select name="provision" id="provision" class="form-control" style="width:350px"></select>
                 </div>
-                
-                <div class="alert alert-danger " role="alert" name="errorAge" id="errorAge" >
-                   La edad del paciente no esta en el rango de la prestación!!!
+
+                <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge">
+                    La edad del paciente no esta en el rango de la prestación!!!
                 </div>
                 <div class="form-group">
                     <label for="title">Seleccione la actividad:</label>
                     <select name="activity" id="activity" class="form-control" style="width:350px"></select>
                 </div>
                 <script type="text/javascript">
+                    var btn = document.getElementsByName("register");
                     $('#functionary').change(function() {
                         var functionaryID = $(this).val();
                         if (functionaryID) {
@@ -140,8 +141,13 @@
                                 url: "{{url('lista-especialidades')}}?functionary_id=" + functionaryID,
                                 success: function(res) {
                                     if (res) {
+                                        btn[0].style = "";
+                                        btn[1].style = "";
+                                        $('#errorAge').hide();
                                         $("#speciality").empty();
-                                        $("#speciality").append('<option>Seleccione por favor</option>');
+                                        $("#provision").empty();
+                                        $("#activity").empty();
+                                        $("#speciality").append('<option>Seleccione la especialidad</option>');
                                         $.each(res, function(key, value) {
                                             $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
@@ -152,11 +158,12 @@
                             });
                         } else {
                             $("#speciality").empty();
-                            $("#functionary").empty(); 
-                        }      
-                        });
+                            $("#functionary").empty();
+                        }
+                    });
 
                     $('#speciality').on('change', function() {
+                        $('#errorAge').hide();
                         var specialityID = $(this).val();
                         if (specialityID) {
                             $.ajax({
@@ -164,7 +171,10 @@
                                 url: "{{url('lista-prestaciones')}}?speciality_id=" + specialityID,
                                 success: function(res) {
                                     if (res) {
+                                        btn[0].style = "";
+                                        btn[1].style = "";
                                         $("#provision").empty();
+                                        $("#provision").append('<option>Seleccione la prestación</option>');
                                         $.each(res, function(key, value) {
                                             $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
                                         });
@@ -178,62 +188,57 @@
                         }
                     });
 
-                    $('#speciality').on('change',function(){
-                        var specialityID = $(this).val();    
-                        if(specialityID){
+                    $('#speciality').on('change', function() {
+                        var specialityID = $(this).val();
+                        if (specialityID) {
                             $.ajax({
-                                type:"GET",
-                                url:"{{url('lista-actividades')}}?speciality_id="+specialityID,
-                                success:function(res){               
-                                    if(res){
+                                type: "GET",
+                                url: "{{url('lista-actividades')}}?speciality_id=" + specialityID,
+                                success: function(res) {
+                                    if (res) {
                                         $("#activity").empty();
-                                        $.each(res,function(key,value){
-                                        $("#activity").append('<option value="'+value.id+'">'+value.descripcion+'</option>');
-                                    });
-                                    }else{
+                                        $("#activity").append('<option>Seleccione la actividad</option>');
+                                        $.each(res, function(key, value) {
+                                            $("#activity").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
+                                        });
+                                    } else {
                                         $("#activity").empty();
                                     }
                                 }
                             });
-                            }else{
+                        } else {
                             $("#activity").empty();
-                            }                     
+                        }
                     });
-                    $('#provision').on('change',function(){
+                    $('#provision').on('change', function() {
+                        $('#errorAge').hide();
+                        btn[0].style = "";
+                        btn[1].style = "";
                         var provisionID = $(this).val();
-                        alert(provisionID);
-                        if(provisionID){
+                        if (provisionID) {
                             $.ajax({
-                                type:"GET",
-                                url:"{{url('age-check')}}?speciality_id="+provisionID,
-                                success:function(res){      
-                                    if(res){
-                                        alert(res);      
-                                        $('#errorAge').addClass('invisible');
-                                        /*
-                                        var returnedData = JSON.parse(response);
-                                            if (returnedData=='1'){
-                                               //$('#errorAge').hide().
-                                               elemento = document.getElementById("errorAge");
-                                               elemento.hide();
-                                            }
-                                        */
-                                    }else{
-                                        
-                                        $('#errorAge').addClass('invisible');
+                                type: "GET",
+                                url: "{{url('age-check')}}?provision_id=" + provisionID,
+                                success: function(res) {
+                                    if (res < 0) {
+                                        $('#errorAge').show();
+                                        btn[0].style.display = "none";
+                                        btn[1].style.display = "none";
+                                    } else {
+                                        $('#errorAge').addClass('hide');
                                     }
                                 }
                             });
-                            }else{
+                        } else {
                             $("#activity").empty();
-                            }                     
+                        }
                     });
                 </script>
                 <div class="form-group" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
-                    <button type="submit" name="register" id ="register" value="1" class="btn btn-primary">Registrar</button>
-                    <button type="submit" name="register" id ="register" value="2" class="btn btn-primary">Agregar Otro</button>
+                    <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
+                    <button type="submit" name="register" id="register" value="2" class="btn btn-primary">Agregar Otro</button>
                 </div>
             </div>
         </div>
