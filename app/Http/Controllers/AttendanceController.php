@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Functionary;
+use App\Activity;
 use App\Attendance;
 use App\Patient;
 use App\Stage;
+use App\TypeSpeciality;
 
 class AttendanceController extends Controller
 {
