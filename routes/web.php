@@ -22,14 +22,11 @@ Route::get('/', 'GeneralController@index');
 /***************************************************************************************************************************
                                                     ASIGNATIONS
 ****************************************************************************************************************************/
-
-
 // Especialidad
 Route::get('asignar/especialidad', 'SpecialityController@showAsignSpeciality');
 Route::post('asignar/especialidad', 'SpecialityController@AsignSpeciality');
 // Etapa
-Route::get('crearetapa', 'StageController@showAddStage');
-Route::post('crearetapa', 'StageController@registerStage');
+Route::post('crear/etapa', 'StageController@registerStage');
 // Actividad por especialidad
 Route::get('asignar/especialidad-actividad', 'ActivityController@showAsignActivity');
 Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity');
@@ -37,8 +34,8 @@ Route::post('asignar/especialidad-actividad', 'ActivityController@AsignActivity'
 Route::get('asignar/especialidad-prestacion', 'ProvisionController@showAsignProvision');
 Route::post('asignar/especialidad-prestacion', 'ProvisionController@AsignProvision');
 // Tipo por especialidad que abre canasata
-Route::get('asignar/especialidad-tipo', 'AdminController@showAsignType');
-Route::post('asignar/especialidad-tipo', 'AdminController@AsignType');
+Route::get('asignar/especialidad-tipo', 'TypeController@showAsignType');
+Route::post('asignar/especialidad-tipo', 'TypeController@AsignType');
 /***************************************************************************************************************************
                                                     VIEW INFO
 ****************************************************************************************************************************/
@@ -48,13 +45,13 @@ Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords');
 // Funcionarios
 Route::get('funcionarios', 'FunctionaryController@showFunctionarys');
 Route::post('funcionarios', 'FunctionaryController@deletingFunctionary');
-
-Route::get('funcionarios/inactivos', 'AdminController@showInactiveFunctionarys');
-Route::post('funcionarios/inactivos', 'AdminController@activateFunctionary');
+// Funcionarios desactivados
+Route::get('funcionarios/inactivos', 'FunctionaryController@showInactiveFunctionarys');
+Route::post('funcionarios/inactivos', 'FunctionaryController@activateFunctionary');
 // Pacientes
 Route::get('pacientes', 'PatientController@showPatients')->middleware('checkrole:1');
 Route::post('pacientes', 'PatientController@deletingPatient');
-
+// Pacientes desactivados
 Route::get('pacientes/inactivos', 'PatientController@showInactivePatients');
 Route::post('pacientes/inactivos', 'PatientController@activatePatient');
 /***************************************************************************************************************************
@@ -71,6 +68,8 @@ Route::post('registrar/actividad', 'ActivityController@registerActivity');
 // Alta
 Route::get('registrar/alta', 'ReleaseController@showAddRelease');
 Route::post('registrar/alta', 'ReleaseController@registerRelease');
+// Atención / Etapa
+Route::post('registrar/atencion', 'StageController@checkCurrStage');
 // Atributos
 Route::get('registrar/atributos', 'AttributesController@showAddAttributes');
 Route::post('registrar/atributos', 'AttributesController@registerAttributes');
@@ -105,8 +104,8 @@ Route::post('registrar/genero', 'SexController@registerSex');
 Route::get('registrar/sigges', 'SiGGESController@showAddSIGGES');
 Route::post('registrar/sigges', 'SiGGESController@registerSIGGES');
 // Tipo
-Route::get('registrar/tipo', 'AdminController@showAddType');
-Route::post('registrar/tipo', 'AdminController@registerType');
+Route::get('registrar/tipo', 'TypeController@showAddType');
+Route::post('registrar/tipo', 'TypeController@registerType');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/
@@ -141,22 +140,15 @@ Route::put('procedencia/edit', 'ProvenanceController@editProvenance');
 Route::get('sigges/edit/{id}', 'SiGGESController@showEditSiGGES');
 Route::put('sigges/edit', 'SiGGESController@editSiGGES');
 // Tipo prestaciones
-Route::get('prestacion/edit/{id}', 'AdminController@showEditType');
-Route::put('prestacion/edit', 'AdminController@editType');
+Route::get('prestacion/edit/{id}', 'TypeController@showEditType');
+Route::put('prestacion/edit', 'TypeController@editType');
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
-//Route::get('registraratencion', 'AdminController@showAddAttendance');
-
-Route::post('registrar/atencion', 'AdminController@checkCurrStage');
-
 Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary');
 Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
 Route::get('lista-actividades','AdminController@getActivityPerSpeciality');
 Route::get('age-check','AdminController@checkAge');
 
-
 Route::get('testing', 'AdminController@showTesting');
-Route::post('testing', 'AdminController@regTesting');
-
-Route::get('data', 'AdminController@data')->name('data'); 
+Route::post('testing', 'AdminController@regTesting'); 

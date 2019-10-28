@@ -1,7 +1,6 @@
 @extends('layouts.main')
 @section('title','Registrar nueva atención')
-@section('active-ingresaratencion','active')
-
+@section('active-ingresardatos','active')
 
 @section('content')
 <h1>Registrar Atencion</h1>

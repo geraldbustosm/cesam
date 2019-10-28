@@ -14,34 +14,36 @@ use App\Stage;
 
 class StageController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
                                                     CREATE FORM
-    ****************************************************************************************************************************/
-    public function showAddStage()
+     ****************************************************************************************************************************/
+    // Create a new stage for a patient
+    public function showAddStage($patient_id)
     {
-        // Get list of each table from database
-        $patient = Patient::all();
-        $functionary = Functionary::all();
-        $diagnosis = Diagnosis::all();
-        $program = Program::all();
-        $release = Release::all();
-        $Sigges = SiGGES::all();
+        // Get diagnosis, program, release, sigges, provenance
+        $diagnosis = Diagnosis::where('activa', 1)->get();
+        $program = Program::where('activa', 1)->get();
+        $Sigges = SiGGES::where('activa', 1)->get();
         $provenance = Provenance::all();
-        // Redirect to the view with list of: patients, functionarys, diagnosis, programs, releases, sigges and provenances
-        return view('admin.Form.stageCreateForm', compact('patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'));
+        // Get the functionarys with user info (personal information)
+        $functionarys = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->select('funcionarios.id', 'funcionarios.profesion', 'users.primer_nombre', 'users.apellido_paterno')
+            ->where('funcionarios.activa', 1)
+            ->get();
+        // return to the view, with 'id_patient', 'functionary', 'diagnosis', 'program', 'release', 'Sigges', 'provenance'
+        return view('admin.Form.stageCreateForm', ['idpatient' => $patient_id])->with(compact('functionarys', 'diagnosis', 'program', 'Sigges', 'provenance'));
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function registerStage(Request $request)
     {
         // Check the format of each variable of 'request'
         $validation = $request->validate([]);
-
-        echo $request->new_start;
         // Create a new 'object' stage
         $stage = new Stage;
         // Set some variables with inputs of view
@@ -66,6 +68,34 @@ class StageController extends Controller
         $users = Functionary::where('activa', 1)->get();
         // Redirect to the view with stage, users (functionarys), patient, DNI (id of patient, we use DNI as standard in several views)
         // Also pass to the view the id of stage as stage_id
-        return view('general.attendanceForm', ['stage_id' => $stage->id])->with(compact('stage', 'users', 'patient', 'DNI'));
+        return view('general.attendanceForm')->with(compact('stage', 'users', 'patient', 'DNI'));
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    // Check for an active stage for the patient (parameter)
+    public function checkCurrStage(Request $request)
+    {
+        // Set variable with patient DNI (rut)
+        $DNI = $request->DNI_stage;
+        // Get the patient
+        $patient = Patient::where('DNI', $DNI)
+            ->where('activa', 1)
+            ->first();
+        // Set variable with patient id (from database)
+        $id_patient = $patient->id;
+        // Get the active stage
+        $stage = Stage::where('paciente_id', $id_patient)
+            ->where('activa', 1)
+            ->first();
+        // If have no active stage
+        if (empty($stage)) {
+            // Call function 'showAddStage'
+            return $this->showAddStage($id_patient);
+        } else {
+            // Get active functionarys
+            $users = Functionary::where('activa', 1)->get();
+            return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+        }
     }
 }

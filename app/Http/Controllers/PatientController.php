@@ -94,6 +94,7 @@ class PatientController extends Controller
             'rut' => 'required|string|unique:paciente,DNI',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'second_last_name' => 'nullable|string|max:255',
             'pais' => 'required|string|max:255',
             'region' => 'required|string|max:255',
             'comuna' => 'required|string|max:255',
@@ -104,8 +105,6 @@ class PatientController extends Controller
             'numero' => 'required|int',
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
-
-        echo $request->new_start;
         // Separate the name string into array
         $nombre = explode(" ", $request->name);
         // Create the new 'oject' patient
@@ -114,13 +113,13 @@ class PatientController extends Controller
         // the variables name of object must be the same that database for save it
         // patient -> DNI, nombre1, nombre2, apellido1, apellido2, sexo_id, fecha_nacimiento, prevision_id
         $patient->nombre1 = $nombre[0];
-        $patient->nombre2 = "-";
+        $patient->nombre2 = " ";
         if(count($nombre)==2){
             $patient->nombre2 = $nombre[1];
         }
-        $patient->apellido1 = $request->apellido1;
-        $patient->apellido2 = $request->apellido2;
-        $patient->DNI = $request->id;
+        $patient->apellido1 = $request->last_name;
+        $patient->apellido2 = $request->second_last_name;
+        $patient->DNI = $request->rut;
         $patient->prevision_id = $request->prevition;
         $patient->sexo_id = $request->patient_sex;
         // Change datepicker format to database format
@@ -130,16 +129,16 @@ class PatientController extends Controller
         $patient->fecha_nacimiento = $correctDate;
         // Create the new 'oject' patient
         // address -> region, comuna, calle, numero
-        $address = new Address;
-        $address->region = $request->region;
-        $address->comuna = $request->comuna;
-        $address->calle  = $request->calle;
-        $address->numero = $request->numero;
+        // $address = new Address;
+        // $address->region = $request->region;
+        // $address->comuna = $request->comuna;
+        // $address->calle  = $request->calle;
+        // $address->numero = $request->numero;
         // Pass both to database
         $patient->save();
-        $address->save();
+        // $address->save();
         // Use the sync method to construct many-to-many associations
-        $patient->address()->sync($address);
+        // $patient->address()->sync($address);
         // Redirect to the view with successful status
         return redirect('registrar/paciente')->with('status', 'Usuario creado');
     }
@@ -189,11 +188,9 @@ class PatientController extends Controller
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
     }
-    
     /***************************************************************************************************************************
                                                     OTHER PROCESS
      ****************************************************************************************************************************/
-
     public function activatePatient(Request $request)
     {
         // Get the patient
@@ -205,7 +202,6 @@ class PatientController extends Controller
         // Redirect to the view with successful status (showing the DNI)
         return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
     }
-
     public function deletingPatient(Request $request)
     {
         // Get the patient

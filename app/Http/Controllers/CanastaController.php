@@ -41,13 +41,10 @@ class AdminController extends Controller
         $this->middleware('checkrole:1');
     }
 
-    public function foo($speId,$actId,$asist,$attendanceID){
-
-        
-
-        if(TypeSpeciality::where('especialidad_id', $speId)->count() > 0):
-        if (Activity::find($actId)->where('actividad_abre_canasta',1)->count() > 0);
-        if ($asist=1){};
-
+    public function foo($speId, $actId, $asist, $attendanceID)
+    {
+        if (TypeSpeciality::where('especialidad_id', $speId)->count() > 0) { };
+        if (Activity::find($actId)->where('actividad_abre_canasta', 1)->count() > 0) { };
+        if ($asist = 1) { };
     }
 }

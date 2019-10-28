@@ -8,16 +8,13 @@ use App\Speciality;
 
 class ActivityController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
-                                                    SHOW
-    ****************************************************************************************************************************/
-
-    /***************************************************************************************************************************
                                                     CREATE FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showAddActivity()
     {
         // Get activitis in alfabetic order
@@ -61,9 +58,10 @@ class ActivityController extends Controller
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
-    ****************************************************************************************************************************/
-    public function showEditActivity($id){
-        
+     ****************************************************************************************************************************/
+    public function showEditActivity($id)
+    {
+
         // Get the specific activity
         $activity = Activity::find($id);
 
@@ -72,7 +70,7 @@ class ActivityController extends Controller
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function registerActivity(Request $request)
     {
         // Check the format of each variable of 'request'
@@ -95,7 +93,7 @@ class ActivityController extends Controller
 
     /***************************************************************************************************************************
                                                     EDIT PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function editActivity(Request $request)
     {
         // URL to redirect when process finish.
@@ -113,9 +111,9 @@ class ActivityController extends Controller
             $activity->descripcion = $request->descripcion;
 
             // Set variable openCanasta when that option was clicked
-            if($request->openCanasta){
+            if ($request->openCanasta) {
                 $activity->actividad_abre_canasta = 1;
-            }else{
+            } else {
                 $activity->actividad_abre_canasta = 0;
             }
             // Pass the new info for update
@@ -126,8 +124,8 @@ class ActivityController extends Controller
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
-    ****************************************************************************************************************************/
-   public function AsignActivity(Request $request)
+     ****************************************************************************************************************************/
+    public function AsignActivity(Request $request)
     {
         if (isset($_POST['enviar'])) {
             $activity = Activity::where('activa', 1)->get();

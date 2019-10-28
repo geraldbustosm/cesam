@@ -29,8 +29,8 @@
             <div class="card-header">
                 <div>Prestación: </div>
                 <div>
-                    <a class="" href="{{url('ingresarpaciente')}}"><i class="material-icons">create</i><span></span></a>
-                    <a class="" href="{{url('ingresarpaciente')}}"><i class="material-icons">delete</i><span></span></a>
+                    <a class="" href="{{url('#')}}"><i class="material-icons">create</i><span></span></a>
+                    <a class="" href="{{url('#')}}"><i class="material-icons">delete</i><span></span></a>
                 </div>
             </div>
             <div class="card-body">

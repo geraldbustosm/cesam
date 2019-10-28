@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Patient;
+
 use App\Functionary;
-use App\Speciality;
 use App\FunctionarySpeciality;
-use App\User;
-use App\Sex;
+use App\Patient;
 use App\Prevition;
-use App\Attendance;
+use App\Sex;
+use App\Speciality;
 use App\Stage;
+use App\User;
 
 class GeneralController extends Controller
 {
@@ -19,7 +19,6 @@ class GeneralController extends Controller
     {
         $this->middleware('auth');
     }
-
     /***************************************************************************************************************************
                                                     VIEWS FOR GENERAL USER
      ****************************************************************************************************************************/
@@ -34,8 +33,8 @@ class GeneralController extends Controller
     {
         // Get patients from database where 'activa' attribute is 1 bits
         $patients = Patient::where('activa', 1)
-                            ->select('DNI','nombre1','nombre2','apellido1','apellido2','fecha_nacimiento','prevision_id','sexo_id','activa')
-                            ->get();
+            ->select('DNI', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nacimiento', 'prevision_id', 'sexo_id', 'activa')
+            ->get();
         // Count patients
         $cantPatients = $patients->count();
         // Get the list of previtions
@@ -71,12 +70,19 @@ class GeneralController extends Controller
         // Get the stage
         $stage = Stage::where('paciente_id', $patient_id)
             ->where('activa', 1)
-            ->get();
-        // Set stage like object
-        $stage = $stage[0];
-        // Get array of attendance from the active stage
-        $patientAtendances = $stage->attendance;
-        // Redirect to the view with successful status
-        return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+            ->first();
+        // If have no active stage
+        if (empty($stage)) {
+            return redirect(url()->previous())->with('error', 'Debe agregar una nueva etapa');
+        } else {
+            // Get array of attendance from the active stage
+            $patientAtendances = $stage->attendance;
+            // Redirect to the view with successful status
+            return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+        }
     }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    
 }

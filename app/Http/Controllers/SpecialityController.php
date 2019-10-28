@@ -9,12 +9,13 @@ use App\Provision;
 
 class SpecialityController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
                                                     CREATE FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showAddSpeciality()
     {
         // Get specialitys in alfabetic order
@@ -24,7 +25,7 @@ class SpecialityController extends Controller
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showEditSpeciality($id)
     {
         // Get the specific speciality
@@ -32,10 +33,9 @@ class SpecialityController extends Controller
         // Redirect to the view with selected speciality
         return view('admin.Edit.specialityEdit', compact('speciality'));
     }
-
     /***************************************************************************************************************************
                                                     ASIGN
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showAsignSpeciality()
     {
         // Get specialitys in alfabetic order
@@ -51,7 +51,7 @@ class SpecialityController extends Controller
             // Get uniques profesions
             if (!in_array($record->profesion, $columns)) {
                 // Add the profesion into columns
-                $columns[] = $record->descripcion;
+                array_push($columns, $record->descripcion);
             }
         }
         // Second loop (by functionary)
@@ -69,10 +69,9 @@ class SpecialityController extends Controller
         // Redirect to the view with specialitys per each functionary
         return view('admin.Asignment.specialityAsign', compact('rows', 'columns'));
     }
-    
     /***************************************************************************************************************************
                                                     CREATE PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function registerSpeciality(Request $request)
     {
         // Check the format of each variable of 'request'
@@ -94,7 +93,7 @@ class SpecialityController extends Controller
     }
     /***************************************************************************************************************************
                                                     EDIT PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function editSpeciality(Request $request)
     {
         // URL to redirect when process finish.
@@ -118,7 +117,7 @@ class SpecialityController extends Controller
     }
     /***************************************************************************************************************************
                                                     ASIGN PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function AsignSpeciality(Request $request)
     {
         if (isset($_POST['enviar'])) {
