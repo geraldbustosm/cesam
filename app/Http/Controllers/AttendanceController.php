@@ -61,7 +61,7 @@ class AttendanceController extends Controller
         // Pass the attendance to database
         $canasta = 0;
         if (TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0) {
-            if (Activity::find($request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
+            if (Activity::where('id',$request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
                 if ($request->get('selectA') == 1) {
                     $canasta = 1;
                     $attendance->abre_canasta = $canasta;

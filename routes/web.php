@@ -101,8 +101,8 @@ Route::post('registrar/programa', 'ProgramController@registerProgram');
 Route::get('registrar/genero', 'SexController@showAddSex');
 Route::post('registrar/genero', 'SexController@registerSex');
 // SIGGES
-Route::get('registrar/sigges', 'SiGGESController@showAddSIGGES');
-Route::post('registrar/sigges', 'SiGGESController@registerSIGGES');
+Route::get('registrar/sigges', 'SIGGESController@showAddSIGGES');
+Route::post('registrar/sigges', 'SIGGESController@registerSIGGES');
 // Tipo
 Route::get('registrar/tipo', 'TypeController@showAddType');
 Route::post('registrar/tipo', 'TypeController@registerType');
