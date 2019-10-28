@@ -92,9 +92,10 @@
                 {title:"Nombre", field:"nombre1"},
                 {title:"Apellido Paterno", field:"apellido1"},
                 {title:"Apellido Materno", field:"apellido2"},
-                {title:"Etapa", field:"etapa.id"},
-                {title:"Fecha Atencion", field:"atencion.fecha"},
-                {title:"Abre Canasta", field:"atencion.abre_canasta"},
+                {title:"Edad", field:"edad"},
+                {title:"Prevision", field:"descripcion"},
+                {title:"Fecha Atencion", field:"fecha"},
+                {title:"Abre Canasta", field:"canasta"},
                 ],
             });
 
@@ -122,3 +123,5 @@
 @endsection
 @push('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+ 

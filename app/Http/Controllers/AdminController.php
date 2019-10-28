@@ -51,9 +51,12 @@ class AdminController extends Controller
             ->join('etapa', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('atencion', 'etapa.id', '=', 'atencion.etapa_id')
             // ->join('orders', 'users.id', '=', 'orders.user_id')
-            ->select('paciente.*', 'prevision.*','etapa.*','atencion.*')
             ->where('paciente.activa', '=', 1)
+            ->selectRaw('IF abre_canasta THEN "yes" ELSE "no" AS canasta')
+            ->select('paciente.*', 'prevision.*','etapa.*','atencion.*')
+            ->selectRaw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad')
             ->get();
+        
         return view('general.test', ['main' => json_encode($patient)]);
     }
     // Pacientes inactivos
