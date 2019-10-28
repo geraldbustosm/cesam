@@ -88,8 +88,13 @@
                 height:"311px",
                 movableColumns: true,
                 columns:[
-                {title:"rut", field:"DNI"},
+                {title:"RUT", field:"DNI"},
                 {title:"Nombre", field:"nombre1"},
+                {title:"Apellido Paterno", field:"apellido1"},
+                {title:"Apellido Materno", field:"apellido2"},
+                {title:"Etapa", field:"etapa.id"},
+                {title:"Fecha Atencion", field:"atencion.fecha"},
+                {title:"Abre Canasta", field:"atencion.abre_canasta"},
                 ],
             });
 

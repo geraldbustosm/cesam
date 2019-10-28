@@ -48,8 +48,10 @@ class AdminController extends Controller
     {
         $patient = DB::table('paciente')
             ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
+            ->join('etapa', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('atencion', 'etapa.id', '=', 'atencion.etapa_id')
             // ->join('orders', 'users.id', '=', 'orders.user_id')
-            ->select('paciente.*', 'prevision.descripcion')
+            ->select('paciente.*', 'prevision.*','etapa.*','atencion.*')
             ->where('paciente.activa', '=', 1)
             ->get();
         return view('general.test', ['main' => json_encode($patient)]);
