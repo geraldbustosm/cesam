@@ -124,4 +124,7 @@
 @push('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
- 
+ <script>
+     var data = <?php echo $main; ?>;
+     console.log(data);
+ </script>
