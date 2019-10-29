@@ -149,5 +149,7 @@ Route::get('lista-especialidades','AdminController@getSpecialityPerFunctionary')
 Route::get('lista-prestaciones','AdminController@getProvisionPerSpeciality');
 Route::get('lista-actividades','AdminController@getActivityPerSpeciality');
 Route::get('age-check','AdminController@checkAge');
-
+Route::get('charts','GraphsController@chart');
+Route::get('charts2','GraphsController@chart2');
+Route::get('charts3','GraphsController@chart3');
 Route::get('testing', 'AdminController@showTesting');

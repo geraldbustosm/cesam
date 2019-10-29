@@ -1,0 +1,17 @@
+html, body {
+    margin:0;
+  }
+  .w{
+    overflow:hidden;
+  }
+  section div {
+    float: left;
+    height: 24vw;
+    margin: 1%;
+    width: 46%;
+    
+  }
+  section {
+    margin:-1%;
+    padding:20px;
+  }
