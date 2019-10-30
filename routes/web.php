@@ -127,6 +127,9 @@ Route::put('diagnostico/edit', 'DiagnosisController@editDiagnostic');
 // Especialidades
 Route::get('especialidad/edit/{id}', 'SpecialityController@showEditSpeciality');
 Route::put('especialidad/edit', 'SpecialityController@editSpeciality');
+// Funcionario
+Route::get('funcionario/edit/{id}', 'FunctionaryController@showEditFunctionary');
+Route::put('funcionario/edit', 'FunctionaryController@editFunctionary');
 // Sexo
 Route::get('sexo/edit/{id}', 'SexController@showEditSex');
 Route::put('sexo/edit', 'SexController@editSex');

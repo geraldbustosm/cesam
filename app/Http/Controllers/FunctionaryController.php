@@ -60,14 +60,21 @@ class FunctionaryController extends Controller
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-
+    public function showEditFunctionary($id){
+        // Get the user through dni
+        $user = User::where('rut', $id)->first();
+        // Get the functionary through id of that user
+        $functionary = Functionary::where('user_id',$user->id)->first();
+        // Redirect to the view with the functionary
+        return view('admin.Edit.functionaryEdit', compact('functionary'));
+    }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
      ****************************************************************************************************************************/
     public function registerFunctionary(Request $request)
     {
         // Check the format of each variable of 'request'
-        $validacion = $request->validate([
+        $validation = $request->validate([
             'profesion' => 'required|string|max:255',
             'user' => 'required|integer|max:255',
             'declared_hours' => 'required'
@@ -90,7 +97,25 @@ class FunctionaryController extends Controller
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
+    public function editFunctionary(Request $request){
+        $user = User::where('id', $request->id)->first();
+        $url = 'funcionario/edit/' . $user->rut;
+        
+        $validation = $request->validate([
+            'profesion' => 'required',
+            'horasDeclaradas' => 'required|numeric',
+            'horasRealizadas' => 'required|numeric',
+        ]);
+        
+        $functionary = Functionary::where('user_id', $request->id)->first();
+        $functionary->profesion = $request->profesion;
+        $functionary->horasDeclaradas = $request->horasDeclaradas;
+        $functionary->horasRealizadas = $request->horasRealizadas;
 
+        $functionary->save();
+
+        return redirect($url)->with('status', 'Se actualizaron los datos del funcionario');
+    }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
      ****************************************************************************************************************************/
