@@ -59,10 +59,10 @@
         </div>
         <!-- Password -->
         <div class="form-group">
-            <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" placeholder="Contraseña">
+            <input type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" autocomplete="new-password" id="password" name="password" placeholder="Contraseña">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirmar contraseña">
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" autocomplete="new-password" placeholder="Confirmar contraseña">
         </div>
         <button type="submit" class="btn btn-primary">Registrar</button>
     </form>
