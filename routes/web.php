@@ -76,7 +76,7 @@ Route::post('registrar/atributos', 'AttributesController@registerAttributes');
 // Diagnostico
 Route::get('registrar/diagnostico', 'DiagnosisController@showAddDiagnosis');
 Route::post('registrar/diagnostico', 'DiagnosisController@registerDiagnosis');
-// especialidad
+// Especialidad
 Route::get('registrar/especialidad', 'SpecialityController@showAddSpeciality');
 Route::post('registrar/especialidad', 'SpecialityController@registerSpeciality');
 // Funcionario
@@ -145,6 +145,11 @@ Route::put('sigges/edit', 'SiGGESController@editSiGGES');
 // Tipo prestaciones
 Route::get('prestacion/edit/{id}', 'TypeController@showEditType');
 Route::put('prestacion/edit', 'TypeController@editType');
+// Usuario
+Route::get('password/edit');
+Route::put('password/edit');
+Route::get('misdatos/edit');
+Route::put('misdatos/edit');
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/
