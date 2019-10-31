@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title','Editar contraseña')
-@section('active-pacientes','active')
+@section('active-editarmisdatos','active')
 
 @section('content')
 @if ($errors->any())
@@ -44,4 +44,7 @@
 
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
+<script>
+	document.getElementById('info_Submenu').className += ' show';
+</script>
 @endsection

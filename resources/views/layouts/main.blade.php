@@ -126,9 +126,19 @@
                         </li>
                     </nav>
 
-                    <li class="nav-item">
-                        <a class="nav-link @yield('active-testing')" href="{{url('testing')}}"><i class="material-icons">bug_report</i><span>Sitio de Pruebas</span></a>
-                    </li>
+                    <nav id="sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link @yield('active-editarmisdatos')" href="#info_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">edit</i><span>Editar mis datos</span></a>
+                            <ul class="collapse list-unstyled" id="info_Submenu">
+                                <li>
+                                    <a class="nav-link @yield('active-editarinformacion')" href="{{url('misdatos/edit')}}"><span>Editar mi información</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-editarcontraseña')" href="{{url('password/edit')}}"><span>Editar contraseña</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </nav>
                 </ul>
             </nav>
         </div>
