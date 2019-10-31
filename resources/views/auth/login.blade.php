@@ -12,6 +12,11 @@
 </head>
 <body>
     <div class="container login">
+        @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+        @endif
         <img class="img-fluid mb-4" src="{{asset('img/logo.png')}}">
         <form method="POST" action="{{ route('login') }}">
             @csrf

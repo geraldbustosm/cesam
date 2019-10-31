@@ -146,10 +146,10 @@ Route::put('sigges/edit', 'SiGGESController@editSiGGES');
 Route::get('prestacion/edit/{id}', 'TypeController@showEditType');
 Route::put('prestacion/edit', 'TypeController@editType');
 // Usuario
-Route::get('password/edit');
-Route::put('password/edit');
-Route::get('misdatos/edit');
-Route::put('misdatos/edit');
+Route::get('password/edit', 'UserController@showEditPassword');
+Route::put('password/edit', 'UserController@editPassword');
+Route::get('misdatos/edit', 'UserController@showEditData');
+Route::put('misdatos/edit', 'UserController@editData');
 /***************************************************************************************************************************
                                                     TESTING SECTION
 ****************************************************************************************************************************/

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -28,8 +29,9 @@ class UserController extends Controller
     }
 
     public function showEditPassword(){
+        $auth = Auth::user();
         // Redirect to the view
-        return view('general.editPassword');
+        return view('general.editPassword', compact('auth'));
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
@@ -37,7 +39,7 @@ class UserController extends Controller
     public function registerUser(Request $request)
     {
         // Check the format of each variable of 'request'
-        $validacion = $request->validate([
+        $validation = $request->validate([
             'nick' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -74,7 +76,25 @@ class UserController extends Controller
     /***************************************************************************************************************************
                                                     EDIT PROCESS
     ****************************************************************************************************************************/
-    
+    public function editPassword(Request $request){
+        $validation = $request->validate([
+            'actual_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        
+        if(Hash::check($request->actual_password, Auth::user()->password)){
+            $user = Auth::user();
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }else{
+            return redirect('password/edit')->with('status', 'Tu contraseña actual no es correcta');
+        }
+        Auth::logout();
+        return redirect('login')->with('status', 'Se ha actualizado su contraseña');
+    }
+    public function editData(){
+
+    }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
     ****************************************************************************************************************************/
