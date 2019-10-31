@@ -52,15 +52,24 @@ class UserController extends Controller
         ]);
         // Create a new 'object' user
         $user = new User;
-        // Separate the name string into array
-        $nombre = explode(" ", $request->name);
-        // Set some variables with inputs of view
-        // the variables name of object must be the same that database for save it
-        // nombre, primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, rut, email, rol, password
-        $user->primer_nombre = $nombre[0];
-        $user->segundo_nombre = " ";
-        if(count($nombre)==2){
-            $user->segundo_nombre = $nombre[1];
+        // // Separate the name string into array
+        // $nombre = explode(" ", $request->name);
+        // // Set some variables with inputs of view
+        // // the variables name of object must be the same that database for save it
+        // // nombre, primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, rut, email, rol, password
+        // $user->primer_nombre = $nombre[0];
+        // $user->segundo_nombre = " ";
+        // if(count($nombre)==2){
+        //     $user->segundo_nombre = $nombre[1];
+        // }// Separating once the nombres by space character
+        $posSpace = strpos($request->name, ' ');
+
+        if(!$posSpace){
+            $user->primer_nombre = $request->name;
+            $user->segundo_nombre = "";
+        }else{
+            $user->primer_nombre = substr($request->name, 0, $posSpace);
+            $user->segundo_nombre = substr($request->name, $posSpace+1);
         }
         $user->nombre = $request->nick;
         $user->apellido_paterno = $request->last_name;
@@ -107,10 +116,17 @@ class UserController extends Controller
         $user = Auth::user();
         if(Hash::check($request->password, $user->password)){
 
-            // Set some variables with inputs of view
-            $nombres = explode(" ", $request->nombres);
-            $user->primer_nombre = $nombres[0];
-            $user->segundo_nombre = $nombres[1];
+            // Separating once the nombres by space character
+            $posSpace = strpos($request->nombres, ' ');
+
+            if(!$posSpace){
+                $user->primer_nombre = $request->nombres;
+                $user->segundo_nombre = "";
+            }else{
+                $user->primer_nombre = substr($request->nombres, 0, $posSpace);
+                $user->segundo_nombre = substr($request->nombres, $posSpace+1);
+            }
+
             $user->apellido_paterno = $request->apellido_paterno;
             $user->apellido_materno = $request->apellido_materno;
             $user->nombre = $request->nombre;
