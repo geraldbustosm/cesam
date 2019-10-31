@@ -24,6 +24,9 @@
             <div class="form-group">
                 <input type="submit" class="form-control btn btn-primary" value="Entrar">
             </div>
+            <div class="text-center">
+                <a href="/password/reset">¿Olvidaste tu contraseña?</a>
+            </div>
         </form>
     </div>
 <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
