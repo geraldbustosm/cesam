@@ -24,8 +24,9 @@ class UserController extends Controller
                                                     EDIT FORM
     ****************************************************************************************************************************/
     public function showEditData(){
+        $auth = Auth::user();
         // Redirect to the view
-        return view('general.editData');
+        return view('general.editData', compact('auth'));
     }
 
     public function showEditPassword(){
@@ -81,9 +82,9 @@ class UserController extends Controller
             'actual_password' => 'required|string',
             'password' => 'required|string|min:8|confirmed',
         ]);
-        
-        if(Hash::check($request->actual_password, Auth::user()->password)){
-            $user = Auth::user();
+        $user = Auth::user();
+        if(Hash::check($request->actual_password, $user->password)){
+            
             $user->password = Hash::make($request->password);
             $user->save();
         }else{
@@ -92,7 +93,37 @@ class UserController extends Controller
         Auth::logout();
         return redirect('login')->with('status', 'Se ha actualizado su contraseña');
     }
-    public function editData(){
+    public function editData(Request $request){
+        // Validate the request variables
+        $validation = $request->validate([
+            'nombres' => 'required|string|max:255',
+            'apellido_paterno' => 'required|string|max:255',
+            'apellido_materno' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+        if(Hash::check($request->password, $user->password)){
+
+            // Set some variables with inputs of view
+            $nombres = explode(" ", $request->nombres);
+            $user->primer_nombre = $nombres[0];
+            $user->segundo_nombre = $nombres[1];
+            $user->apellido_paterno = $request->apellido_paterno;
+            $user->apellido_materno = $request->apellido_materno;
+            $user->nombre = $request->nombre;
+            $user->email = $request->email;
+            // Pass the new info for update
+            $user->save();
+        }else{
+            // Redirect to the URL with successful status
+            return redirect('misdatos/edit')->with('wrong', 'Tu contraseña no es correcta');
+
+        }
+        // Redirect to the URL with successful status
+        return redirect('misdatos/edit')->with('success', 'Se actualizaron los datos del paciente');
 
     }
     /***************************************************************************************************************************

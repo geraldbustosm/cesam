@@ -25,9 +25,6 @@
 		@csrf
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
-
-		<!-- Enviamos el ID del paciente para luego actualizarlo -->
-		<input id="id" name="id" type="hidden" value="{{$auth->id}}">
 		
 		<div class="form-group">
 			<input type="password" class="form-control {{ $errors->has('actual_password') ? ' is-invalid' : '' }}" autocomplete="new-password" value="" id="actual_password" name="actual_password" placeholder="Actual contraseña">
