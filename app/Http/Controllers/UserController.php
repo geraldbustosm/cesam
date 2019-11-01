@@ -24,15 +24,13 @@ class UserController extends Controller
                                                     EDIT FORM
     ****************************************************************************************************************************/
     public function showEditData(){
-        $auth = Auth::user();
         // Redirect to the view
-        return view('general.editData', compact('auth'));
+        return view('general.editData');
     }
 
     public function showEditPassword(){
-        $auth = Auth::user();
         // Redirect to the view
-        return view('general.editPassword', compact('auth'));
+        return view('general.editPassword');
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
