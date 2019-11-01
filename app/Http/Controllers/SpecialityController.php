@@ -63,7 +63,7 @@ class SpecialityController extends Controller
                 // Get the speciality_id and add it into the second position of ids
                 $ids[1] = $record2->id;
                 // Get full name of functionary and add it into rows
-                $rows[$record1->user->primer_nombre . " " . $record1->user->segundo_nombre][$record2->descripcion] = $ids;
+                $rows[$record1->user->primer_nombre . " " . $record1->user->apellido_paterno][$record2->descripcion] = $ids;
             }
         }
         // Redirect to the view with specialitys per each functionary

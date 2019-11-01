@@ -1531,7 +1531,7 @@ class AdminController extends Controller
         // Return activity's
         return response()->json($activity);
     }
-    // 
+    // Compare age of patient and range age of provision
     public function checkAge(Request $request)
     {
         // Get the patient

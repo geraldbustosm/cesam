@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('title','Editar mis datos')
 @section('active-editarmisdatos','active')
+@section('active-editarinformacion','active')
 
 @section('content')
 @if ($errors->any())
@@ -77,8 +78,6 @@
 	</form>
 </div>
 
-<!-- Adding script using on this view -->
-<script src="{{asset('js/idValidator.js')}}"></script>
 <script>
 	document.getElementById('info_Submenu').className += ' show';
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Functionary;
 use App\User;
 use App\Speciality;
@@ -91,7 +92,7 @@ class FunctionaryController extends Controller
         // Pass the functionary to database
         $functionary->save();
         // Redirect to the view with successful status
-        return redirect('registrar/funcionario')->with('status', 'Funcionario creado');
+        return redirect('asignar/especialidad');
     }
 
     /***************************************************************************************************************************

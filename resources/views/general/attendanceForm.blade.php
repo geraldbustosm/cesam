@@ -28,7 +28,6 @@
                             locale: 'es-es',
                             uiLibrary: 'bootstrap4',
                             maxDate: new Date,
-                            startView: 3
                         };
                         $('#datepicker').datepicker(config);
                     </script>
@@ -133,6 +132,7 @@
                 </div>
                 <script type="text/javascript">
                     var btn = document.getElementsByName("register");
+
                     $('#functionary').change(function() {
                         var functionaryID = $(this).val();
                         if (functionaryID) {
@@ -210,6 +210,7 @@
                             $("#activity").empty();
                         }
                     });
+
                     $('#provision').on('change', function() {
                         $('#errorAge').hide();
                         btn[0].style = "";
@@ -243,8 +244,6 @@
             </div>
         </div>
     </form>
-
-
     @endsection
     @push('styles')
     <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">

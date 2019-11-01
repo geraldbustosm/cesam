@@ -62,9 +62,7 @@ class GeneralController extends Controller
     public function showClinicalRecords($DNI)
     {
         // Get patient
-        $patient = Patient::where('DNI', $DNI)->get();
-        // Set patient out of array (like object)
-        $patient = $patient[0];
+        $patient = Patient::where('DNI', $DNI)->first();
         // Get patient id
         $patient_id = $patient->id;
         // Get the stage

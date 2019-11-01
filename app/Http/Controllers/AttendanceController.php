@@ -62,7 +62,7 @@ class AttendanceController extends Controller
         // Pass the attendance to database
         $canasta = 0;
         if (TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0) {
-            if (Activity::where('id',$request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
+            if (Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
                 if ($request->get('selectA') == 1) {
                     $canasta = 1;
                     $attendance->abre_canasta = $canasta;
@@ -86,7 +86,7 @@ class AttendanceController extends Controller
         $idPatient = $request->get('id');
         $patient = Patient::find($idPatient);
         // Get the active stage
-        $stage   = Stage::find($request->id_stage);
+        $stage = Stage::find($request->id_stage);
         $patientAtendances = $stage->attendance;
 
         if ($request->register == 1) {
@@ -97,7 +97,7 @@ class AttendanceController extends Controller
         if ($request->register == 2) {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('stage', 'users', 'patient'));
+            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
         }
     }
 }
