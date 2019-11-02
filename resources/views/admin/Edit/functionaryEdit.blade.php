@@ -3,15 +3,6 @@
 @section('active-ingresardatos','active')
 
 @section('content')
-@if ($errors->any())
-<div class="alert alert-danger">
-	<ul>
-		@foreach ($errors->all() as $error)
-		<li>{{ $error }}</li>
-		@endforeach
-	</ul>
-</div>
-@endif
 <h1>Editar funcionario</h1>
 <div class="div-full">
 	@if (session('status'))
@@ -19,14 +10,23 @@
 		{{ session('status') }}
 	</div>
 	@endif
-    
-    @if ($functionary)
-    <form method="post" action="{{ url('funcionario/edit') }}"> 
+	@if ($errors->any())
+	<div class="alert alert-danger">
+		<ul>
+			@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+			@endforeach
+		</ul>
+	</div>
+	@endif
+
+	@if ($functionary)
+	<form method="post" action="{{ url('funcionario/edit') }}">
 		@csrf
 
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
-		
+
 		<!-- Enviamos el ID del funcionario para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$functionary->user_id}}">
 
@@ -47,6 +47,8 @@
 	</form>
 </div>
 @else
-<div class="alert alert-danger" role="alert"><p>No se encontró el funcionario</p></div>
+<div class="alert alert-danger" role="alert">
+	<p>No se encontró el funcionario</p>
+</div>
 @endif
 @endsection
