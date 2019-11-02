@@ -23,7 +23,7 @@ class ProvisionController extends Controller
         // Get provisions
         $data = Provision::all();
         // Redirect to the view with list of types
-        return view('admin.Form.provisionForm', compact('type', 'data'));
+        return view('admin.Form.provisionForm', ['table' => 'Prestaciones'],compact('type', 'data'));
     }
     /***************************************************************************************************************************
                                                     EDIT FORM

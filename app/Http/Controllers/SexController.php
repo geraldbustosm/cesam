@@ -56,7 +56,7 @@ class SexController extends Controller
     public function editSex(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "sexo/edit/" . $request->id;
+        $url = "/registrar/genero/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
@@ -72,6 +72,6 @@ class SexController extends Controller
             $sex->save();
         }
         // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción del atributo');
+        return redirect($url)->with('status', 'Se actualizó la descripción de la sexualidad');
     }
 }

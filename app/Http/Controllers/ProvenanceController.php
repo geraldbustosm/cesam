@@ -56,7 +56,7 @@ class ProvenanceController extends Controller
     public function editProvenance(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "procedencia/edit/" . $request->id;
+        $url = "/registrar/procedencia/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

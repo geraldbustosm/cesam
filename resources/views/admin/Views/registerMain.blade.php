@@ -31,10 +31,13 @@
             <a class="nav-link" href="{{url('registrar/procedencia')}}">Procedencias</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{url('registrar/sigges')}}">Tipo GES</a>
+            <a class="nav-link" href="{{url('registrar/sigges')}}">SiGGES</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{url('registrar/tipo')}}">Tipo prestaciones</a>
+            <a class="nav-link" href="{{url('registrar/tipo')}}">Tipos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url('registrar/prestacion')}}">Prestaciones</a>
         </li>
     </ul><br>
 </div>

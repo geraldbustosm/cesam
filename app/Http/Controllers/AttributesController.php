@@ -56,7 +56,7 @@ class AttributesController extends Controller
     public function editAttribute(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "atributo/edit/" . $request->id;
+        $url = "/registrar/atributos/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

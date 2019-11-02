@@ -64,7 +64,6 @@
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
     var table = <?php echo json_encode($table); ?>;
-    console.log(table);
     document.getElementById('data_Submenu').className += ' show';
 </script>
 @endsection

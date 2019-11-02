@@ -97,7 +97,7 @@ class ActivityController extends Controller
     public function editActivity(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "actividad/edit/" . $request->id;
+        $url = "/registrar/actividad/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

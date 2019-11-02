@@ -19,7 +19,7 @@ class TypeController extends Controller
         // Get types in alfabetic order
         $data = Type::orderBy('descripcion')->get();
         // Redirect to the view with list of types (standard name: data) and name of table in spanish (standard name: table)
-        return view('admin.Form.typeForm', ['data' => $data, 'table' => 'Tipo prestaciones']);
+        return view('admin.Form.typeForm', ['data' => $data, 'table' => 'Tipos']);
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
@@ -94,7 +94,7 @@ class TypeController extends Controller
     public function editType(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "prestacion/edit/" . $request->id;
+        $url = "/registrar/tipo/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

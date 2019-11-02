@@ -56,7 +56,7 @@ class DiagnosisController extends Controller
     public function editDiagnostic(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "diagnostico/edit/" . $request->id;
+        $url = "/registrar/diagnostico/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
@@ -72,6 +72,6 @@ class DiagnosisController extends Controller
             $diagnostic->save();
         }
         // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción del diagnostico');
+        return redirect($url)->with('status', 'Se actualizó la descripción del diagnóstico');
     }
 }

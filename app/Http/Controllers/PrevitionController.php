@@ -56,7 +56,7 @@ class PrevitionController extends Controller
     public function editPrevition(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "prevision/edit/" . $request->id;
+        $url = "/registrar/prevision/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

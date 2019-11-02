@@ -3,30 +3,25 @@
 @section('active-ingresardatos','active')
 
 @section('content')
-@if ($errors->any())
-<div class="alert alert-danger">
-	<ul>
-		@foreach ($errors->all() as $error)
-		<li>{{ $error }}</li>
-		@endforeach
-	</ul>
-</div>
-@endif
 <h1>Editar sexo</h1>
 <div class="div-full">
-	@if (session('status'))
-	<div class="alert alert-success" role="alert">
-		{{ session('status') }}
+	@if ($errors->any())
+	<div class="alert alert-danger">
+		<ul>
+			@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+			@endforeach
+		</ul>
 	</div>
 	@endif
-    
-    @if ($sex)
-    <form method="post" action="{{ url('sexo/edit') }}"> 
+
+	@if ($sex)
+	<form method="post" action="{{ url('géneros/edit') }}">
 		@csrf
 
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
-		
+
 		<!-- Enviamos el ID del alta para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$sex->id}}">
 
@@ -38,6 +33,8 @@
 	</form>
 </div>
 @else
-<div class="alert alert-danger" role="alert"><p>No se encontró el sexo</p></div>
+<div class="alert alert-danger" role="alert">
+	<p>No se encontró el sexo</p>
+</div>
 @endif
 @endsection

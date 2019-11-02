@@ -19,7 +19,7 @@ class SIGGESController extends Controller
         // Get sigges in alfabetic order
         $data = SiGGES::orderBy('descripcion')->get();
         // Redirect to the view with list of sigges (standard name: data) and name of table in spanish (standard name: table)
-        return view('admin.Form.siggesForm', ['data' => $data, 'table' => 'Tipo GES']);
+        return view('admin.Form.siggesForm', ['data' => $data, 'table' => 'SiGGES']);
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
@@ -56,7 +56,7 @@ class SIGGESController extends Controller
     public function editSiGGES(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "sigges/edit/" . $request->id;
+        $url = "/registrar/sigges/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

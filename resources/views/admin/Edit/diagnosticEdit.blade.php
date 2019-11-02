@@ -21,7 +21,7 @@
 	@endif
     
     @if ($diagnostic)
-    <form method="post" action="{{ url('diagnostico/edit') }}"> 
+    <form method="post" action="{{ url('diagnósticos/edit') }}"> 
 		@csrf
 
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->

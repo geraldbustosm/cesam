@@ -1,9 +1,9 @@
-@extends('layouts.main')
-@section('title','Prestacion')
+@extends('admin.Views.registerMain')
+@section('title','Registrar prestación')
+@section('active-registrar','active')
 @section('active-ingresardatos','active')
-@section('active-ingresarprestacion','active')
 
-@section('content')
+@section('sub-content')
 @if ($errors->any())
 <div class="alert alert-danger">
     <ul>
@@ -112,7 +112,8 @@
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
-    console.log(fullArray);
+    var table = <?php echo json_encode($table); ?>;
+    console.log(table);
     document.getElementById('data_Submenu').className += ' show';
 </script>
 <!-- Adding script using on this view -->

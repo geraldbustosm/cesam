@@ -57,7 +57,7 @@ class ReleaseController extends Controller
     public function editRelease(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "alta/edit/" . $request->id;
+        $url = "/registrar/alta/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',

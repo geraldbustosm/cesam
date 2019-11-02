@@ -3,30 +3,25 @@
 @section('active-ingresardatos','active')
 
 @section('content')
-@if ($errors->any())
-<div class="alert alert-danger">
-	<ul>
-		@foreach ($errors->all() as $error)
-		<li>{{ $error }}</li>
-		@endforeach
-	</ul>
-</div>
-@endif
 <h1>Editar previsión</h1>
 <div class="div-full">
-	@if (session('status'))
-	<div class="alert alert-success" role="alert">
-		{{ session('status') }}
+	@if ($errors->any())
+	<div class="alert alert-danger">
+		<ul>
+			@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+			@endforeach
+		</ul>
 	</div>
 	@endif
-    
-    @if ($prevition)
-    <form method="post" action="{{ url('prevision/edit') }}"> 
+
+	@if ($prevition)
+	<form method="post" action="{{ url('previsiones/edit') }}">
 		@csrf
 
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
-		
+
 		<!-- Enviamos el ID del alta para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$prevition->id}}">
 
@@ -38,6 +33,8 @@
 	</form>
 </div>
 @else
-<div class="alert alert-danger" role="alert"><p>No se encontró la prevision</p></div>
+<div class="alert alert-danger" role="alert">
+	<p>No se encontró la prevision</p>
+</div>
 @endif
 @endsection

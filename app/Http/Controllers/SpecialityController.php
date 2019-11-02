@@ -97,7 +97,7 @@ class SpecialityController extends Controller
     public function editSpeciality(Request $request)
     {
         // URL to redirect when process finish.
-        $url = "especialidad/edit/" . $request->id;
+        $url = "/registrar/especialidad/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
