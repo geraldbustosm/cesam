@@ -70,8 +70,10 @@ class PrevitionController extends Controller
             $prevition->descripcion = $request->descripcion;
             // Pass the new info for update
             $prevition->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción de la previsión a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción de la previsión');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la descripción de la previsión');
     }
 }

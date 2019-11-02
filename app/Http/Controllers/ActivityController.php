@@ -118,9 +118,11 @@ class ActivityController extends Controller
             }
             // Pass the new info for update
             $activity->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la información de la actividad a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la información de la actividad');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la información de la actividad');
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS

@@ -70,8 +70,10 @@ class SexController extends Controller
             $sex->descripcion = $request->descripcion;
             // Pass the new info for update
             $sex->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción de la sexualidad a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción de la sexualidad');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la descripción de la sexualidad');
     }
 }

@@ -111,9 +111,11 @@ class SpecialityController extends Controller
             $speciality->descripcion = $request->descripcion;
             // Pass the new info for update
             $speciality->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'Nose pudo actualizar la descripción de la especialidad');
     }
     /***************************************************************************************************************************
                                                     ASIGN PROCESS

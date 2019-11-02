@@ -71,9 +71,11 @@ class ReleaseController extends Controller
             $release->descripcion = $request->descripcion;
             // Pass the new info for update
             $release->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción del alta a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción del alta');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la descripción del alta');
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS

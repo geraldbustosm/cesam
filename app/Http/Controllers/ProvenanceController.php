@@ -70,8 +70,10 @@ class ProvenanceController extends Controller
             $provenance->descripcion = $request->descripcion;
             // Pass the new info for update
             $provenance->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción de la procedencia a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción de la procedencia');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la descripción de la procedencia');
     }
 }

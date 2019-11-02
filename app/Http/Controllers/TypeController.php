@@ -8,12 +8,13 @@ use App\Speciality;
 
 class TypeController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
                                                     CREATE FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showAddType()
     {
         // Get types in alfabetic order
@@ -23,7 +24,7 @@ class TypeController extends Controller
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showEditType($id)
     {
         // Get the specific type
@@ -33,10 +34,10 @@ class TypeController extends Controller
     }
     /***************************************************************************************************************************
                                                     ASIGN FORM
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function showAsignType()
     {
-         // Get specialitys in alfabetic order
+        // Get specialitys in alfabetic order
         $speciality = Speciality::orderBy('descripcion')->get();
         // Get functionarys in alfabetic order by profesions
         $type = Type::orderBy('descripcion')->get();
@@ -44,7 +45,7 @@ class TypeController extends Controller
         $rows = [];
         $columns = [];
         $ids = [];
-        
+
         // First loop (by speciality)
         foreach ($type as $index => $record) {
             // Get uniques profesions
@@ -68,10 +69,10 @@ class TypeController extends Controller
         }
         // Redirect to the view with specialitys per each functionary
         return view('admin.Asignment.typeAsign', compact('rows', 'columns'));
-     }
+    }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function registerType(Request $request)
     {
         // Check the format of each variable of 'request'
@@ -90,7 +91,7 @@ class TypeController extends Controller
     }
     /***************************************************************************************************************************
                                                     EDIT PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function editType(Request $request)
     {
         // URL to redirect when process finish.
@@ -108,13 +109,15 @@ class TypeController extends Controller
             $type->descripcion = $request->descripcion;
             // Pass the new info for update
             $type->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción de la prestación a "'.$request->descripcion.'"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción de la prestación');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la descripción de la prestación');
     }
     /***************************************************************************************************************************
                                                     ASIGN PROCESS
-    ****************************************************************************************************************************/
+     ****************************************************************************************************************************/
     public function AsignType(Request $request)
     {
         if (isset($_POST['enviar'])) {

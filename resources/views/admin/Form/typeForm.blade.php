@@ -18,6 +18,11 @@
         {{ session('status') }}
     </div>
     @endif
+    @if (session('err'))
+    <div class="alert alert-danger" role="alert">
+        {{ session('err') }}
+    </div>
+    @endif
     <form method="post" action="{{ url('registrar/tipo') }}">
         @csrf
         <div class="form-group">

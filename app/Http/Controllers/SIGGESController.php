@@ -70,8 +70,10 @@ class SIGGESController extends Controller
             $sigges->descripcion = $request->descripcion;
             // Pass the new info for update
             $sigges->save();
+            // Redirect to the URL with successful status
+            return redirect($url)->with('status', 'Se actualizó la descripción del tipo GES a "' . $request->descripcion . '"');
         }
-        // Redirect to the URL with successful status
-        return redirect($url)->with('status', 'Se actualizó la descripción del tipo GES');
+        // Redirect to the URL with failure status
+        return redirect($url)->with('err', 'No se pudo actualizar la descripción del tipo GES');
     }
 }
