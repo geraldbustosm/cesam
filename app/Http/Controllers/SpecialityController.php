@@ -14,12 +14,22 @@ class SpecialityController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveSpeciality()
+    {
+        // Get specialitys from database where 'activa' attribute is 0 bits
+        $data = Speciality::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.specialityInactive', ['data' => $data, 'table' => 'Especialidades']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddSpeciality()
     {
         // Get specialitys in alfabetic order
-        $data = Speciality::orderBy('descripcion')->get();
+        $data = Speciality::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of specialitys (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.specialityForm', ['data' => $data, 'table' => 'Especialidades']);
     }
@@ -96,14 +106,18 @@ class SpecialityController extends Controller
      ****************************************************************************************************************************/
     public function editSpeciality(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/especialidad/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the speciality that want to update
         $speciality = Speciality::find($request->id);
+        // URL to redirect when process finish.
+        if($speciality->activa == 1){
+            $url = "/registrar/especialidad/";
+        }else{
+            $url = "/inactivo/especialidad/";
+        }
         // If found it then update the data
         if ($speciality) {
             // Set the variable 'descripcion'
@@ -143,5 +157,31 @@ class SpecialityController extends Controller
             }
             return redirect('asignar/especialidad')->with('status', 'Especialidades actualizadas');
         }
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateSpeciality(Request $request)
+    {
+        // Get the data
+        $data = Speciality::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/especialidad')->with('status', 'Especialidad "' . $data->descripcion . '" re-activada');
+    }
+
+    public function deletingSpeciality(Request $request)
+    {
+        // Get the data
+        $data = Speciality::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/especialidad')->with('status', 'Especialidad "' . $data->descripcion . '" eliminada');
     }
 }

@@ -44,7 +44,7 @@ class FunctionaryController extends Controller
         // Get the list of speciality per functionary
         $fs = FunctionarySpeciality::all();
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
-        return view('admin.Views.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
+        return view('admin.Inactive.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
     }
 
     /***************************************************************************************************************************

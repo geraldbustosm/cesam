@@ -1,7 +1,7 @@
-@extends('admin.Views.registerMain')
+@extends('admin.Views.inactiveMain')
 @section('title','Registrar Sexo/Genero')
 @section('active-ingresardatos','active')
-@section('active-registrar','active')
+@section('active-inactivos','active')
 
 @section('sub-content')
 <h1>Registrar Sexo o Genero</h1>
@@ -23,45 +23,34 @@
         {{ session('err') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/genero') }}">
-        @csrf
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col">
-                    <input type="text" class="form-control {{ $errors->has('sexuality') ? ' is-invalid' : '' }}" value="{{ old('sexuality') }}" id="sexuality" name="sexuality" placeholder="Sexo o Genero">
-                    <br>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </div>
-                <div class="col">
-                    <div>
-                        <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
-                    </div><br>
-                    <div class="">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Sexo / Género</th>
-                                    <th style="width: 10%;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body">
-                                <!-- Fill on js -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="div-full">
-                        <ul class="pagination justify-content-center" id="paginate">
-                            <!-- Generate in patientFilter.js->generatePaginationNum(); -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
+    <div class="col">
+        <div>
+            <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
+        </div><br>
+        <div class="">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 3%;">#</th>
+                        <th style="width: 70%;">Sexo / Género</th>
+                        <th style="width: 10%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Fill on js -->
+                </tbody>
+            </table>
         </div>
-    </form>
+        <div class="div-full">
+            <ul class="pagination justify-content-center" id="paginate">
+                <!-- Generate in patientFilter.js->generatePaginationNum(); -->
+            </ul>
+        </div>
+    </div>
 </div>
 <!-- Form to send id at controller -->
-<form name="onSubmit" method="post" action="{{ url('desactivar-genero') }}">
+<form name="onSubmit" method="post" action="{{ url('activar-genero') }}">
     @csrf
     <div class="form-group">
         <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
@@ -78,7 +67,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Desea eliminar el género?
+                ¿Desea reactivar el género?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

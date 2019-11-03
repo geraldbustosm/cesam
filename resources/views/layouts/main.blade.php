@@ -105,6 +105,9 @@
                                     <a class="nav-link @yield('active-registrar')" href="{{url('registrar')}}"><span>Datos simples </span></a>
                                 </li>
                                 <li>
+                                    <a class="nav-link @yield('active-inactivos')" href="{{url('inactivo')}}"><span>Datos inactivos </span></a>
+                                </li>
+                                <li>
                                     <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrar/programa')}}"><span>Asignar programa a especialidad</span></a>
                                 </li>
                                 <li>

@@ -13,12 +13,22 @@ class ActivityController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveActivity()
+    {
+        // Get activities from database where 'activa' attribute is 0 bits
+        $data = Activity::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.activityInactive', ['data' => $data, 'table' => 'Actividades']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddActivity()
     {
-        // Get activitis in alfabetic order
-        $data = Activity::orderBy('descripcion')->get();
+        // Get activities in alfabetic order
+        $data = Activity::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of activitis (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.activityForm', ['data' => $data, 'table' => 'Actividades']);
     }
@@ -96,14 +106,18 @@ class ActivityController extends Controller
      ****************************************************************************************************************************/
     public function editActivity(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/actividad/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the release that want to update
         $activity = Activity::find($request->id);
+        // URL to redirect when process finish.
+        if($activity->activa == 1){
+            $url = "/registrar/actividad/";
+        }else{
+            $url = "/inactivo/actividad/";
+        }
         // If found it then update the data
         if ($activity) {
             // Set the variable 'descripcion'
@@ -150,5 +164,29 @@ class ActivityController extends Controller
             }
             return redirect('asignar/especialidad-actividad')->with('status', 'Especialidades y Prestaciones actualizadas');
         }
+    }
+
+    public function activateActivity(Request $request)
+    {
+        // Get the data
+        $data = Activity::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/actividad')->with('status', 'Actividad "' . $data->descripcion . '" re-activada');
+    }
+
+    public function deletingActivity(Request $request)
+    {
+        // Get the data
+        $data = Activity::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/actividad')->with('status', 'Actividad "' . $data->descripcion . '" eliminada');
     }
 }

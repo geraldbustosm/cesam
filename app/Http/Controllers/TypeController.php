@@ -13,12 +13,22 @@ class TypeController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveType()
+    {
+        // Get types from database where 'activa' attribute is 0 bits
+        $data = Type::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.typeInactive', ['data' => $data, 'table' => 'Tipos']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddType()
     {
         // Get types in alfabetic order
-        $data = Type::orderBy('descripcion')->get();
+        $data = Type::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of types (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.typeForm', ['data' => $data, 'table' => 'Tipos']);
     }
@@ -94,14 +104,18 @@ class TypeController extends Controller
      ****************************************************************************************************************************/
     public function editType(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/tipo/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the type (of GES) that want to update
         $type = Type::find($request->id);
+        // URL to redirect when process finish.
+        if($type->activa == 1){
+            $url = "/registrar/tipo/";
+        }else{
+            $url = "/inactivo/tipo/";
+        }
         // If found it then update the data
         if ($type) {
             // Set the variable 'descripcion'
@@ -141,5 +155,31 @@ class TypeController extends Controller
             }
             return redirect('asignar/especialidad-tipo')->with('status', 'Especialidades actualizadas');
         }
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateType(Request $request)
+    {
+        // Get the data
+        $data = Type::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/tipo')->with('status', 'Tipo de prestación "' . $data->descripcion . '" re-activado');
+    }
+
+    public function deletingType(Request $request)
+    {
+        // Get the data
+        $data = Type::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/tipo')->with('status', 'Tipo de prestación "' . $data->descripcion . '" eliminado');
     }
 }

@@ -60,6 +60,33 @@
         </div>
     </form>
 </div>
+<!-- Form to send id at controller -->
+<form name="onSubmit" method="post" action="{{ url('desactivar-especialidad') }}">
+  @csrf
+  <div class="form-group">
+    <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
+  </div>
+</form>
+<!-- Modal to continue with action -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Desea eliminar la especialidad?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;

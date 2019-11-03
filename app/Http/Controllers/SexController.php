@@ -12,6 +12,16 @@ class SexController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveSex()
+    {
+        // Get genders from database where 'activa' attribute is 0 bits
+        $data = Sex::orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.sexInactive', ['data' => $data, 'table' => 'Géneros']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddSex()
@@ -55,14 +65,18 @@ class SexController extends Controller
      ****************************************************************************************************************************/
     public function editSex(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/genero/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the gender that want to update
         $sex = Sex::find($request->id);
+        // URL to redirect when process finish.
+        if($sex->activa == 1){
+            $url = "/registrar/genero/";
+        }else{
+            $url = "/inactivo/genero/";
+        }
         // If found it then update the data
         if ($sex) {
             // Set the variable 'descripcion'
@@ -75,5 +89,31 @@ class SexController extends Controller
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción de la sexualidad');
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateSex(Request $request)
+    {
+        // Get the data
+        $data = Sex::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/genero')->with('status', 'Género "' . $data->descripcion . '" re-activada');
+    }
+
+    public function deletingSex(Request $request)
+    {
+        // Get the data
+        $data = Sex::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/genero')->with('status', 'Género "' . $data->descripcion . '" eliminada');
     }
 }

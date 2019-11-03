@@ -2,14 +2,14 @@
                                                     ACTION BUTTONS
 ****************************************************************************************************************************/
 // Set value on Form
-function setValue(UID, idForm) {
+function setValue(id, idForm) {
     // Get hidded input for submit
     var tagID = document.getElementById(idForm);
-    // Set value with DNI or Rut from functionary
-    tagID.value = UID;
+    // Set value with id
+    tagID.value = id;
 }
 // Check modal for continue
-function confirmAction(UID, idForm) {
+function confirmAction(id, idForm) {
     // Show modal
     $('#confirmModal').modal('show');
     // Get continue button from modal
@@ -17,30 +17,18 @@ function confirmAction(UID, idForm) {
     // When is clicked
     btn.addEventListener("click", function() {
         // Call function set Value
-        setValue(UID, idForm);
+        setValue(id, idForm);
         // Submit the data
         document.onSubmit.submit();
     });
-}
-// Deactivate the patient
-function delPatient(DNI) {
-    confirmAction(DNI, 'DNI');
-}
-// Deactivate the functionary
-function delFunctionary(id) {
-    confirmAction(id, 'id');
-}
-// Reactivate the patient
-function actPatient(DNI) {
-    confirmAction(DNI, 'DNI');
-}
-// Reactivate the functionary
-function actFunctionary(id) {
-    confirmAction(id, 'id')
 }
 // Add attendace to the patient
 function addAttendance(DNI) {
     setValue(DNI, 'DNI_stage')
     document.onSubmitStage.submit();
+}
+// Buttons
+function changeStatus(id) {
+    confirmAction(id, 'id');
 }
 /********************************************************END*******************************************************************/

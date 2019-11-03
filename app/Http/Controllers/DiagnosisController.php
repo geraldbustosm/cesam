@@ -12,12 +12,22 @@ class DiagnosisController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveDiagnosis()
+    {
+        // Get diagnosis from database where 'activa' attribute is 0 bits
+        $data = Diagnosis::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.diagnosisInactive', ['data' => $data, 'table' => 'Diagnósticos']);
+    }
+    /***************************************************************************************************************************
                                                 SHOW CREATE FORM
      ****************************************************************************************************************************/
     public function showAddDiagnosis()
     {
         // Get diagnosis in alfabetic order
-        $data = Diagnosis::orderBy('descripcion')->get();
+        $data = Diagnosis::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of diagnosis (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.diagnosisForm', ['data' => $data, 'table' => 'Diagnósticos']);
     }
@@ -55,14 +65,18 @@ class DiagnosisController extends Controller
      ****************************************************************************************************************************/
     public function editDiagnostic(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/diagnostico/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the diagnostic that want to update
         $diagnostic = Diagnosis::find($request->id);
+        // URL to redirect when process finish.
+        if($diagnostic->activa == 1){
+            $url = "/registrar/diagnostico/";
+        }else{
+            $url = "/inactivo/diagnostico/";
+        }
         // If found it then update the data
         if ($diagnostic) {
             // Set the variable 'descripcion'
@@ -75,5 +89,31 @@ class DiagnosisController extends Controller
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción del diagnóstico');
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateDiagnosis(Request $request)
+    {
+        // Get the data
+        $data = Diagnosis::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/diagnostico')->with('status', 'Diagnóstico "' . $data->descripcion . '" re-activado');
+    }
+
+    public function deletingDiagnosis(Request $request)
+    {
+        // Get the data
+        $data = Diagnosis::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/diagnostico')->with('status', 'Diagnóstico "' . $data->descripcion . '" eliminado');
     }
 }

@@ -31,8 +31,8 @@
                     <input type="text" class="form-control {{ $errors->has('activity') ? ' is-invalid' : '' }}" value="{{ old('activity') }}" id="activity" name="activity" placeholder="Tipo de Actividad">
                     <br>
                     <div class="form-group form-check">
-                        <input type="checkbox" name="openCanasta" class="form-check-input" id ="openCanasta" value ="1">
-                        <label class="form-check-label" for= "openCanasta"> ¿actividad abre canasta?</label>
+                        <input type="checkbox" name="openCanasta" class="form-check-input" id="openCanasta" value="1">
+                        <label class="form-check-label" for="openCanasta"> ¿actividad abre canasta?</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -64,6 +64,33 @@
             </div>
         </div>
     </form>
+</div>
+<!-- Form to send id at controller -->
+<form name="onSubmit" method="post" action="{{ url('desactivar-actividad') }}">
+    @csrf
+    <div class="form-group">
+        <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
+    </div>
+</form>
+<!-- Modal to continue with action -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Desea eliminar la actividad?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Getting data -->
 <script>

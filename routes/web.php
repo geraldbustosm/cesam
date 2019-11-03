@@ -17,6 +17,9 @@
 /***************************************************************************************************************************
                                                     GENERAL
 ****************************************************************************************************************************/
+
+use App\Http\Controllers\ActivityController;
+
 Auth::routes();
 Route::get('/', 'GeneralController@index');
 /***************************************************************************************************************************
@@ -55,12 +58,54 @@ Route::post('pacientes', 'PatientController@deletingPatient');
 Route::get('pacientes/inactivos', 'PatientController@showInactivePatients');
 Route::post('pacientes/inactivos', 'PatientController@activatePatient');
 /***************************************************************************************************************************
+                                                    INACTIVES
+****************************************************************************************************************************/
+// Main
+Route::get('inactivo', 'ActivityController@showInactiveActivity');
+// Actividad
+Route::get('inactivo/actividad', 'ActivityController@showInactiveActivity');
+Route::post('activar-actividad', 'ActivityController@activateActivity');
+Route::post('desactivar-actividad', 'ActivityController@deletingActivity');
+// Atributo
+Route::get('inactivo/atributo', 'AttributesController@showInactiveAttribute');
+Route::post('activar-atributo', 'AttributesController@activateAttribute');
+Route::post('desactivar-atributo', 'AttributesController@deletingAttribute');
+// Alta
+Route::get('inactivo/alta', 'ReleaseController@showInactiveRelease');
+Route::post('activar-alta', 'ReleaseController@activateRelease');
+Route::post('desactivar-alta', 'ReleaseController@deletingRelease');
+// Diagnóstico
+Route::get('inactivo/diagnostico', 'DiagnosisController@showInactiveDiagnosis');
+Route::post('activar-diagnostico', 'DiagnosisController@activateDiagnosis');
+Route::post('desactivar-diagnostico', 'DiagnosisController@deletingDiagnosis');
+// Especialidad
+Route::get('inactivo/especialidad', 'SpecialityController@showInactiveSpeciality');
+Route::post('activar-especialidad', 'SpecialityController@activateSpeciality');
+Route::post('desactivar-especialidad', 'SpecialityController@deletingSpeciality');
+// Género
+Route::get('inactivo/genero', 'SexController@showInactiveSex');
+Route::post('activar-genero', 'SexController@activateSex');
+Route::post('desactivar-genero', 'SexController@deletingSex');
+// Previsión
+Route::get('inactivo/prevision', 'PrevitionController@showInactivePrevition');
+Route::post('activar-prevision', 'PrevitionController@activatePrevition');
+Route::post('desactivar-prevision', 'PrevitionController@deletingPrevition');
+// Procedencia
+Route::get('inactivo/procedencia', 'ProvenanceController@showInactiveProvenance');
+Route::post('activar-procedencia', 'ProvenanceController@activateProvenance');
+Route::post('desactivar-procedencia', 'ProvenanceController@deletingProvenance');
+// SiGGES
+Route::get('inactivo/sigges', 'SiGGESController@showInactiveSiGGES');
+Route::post('activar-sigges', 'SiGGESController@activateSiGGES');
+Route::post('desactivar-sigges', 'SiGGESController@deletingSiGGES');
+// Tipo de la prestación
+Route::get('inactivo/tipo', 'TypeController@showInactiveType');
+Route::post('activar-tipo', 'TypeController@activateType');
+Route::post('desactivar-tipo', 'TypeController@deletingType');
+/***************************************************************************************************************************
                                                     REGISTERS
 ****************************************************************************************************************************/
-// Usuario
-Route::get('registrar/usuario', 'UserController@showAddUser');
-Route::post('registrar/usuario','UserController@registerUser');
-// Registros simples
+// Main
 Route::get('registrar', 'ActivityController@showAddActivity');
 // Actividades
 Route::get('registrar/actividad', 'ActivityController@showAddActivity');
@@ -106,6 +151,9 @@ Route::post('registrar/sigges', 'SIGGESController@registerSIGGES');
 // Tipo
 Route::get('registrar/tipo', 'TypeController@showAddType');
 Route::post('registrar/tipo', 'TypeController@registerType');
+// Usuario
+Route::get('registrar/usuario', 'UserController@showAddUser');
+Route::post('registrar/usuario','UserController@registerUser');
 /***************************************************************************************************************************
                                                     EDITS 
 ****************************************************************************************************************************/

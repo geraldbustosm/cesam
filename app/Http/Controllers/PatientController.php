@@ -43,7 +43,7 @@ class PatientController extends Controller
         // Get the list of genders
         $sex = Sex::all();
         // Redirect to the view with list of: inactive patients, all previtions and all genders
-        return view('admin.Views.patientInactive', compact('patients', 'prev', 'sex', 'cantPatients'));
+        return view('admin.Inactive.patientInactive', compact('patients', 'prev', 'sex', 'cantPatients'));
     }
 
     /***************************************************************************************************************************
@@ -194,23 +194,23 @@ class PatientController extends Controller
     public function activatePatient(Request $request)
     {
         // Get the patient
-        $patient = Patient::where('DNI', $request->DNI)->get();
+        $patient = Patient::where('DNI', $request->id)->get();
         // Update active to 1 bits
         $patient[0]->activa = 1;
         // Send update to database
         $patient[0]->save();
         // Redirect to the view with successful status (showing the DNI)
-        return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $request->DNI . ' reingresado');
+        return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $request->id . ' reingresado');
     }
     public function deletingPatient(Request $request)
     {
         // Get the patient
-        $patient = Patient::where('DNI', $request->DNI)->get();
+        $patient = Patient::where('DNI', $request->id)->get();
         // Update active to 0 bits
         $patient[0]->activa = 0;
         // Send update to database
         $patient[0]->save();
         // Redirect to the view with successful status (showing the DNI)
-        return redirect('pacientes')->with('status', 'Paciente ' . $request->DNI . ' eliminado');
+        return redirect('pacientes')->with('status', 'Paciente ' . $request->id . ' eliminado');
     }
 }

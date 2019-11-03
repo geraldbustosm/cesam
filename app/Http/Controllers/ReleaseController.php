@@ -12,12 +12,22 @@ class ReleaseController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveRelease()
+    {
+        // Get Functionarys from database where 'activa' attribute is 0 bits
+        $data = Release::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.releaseInactive', ['data' => $data, 'table' => 'Altas']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddRelease()
     {
         // Get releases in alfabetic order
-        $data = Release::orderBy('descripcion')->get();
+        $data = Release::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of releases (standard name: data) and name of table in spanish (standard name: table) 
         return view('admin.Form.releaseForm', ['data' => $data, 'table' => 'Altas']);
     }
@@ -56,14 +66,18 @@ class ReleaseController extends Controller
      ****************************************************************************************************************************/
     public function editRelease(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/alta/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the release that want to update
         $release = Release::find($request->id);
+        // URL to redirect when process finish.
+        if($release->activa == 1){
+            $url = "/registrar/alta/";
+        }else{
+            $url = "/inactivo/alta/";
+        }
         // If found it then update the data
         if ($release) {
             // Set the variable 'descripcion'
@@ -80,4 +94,27 @@ class ReleaseController extends Controller
     /***************************************************************************************************************************
                                                     OTHER PROCESS
      ****************************************************************************************************************************/
+    public function activateRelease(Request $request)
+    {
+        // Get the data
+        $data = Release::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/alta')->with('status', 'Alta "' . $data->descripcion . '" re-activada');
+    }
+
+    public function deletingRelease(Request $request)
+    {
+        // Get the data
+        $data = Release::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/alta')->with('status', 'Alta "' . $data->descripcion . '" eliminada');
+    }
 }

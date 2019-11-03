@@ -12,12 +12,22 @@ class AttributesController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveAttribute()
+    {
+        // Get attributes from database where 'activa' attribute is 0 bits
+        $data = Attributes::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.attributesInactive', ['data' => $data, 'table' => 'Atributos']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddAttributes()
     {
         // Get attributes in alfabetic order
-        $data = Attributes::orderBy('descripcion')->get();
+        $data = Attributes::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of attriutes (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.attributesForm', ['data' => $data, 'table' => 'Atributos']);
     }
@@ -55,14 +65,18 @@ class AttributesController extends Controller
      ****************************************************************************************************************************/
     public function editAttribute(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/atributos/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the attribute that want to update
         $attribute = Attributes::find($request->id);
+        // URL to redirect when process finish.
+        if ($attribute->activa == 1) {
+            $url = "/registrar/atributos/";
+        } else {
+            $url = "/inactivo/atributo/";
+        }
         // If found it then update the data
         if ($attribute) {
             // Set the variable 'descripcion'
@@ -71,9 +85,35 @@ class AttributesController extends Controller
             // Pass the new info for update
             $attribute->save();
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción del atributo a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción del atributo a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción del atributo');
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateAttribute(Request $request)
+    {
+        // Get the data
+        $data = Attributes::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/atributo')->with('status', 'Atributo "' . $data->descripcion . '" re-activado');
+    }
+
+    public function deletingAttribute(Request $request)
+    {
+        // Get the data
+        $data = Attributes::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/atributos')->with('status', 'Atributo "' . $data->descripcion . '" eliminado');
     }
 }

@@ -119,17 +119,14 @@ function getUID(data) {
 function getBtns(data) {
     try {
         var active = data.activa;
-        var tmp = "";
+        var tmp = ` <td>
+                    <a href='/funcionario/edit/${getUID(data)}'><i title='Editar' class='material-icons'>create</i></a>`;
         if (active == 1) {
-            tmp = ` <td>
-                    <a href='/funcionario/edit/${getUID(data)}'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:delFunctionary(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
+            tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`;
             return tmp;
         } else {
-            tmp = ` <td>
-                    <a href='/funcionario/edit/${getUID(data)}'><i title='Editar' class='material-icons'>create</i></a>
-                    <a href='javascript:actFunctionary(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
+            tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`;
             return tmp;
         }

@@ -12,12 +12,22 @@ class ProvenanceController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveProvenance()
+    {
+        // Get prevenances from database where 'activa' attribute is 0 bits
+        $data = Provenance::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.provenanceInactive', ['data' => $data, 'table' => 'Procedencias']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddProvenance()
     {
         // Get prevenances in alfabetic order
-        $data = Provenance::orderBy('descripcion')->get();
+        $data = Provenance::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of prevenances (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.provenanceForm', ['data' => $data, 'table' => 'Procedencias']);
     }
@@ -55,14 +65,18 @@ class ProvenanceController extends Controller
      ****************************************************************************************************************************/
     public function editProvenance(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/procedencia/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the provenance that want to update
         $provenance = Provenance::find($request->id);
+        // URL to redirect when process finish.
+        if($provenance->activa == 1){
+            $url = "/registrar/procedencia/";
+        }else{
+            $url = "/inactivo/procedencia/";
+        }
         // If found it then update the data
         if ($provenance) {
             // Set the variable 'descripcion'
@@ -75,5 +89,31 @@ class ProvenanceController extends Controller
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción de la procedencia');
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateProvenance(Request $request)
+    {
+        // Get the data
+        $data = Provenance::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/procedencia')->with('status', 'Procedencia "' . $data->descripcion . '" re-activada');
+    }
+
+    public function deletingProvenance(Request $request)
+    {
+        // Get the data
+        $data = Provenance::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/procedencia')->with('status', 'Procedencia "' . $data->descripcion . '" eliminada');
     }
 }

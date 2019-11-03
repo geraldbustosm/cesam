@@ -12,12 +12,22 @@ class SIGGESController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
+                                                    INACTIVES
+     ****************************************************************************************************************************/
+    public function showInactiveSiGGES()
+    {
+        // Get sigges from database where 'activa' attribute is 0 bits
+        $data = SiGGES::where('activa', 0)->orderBy('descripcion')->get();
+        // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
+        return view('admin.Inactive.siggesInactive', ['data' => $data, 'table' => 'SiGGES']);
+    }
+    /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
     public function showAddSIGGES()
     {
         // Get sigges in alfabetic order
-        $data = SiGGES::orderBy('descripcion')->get();
+        $data = SiGGES::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of sigges (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.siggesForm', ['data' => $data, 'table' => 'SiGGES']);
     }
@@ -55,14 +65,18 @@ class SIGGESController extends Controller
      ****************************************************************************************************************************/
     public function editSiGGES(Request $request)
     {
-        // URL to redirect when process finish.
-        $url = "/registrar/sigges/";
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
         // Get the gender that want to update
         $sigges = SiGGES::find($request->id);
+        // URL to redirect when process finish.
+        if($sigges->activa == 1){
+            $url = "/registrar/sigges/";
+        }else{
+            $url = "/inactivo/sigges/";
+        }
         // If found it then update the data
         if ($sigges) {
             // Set the variable 'descripcion'
@@ -75,5 +89,31 @@ class SIGGESController extends Controller
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción del tipo GES');
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateSiGGES(Request $request)
+    {
+        // Get the data
+        $data = SiGGES::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/sigges')->with('status', 'SiGGES "' . $data->descripcion . '" re-activado');
+    }
+
+    public function deletingSiGGES(Request $request)
+    {
+        // Get the data
+        $data = SiGGES::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/sigges')->with('status', 'SiGGES "' . $data->descripcion . '" eliminado');
     }
 }

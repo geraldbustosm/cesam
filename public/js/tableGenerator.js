@@ -46,18 +46,30 @@ function createRow(num, data) {
             celdas[0].innerHTML = num + 1;
             celdas[1].innerHTML = descripcion;
             celdas[2].innerHTML = canasta;
-            celdas[3].innerHTML = `
-            <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-            <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+            if (data.activa == 1) {
+                celdas[3].innerHTML = `
+                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
+                <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+            } else {
+                celdas[3].innerHTML = `
+                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
+                <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
+            }
         } else {
             // If have 'descripcion' is a 'simple data'
             var descripcion = data.descripcion;
             // Adding cells content
             celdas[0].innerHTML = num + 1;
             celdas[1].innerHTML = descripcion;
-            celdas[2].innerHTML = `
-            <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-            <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+            if (data.activa == 1) {
+                celdas[2].innerHTML = `
+                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
+                <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+            } else {
+                celdas[2].innerHTML = `
+                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
+                <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
+            }
         }
     } else {
         // else is a provision
@@ -66,9 +78,15 @@ function createRow(num, data) {
         celdas[0].innerHTML = num + 1;
         celdas[1].innerHTML = glosa;
         celdas[2].innerHTML = data.codigo;
-        celdas[3].innerHTML = `
-        <a href='#'><i title='Editar' class='material-icons'>create</i></a>
-        <a href='#'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+        if (data.activa == 1) {
+            celdas[3].innerHTML = `
+            <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+            <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+        } else {
+            celdas[3].innerHTML = `
+            <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+            <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
+        }
     }
 }
 /***************************************************************************************************************************

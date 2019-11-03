@@ -1,7 +1,7 @@
-@extends('admin.Views.registerMain')
+@extends('admin.Views.inactiveMain')
 @section('title','Registrar SIGGES')
 @section('active-ingresardatos','active')
-@section('active-registrar','active')
+@section('active-inactivos','active')
 
 @section('sub-content')
 <h1>Registrar SIGGES</h1>
@@ -23,45 +23,34 @@
         {{ session('err') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/sigges') }}">
-        @csrf
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('sigges') ? ' is-invalid' : '' }}" value="{{ old('sigges') }}" id="sigges" name="sigges" placeholder="Tipo de SiGGES">
-                    <br>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </div>
-                <div class="col">
-                    <div>
-                        <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
-                    </div><br>
-                    <div class="">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">SiGGES</th>
-                                    <th style="width: 10%;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body">
-                                <!-- Fill on js -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="div-full">
-                        <ul class="pagination justify-content-center" id="paginate">
-                            <!-- Generate in patientFilter.js->generatePaginationNum(); -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
+    <div class="col">
+        <div>
+            <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
+        </div><br>
+        <div class="">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 3%;">#</th>
+                        <th style="width: 70%;">SiGGES</th>
+                        <th style="width: 10%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Fill on js -->
+                </tbody>
+            </table>
         </div>
-    </form>
+        <div class="div-full">
+            <ul class="pagination justify-content-center" id="paginate">
+                <!-- Generate in patientFilter.js->generatePaginationNum(); -->
+            </ul>
+        </div>
+    </div>
 </div>
 <!-- Form to send id at controller -->
-<form name="onSubmit" method="post" action="{{ url('desactivar-sigges') }}">
+<form name="onSubmit" method="post" action="{{ url('activar-sigges') }}">
     @csrf
     <div class="form-group">
         <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
@@ -78,7 +67,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Desea eliminar el SiGGES?
+                ¿Desea reactivar el SiGGES?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
