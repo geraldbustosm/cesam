@@ -73,7 +73,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         // Pass the user to database
         $user->save();
-        if ($request->rol = 2) {
+        if ($request->rol == 2) {
             // Get the last user added
             $id = DB::getPDO()->lastInsertId();
             $user = User::where('id', $id)->get();
