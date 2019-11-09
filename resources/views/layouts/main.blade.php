@@ -80,6 +80,7 @@
                         </li>
                     </nav>
 
+                    @if($auth->rol == 1)
                     <nav id="sidebar">
                         <li class="nav-item">
                             <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">group_add</i><span>Agregar personas</span></a>
@@ -96,6 +97,7 @@
                             </ul>
                         </li>
                     </nav>
+                    @endif
 
                     <nav id="sidebar">
                         <li class="nav-item">
