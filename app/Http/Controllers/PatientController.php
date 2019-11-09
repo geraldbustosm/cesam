@@ -73,15 +73,19 @@ class PatientController extends Controller
         $sex = Sex::all();
         // Create variable for date
         $patient_birthdate = "";
-        // If patient exist, then change formate date to retrieve to the datepicker
+        // Create variable for patient's address
+        $address = "";
+        // If patient exist, then change formate date to retrieve to the datepicker and retrieve his address
         if ($patient) {
             // Separate birthdate (dd-mm-yyyy) into array
             $patient_birthdate = explode("-", $patient->fecha_nacimiento);
             // Set date array as new date format (yyyy/mm/dd)
             $patient_birthdate = join("/", array($patient_birthdate[2], $patient_birthdate[1], $patient_birthdate[0]));
+            // Get patient's address
+            $address = Address::where('idPaciente', $patient->id)->first();
         }
         // Redirect to the view with list of prevition and gender, also return the patient and birthdate
-        return view('admin.Edit.patientEdit', compact('patient', 'patient_birthdate', 'prev', 'sex'));
+        return view('admin.Edit.patientEdit', compact('patient','address', 'patient_birthdate', 'prev', 'sex'));
     }
 
     /***************************************************************************************************************************
@@ -92,7 +96,7 @@ class PatientController extends Controller
     {
         // Check the format of each variable of 'request'
         $validation = $request->validate([
-            'rut' => 'required|string|unique:paciente,DNI',
+            'dni' => 'required|string|unique:paciente,DNI',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'second_last_name' => 'nullable|string|max:255',
@@ -107,9 +111,7 @@ class PatientController extends Controller
             'numero' => 'required|int',
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
-        // Separate the name string into array
-        $nombre = explode(" ", $request->name);
-        
+
         // Create patient
         $patient = new Patient;
         // Set some variables with inputs of view
@@ -126,7 +128,7 @@ class PatientController extends Controller
         }
         $patient->apellido1 = $request->last_name;
         $patient->apellido2 = $request->second_last_name;
-        $patient->DNI = $request->rut;
+        $patient->DNI = $request->dni;
         $patient->prevision_id = $request->prevition;
         $patient->sexo_id = $request->patient_sex;
         // Change datepicker format to database format
@@ -138,13 +140,14 @@ class PatientController extends Controller
 
         // Create address
         $address = new Address;
+        $address->pais = $request->pais;
         $address->region = $request->region;
         $address->comuna = $request->comuna;
         $address->calle  = $request->calle;
         $address->numero = $request->numero;
-        if($request->depto) $address->departamento = $request->depto;
+        $address->departamento = $request->depto;
         
-        $patient_id= Patient::where('DNI', $request->rut)->first()->id;
+        $patient_id= Patient::where('DNI', $request->dni)->first()->id;
         $address->idPaciente = $patient_id;
         $address->save();
         // Redirect to the view with successful status
@@ -162,13 +165,18 @@ class PatientController extends Controller
         // Validate the request variables
         $validation = $request->validate([
             'dni' => 'required|string|max:255',
-            'nombres' => 'required|string|max:255',
-            'apellido1' => 'required|string|max:255',
-            'apellido2' => 'required|string|max:255',
-            /*'pais' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'second_last_name' => 'nullable|string|max:255',
+            'pais' => 'required|string|max:255',
             'region' => 'required|string|max:255',
+            'comuna' => 'required|string|max:255',
+            'calle' => 'required|string|max:255',
             'numero' => 'required|int',
-            'direccion' => 'string|max:255|nullable',*/
+            'depto' => 'nullable|string|max:255',
+            'patient_sex' => 'required',
+            'prevition' => 'required|int',
+            'numero' => 'required|int',
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
         // Get the patient that want to update
@@ -177,14 +185,20 @@ class PatientController extends Controller
         if ($patient) {
             // Set some variables with inputs of view
             // patient -> DNI, nombre1, nombre2, apellido1, apellido2, sexo_id, prevision_id
-            $nombre = explode(" ", $request->nombres);
-            $patient->nombre1 = $nombre[0];
-            $patient->nombre2 = $nombre[1];
-            $patient->apellido1 = $request->apellido1;
-            $patient->apellido2 = $request->apellido2;
+            $posSpace = strpos($request->name, ' ');
+
+            if (!$posSpace) {
+                $patient->nombre1 = $request->name;
+                $patient->nombre2 = "";
+            } else {
+                $patient->nombre1 = substr($request->name, 0, $posSpace);
+                $patient->nombre2 = substr($request->name, $posSpace + 1);
+            }
+            $patient->apellido1 = $request->last_name;
+            $patient->apellido2 = $request->second_last_name;
             $patient->DNI = $request->dni;
-            $patient->prevision_id = $request->prev;
-            $patient->sexo_id = $request->sex;
+            $patient->prevision_id = $request->prevition;
+            $patient->sexo_id = $request->patient_sex;
             // Change datepicker format to database format
             $var = $request->get('datepicker');
             $date = str_replace('/', '-', $var);
@@ -192,6 +206,16 @@ class PatientController extends Controller
             $patient->fecha_nacimiento = $correctDate;
             // Pass the new info for update
             $patient->save();
+
+            // Edit address
+            $address = Address::where('idPaciente', $patient->id)->first();
+            $address->pais = $request->pais;
+            $address->region = $request->region;
+            $address->comuna = $request->comuna;
+            $address->calle  = $request->calle;
+            $address->numero = $request->numero;
+            $address->departamento = $request->depto;
+            $address->save();
         }
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');

@@ -47,20 +47,20 @@
 			<label for="nombre">Nombre completo</label>
 			<div class="form-row">
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}}" id="nombre" name="nombres" placeholder="Nombres">
+					<input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}}" id="name" name="name" placeholder="Nombres">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('apellido1') ? ' is-invalid' : '' }}" value="{{$patient->apellido1}}" id="apellido1" name="apellido1" placeholder="Primer apellido">
+					<input type="text" class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido1}}" id="last_name" name="last_name" placeholder="Primer apellido">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('apellido2') ? ' is-invalid' : '' }}" value="{{$patient->apellido2}}" id="apellido2" name="apellido2" placeholder="Segundo Apellido">
+					<input type="text" class="form-control {{ $errors->has('second_last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido2}}" id="second_last_name" name="second_last_name" placeholder="Segundo Apellido">
 				</div>
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="prevision">Previsión</label>
-			<select class="form-control" name="prev" required>
+			<select class="form-control" name="prevition" required>
 				<option value="{{$patient->prevition->id}}">{{$patient->prevition->descripcion}}</option>
 				@foreach($prev as $prevision)
 				@if ($prevision->descripcion != $patient->prevition->descripcion)
@@ -72,7 +72,7 @@
 
 		<div class="form-group">
 			<label for="sex">Sexo</label>
-			<select class="form-control" name="sex" required>
+			<select class="form-control" name="patient_sex" required>
 				<option value="{{$patient->sex->id}}">{{$patient->sex->descripcion}}</option>
 				@foreach($sex as $sexo)
 				@if ($sexo->descripcion != $patient->sex->descripcion)
@@ -99,23 +99,26 @@
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
-					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
+					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{$address->pais}}" id="pais" name="pais" placeholder="País">
 				</div>
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" value="{{ old('region') }}" id="region" name="region" placeholder="Region">
+					<input type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" value="{{$address->region}}" id="region" name="region" placeholder="Region">
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="form-row">
-				<div class="col-4">
-					<input type="text" class="form-control {{ $errors->has('comuna') ? ' is-invalid' : '' }}" value="{{ old('comuna') }}" id="comuna" name="comuna" placeholder="Comuna">
+				<div class="col-3">
+					<input type="text" class="form-control {{ $errors->has('comuna') ? ' is-invalid' : '' }}" value="{{$address->comuna}}" id="comuna" name="comuna" placeholder="Comuna">
 				</div>
-				<div class="col-4">
-					<input type="text" class="form-control {{ $errors->has('calle') ? ' is-invalid' : '' }}" value="{{ old('calle') }}" id="calle" name="calle" placeholder="Calle">
+				<div class="col-3">
+					<input type="text" class="form-control {{ $errors->has('calle') ? ' is-invalid' : '' }}" value="{{$address->calle}}" id="calle" name="calle" placeholder="Calle">
 				</div>
-				<div class="col-4">
-					<input type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{ old('numero') }}" id="numero" name="numero" placeholder="Numero">
+				<div class="col-3">
+					<input type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{$address->numero}}" id="numero" name="numero" placeholder="Nmero">
+				</div>
+				<div class="col-3">
+					<input type="text" class="form-control {{ $errors->has('depto') ? ' is-invalid' : '' }}" value="{{$address->departamento}}" id="depto" name="depto" placeholder="Departamento (opcional)">
 				</div>
 			</div>
 		</div>
