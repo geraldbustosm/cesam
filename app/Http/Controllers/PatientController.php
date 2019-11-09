@@ -112,10 +112,14 @@ class PatientController extends Controller
         // Set some variables with inputs of view
         // the variables name of object must be the same that database for save it
         // patient -> DNI, nombre1, nombre2, apellido1, apellido2, sexo_id, fecha_nacimiento, prevision_id
-        $patient->nombre1 = $nombre[0];
-        $patient->nombre2 = " ";
-        if(count($nombre)==2){
-            $patient->nombre2 = $nombre[1];
+        $posSpace = strpos($request->name, ' ');
+
+        if (!$posSpace) {
+            $patient->nombre1 = $request->name;
+            $patient->nombre2 = "";
+        } else {
+            $patient->nombre1 = substr($request->name, 0, $posSpace);
+            $patient->nombre2 = substr($request->name, $posSpace + 1);
         }
         $patient->apellido1 = $request->last_name;
         $patient->apellido2 = $request->second_last_name;

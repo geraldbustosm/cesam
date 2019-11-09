@@ -54,16 +54,7 @@ class UserController extends Controller
         ]);
         // Create a new 'object' user
         $user = new User;
-        // // Separate the name string into array
-        // $nombre = explode(" ", $request->name);
-        // // Set some variables with inputs of view
-        // // the variables name of object must be the same that database for save it
-        // // nombre, primer_nombre, segundo_nombre, apellido_paterno, apellido_materno, rut, email, rol, password
-        // $user->primer_nombre = $nombre[0];
-        // $user->segundo_nombre = " ";
-        // if(count($nombre)==2){
-        //     $user->segundo_nombre = $nombre[1];
-        // }// Separating once the nombres by space character
+        // Separating once the nombres by space character
         $posSpace = strpos($request->name, ' ');
 
         if (!$posSpace) {
