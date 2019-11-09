@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Patient;
 use App\Prevition;
+use App\Address;
 use App\Sex;
 
 class PatientController extends Controller
@@ -100,6 +101,7 @@ class PatientController extends Controller
             'comuna' => 'required|string|max:255',
             'calle' => 'required|string|max:255',
             'numero' => 'required|int',
+            'depto' => 'nullable|string|max:255',
             'patient_sex' => 'required',
             'prevition' => 'required|int',
             'numero' => 'required|int',
@@ -107,7 +109,8 @@ class PatientController extends Controller
         ]);
         // Separate the name string into array
         $nombre = explode(" ", $request->name);
-        // Create the new 'oject' patient
+        
+        // Create patient
         $patient = new Patient;
         // Set some variables with inputs of view
         // the variables name of object must be the same that database for save it
@@ -131,18 +134,19 @@ class PatientController extends Controller
         $date = str_replace('/', '-', $var);
         $correctDate = date('Y-m-d', strtotime($date));
         $patient->fecha_nacimiento = $correctDate;
-        // Create the new 'oject' patient
-        // address -> region, comuna, calle, numero
-        // $address = new Address;
-        // $address->region = $request->region;
-        // $address->comuna = $request->comuna;
-        // $address->calle  = $request->calle;
-        // $address->numero = $request->numero;
-        // Pass both to database
         $patient->save();
-        // $address->save();
-        // Use the sync method to construct many-to-many associations
-        // $patient->address()->sync($address);
+
+        // Create address
+        $address = new Address;
+        $address->region = $request->region;
+        $address->comuna = $request->comuna;
+        $address->calle  = $request->calle;
+        $address->numero = $request->numero;
+        if($request->depto) $address->departamento = $request->depto;
+        
+        $patient_id= Patient::where('DNI', $request->rut)->first()->id;
+        $address->idPaciente = $patient_id;
+        $address->save();
         // Redirect to the view with successful status
         return redirect('registrar/paciente')->with('status', 'Usuario creado');
     }

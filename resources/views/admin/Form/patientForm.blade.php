@@ -63,14 +63,17 @@
 		</div>
 		<div class="form-group">
 			<div class="form-row">
-				<div class="col-4">
+				<div class="col-3">
 					<input type="text" class="form-control {{ $errors->has('comuna') ? ' is-invalid' : '' }}" value="{{ old('comuna') }}" id="comuna" name="comuna" placeholder="Comuna">
 				</div>
-				<div class="col-4">
+				<div class="col-3">
 					<input type="text" class="form-control {{ $errors->has('calle') ? ' is-invalid' : '' }}" value="{{ old('calle') }}" id="calle" name="calle" placeholder="Calle">
 				</div>
-				<div class="col-4">
+				<div class="col-3">
 					<input type="text" class="form-control {{ $errors->has('numero') ? ' is-invalid' : '' }}" value="{{ old('numero') }}" id="numero" name="numero" placeholder="Numero">
+				</div>
+				<div class="col-3">
+					<input type="text" class="form-control {{ $errors->has('depto') ? ' is-invalid' : '' }}" value="{{ old('depto') }}" id="depto" name="depto" placeholder="Departamento (opcional)">
 				</div>
 			</div>
 		</div>

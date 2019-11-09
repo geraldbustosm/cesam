@@ -30,11 +30,6 @@ class Patient extends Model
     return $this->hasMany('App\Stage');
   }
 
-  public function address()
-  {
-      return $this->belongsToMany(Address::class, 'paciente_posee_direccion', 'paciente_id', 'direccion_id');
-  }
-
   public function prevition(){
     return $this->belongsTo('App\Prevition', 'prevision_id');
   }
