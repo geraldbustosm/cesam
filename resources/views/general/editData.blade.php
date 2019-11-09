@@ -60,7 +60,7 @@
 			<label for="email">Email</label>
 			<div class="form-row">
 				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{$auth->email}}" id="email" name="email" placeholder="Nombre de usuario">
+					<input type="text" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{$auth->email}}" id="email" name="email" placeholder="Correo electrónico">
 				</div>
 			</div>
 		</div>
