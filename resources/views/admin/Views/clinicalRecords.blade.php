@@ -23,21 +23,27 @@
         saepe optio impedit rem dolor nisi quisquam a beatae quasi!
         Sed dignissimos harum iste delectus ducimus eum sint.
         Mollitia labore harum libero, blanditiis dolores ipsa ipsam quia sapiente?<p>
-
-            @foreach($patientAtendances as $value)
-                <div class="card">
-                    <div class="card-header">
-                        <div>Prestación: </div>
-                        <div>
-                            <a class="" href="{{url('#')}}"><i class="material-icons">create</i><span></span></a>
-                            <a class="" href="{{url('#')}}"><i class="material-icons">delete</i><span></span></a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">Profesional: {{ $value->functionary->user->primer_nombre }}, {{ $value->functionary->profesion}}</h6>
-                        <h6 class="card-subtitle mb-4 text-muted">{{ $value->fecha}}</h6>
-                        <h6 class="card-subtitle text-muted">{{ $value->provision->glosaTrasadora}}</p>
-                    </div>
+    
+    @php
+        $stageCount = $stage->attendance->count();
+    @endphp
+    @foreach($patientAtendances as $value)
+        <div class="card">
+            <div class="card-header">
+                <div>Prestación # {{$stageCount}} </div>
+                <div>
+                    <a class="" href="{{url('#')}}"><i class="material-icons">create</i><span></span></a>
+                    <a class="" href="{{url('#')}}"><i class="material-icons">delete</i><span></span></a>
                 </div>
-            @endforeach
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Profesional: {{ $value->functionary->user->primer_nombre }}, {{ $value->functionary->profesion}}</h6>
+                <h6 class="card-subtitle mb-4 text-muted">{{ $value->fecha}}</h6>
+                <h6 class="card-subtitle text-muted">{{ $value->provision->glosaTrasadora}}</p>
+            </div>
+        </div>
+        @php
+            $stageCount = $stageCount - 1;
+        @endphp
+    @endforeach
 @endsection
