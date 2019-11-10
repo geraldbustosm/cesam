@@ -30,7 +30,7 @@
     @foreach($patientAtendances as $value)
         <div class="card">
             <div class="card-header">
-                <div>Prestación # {{$stageCount}} </div>
+                <div>Prestación #{{$stageCount}} </div>
                 <div>
                     <a class="" href="{{url('#')}}"><i class="material-icons">create</i><span></span></a>
                     <a class="" href="{{url('#')}}"><i class="material-icons">delete</i><span></span></a>
