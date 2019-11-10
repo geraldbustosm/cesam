@@ -14,11 +14,16 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $roles)
     {
-        if(Auth::user()->rol > $role){
-            return redirect('/');
+        $permitted_roles = explode('|', $roles);
+
+        for($i = 0; $i<count($permitted_roles); $i++){
+            if(Auth::user()->rol == $permitted_roles[$i]){
+                return $next($request);
+            }
         }
-        return $next($request);
+        
+        return redirect('/');
     }
 }

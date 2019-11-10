@@ -52,7 +52,7 @@ Route::post('funcionarios', 'FunctionaryController@deletingFunctionary');
 Route::get('funcionarios/inactivos', 'FunctionaryController@showInactiveFunctionarys');
 Route::post('funcionarios/inactivos', 'FunctionaryController@activateFunctionary');
 // Pacientes
-Route::get('pacientes', 'PatientController@showPatients')->middleware('checkrole:3');
+Route::get('pacientes', 'PatientController@showPatients')->middleware('checkrole:1|2|3');
 Route::post('pacientes', 'PatientController@deletingPatient');
 // Pacientes desactivados
 Route::get('pacientes/inactivos', 'PatientController@showInactivePatients');
