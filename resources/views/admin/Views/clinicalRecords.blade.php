@@ -24,7 +24,7 @@
         Sed dignissimos harum iste delectus ducimus eum sint.
         Mollitia labore harum libero, blanditiis dolores ipsa ipsam quia sapiente?<p>
 
-            <?php foreach ($patientAtendances as $value) : ?>
+            @foreach($patientAtendances as $value)
                 <div class="card">
                     <div class="card-header">
                         <div>Prestación: </div>
@@ -34,11 +34,10 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">Profesional:{{ $value->functionary->user->primer_nombre }},( {{ $value->functionary->profesion}} )</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Profesional: {{ $value->functionary->user->primer_nombre }}, {{ $value->functionary->profesion}}</h6>
                         <h6 class="card-subtitle mb-4 text-muted">{{ $value->fecha}}</h6>
                         <h6 class="card-subtitle text-muted">{{ $value->provision->glosaTrasadora}}</p>
-</div>
-<?php endforeach; ?>
-
-</div>
+                    </div>
+                </div>
+            @endforeach
 @endsection

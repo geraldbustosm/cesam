@@ -96,7 +96,7 @@
             </div>
             <div class="column">
                 <div class="form-group">
-                    <label for="selectA">Asistenscia: </label>
+                    <label for="selectA">Asistencia: </label>
                     <select name="selectA">
                         <option value="1" selected>Si </option>
                         <option value="0">No</option>
