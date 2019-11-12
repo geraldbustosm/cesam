@@ -76,7 +76,7 @@ class GeneralController extends Controller
             // Get array of attendance from the active stage
             $patientAtendances = $stage->attendance;
             // Identify active stage
-            $activeStage = $stage->id;
+            $activeStage = $stage;
             // Redirect to the view with successful status
             return view('General.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
         }
