@@ -67,20 +67,40 @@ class GeneralController extends Controller
         $patient_id = $patient->id;
         // Get the stage
         $stage = Stage::where('paciente_id', $patient_id)
-            ->where('activa', 1)
-            ->first();
+                    ->where('activa', 1)
+                    ->first();
         // If have no active stage
         if (empty($stage)) {
             return redirect(url()->previous())->with('error', 'Debe agregar una nueva etapa');
         } else {
             // Get array of attendance from the active stage
             $patientAtendances = $stage->attendance;
+            // Identify active stage
+            $activeStage = $stage->id;
             // Redirect to the view with successful status
-            return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+            return view('General.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
         }
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
      ****************************************************************************************************************************/
-    
+    public function stagesPerPatient(Request $request){
+        $id = $request->id;
+        // $stages = Stage::where('paciente_id', $id)->where('activa', 0)->select('id');
+        $stages = Stage::all();
+        return response()->json($stages);  
+    }
+
+    public function selectStage(Request $request){
+        $patient_id = $request->id;
+        $patient = Patient::find($patient_id);
+        $stage_id = $request->stages;
+        $stage = Stage::find($stage_id);
+        $patientAtendances = $stage->attendance;
+        $activeStage = Stage::where('paciente_id', $patient_id)
+                            ->where('activa', 1)
+                            ->select('id')
+                            ->first();
+        return view('General.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
+    }
 }

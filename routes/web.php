@@ -209,4 +209,6 @@ Route::get('charts','GraphsController@chart');
 Route::get('charts2','GraphsController@chart2');
 Route::get('charts3','GraphsController@chart3');
 Route::get('testing', 'AdminController@showTesting');
-Route::get('foo', 'AdminController@foo');
+
+Route::get('etapas', 'GeneralController@stagesPerPatient');
+Route::post('etapa', 'GeneralController@selectStage');
