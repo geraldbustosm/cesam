@@ -111,7 +111,7 @@
                     <select id="functionary" name="functionary" class="form-control" style="width:350px">
                         <option value="" selected disabled>Seleccione un Funcionario</option>
                         @foreach($users as $key => $user)
-                        <option value="{{$user->id}}"> {{$user->user->primer_nombre." ".$user->user->segundo_nombre.", ".$user->profesion}}</option>
+                        <option value="{{$user->id}}"> {{$user->profesion}}</option>
                         @endforeach
                     </select>
                 </div>

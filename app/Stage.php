@@ -27,9 +27,12 @@ class Stage extends Model
   }
   public function attendance()
   {
-      return $this->hasMany(Attendance::class,'etapa_id');
+      return $this->hasMany('App\Attendance','etapa_id')->orderBy("fecha", "desc");
   }
-  
+  public function lastAttendance()
+  {
+    return $this->attendance()->orderBy("fecha", "desc")->take(1);
+  }
   protected $fillable = 
     [
       'id','diagnostico_id','programa_id','alta_id','sigges_id','procedencia_id','funcionario_id','paciente_id','activa'

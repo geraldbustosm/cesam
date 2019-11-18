@@ -210,3 +210,6 @@ Route::get('testing', 'AdminController@showTesting');
 
 Route::get('etapas', 'GeneralController@stagesPerPatient');
 Route::post('etapa', 'GeneralController@selectStage');
+
+Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance');
+Route::post('ultima-atenciontapa', 'GeneralController@selectStage');
