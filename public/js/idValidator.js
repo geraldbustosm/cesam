@@ -1,7 +1,6 @@
 /***************************************************************************************************************************
                                                     VARIABLES
 ****************************************************************************************************************************/
-var alertSuccess = document.getElementById("success");
 var alertDanger = document.getElementById("danger");
 /***************************************************************************************************************************
                                                     MAIN FUNCTION
@@ -10,9 +9,8 @@ var alertDanger = document.getElementById("danger");
 function validator() {
     // Setting alerts display = none
     alertDanger.style.display = "none";
-    alertSuccess.style.display = "none";
     // Getting button for submit, country and Rut / Passport
-    var id = document.getElementById('id');
+    var id = document.getElementById('dni');
     var pais = document.getElementById('pais');
     var btn = document.getElementById('btnSubmit');
     // Listener for submit
@@ -29,11 +27,10 @@ function validator() {
 // Check origin country
 function checkCountry(id, country) {
     if (country.value.toLowerCase().includes('chile')) {
+        console.log(id);
         // For Chilean check rut
         CheckRUT(id);
     } else {
-        var alertSuccess = document.getElementById("success");
-        alertSuccess.style.display = "block";
         return true;
     }
 }
@@ -41,7 +38,6 @@ function checkCountry(id, country) {
 function CheckRUT(object) {
     // Reset status of alerts
     alertDanger.style.display = "none";
-    alertSuccess.style.display = "none";
 
     var tmpstr = "";
     var intlen = object.value
@@ -101,7 +97,6 @@ function CheckRUT(object) {
             object.focus()
             return false;
         }
-        alertSuccess.style.display = "block";
         object.focus()
         console.log(tmpstr);
         return true;

@@ -25,13 +25,10 @@
 		@csrf
 		<!-- UID -->
 		<div class="form-group">
-			<input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="Rut o pasaporte">
+			<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{ old('dni') }}" id="dni" name="dni" placeholder="Rut o pasaporte">
 		</div>
 		<!-- Check UID for Chilean -->
 		<div class="form-group">
-			<div class="alert alert-success" role="alert" id="success">
-				Rut / Pasaporte correcto!
-			</div>
 			<div class="alert alert-danger" role="alert" id="danger">
 				Rut inválido...
 			</div>
