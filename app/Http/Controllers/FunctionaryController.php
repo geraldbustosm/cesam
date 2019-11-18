@@ -53,7 +53,11 @@ class FunctionaryController extends Controller
     public function showAddFunctionary()
     {
         // Get active users
-        $user = User::where('activa', 1)->get();
+        // $user = User::where('activa', 1)->get();
+        $functionarys = Functionary::select('user_id')->get();
+        $user = DB::table('users')
+                ->whereNotIn('id', $functionarys)
+                ->get();
         // Redirect to the view with list of users
         return view('admin.Form.functionaryForm', compact('user'));
     }
