@@ -147,7 +147,8 @@ function filter(searchText) {
     var pos = 0;
     for (var i = 0; i < fullArray.length; i++) {
         // Compare id with searchText
-        if (fullArray[i].DNI.toString().includes(searchText)) {
+        if (fullArray[i].DNI.toString().includes(searchText) || fullArray[i].nombre1.toLowerCase().includes(searchText) ||
+            fullArray[i].apellido1.toLowerCase().includes(searchText) || fullArray[i].apellido2.toLowerCase().includes(searchText)) {
             // If it matches then add the patient in new array, and change the possition
             newPatients[pos] = fullArray[i];
             pos++;
