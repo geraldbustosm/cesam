@@ -208,5 +208,8 @@ Route::get('charts2','GraphsController@chart2');
 Route::get('charts3','GraphsController@chart3');
 Route::get('testing', 'AdminController@showTesting');
 
+Route::get('alta/{DNI}', 'GeneralController@showAddRelease');
+Route::post('alta', 'GeneralController@addRelease');
+
 Route::get('etapas', 'GeneralController@stagesPerPatient');
 Route::post('etapa', 'GeneralController@selectStage');

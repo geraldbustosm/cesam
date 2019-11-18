@@ -12,6 +12,7 @@ use App\Sex;
 use App\Speciality;
 use App\Stage;
 use App\User;
+use App\Release;
 
 class GeneralController extends Controller
 {
@@ -86,8 +87,8 @@ class GeneralController extends Controller
      ****************************************************************************************************************************/
     public function stagesPerPatient(Request $request){
         $id = $request->id;
-        // $stages = Stage::where('paciente_id', $id)->where('activa', 0)->select('id');
-        $stages = Stage::all();
+        $stages = Stage::where('paciente_id', $id)->where('activa', 0)->get();
+        // $stages = Stage::all();
         return response()->json($stages);  
     }
 
@@ -102,5 +103,30 @@ class GeneralController extends Controller
                             ->select('id')
                             ->first();
         return view('General.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
+    }
+
+    public function showAddRelease($DNI){
+        $DNI = $DNI;
+        $release = Release::where('activa', 1)->orderBy('descripcion')->get();
+        return view('general.clinicalRelease', compact('DNI', 'release'));
+    }
+
+    public function addRelease(Request $request){
+        // Check the format of each variable of 'request'
+        $validacion = $request->validate([
+            'DNI' => 'required|string|max:255',
+            'releases' => 'required|integer|max:255'
+        ]);
+        $DNI = $request->DNI;
+        $patient = Patient::where('DNI', $DNI)->first();
+        $patient_id = $patient->id;
+        $stage = Stage::where('paciente_id', $patient_id)
+                    ->where('activa', 1)
+                    ->first();
+        $stage->activa = 0;
+        $stage->alta_id = $request->releases;
+        $stage->save();
+        $url = "alta/".$DNI;
+        return redirect($url)->with('status', 'Paciente '.$DNI.' fue dado de alta');
     }
 }

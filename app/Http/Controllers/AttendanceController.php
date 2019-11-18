@@ -90,9 +90,12 @@ class AttendanceController extends Controller
         $patientAtendances = $stage->attendance;
 
         if ($request->register == 1) {
-
+            $activeStage = Stage::where('paciente_id', $idPatient)
+                            ->where('activa', 1)
+                            ->select('id')
+                            ->first();
             // Redirect to the view with successful status
-            return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAtendances','activeStage'));
         }
         if ($request->register == 2) {
             // Get active functionarys
