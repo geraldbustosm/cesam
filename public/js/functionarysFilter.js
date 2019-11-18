@@ -142,12 +142,17 @@ function filter(searchText) {
     // Create a variable for Functionarys matches with searchText, and another variable for the possition in the new array
     var newFunctionarys = [];
     var pos = 0;
-    for (var i = 0; i < fullArray.length; i++) {
+    for (var i = 0; i < userArr.length; i++) {
         // Compare id with searchText
-        if (fullArray[i].id.toString().includes(searchText)) {
+        if (userArr[i].rut.toString().toLowerCase().includes(searchText) || userArr[i].primer_nombre.toLowerCase().includes(searchText) ||
+            userArr[i].apellido_paterno.toLowerCase().includes(searchText) || userArr[i].apellido_materno.toLowerCase().includes(searchText)) {
             // If it matches then add the functionary in new array, and change the possition
-            newFunctionarys[pos] = fullArray[i];
-            pos++;
+            for (var n = 0; n < fullArray.length; n++) {
+                if (userArr[i].id == fullArray[n].user_id) {
+                    newFunctionarys[pos] = fullArray[n];
+                    pos++;
+                }
+            }
         }
     }
     // Set Funtionary (global variable) with the new array
