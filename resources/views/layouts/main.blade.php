@@ -83,6 +83,20 @@
                     @if($auth->rol == 1)
                     <nav id="sidebar">
                         <li class="nav-item">
+                            <a class="nav-link @yield('active-usuarios')" href="#users_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">people</i><span>Usuarios</span></a>
+                            <ul class="collapse list-unstyled" id="users_Submenu">
+                                <li>
+                                    <a class="nav-link @yield('active-usuariosactivos')" href="{{url('usuarios')}}"><span>Usuarios</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-usuariosinactivos')" href="{{url('usuarios/inactivos')}}"><span>Usuarios inactivos</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </nav>
+
+                    <nav id="sidebar">
+                        <li class="nav-item">
                             <a class="nav-link @yield('active-ingresarpersonas')" href="#people_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">group_add</i><span>Agregar personas</span></a>
                             <ul class="collapse list-unstyled" id="people_Submenu">
                                 <li>
@@ -97,7 +111,6 @@
                             </ul>
                         </li>
                     </nav>
-                    @endif
 
                     <nav id="sidebar">
                         <li class="nav-item">
@@ -127,6 +140,7 @@
                             </ul>
                         </li>
                     </nav>
+                    @endif
 
                     <nav id="sidebar">
                         <li class="nav-item">

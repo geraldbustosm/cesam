@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Functionary;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,26 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+    /***************************************************************************************************************************
+                                                    SHOW
+     ****************************************************************************************************************************/
+    public function showUsers()
+    {
+        // Get patients from database where 'activa' attribute is 1 bits
+        $users = User::where('activa', 1)
+            ->select('rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+            ->get();
+        // Redirect to the view with list of: active patients, all previtions and all genders
+        return view('admin.views.users', compact('users'));
+    }
+
+    public function showInactiveUsers()
+    {
+        // Get patients from database where 'activa' attribute is 0 bits
+        $users = User::where('activa', 0)->get();
+        // Redirect to the view with list of: inactive patients, all previtions and all genders
+        return view('admin.Inactive.usersInactive', compact('users'));
     }
     /***************************************************************************************************************************
                                                     CREATE FORM
@@ -146,4 +167,44 @@ class UserController extends Controller
     /***************************************************************************************************************************
                                                     OTHER PROCESS
      ****************************************************************************************************************************/
+    public function activateUser(Request $request)
+    {
+        // Get the user
+        $user = User::where('rut', $request->id)->first();
+        // Update active to 1 bits
+        $user->activa = 1;
+        // Send update to database
+        $user->save();
+        // Get functionays
+        $functionarys = Functionary::where('user_id', $user->id)->get();
+        if ($functionarys->count() != 0) {
+            foreach ($functionarys as $index => $record) {
+                // Deactivate them
+                $record->activa = 1;
+                $record->save();
+            }
+        }
+        // Redirect to the view with successful status (showing the DNI)
+        return redirect('usuarios/inactivos')->with('status', 'Usuario ' . $request->id . ' reingresado');
+    }
+    public function deletingUser(Request $request)
+    {
+        // Get the user
+        $user = User::where('rut', $request->id)->first();
+        // Update active to 0 bits
+        $user->activa = 0;
+        // Send update to database
+        $user->save();
+        // Get functionays
+        $functionarys = Functionary::where('user_id', $user->id)->get();
+        if ($functionarys->count() != 0) {
+            foreach ($functionarys as $index => $record) {
+                // Deactivate them
+                $record->activa = 0;
+                $record->save();
+            }
+        }
+        // Redirect to the view with successful status (showing the DNI)
+        return redirect('usuarios')->with('status', 'Usuario ' . $request->id . ' eliminado');
+    }
 }

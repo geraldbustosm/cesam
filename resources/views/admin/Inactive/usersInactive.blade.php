@@ -31,7 +31,7 @@
   </tbody>
 </table>
 
-<form name="onSubmit" method="post" action="{{ url('usuarios') }}">
+<form name="onSubmit" method="post" action="{{ url('usuarios/inactivos') }}">
   @csrf
   <div class="form-group">
     <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
@@ -55,7 +55,7 @@
         </button>
       </div>
       <div class="modal-body">
-        ¿Desea eliminar al usuario?
+        ¿Desea agregar al usuario?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
