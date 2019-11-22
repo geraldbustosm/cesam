@@ -19,13 +19,13 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th style="width: 3%;">#</th>
-      <th style="width: 15%;">Usuario</th>
+      <th style="width: 3%;">#</th>      
+      <th style="width: 15%;">Rut</th>
       <th style="width: 20%;">Nombre</th>
-      <th style="width: 20%;">Horas realizadas</th>
-      <th style="width: 20%;">Porcentaje</th>
-      <th style="width: 10%;">Profesion</th>
-      <th style="width: 30%">Especialidades</th>
+      <th style="width: 15%;">Profesion</th>
+      <th style="width: 20%">Especialidades</th>
+      <th>Horas realizadas</th>
+      <th>Porcentaje</th>
       <th>Acciones</th>
     </tr>
   </thead>

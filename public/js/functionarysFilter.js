@@ -43,6 +43,8 @@ function createRow(num, data) {
     // Get Full Name
     var userPrimerNombre = getFirstName(data);
     var userApellidoPaterno = getLastName1(data);
+    // Get user rut
+    var user = getUser(data);
     // Get Hours 
     var functionaryHoursAchived = parseFloat(data.horasRealizadas).toFixed(2);
     var functionaryHoursAsigned = parseFloat(data.horasDeclaradas).toFixed(2);
@@ -53,20 +55,39 @@ function createRow(num, data) {
     var actionBtns = getBtns(data);
     //Adding cells content
     celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = getUser(data);
+    celdas[1].innerHTML = user;
     celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
-    celdas[3].innerHTML = functionaryHoursAchived;
-    celdas[4].innerHTML = porcentageString;
-    celdas[5].innerHTML = data.profesion;
-    celdas[6].innerHTML = getSpeciality(data);
+    celdas[3].innerHTML = data.profesion;
+    celdas[4].innerHTML = getSpeciality(data);
+    celdas[5].innerHTML = functionaryHoursAchived;
+    celdas[6].innerHTML = porcentageString;
     celdas[7].innerHTML = actionBtns;
+}
+// Write DNI like rut standar format
+function writeRut(user) {
+    var tmpstr = '';
+    var DNI = user.toString();
+    for (i = DNI.length; 0 < i + 1; i--) {
+        if (i == DNI.length - 1) {
+            tmpstr = '-' + DNI.charAt(i);
+        } else if (i == DNI.length - 4) {
+            tmpstr = '.' + DNI.charAt(i) + tmpstr;
+        } else if (i == DNI.length - 7) {
+            tmpstr = '.' + DNI.charAt(i) + tmpstr;
+        } else if (i == DNI.length - 10) {
+            tmpstr = '.' + DNI.charAt(i) + tmpstr;
+        } else {
+            tmpstr = DNI.charAt(i) + tmpstr
+        }
+    }
+    return tmpstr;
 }
 // Getting users
 function getUser(data) {
     var user;
     for (var j = 0; j < userArr.length; j++) {
         if (data.user_id == userArr[j].id) {
-            user = userArr[j].nombre;
+            user = writeRut(userArr[j].rut);
         }
     }
     return user;

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title','Funcionarios')
 @section('active-funcionarios','active')
-@section('active-funcionariosinactivos','active')
+@section('active-funcionariosactivos','active')
 @section('content')
 
 <h1>Funcionarios</h1>
@@ -19,13 +19,10 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th style="width: 3%;">#</th>
+      <th style="width: 3%;">#</th>      
       <th style="width: 15%;">Rut</th>
+      <th style="width: 20%;">Usuario</th>
       <th style="width: 20%;">Nombre</th>
-      <th style="width: 15%;">Profesion</th>
-      <th style="width: 20%">Especialidades</th>
-      <th>Horas realizadas</th>
-      <th>Porcentaje</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -33,35 +30,35 @@
     <!-- Fill on js -->
   </tbody>
 </table>
-<!-- Submit section -->
-<form name="onSubmit" method="post" action="{{ url('funcionarios/inactivos') }}">
+
+<form name="onSubmit" method="post" action="{{ url('funcionarios') }}">
   @csrf
   <div class="form-group">
     <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
   </div>
 </form>
-<!-- End submit section -->
+
 <div class="div-full">
   <ul class="pagination justify-content-center" id="paginate">
     <!-- Generate in patientFilter.js->generatePaginationNum(); -->
   </ul>
 </div>
 
-<!-- Modal for confirm action -->
+<!-- Modal to continue with action -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="confirmModalLabel">Confirmar acción</h5>
+        <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>¿Desea activar este funcionario de nuevo?</p>
+        ¿Desea eliminar al funcionario?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
       </div>
     </div>
@@ -79,5 +76,5 @@
 <!-- Adding script using on this view -->
 <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/functionarysFilter.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/usersFilter.js')}}"></script>
 @endsection
