@@ -22,17 +22,6 @@
   @endif
 </div>
 
-<!-- Select max records per page of pagination -->
-<div class="form-group">
-  <!-- Generate numbers -->
-  <select class="form-control" id="elements" onchange='javascript:changeTotalRecords()' required>
-    <option value="0" selected disabled>Seleccione elementos por página</option>
-    @for ($i = 1; $i <= 10; $i++) <option value="{{ $i }}">{{ $i }}</option>
-      @endfor
-      <option value="{{ $cantPatients }}">Todos</option>
-  </select>
-</div>
-
 <!-- Table with patients -->
 <table class="table table-striped">
   <thead>

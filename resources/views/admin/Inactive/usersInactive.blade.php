@@ -16,6 +16,7 @@
   </div>
   @endif
 </div>
+<!-- Table with users -->
 <table class="table table-striped">
   <thead>
     <tr>

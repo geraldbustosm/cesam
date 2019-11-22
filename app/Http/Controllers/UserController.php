@@ -22,16 +22,20 @@ class UserController extends Controller
     {
         // Get patients from database where 'activa' attribute is 1 bits
         $users = User::where('activa', 1)
-            ->select('rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
-            ->get();
+                ->select('rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+                ->get();
+        // Total users
+        $cantUsers = $users->count();
         // Redirect to the view with list of: active patients, all previtions and all genders
-        return view('admin.views.users', compact('users'));
+        return view('admin.views.users', compact('users', 'cantUsers'));
     }
 
     public function showInactiveUsers()
     {
         // Get patients from database where 'activa' attribute is 0 bits
-        $users = User::where('activa', 0)->get();
+        $users = User::where('activa', 0)
+                ->select('rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+                ->get();
         // Redirect to the view with list of: inactive patients, all previtions and all genders
         return view('admin.Inactive.usersInactive', compact('users'));
     }

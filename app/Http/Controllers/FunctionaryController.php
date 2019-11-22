@@ -29,8 +29,10 @@ class FunctionaryController extends Controller
         $speciality = Speciality::all();
         // Get the list of speciality per functionary
         $fs = FunctionarySpeciality::all();
+        // Total functionarys
+        $cantFunctionarys = $functionary->count();
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
-        return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs'));
+        return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs', 'cantFunctionarys'));
     }
 
     public function showInactiveFunctionarys()
