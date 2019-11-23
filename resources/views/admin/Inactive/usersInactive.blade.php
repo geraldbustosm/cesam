@@ -74,5 +74,5 @@
 <!-- Adding script using on this view -->
 <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/usersFilter.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/tableUsers.js')}}"></script>
 @endsection

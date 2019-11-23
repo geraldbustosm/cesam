@@ -87,5 +87,5 @@
 <!-- Adding script using on this view -->
 <script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/patientFilter.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/tablePatients.js')}}"></script>
 @endsection
