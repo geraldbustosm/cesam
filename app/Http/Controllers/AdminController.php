@@ -120,7 +120,7 @@ class AdminController extends Controller
             ->selectRaw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->get();
-            
+
         return view('general.test', ['main' => json_encode($patient)]);
     }
     // Pacientes inactivos

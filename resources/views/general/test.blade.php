@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Prestaciones mensuales')
+@section('title','Testing')
 @section('active-prestaciones','active')
 @section('active-prestacionesrealizadas','active')
 
@@ -7,11 +7,64 @@
 
 @section('content')
 <!-- Progress bar -->
-<div class='progress' id="progress_div">
-    <div class='bar' id='bar1'></div>
-    <div class='percent' id='percent1'></div>
-</div>
-<input type="hidden" id="progress_width" value="0">
+<style>
+    /* Progress bar */
+    .progress {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #F2F2F2;
+    }
+
+    .bar {
+        background-color: #1852ff;
+        width: 0%;
+        height: 5px;
+        border-radius: 3px;
+    }
+
+    .percent {
+        position: fixed;
+        display: inline-block;
+        top: 3px;
+        left: 48%;
+    }
+</style>
+<script>
+    document.onreadystatechange = function(e) {
+        if (document.readyState == "interactive") {
+            var all = document.getElementsByTagName("*");
+            for (var i = 0, max = all.length; i < max; i++) {
+                set_ele(all[i]);
+            }
+        }
+    }
+
+    function check_element(ele) {
+        var all = document.getElementsByTagName("*");
+        var per_inc = 100 / all.length;
+
+        if ($(ele).on()) {
+            var prog_width = per_inc + Number(document.getElementById("progress_width").value);
+            document.getElementById("progress_width").value = prog_width;
+            $("#bar1").animate({
+                width: prog_width + "%"
+            }, 10, function() {
+                if (document.getElementById("bar1").style.width == "100%") {
+                    $(".progress").fadeOut("slow");
+                }
+            });
+        } else {
+            set_ele(ele);
+        }
+    }
+    function set_ele(set_element) {
+        check_element(set_element);
+    }
+</script>
 
 <h1>Despliegue de Infromación</h1>
 <div class="div-full">
@@ -24,7 +77,6 @@
     <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
-    <script src="{{asset('js/progressBar.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <!-- Buttons for download table -->
     <div class="box red"></div>
@@ -36,6 +88,13 @@
 
     <div>
         @csrf
+        <form>
+            @csrf
+            <div class='progress' id="progress_div">
+                <div class='bar' id='bar1'></div>
+                <div class='percent' id='percent1'></div>
+            </div>
+        </form>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>
@@ -152,6 +211,7 @@
 
             document.getElementById('records_Submenu').className += ' show';
         </script>
+        <input type="hidden" id="progress_width" value="0">
     </div>
 @endsection
 @push('styles')

@@ -55,6 +55,9 @@
                                 </li>                                
                                 <li>
                                     <a class="nav-link @yield('active-prestacionesrealizadas')" href="{{url('prestaciones/resumen')}}"><span>Prestaciones realizadas</span></a>
+                                </li>                                                                
+                                <li>
+                                    <a class="nav-link @yield('active-rem')" href="{{url('prestaciones/rem')}}"><span>Tablas REM</span></a>
                                 </li>
                             </ul>
                         </li>
