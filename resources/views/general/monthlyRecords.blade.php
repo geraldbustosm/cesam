@@ -1,19 +1,13 @@
 @extends('layouts.main')
 @section('title','Prestaciones mensuales')
 @section('active-prestaciones','active')
-@section('active-prestacionesrealizadas','active')
+@section('active-mensual','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<!-- Progress bar -->
-<div class='progress' id="progress_div">
-    <div class='bar' id='bar1'></div>
-    <div class='percent' id='percent1'></div>
-</div>
-<input type="hidden" id="progress_width" value="0">
-
 <h1>Despliegue de Infromación</h1>
+
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -24,18 +18,17 @@
     <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
-    <script src="{{asset('js/progressBar.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
-    <!-- Buttons for download table -->
-    <div class="box red"></div>
-    <div class="table-controls">
-        <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-        <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
-    </div>
-    <br>
 
     <div>
         @csrf
+        <!-- Buttons for download table -->
+        <div class="box red"></div>
+        <div class="table-controls">
+            <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
+            <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
+        </div>
+        <br>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>
@@ -149,10 +142,13 @@
                     format: "legal"
                 });
             });
-
-            document.getElementById('records_Submenu').className += ' show';
         </script>
     </div>
+    <script>
+        var data = <?php echo $main; ?>;
+        console.log(data);
+        document.getElementById('records_Submenu').className += ' show';
+    </script>
 @endsection
 @push('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

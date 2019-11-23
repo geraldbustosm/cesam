@@ -45,9 +45,20 @@
                     <li class="nav-item">
                         <a class="nav-link @yield('active-escritorio')" href="{{url('/')}}"><i class="material-icons">vertical_split</i><span>Escritorio</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('active-prestaciones')" href="{{url('testing')}}"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
-                    </li>
+
+                    <nav id="sidebar">
+                        <li class="nav-item">
+                            <a class="nav-link @yield('active-prestaciones')" href="#records_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
+                            <ul class="collapse list-unstyled" id="records_Submenu">
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('active-mensual')" href="{{url('prestaciones/mensual')}}"><span>Mensual</span></a>
+                                </li>                                
+                                <li>
+                                    <a class="nav-link @yield('active-prestacionesrealizadas')" href="{{url('prestaciones/resumen')}}"><span>Prestaciones realizadas</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </nav>
 
                     <nav id="sidebar">
                         <li class="nav-item">
@@ -72,9 +83,6 @@
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-funcionariosinactivos')" href="{{url('funcionarios/inactivos')}}"><span>Funcionarios inactivos</span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-prestacionesrealizadas')" href="{{url('prestaciones')}}"><span>Prestaciones realizadas</span></a>
                                 </li>
                             </ul>
                         </li>
