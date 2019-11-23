@@ -1,72 +1,13 @@
 @extends('layouts.main')
-@section('title','Testing')
+@section('title','Prestaciones mensuales')
 @section('active-prestaciones','active')
-@section('active-prestacionesrealizadas','active')
+@section('active-mensual','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<!-- Progress bar -->
-<style>
-    /* Progress bar */
-    .progress {
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        background-color: #F2F2F2;
-    }
-
-    .bar {
-        background-color: #1852ff;
-        width: 0%;
-        height: 5px;
-        border-radius: 3px;
-    }
-
-    .percent {
-        position: fixed;
-        display: inline-block;
-        top: 3px;
-        left: 48%;
-    }
-</style>
-<script>
-    document.onreadystatechange = function(e) {
-        if (document.readyState == "interactive") {
-            var all = document.getElementsByTagName("*");
-            for (var i = 0, max = all.length; i < max; i++) {
-                set_ele(all[i]);
-            }
-        }
-    }
-
-    function check_element(ele) {
-        var all = document.getElementsByTagName("*");
-        var per_inc = 100 / all.length;
-
-        if ($(ele).on()) {
-            var prog_width = per_inc + Number(document.getElementById("progress_width").value);
-            document.getElementById("progress_width").value = prog_width;
-            $("#bar1").animate({
-                width: prog_width + "%"
-            }, 10, function() {
-                if (document.getElementById("bar1").style.width == "100%") {
-                    $(".progress").fadeOut("slow");
-                }
-            });
-        } else {
-            set_ele(ele);
-        }
-    }
-    function set_ele(set_element) {
-        check_element(set_element);
-    }
-</script>
-
 <h1>Despliegue de Infromación</h1>
+
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -78,23 +19,16 @@
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
-    <!-- Buttons for download table -->
-    <div class="box red"></div>
-    <div class="table-controls">
-        <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-        <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
-    </div>
-    <br>
 
     <div>
         @csrf
-        <form>
-            @csrf
-            <div class='progress' id="progress_div">
-                <div class='bar' id='bar1'></div>
-                <div class='percent' id='percent1'></div>
-            </div>
-        </form>
+        <!-- Buttons for download table -->
+        <div class="box red"></div>
+        <div class="table-controls">
+            <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
+            <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
+        </div>
+        <br>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>
@@ -211,7 +145,6 @@
 
             document.getElementById('records_Submenu').className += ' show';
         </script>
-        <input type="hidden" id="progress_width" value="0">
     </div>
 @endsection
 @push('styles')

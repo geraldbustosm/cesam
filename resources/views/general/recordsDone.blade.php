@@ -1,7 +1,7 @@
 @extends('layouts.main')
-@section('title','Prestaciones mensuales')
+@section('title','Prestaciones Realizadas')
 @section('active-prestaciones','active')
-@section('active-mensual','active')
+@section('active-prestacionesrealizadas','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -15,20 +15,28 @@
     </div>
     @endif
     <!-- Adding script using on this view -->
-    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+    <script src="{{asset('js/xlsx.min.js')}}"></script>
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
+    <!-- Buttons for download table -->
+    <div class="box red"></div>
+    <div class="table-controls">
+        <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
+        <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
+    </div>
+    <br>
+    <!-- Start content -->
     <div>
         @csrf
-        <!-- Buttons for download table -->
-        <div class="box red"></div>
-        <div class="table-controls">
-            <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-            <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
-        </div>
-        <br>
+        <form>
+            @csrf
+            <div class='progress' id="progress_div">
+                <div class='bar' id='bar1'></div>
+                <div class='percent' id='percent1'></div>
+            </div>
+        </form>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>
@@ -142,13 +150,11 @@
                     format: "legal"
                 });
             });
+
+            document.getElementById('records_Submenu').className += ' show';
         </script>
+        <input type="hidden" id="progress_width" value="0">
     </div>
-    <script>
-        var data = <?php echo $main; ?>;
-        console.log(data);
-        document.getElementById('records_Submenu').className += ' show';
-    </script>
 @endsection
 @push('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

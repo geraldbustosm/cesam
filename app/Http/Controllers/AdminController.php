@@ -82,7 +82,7 @@ class AdminController extends Controller
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->get();
 
-        return view('general.monthlyRecords', ['main' => json_encode($patient)]);
+        return view('general.recordsMonthly', ['main' => json_encode($patient)]);
     }
     public function showSummaryRecords()
     {
@@ -121,7 +121,46 @@ class AdminController extends Controller
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->get();
 
-        return view('general.test', ['main' => json_encode($patient)]);
+        return view('general.recordsDone', ['main' => json_encode($patient)]);
+    }
+    public function showRemRecords()
+    {
+        $patient = DB::table('paciente')
+            ->join('prevision', 'paciente.prevision_id', '=', 'prevision.id')
+            ->join('sexo', 'paciente.sexo_id', '=', 'sexo.id')
+            ->join('etapa', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('atencion', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'funcionarios.id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->join('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
+            ->join('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
+            ->join('programa', 'programa.id', '=', 'etapa.programa_id')
+            ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
+            ->where('paciente.activa', '=', 1)
+            ->select(
+                'paciente.*',
+                'prevision.*',
+                'etapa.*',
+                'atencion.*',
+                'actividad.descripcion as actividad',
+                'procedencia.descripcion as procedencia',
+                'especialidad.*',
+                'prestacion.*',
+                'sexo.descripcion as sexo',
+                'tipo_prestacion.descripcion as tipo',
+                'programa.descripcion as programa',
+                DB::raw("(CASE WHEN atencion.abre_canasta = 1 THEN 'SI' ELSE 'NO' END) AS canasta"),
+                DB::raw("(CASE WHEN atencion.asistencia = 1 THEN 'SI' ELSE 'NO' END) AS asistencia"),
+                DB::raw("CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
+            )
+            ->selectRaw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->get();
+
+        return view('general.recordsRem', ['main' => json_encode($patient)]);
     }
     // Pacientes inactivos
     /*public function showInactivePatients()
