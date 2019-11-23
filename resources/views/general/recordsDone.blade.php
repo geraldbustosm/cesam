@@ -15,7 +15,7 @@
     </div>
     @endif
     <!-- Adding script using on this view -->
-    <script src="{{asset('js/xlsx.min.js')}}"></script>
+    <script src="{{asset('js/xlsx.full.min.js')}}"></script>
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
@@ -30,13 +30,6 @@
     <!-- Start content -->
     <div>
         @csrf
-        <form>
-            @csrf
-            <div class='progress' id="progress_div">
-                <div class='bar' id='bar1'></div>
-                <div class='percent' id='percent1'></div>
-            </div>
-        </form>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>

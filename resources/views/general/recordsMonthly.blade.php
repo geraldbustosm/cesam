@@ -15,7 +15,7 @@
     </div>
     @endif
     <!-- Adding script using on this view -->
-    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+    <script src="{{asset('js/xlsx.full.min.js')}}"></script>
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>

@@ -14,7 +14,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <script src="{{asset('js/xlsx.min.js')}}"></script>
+    <script src="{{asset('js/xlsx.full.min.js')}}"></script>
     <script src="{{asset('js/jspdf.min.js')}}"></script>
     <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
