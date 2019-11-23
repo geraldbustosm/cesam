@@ -7,13 +7,13 @@
 
 @section('content')
 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 
 <h1>Despliegue de Infromación</h1>
@@ -39,63 +39,61 @@
     </div>
     <br>
     <!-- Start content -->
-    <div>
-        @csrf
-        <div id="example-table"></div>
-        <script type="text/javascript">
-
-            //trigger download of data.xlsx file
-            $("#download-xlsx").click(function() {
-                document.download("xlsx", "data.xlsx", {
-                    sheetName: "Reporte"
-                });
-            });
-
-            //trigger download of data.pdf file
-            $("#download-pdf").click(function() {
-                document.download("pdf", "data.pdf", {
-                    orientation: "landscape", //set page orientation (portrait or landscape)
-                    title: "Reporte", //add title to report
-                    format: "legal"
-                });
-            });
-
-            document.getElementById('records_Submenu').className += ' show';
-        </script>
-    </div>
     <div class="div-full">
-    <!-- Successful alert -->
-	@if (session('status'))
-		<div class="alert alert-success" role="alert">
-			{{ session('status') }}
-		</div>
-	@endif
-	<div style="overflow-x:auto;">
-            <table class="table table-striped table-bordered table-sm">
-            <thead>
-                <tr>
-                    <th><!-- Empty for the left top corner of the table --></th>
-                    @foreach($columns as $column)
-                    <th>{{ $column }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($rows as $var1 => $columns)
-                <tr>
-                    <td><strong>{{ " ".$var1." " }}</strong></td>
-                    @foreach($columns as $var2 => $ids)
-                    @inject('provider', 'App\Http\Controllers\AdminController')
-                    <td>
-                    <span> <?php echo $provider::countActivitiesPerFunctionary($ids[0],$ids[1]); ?> </span>
-                    </td>
-                    @endforeach
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <!-- Successful alert -->
+        @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
         </div>
+        @endif
+        <div style="overflow-x:auto;">
+            <table class="table table-striped table-bordered table-sm" id="example-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Funcionarios
+                        </th>
+                        @foreach($columns as $column)
+                        <th>{{ $column }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($rows as $var1 => $columns)
+                    <tr>
+                        <td>{{ $var1 }}</td>
+                        @foreach($columns as $var2 => $ids)
+                        @inject('provider', 'App\Http\Controllers\AdminController')
+                        <td><?php echo $provider::countActivitiesPerFunctionary($ids[0], $ids[1]); ?></td>
+                        @endforeach
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+<script type="text/javascript">
+    var table = new Tabulator("#example-table", {});
+
+    //trigger download of data.xlsx file
+    $("#download-xlsx").click(function() {
+        table.download("xlsx", "data.xlsx", {
+            sheetName: "Reporte"
+        });
+    });
+
+    //trigger download of data.pdf file
+    $("#download-pdf").click(function() {
+        table.download("pdf", "data.pdf", {
+            orientation: "landscape", //set page orientation (portrait or landscape)
+            title: "Reporte", //add title to report
+            format: "legal"
+        });
+    });
+
+    document.getElementById('records_Submenu').className += ' show';
+</script>
 @endsection
 @push('styles')
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">

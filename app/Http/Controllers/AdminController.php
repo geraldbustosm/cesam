@@ -113,18 +113,18 @@ class AdminController extends Controller
 
         return view('general.recordsDone', compact('columns', 'rows'));
     }
-    
+
     public static function countActivitiesPerFunctionary($idfunc, $idAct)
     {
         // Query to count total activities
         $total = DB::table('atencion')
-        ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
-        ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-        ->whereMonth('atencion.fecha', Carbon::now()->month)
-        ->where('funcionarios.id', $idfunc)
-        ->where('actividad.id', $idAct)
-        ->get()
-        ->count();
+            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('funcionarios.id', $idfunc)
+            ->where('actividad.id', $idAct)
+            ->get()
+            ->count();
         // Return value
         return $total;
     }
