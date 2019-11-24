@@ -33,19 +33,19 @@
             <h3>Parametros para filtrar</h3>
         </div>
         <!-- Select parameters for filter -->
-        <div class="table-controls">
-            <span>
-                <label>Columna: </label>
-                <select id="filter-field">
-                    <option></option>
+        <div class="table-controls form-row">
+            <div class="form-group col-md-4">
+                <select class="form-control" id="filter-field">
+                    <option selected>Columna</option>
                     <option value="nombre1">Nombre</option>
-                    <option value="apellido1">Apellido</option>
+                    <option value="apellido1">Primer Apellido</option>
+                    <option value="apellido2">Segundo Apellido</option>
                 </select>
-            </span>
+            </div>
 
-            <span>
-                <label>Tipo: </label>
-                <select id="filter-type">
+            <div class="form-group col-md-2">
+                <select class="form-control" id="filter-type">
+                    <option selected>Tipo</option>
                     <option value="=">=</option>
                     <option value="<">&lt;</option>
                     <option value="<=">&lt;=</option>
@@ -54,13 +54,13 @@
                     <option value="!=">distinto</option>
                     <option value="like">igual</option>
                 </select>
-            </span>
+            </div>
             <!-- Value sought -->
-            <span><label>Valor: </label> <input id="filter-value" type="text" placeholder="valor a filtrar"></span>
+            <div class="form-group col-md-4"><input class="form-control" id="filter-value" type="text" placeholder="Valor a filtrar"></div>
             <!-- Clean filters -->
-            <button id="filter-clear">Limpiar Filtro</button>
-
+            <a href="#" id="filter-clear" style="padding: 5px;"><i title='Restablecer valores' class="material-icons">highlight_off</i><span></span></a>
         </div>
+
         <div id="example-table"></div>
         <script type="text/javascript">
             //Trigger setFilter function with correct parameters
@@ -84,8 +84,8 @@
 
             //Clear filters on "Clear Filters" button click
             $("#filter-clear").click(function() {
-                $("#filter-field").val("");
-                $("#filter-type").val("=");
+                $("#filter-field").val("Columna");
+                $("#filter-type").val("Tipo");
                 $("#filter-value").val("");
 
                 table.clearFilter();
@@ -93,7 +93,7 @@
 
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
-                height: "311px",
+                height: "400px",
                 movableColumns: true,
                 columns: [
                     {title:"Programa", field:"programa"},
@@ -122,7 +122,7 @@
             });
 
             //define some sample data
-            var tabledata = {!! $main !!};
+            var tabledata = {!!$main!!};
 
             //load sample data into the table
             table.setData(tabledata);
@@ -146,6 +146,7 @@
             document.getElementById('records_Submenu').className += ' show';
         </script>
     </div>
+</div>
 @endsection
 @push('styles')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

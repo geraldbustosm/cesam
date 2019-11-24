@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -84,6 +85,7 @@ class AdminController extends Controller
 
         return view('general.recordsMonthly', ['main' => json_encode($patient)]);
     }
+    // View for monthly summary
     public function showSummaryRecords()
     {
         $functionarys = DB::table('funcionarios')
@@ -94,27 +96,43 @@ class AdminController extends Controller
             )
             ->get();
 
-        $activities = Activity::where('activa', 1)->orderBy('descripcion')->get();
+        $activities = Activity::where('activa', 1)->orderBy('descripcion')->select('id', 'descripcion')->get();
 
-        $rows = [];
-        $columns = [];
-        $ids = [];
-
-        foreach ($activities as $index => $record) {
-            array_push($columns, $record->descripcion);
-        }
-        foreach ($functionarys as $index => $record1) {
-            $ids[0] = $record1->id;
-            foreach ($activities as $index => $record2) {
-                $ids[1] = $record2->id;
-                $rows[$record1->nombre_funcionario][$record2->descripcion] = $ids;
+        $num = 0;
+        $data = [];
+        // For each activity
+        foreach ($activities as $index => $record1) {
+            // Create necesary objects
+            $obj = new \stdClass();
+            $objChildren1 = new \stdClass();
+            $objChildren2 = new \stdClass();
+            // Adding the first attribute
+            $obj->actividad = $record1->descripcion;
+            $objChildren1->actividad = "Con asistencia";
+            $objChildren2->actividad = "Sin asistencia";
+            // For each Functionary
+            foreach ($functionarys as $index => $record2) {
+                // Get name, count attend and count no attend              
+                $nombre = $record2->nombre_funcionario;
+                $attend = $this->countActivitiesAttend($record2->id,$record1->id);
+                $notAttend = $this->countActivitiesNotAttend($record2->id,$record1->id);
+                // Setting counts attributes (use the name of functionary like name of attribute)
+                $obj->$nombre = $notAttend + $attend;
+                $objChildren1->$nombre = $attend;
+                $objChildren2->$nombre = $notAttend;
             }
+            // Setting children objects to main object
+            $obj->_children[0] = $objChildren1;
+            $obj->_children[1] = $objChildren2;
+            // Adding object to array
+            $data[$num] = $obj;
+            $num++;
         }
-
-        return view('general.recordsDone', compact('columns', 'rows'));
+        // Return to the view
+        return view('general.recordsRem', compact('data', 'functionarys'));
     }
-
-    public static function countActivitiesPerFunctionary($idfunc, $idAct)
+    // Total attend per functionary/activity
+    public static function countActivitiesAttend($idfunc, $idAct)
     {
         // Query to count total activities
         $total = DB::table('atencion')
@@ -123,28 +141,65 @@ class AdminController extends Controller
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where('funcionarios.id', $idfunc)
             ->where('actividad.id', $idAct)
+            ->where('atencion.asistencia', 1)
             ->get()
             ->count();
         // Return value
         return $total;
     }
-
+    // Total NOT attend per functionary/activity
+    public static function countActivitiesNotAttend($idfunc, $idAct)
+    {
+        // Query to count total activities
+        $total = DB::table('atencion')
+            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('funcionarios.id', $idfunc)
+            ->where('actividad.id', $idAct)
+            ->where('atencion.asistencia', 0)
+            ->get()
+            ->count();
+        // Return value
+        return $total;
+    }
+    // View for REM
     public function showRemRecords()
     {
-        $data = DB::table('atencion')
-            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
+        $functionarys = DB::table('funcionarios')
             ->join('users', 'users.id', '=', 'funcionarios.user_id')
-            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->select(
-                'atencion.asistencia',
-                'actividad.descripcion as actividad',
-                DB::raw("(CASE WHEN atencion.asistencia = 1 THEN 'SI' ELSE 'NO' END) AS asistencia"),
+                'funcionarios.id as id',
                 DB::raw("CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
             )
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->get();
 
-        return view('general.recordsRem', compact('data'));
+        $activities = Activity::where('activa', 1)->orderBy('descripcion')->select('id', 'descripcion')->get();
+
+        $num = 0;
+        $data = [];
+        foreach ($activities as $index => $record1) {
+            $obj = new \stdClass();
+            $objChildren1 = new \stdClass();
+            $objChildren2 = new \stdClass();
+            $obj->actividad = $record1->descripcion;
+            $objChildren1->actividad = "Con asistencia";
+            $objChildren2->actividad = "Sin asistencia";
+            foreach ($functionarys as $index => $record2) {                
+                $nombre = $record2->nombre_funcionario;
+                $attend = $this->countActivitiesAttend($record2->id,$record1->id);
+                $notAttend = $this->countActivitiesNotAttend($record2->id,$record1->id);
+                $obj->$nombre = $notAttend + $attend;
+                $objChildren1->$nombre = $attend;
+                $objChildren2->$nombre = $notAttend;
+            }
+            $obj->_children[0] = $objChildren1;
+            $obj->_children[1] = $objChildren2;
+            $data[$num] = $obj;
+            $num++;
+        }
+
+        return view('general.recordsRem', compact('data', 'functionarys'));
     }
     // Pacientes inactivos
     /*public function showInactivePatients()
