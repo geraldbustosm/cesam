@@ -29,8 +29,34 @@ class AttendanceController extends Controller
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-    public function showEditAttendance($rut, $etapa, $atencion){
-        return view('admin.Edit.attendanceEdit');
+    public function showEditAttendance($dni, $etapa, $atencion){
+        $functionarys = Functionary::where('activa', 1)->get();
+        $patient = Patient::where('dni', $dni)->first();
+        
+        if($patient){
+            $stages = $patient->stage;
+            if($stages){
+                foreach ($stages as $stage){
+                    if($stage->id == $etapa){
+                        $attendances = $stage->attendance;
+                        if($attendances){
+                            foreach($attendances as $attendance){
+                                if($attendance->id == $atencion){
+                                    // Formatting date for the view
+                                    $fecha = explode("-", $attendance->fecha);
+                                    $fecha = $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0];
+
+                                    // Formatting hour for the view
+                                    $hora = $attendance->hora;
+                                    $hora = substr($hora, 0, 5);
+                                    return view('admin.Edit.attendanceEdit', compact('patient', 'stage', 'attendance', 'functionarys', 'fecha', 'hora'));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     public function editAttendance(){
         return "";

@@ -27,7 +27,7 @@ class Patient extends Model
 
   public function stage()
   {
-    return $this->hasMany('App\Stage');
+    return $this->hasMany('App\Stage', 'paciente_id');
   }
 
   public function prevition(){

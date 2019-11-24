@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Registrar nueva atención')
+@section('title','Editar atención')
 @section('active-ingresardatos','active')
 
 @section('content')
@@ -21,7 +21,7 @@
 
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="datepicker">Fecha de la atención</label>
-                    <input class="form-control col-12"id="datepicker" name="datepicker" value="" required>
+                    <input class="form-control col-12"id="datepicker" name="datepicker" value="{{$fecha}}" required>
                     <script>
                         var config = {
                             format: 'dd/mm/yyyy',
@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="time" class="form-group col-6">Hora inicio de la atención</label>
-                    <input class="form-control col-12" id="timeInit" name="timeInit"  value="" required>
+                    <input class="form-control col-12" id="timeInit" name="timeInit"  value="{{$hora}}" required>
                     <script>
                         $('#timeInit').timepicker({
                             defaultTime: 'value',
@@ -109,9 +109,12 @@
                 <div class="panel-heading">Seleccione el funcionario</div>
                 <div class="form-group">
                     <select id="functionary" name="functionary" class="form-control" style="width:350px">
-                        <option value="" selected disabled>Seleccione un Funcionario</option>
-                        @foreach($users as $key => $user)
-                        <option value="{{$user->id}}"> {{$user->user->primer_nombre." ".$user->user->segundo_nombre.", ".$user->profesion}}</option>
+                        <!-- <option value="" selected disabled>Seleccione un Funcionario</option> -->
+                        <option value="{{$attendance->functionary->id}}">{{$attendance->functionary->user->primer_nombre}} {{$attendance->functionary->user->apellido_paterno}}, {{$attendance->functionary->profesion}}</option>
+                        @foreach($functionarys as $functionary)
+                            @if($functionary->id != $attendance->functionary->id)
+                                <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre." ".$functionary->user->apellido_paterno.", ".$functionary->profesion}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -237,8 +240,8 @@
                     });
                 </script>
                 <div class="form-group" class="register">
-                    <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
-                    <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
+                    <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="{{$patient->dni}}" id="DNI" name="DNI">
+                    <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="{{ $stage->id }}" id="id_stage" name="id_stage">
                     <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
                     <button type="submit" name="register" id="register" value="2" class="btn btn-primary">Agregar Otro</button>
                 </div>
