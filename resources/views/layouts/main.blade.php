@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/material-icons.css')}}">
-    <link rel="stylesheet" href="{{asset('css/gijgo.min.css')}}">
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{asset('css/pace.css')}}">
     <!-- JS -->
     <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
