@@ -54,17 +54,14 @@ class AttendanceController extends Controller
                                     $hora = substr($hora, 0, 5);
                                     return view('admin.Edit.attendanceEdit', compact('patient', 'stage', 'attendance', 'functionarys', 'fecha', 'hora'));
                                 }
-                                else{
-                                    return redirect($url)->with('error', 'No se encontró la atención para la etapa del paciente');
-                                }
                             }
+                            return redirect($url)->with('error', 'No se encontró la atención para la etapa del paciente');
                         }else{
                             return redirect($url)->with('error', 'No se encontraron atenciones para la etapa del paciente');
                         }
-                    }else{
-                        return redirect($url)->with('error', 'No se encontró la etapa del paciente');
                     }
                 }
+                return redirect($url)->with('error', 'No se encontró la etapa del paciente');
             }else{
                 return redirect($url)->with('error', 'No se encontaron etapas para el paciente');
             }
