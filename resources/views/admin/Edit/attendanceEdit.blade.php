@@ -9,7 +9,7 @@
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
     </div>
-    @endif
+    @else
     <form method="post" action="{{ url('editar/atencion') }}">
         @csrf
         <!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
@@ -249,6 +249,7 @@
             </div>
         </div>
     </form>
+    @endif
     @endsection
     @push('styles')
     <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">

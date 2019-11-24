@@ -30,6 +30,9 @@ class AttendanceController extends Controller
                                                     EDIT FORM
      ****************************************************************************************************************************/
     public function showEditAttendance($dni, $etapa, $atencion){
+        // URL to redirect
+        $url = 'ficha/' . $dni;
+
         $functionarys = Functionary::where('activa', 1)->get();
         $patient = Patient::where('dni', $dni)->first();
         
@@ -51,11 +54,22 @@ class AttendanceController extends Controller
                                     $hora = substr($hora, 0, 5);
                                     return view('admin.Edit.attendanceEdit', compact('patient', 'stage', 'attendance', 'functionarys', 'fecha', 'hora'));
                                 }
+                                else{
+                                    return redirect($url)->with('error', 'No se encontró la atención para la etapa del paciente');
+                                }
                             }
+                        }else{
+                            return redirect($url)->with('error', 'No se encontraron atenciones para la etapa del paciente');
                         }
+                    }else{
+                        return redirect($url)->with('error', 'No se encontró la etapa del paciente');
                     }
                 }
+            }else{
+                return redirect($url)->with('error', 'No se encontaron etapas para el paciente');
             }
+        }else{
+            return redirect('pacientes')->with('error', 'No se encontró el paciente');
         }
     }
     public function editAttendance(Request $request){

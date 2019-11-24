@@ -8,6 +8,13 @@
         {{ session('status') }}
     </div>
 @endif
+
+@if (session('error'))
+    <div class="col-12 alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <h1>Ficha Paciente</h1>
 <form name="onSubmit" method="post" action="{{ url('etapa') }}">
     @csrf
