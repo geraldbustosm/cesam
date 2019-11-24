@@ -37,13 +37,13 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th style="width: 3%;">#</th>
-      <th style="width: 15%;">Identificación</th>
-      <th style="width: 40%;">Nombre</th>
-      <th style="width: 10%;">Sexo</th>
-      <th style="width: 10%;">Edad</th>
-      <th style="width: 10%">Previsión</th>
-      <th>Acciones</th>
+      <th style="width:;">#</th>
+      <th style="width:;">Identificación</th>
+      <th style="width:;">Nombre</th>
+      <th style="width:;">Sexo</th>
+      <th style="width:;">Edad</th>
+      <th style="width:">Previsión</th>
+      <th style="width:15%">Acciones</th>
     </tr>
   </thead>
   <tbody id="table-body">
