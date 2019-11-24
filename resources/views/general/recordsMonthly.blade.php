@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Infromación</h1>
+<h1>Despliegue de Información</h1>
 
 <div class="div-full">
     @if (session('status'))
