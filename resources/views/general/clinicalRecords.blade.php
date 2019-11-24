@@ -3,6 +3,11 @@
 @section('active-prestaciones','active')
 
 @section('content')
+@if (session('status'))
+    <div class="col-12 alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
 <h1>Ficha Paciente</h1>
 <form name="onSubmit" method="post" action="{{ url('etapa') }}">
     @csrf

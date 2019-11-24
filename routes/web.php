@@ -163,7 +163,7 @@ Route::post('registrar/usuario','UserController@registerUser');
 ****************************************************************************************************************************/
 // Atención
 Route::get('paciente/{rut}/etapa/{etapa}/atencion/{atencion}/edit', 'AttendanceController@showEditAttendance');
-Route::put('paciente/etapa/atencion/edit', 'AttendanceController@editAttendance');
+Route::put('editar/atencion', 'AttendanceController@editAttendance');
 
 // Actividad
 Route::get('actividades/edit/{id}', 'ActivityController@showEditActivity')->middleware('checkrole:1');

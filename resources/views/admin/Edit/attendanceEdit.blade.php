@@ -10,11 +10,15 @@
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('ficha') }}">
+    <form method="post" action="{{ url('editar/atencion') }}">
         @csrf
-        <input type="hidden" id="id" name="id" value=<?= $patient->id; ?>>
+        <!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
+		<input type="hidden" name="_method" value="PUT">
+
+        <input type="hidden" id="attendance_id" name="attendance_id" value="{{$attendance->id}}">
+        <input type="hidden" id="id" name="id" value="{{$patient->id}}">
         <div class="form-group">
-            <p class="titulo2">Paciente: <?= $patient->nombre1 . " " . $patient->nombre2 . " " . $patient->apellido1 . " " . $patient->apellido2; ?></p>
+            <p class="titulo2">Paciente: {{$patient->nombre1}} {{$patient->nombre2}} {{$patient->apellido1}} {{$patient->apellido2}}</p>
         </div>
         <div class="row">
             <div class="column">
@@ -109,12 +113,9 @@
                 <div class="panel-heading">Seleccione el funcionario</div>
                 <div class="form-group">
                     <select id="functionary" name="functionary" class="form-control" style="width:350px">
-                        <!-- <option value="" selected disabled>Seleccione un Funcionario</option> -->
-                        <option value="{{$attendance->functionary->id}}">{{$attendance->functionary->user->primer_nombre}} {{$attendance->functionary->user->apellido_paterno}}, {{$attendance->functionary->profesion}}</option>
+                        <option value="" selected disabled>Seleccione un Funcionario</option>
                         @foreach($functionarys as $functionary)
-                            @if($functionary->id != $attendance->functionary->id)
-                                <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre." ".$functionary->user->apellido_paterno.", ".$functionary->profesion}}</option>
-                            @endif
+                            <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -242,7 +243,7 @@
                 <div class="form-group" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="{{$patient->dni}}" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="{{ $stage->id }}" id="id_stage" name="id_stage">
-                    <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
+                    <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Editar atención</button>
                     <button type="submit" name="register" id="register" value="2" class="btn btn-primary">Agregar Otro</button>
                 </div>
             </div>
