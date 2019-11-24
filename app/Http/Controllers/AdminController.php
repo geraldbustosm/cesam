@@ -129,7 +129,7 @@ class AdminController extends Controller
             $num++;
         }
         // Return to the view
-        return view('general.recordsRem', compact('data', 'functionarys'));
+        return view('general.recordsSummary', compact('data', 'functionarys'));
     }
     // Total attend per functionary/activity
     public static function countActivitiesAttend($idfunc, $idAct)
