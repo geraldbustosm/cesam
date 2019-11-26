@@ -105,6 +105,7 @@
                     },
                 ],
             });
+            console.log(tableData[0][`${list[0]} - M`])
             // Complete table
             for(i=0 ; i<list.length ; i++){
                 table.addColumn(
@@ -115,7 +116,7 @@
                         {title:"Mujeres", field:`${list[i]} - M`, width:120, bottomCalc:"sum"},
                         ],
                     }, false);
-            }
+            };
 
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {

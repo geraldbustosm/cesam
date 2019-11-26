@@ -181,6 +181,12 @@ class AdminController extends Controller
                 $obj = new \stdClass();
                 $obj->actividad = $record1->descripcion;
                 $obj->especialidad = $record2->descripcion;
+                $both = "Ambos sexos";
+                $male = "Hombres";
+                $female = "Mujeres";
+                $obj->$both = 0;
+                $obj->$male = 0;
+                $obj->$female = 0;
                 $iterator = 0;
                 while ($iterator < $end) {
                     $strH = $iterator . " - " . ($iterator + $interval - 1) . " - H";

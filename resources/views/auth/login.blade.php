@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <title>Cesam - Centro salud mental</title>
 </head>
+
 <body>
     <div class="container login">
         @if (session('status'))
@@ -34,9 +36,26 @@
             </div>
         </form>
     </div>
-<script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
-<script src="{{asset('js/popper.min.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-</body>
-</html>
 
+    <?php
+    $serverName = "34.66.72.246, 1433";
+    $connectionOptions = array(
+        "database" => "CESAM",
+        "uid" => "SA",
+        "pwd" => "MariaOlga1"
+    );
+
+    // Establishes the connection
+    $conn = sqlsrv_connect ($serverName, $connectionOptions);
+    if ($conn === false) {
+        die(formatErrors(sqlsrv_errors()));
+    } else {
+        die("it's working");
+    }
+    ?>
+    <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+</body>
+
+</html>
