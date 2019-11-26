@@ -124,10 +124,10 @@
             });
 
             // Write Values
-            for ( i=0 ; i<tableData.length ; i++ ) {
-                var idAct = tableData[i].idAct;
-                var idSp = tableData[i].idSp;
-                for( j=0 ; j<list.length ; j++ ) {
+            // for ( i=0 ; i<tableData.length ; i++ ) {
+            //     var idAct = tableData[i].idAct;
+            //     var idSp = tableData[i].idSp;
+                // for( j=0 ; j<list.length ; j++ ) {
                 //     var vector = list[j].split(" - ");
                 //     if ( vector.length <= 1 ) {
                 //         var vector2 = vector[0].split("+");
@@ -155,8 +155,8 @@
                 //         }
                 //     });
                 //     console.log(tableData[i][`${list[j]} - H`]);
-                }
-            }
+            //     }
+            // }
         </script>
     </div>
 </div>

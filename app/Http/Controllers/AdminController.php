@@ -193,14 +193,14 @@ class AdminController extends Controller
                 while ($iterator < $end) {
                     $strH = $iterator . " - " . ($iterator + $interval - 1) . " - H";
                     $strM = $iterator . " - " . ($iterator + $interval - 1) . " - M";
-                    $obj->$strH =  countActivitiesPerSpeciality($iterator,$iterator + $interval,$record1->id,$record2->id,'hombre');
-                    $obj->$strM =  countActivitiesPerSpeciality($iterator,$iterator + $interval,$record1->id,$record2->id,'mujer');
+                    $obj->$strH =  $this->countActivitiesPerSpeciality($iterator,$iterator + $interval,$record1->id,$record2->id,'hombre');
+                    $obj->$strM =  $this->countActivitiesPerSpeciality($iterator,$iterator + $interval,$record1->id,$record2->id,'mujer');
                     $iterator = $iterator + $interval;
                 }
                 $strH = $iterator . "+ - H";
                 $strM = $iterator . "+ - M";
-                $obj->$strH = countActivitiesPerSpeciality($iterator,300,$record1->id,$record2->id,'hombre');
-                $obj->$strM = countActivitiesPerSpeciality($iterator,300,$record1->id,$record2->id,'mujer');
+                $obj->$strH = $this->countActivitiesPerSpeciality($iterator,300,$record1->id,$record2->id,'hombre');
+                $obj->$strM = $this->countActivitiesPerSpeciality($iterator,300,$record1->id,$record2->id,'mujer');
                 // Adding object to array
                 $data[$num] = $obj;
                 // Next position
