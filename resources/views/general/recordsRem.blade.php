@@ -16,8 +16,6 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
-    <script src="{{asset('js/jspdf.min.js')}}"></script>
-    <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -26,7 +24,6 @@
         <div class="box red"></div>
         <div class="table-controls">
             <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-            <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
         </div>
         <br>
         <div class="table-controls-legend">
@@ -38,9 +35,7 @@
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
                     <option value="actividad">Actividad</option>
-                    @foreach($functionarys as $name)
-                    <option value="{{ $name->nombre_funcionario }}">{{ $name->nombre_funcionario }}</option>
-                    @endforeach
+                    <option value="especialidad">Especialidad</option>
                 </select>
             </div>
 
@@ -48,11 +43,8 @@
                 <select class="form-control" id="filter-type">
                     <option selected>Tipo</option>
                     <option value="=">=</option>
-                    <option value="<">&lt;</option>
                     <option value="<=">&lt;=</option>
-                    <option value=">">&gt;</option>
                     <option value=">=">&gt;=</option>
-                    <option value="!=">distinto</option>
                     <option value="like">igual</option>
                 </select>
             </div>
@@ -95,31 +87,40 @@
 
             //Getting data
             var tableData = <?php echo json_encode($data); ?>;
-            console.log(tableData);
-            // Write data on Tabulator table
+            var list = <?php echo json_encode($list); ?>;
+            // Write data for download
             var table = new Tabulator("#example-table", {
-                height:"311px",
+                height:"380px",
                 data:tableData,
-                dataTree:true,
-                dataTreeStartExpanded:true,
-                autoColumns: true,
+                columns: [
+                    {title:"Actividad", field:"actividad"},
+                    {title:"Especialidad", field:"especialidad"},
+                    {//create column group
+                        title:"Total",
+                        columns:[
+                        {title:"Ambos Sexos", field:"0 - 4 - M", width:120, bottomCalc:"sum"},
+                        {title:"Hombres", field:"0 - 4 - H", width:120, bottomCalc:"sum"},
+                        {title:"Mujeres", field:"0 - 4 - M", width:120, bottomCalc:"sum"},
+                        ],
+                    },
+                ],
             });
-            // Delete error column
-            table.deleteColumn("_children");
+            // Complete table
+            for(i=0 ; i<list.length ; i++){
+                table.addColumn(
+                    {//create column group
+                        title:`${list[i]}`,
+                        columns:[
+                        {title:"Hombres", field:`${list[i]} - H`, width:120, bottomCalc:"sum"},
+                        {title:"Mujeres", field:`${list[i]} - M`, width:120, bottomCalc:"sum"},
+                        ],
+                    }, false);
+            }
 
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {
                     sheetName: "Reporte"
-                });
-            });
-
-            //trigger download of data.pdf file
-            $("#download-pdf").click(function() {
-                table.download("pdf", "data.pdf", {
-                    orientation: "landscape", //set page orientation (portrait or landscape)
-                    title: "Reporte", //add title to report
-                    format: "legal"
                 });
             });
         </script>

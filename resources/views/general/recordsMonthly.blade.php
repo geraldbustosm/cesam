@@ -16,8 +16,6 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
-    <script src="{{asset('js/jspdf.min.js')}}"></script>
-    <script src="{{asset('js/jspdf.plugin.autotable.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -26,7 +24,6 @@
         <div class="box red"></div>
         <div class="table-controls">
             <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-            <button class="btn btn-primary" id="download-pdf">Descargar PDF</button>
         </div>
         <br>
         <div class="table-controls-legend">
@@ -47,12 +44,9 @@
                 <select class="form-control" id="filter-type">
                     <option selected>Tipo</option>
                     <option value="=">=</option>
-                    <option value="<">&lt;</option>
                     <option value="<=">&lt;=</option>
-                    <option value=">">&gt;</option>
                     <option value=">=">&gt;=</option>
-                    <option value="!=">distinto</option>
-                    <option value="like">igual</option>
+                    <option value="like">igual (texto)</option>
                 </select>
             </div>
             <!-- Value sought -->
@@ -63,6 +57,7 @@
 
         <div id="example-table"></div>
         <script type="text/javascript">
+            document.getElementById('records_Submenu').className += ' show';
             //Trigger setFilter function with correct parameters
             function updateFilter() {
 
@@ -93,7 +88,7 @@
 
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
-                height: "400px",
+                height: "380px",
                 movableColumns: true,
                 columns: [
                     {title:"Programa", field:"programa"},
@@ -133,17 +128,6 @@
                     sheetName: "Reporte"
                 });
             });
-
-            //trigger download of data.pdf file
-            $("#download-pdf").click(function() {
-                table.download("pdf", "data.pdf", {
-                    orientation: "landscape", //set page orientation (portrait or landscape)
-                    title: "Reporte", //add title to report
-                    format: "legal"
-                });
-            });
-
-            document.getElementById('records_Submenu').className += ' show';
         </script>
     </div>
 </div>

@@ -63,6 +63,7 @@ class AdminController extends Controller
             ->join('programa', 'programa.id', '=', 'etapa.programa_id')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->where('paciente.activa', '=', 1)
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->select(
                 'paciente.*',
                 'prevision.*',
@@ -80,7 +81,6 @@ class AdminController extends Controller
                 DB::raw("CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
             )
             ->selectRaw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad')
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->get();
 
         return view('general.recordsMonthly', ['main' => json_encode($patient)]);
@@ -88,6 +88,7 @@ class AdminController extends Controller
     // View for monthly summary
     public function showSummaryRecords()
     {
+        // Get the functionarys
         $functionarys = DB::table('funcionarios')
             ->join('users', 'users.id', '=', 'funcionarios.user_id')
             ->select(
@@ -95,11 +96,13 @@ class AdminController extends Controller
                 DB::raw("CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
             )
             ->get();
-
+        // Get the activities
         $activities = Activity::where('activa', 1)->orderBy('descripcion')->select('id', 'descripcion')->get();
-
+        // Some variables
         $num = 0;
-        $data = [];
+        $dataTotal = [];
+        $dataAttend = [];
+        $dataNoAttend = [];
         // For each activity
         foreach ($activities as $index => $record1) {
             // Create necesary objects
@@ -108,14 +111,14 @@ class AdminController extends Controller
             $objChildren2 = new \stdClass();
             // Adding the first attribute
             $obj->actividad = $record1->descripcion;
-            $objChildren1->actividad = "Con asistencia";
-            $objChildren2->actividad = "Sin asistencia";
+            $objChildren1->actividad = $record1->descripcion;
+            $objChildren2->actividad = $record1->descripcion;
             // For each Functionary
             foreach ($functionarys as $index => $record2) {
                 // Get name, count attend and count no attend              
                 $nombre = $record2->nombre_funcionario;
-                $attend = $this->countActivitiesAttend($record2->id,$record1->id);
-                $notAttend = $this->countActivitiesNotAttend($record2->id,$record1->id);
+                $attend = $this->countActivitiesPerFunctionary($record2->id, $record1->id, 1);
+                $notAttend = $this->countActivitiesPerFunctionary($record2->id, $record1->id, 2);
                 // Setting counts attributes (use the name of functionary like name of attribute)
                 $obj->$nombre = $notAttend + $attend;
                 $objChildren1->$nombre = $attend;
@@ -124,82 +127,100 @@ class AdminController extends Controller
             // Setting children objects to main object
             $obj->_children[0] = $objChildren1;
             $obj->_children[1] = $objChildren2;
-            // Adding object to array
-            $data[$num] = $obj;
+            // Adding object to arrays
+            $dataTotal[$num] = $obj;
+            $dataAttend[$num] = $objChildren1;
+            $dataNoAttend[$num] = $objChildren2;
+            // Next position
             $num++;
         }
         // Return to the view
-        return view('general.recordsSummary', compact('data', 'functionarys'));
+        return view('general.recordsSummary', compact('dataTotal', 'dataAttend', 'dataNoAttend', 'functionarys'));
     }
     // Total attend per functionary/activity
-    public static function countActivitiesAttend($idfunc, $idAct)
+    public static function countActivitiesPerFunctionary($idfunc, $idAct, $assit)
     {
         // Query to count total activities
-        $total = DB::table('atencion')
-            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
-            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
-            ->where('funcionarios.id', $idfunc)
-            ->where('actividad.id', $idAct)
-            ->where('atencion.asistencia', 1)
-            ->get()
-            ->count();
+        $total = Attendance::whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.funcionario_id', $idfunc)
+            ->where('atencion.actividad_id', $idAct)
+            ->where('atencion.asistencia', $assit)
+            ->get();
         // Return value
-        return $total;
-    }
-    // Total NOT attend per functionary/activity
-    public static function countActivitiesNotAttend($idfunc, $idAct)
-    {
-        // Query to count total activities
-        $total = DB::table('atencion')
-            ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
-            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
-            ->where('funcionarios.id', $idfunc)
-            ->where('actividad.id', $idAct)
-            ->where('atencion.asistencia', 0)
-            ->get()
-            ->count();
-        // Return value
-        return $total;
+        return $total->count();
     }
     // View for REM
     public function showRemRecords()
     {
-        $functionarys = DB::table('funcionarios')
-            ->join('users', 'users.id', '=', 'funcionarios.user_id')
-            ->select(
-                'funcionarios.id as id',
-                DB::raw("CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
-            )
-            ->get();
+        $end = 80;
+        $interval = 5;
+        $data = $this->getRemTable($interval, $end);
+        $iterator = 0;
+        $list = [];
+        while ($iterator < $end) {
+            $str = $iterator . " - " . ($iterator + $interval - 1);
+            array_push($list, $str);
+            $iterator = $iterator + $interval;
+        }
+        $str = $iterator . "+";
+        array_push($list, $str);
 
+        return view('general.recordsRem', compact('data', 'list'));
+    }
+    // Table for REM
+    public function getRemTable($interval, $end)
+    {
         $activities = Activity::where('activa', 1)->orderBy('descripcion')->select('id', 'descripcion')->get();
 
-        $num = 0;
         $data = [];
-        foreach ($activities as $index => $record1) {
-            $obj = new \stdClass();
-            $objChildren1 = new \stdClass();
-            $objChildren2 = new \stdClass();
-            $obj->actividad = $record1->descripcion;
-            $objChildren1->actividad = "Con asistencia";
-            $objChildren2->actividad = "Sin asistencia";
-            foreach ($functionarys as $index => $record2) {                
-                $nombre = $record2->nombre_funcionario;
-                $attend = $this->countActivitiesAttend($record2->id,$record1->id);
-                $notAttend = $this->countActivitiesNotAttend($record2->id,$record1->id);
-                $obj->$nombre = $notAttend + $attend;
-                $objChildren1->$nombre = $attend;
-                $objChildren2->$nombre = $notAttend;
+        $num = 0;
+        foreach ($activities as $record1) {
+            $speciality = $record1->speciality;
+            foreach ($speciality as $record2) {
+                // Create necesary objects
+                $obj = new \stdClass();
+                $obj->actividad = $record1->descripcion;
+                $obj->especialidad = $record2->descripcion;
+                $iterator = 0;
+                while ($iterator < $end) {
+                    $strH = $iterator . " - " . ($iterator + $interval - 1) . " - H";
+                    $strM = $iterator . " - " . ($iterator + $interval - 1) . " - M";
+                    // $obj->$strH =  $this->test($iterator, $iterator + $interval, $record1->id, $record2->id, "hombre");
+                    $obj->$strH =  0;
+                    $obj->$strM =  0;
+                    $iterator = $iterator + $interval;
+                }
+                $strH = $iterator . "+ - H";
+                $strM = $iterator . "+ - M";
+                $obj->$strH = $this->test($iterator, 300, $record1->id, $record2->id, "hombre");
+                $obj->$strM = $this->test($iterator, 300, $record1->id, $record2->id, "mujer");
+                // Adding object to array
+                $data[$num] = $obj;
+                // Next position
+                $num++;
             }
-            $obj->_children[0] = $objChildren1;
-            $obj->_children[1] = $objChildren2;
-            $data[$num] = $obj;
-            $num++;
         }
-
-        return view('general.recordsRem', compact('data', 'functionarys'));
+        return $data;
+    }
+    // test =SUMA(C3:AM34)
+    public function test($min, $max, $idAct, $idSp, $sex)
+    {
+        $from = Carbon::now()->subYears($max - 1)->addDays(1);
+        $to = Carbon::now()->subYears($min - 1)->addDays(1);
+        // Query to count total activities
+        $total = DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('funcionario_posee_especialidad.especialidad_id', $idSp)
+            ->where('atencion.actividad_id', $idAct)
+            ->whereRaw('lower(sexo.descripcion) like lower(?)', ["%{$sex}%"])
+            // ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
+            ->get();
+        // Return value
+        return $total->count();
     }
     // Pacientes inactivos
     /*public function showInactivePatients()
