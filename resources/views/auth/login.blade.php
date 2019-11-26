@@ -36,23 +36,7 @@
             </div>
         </form>
     </div>
-
-    <?php
-    $serverName = "34.66.72.246, 1433";
-    $connectionOptions = array(
-        "database" => "CESAM",
-        "uid" => "SA",
-        "pwd" => "MariaOlga1"
-    );
-
-    // Establishes the connection
-    $conn = sqlsrv_connect ($serverName, $connectionOptions);
-    if ($conn === false) {
-        die(formatErrors(sqlsrv_errors()));
-    } else {
-        die("it's working");
-    }
-    ?>
+    
     <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
