@@ -84,7 +84,6 @@
 
                 table.clearFilter();
             });
-
             //Getting data
             var tableData = <?php echo json_encode($data); ?>;
             var list = <?php echo json_encode($list); ?>;
@@ -105,7 +104,6 @@
                     },
                 ],
             });
-            console.log(tableData[0][`${list[0]} - M`])
             // Complete table
             for(i=0 ; i<list.length ; i++){
                 table.addColumn(
@@ -124,6 +122,41 @@
                     sheetName: "Reporte"
                 });
             });
+
+            // Write Values
+            for ( i=0 ; i<tableData.length ; i++ ) {
+                var idAct = tableData[i].idAct;
+                var idSp = tableData[i].idSp;
+                for( j=0 ; j<list.length ; j++ ) {
+                //     var vector = list[j].split(" - ");
+                //     if ( vector.length <= 1 ) {
+                //         var vector2 = vector[0].split("+");
+                //         vector[0] = vector2[0];
+                //         vector[1] = "300";
+                //     }
+                //     var min = Number(vector[0]);
+                //     var max = Number(vector[1]);
+                //     $.ajax({
+                //         url: "{{url('valores-rem')}}",
+                //         type: "GET",
+                //         dataType: "json",
+                //         data: {
+                //             min: min,
+                //             max: max,
+                //             idAct: idAct,
+                //             idSp: idSp,
+                //             sex: "hombre",
+                //         },
+                //         success: function(res) {
+                //             tableData[i][`${list[j]} - H`] = res;
+                //         },
+                //         error: function(xhr) {
+                //             tableData[i][`${list[j]} - H`] = 0;
+                //         }
+                //     });
+                //     console.log(tableData[i][`${list[j]} - H`]);
+                }
+            }
         </script>
     </div>
 </div>

@@ -79,7 +79,7 @@ class GeneralController extends Controller
             // Identify active stage
             $activeStage = $stage;
             // Redirect to the view with successful status
-            return view('General.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
+            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
         }
     }
     /***************************************************************************************************************************
@@ -104,7 +104,7 @@ class GeneralController extends Controller
             ->where('activa', 1)
             ->select('id')
             ->first();
-        return view('General.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
+        return view('general.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
     }
 
     public function showAddRelease($DNI)

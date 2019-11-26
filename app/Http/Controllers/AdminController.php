@@ -179,7 +179,9 @@ class AdminController extends Controller
             foreach ($speciality as $record2) {
                 // Create necesary objects
                 $obj = new \stdClass();
+                $obj->idAct = $record1->id;
                 $obj->actividad = $record1->descripcion;
+                $obj->idSp = $record2->id;
                 $obj->especialidad = $record2->descripcion;
                 $both = "Ambos sexos";
                 $male = "Hombres";
@@ -191,15 +193,14 @@ class AdminController extends Controller
                 while ($iterator < $end) {
                     $strH = $iterator . " - " . ($iterator + $interval - 1) . " - H";
                     $strM = $iterator . " - " . ($iterator + $interval - 1) . " - M";
-                    // $obj->$strH =  $this->test($iterator, $iterator + $interval, $record1->id, $record2->id, "hombre");
-                    $obj->$strH =  0;
-                    $obj->$strM =  0;
+                    $obj->$strH =  countActivitiesPerSpeciality($iterator,$iterator + $interval,$record1->id,$record2->id,'hombre');
+                    $obj->$strM =  countActivitiesPerSpeciality($iterator,$iterator + $interval,$record1->id,$record2->id,'mujer');
                     $iterator = $iterator + $interval;
                 }
                 $strH = $iterator . "+ - H";
                 $strM = $iterator . "+ - M";
-                $obj->$strH = $this->test($iterator, 300, $record1->id, $record2->id, "hombre");
-                $obj->$strM = $this->test($iterator, 300, $record1->id, $record2->id, "mujer");
+                $obj->$strH = countActivitiesPerSpeciality($iterator,300,$record1->id,$record2->id,'hombre');
+                $obj->$strM = countActivitiesPerSpeciality($iterator,300,$record1->id,$record2->id,'mujer');
                 // Adding object to array
                 $data[$num] = $obj;
                 // Next position
@@ -208,8 +209,8 @@ class AdminController extends Controller
         }
         return $data;
     }
-    // test =SUMA(C3:AM34)
-    public function test($min, $max, $idAct, $idSp, $sex)
+    // count
+    public function countActivitiesPerSpeciality($min, $max, $idAct, $idSp, $sex)
     {
         $from = Carbon::now()->subYears($max - 1)->addDays(1);
         $to = Carbon::now()->subYears($min - 1)->addDays(1);
@@ -223,7 +224,27 @@ class AdminController extends Controller
             ->where('funcionario_posee_especialidad.especialidad_id', $idSp)
             ->where('atencion.actividad_id', $idAct)
             ->whereRaw('lower(sexo.descripcion) like lower(?)', ["%{$sex}%"])
-            // ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
+            ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
+            ->get();
+        // Return value
+        return $total->count();
+    }
+    // test =SUMA(C3:AM34)
+    public function test(Request $request)
+    {
+        $from = Carbon::now()->subYears($request->max - 1)->addDays(1);
+        $to = Carbon::now()->subYears($request->min - 1)->addDays(1);
+        // Query to count total activities
+        $total = DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('funcionario_posee_especialidad.especialidad_id', $request->idSp)
+            ->where('atencion.actividad_id', $request->idAct)
+            ->whereRaw('lower(sexo.descripcion) like lower(?)', ["%{$request->sex}%"])
+            ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
             ->get();
         // Return value
         return $total->count();
