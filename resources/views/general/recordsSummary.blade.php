@@ -31,21 +31,13 @@
         </div>
         <!-- Select parameters for filter -->
         <div class="table-controls form-row">
-            <div class="form-group col-md-2">
-                <select class="form-control" id="filter-assist">
-                    <option selected>Asistencia</option>
-                    <option value="attend">Con asistencia</option>
-                    <option value="no-attend">Sin asistencia</option>
-                    <option value="all">Todas</option>
-                </select>
-            </div>
 
             <div class="form-group col-md-3">
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
                     <option value="actividad">Actividad</option>
-                    @foreach($functionarys as $name)
-                    <option value="{{ $name->nombre_funcionario }}">{{ $name->nombre_funcionario }}</option>
+                    @foreach($functionarys as $functionary)
+                    <option value="{{ $functionary->nombre_funcionario }}">{{ $functionary->nombre_funcionario }}</option>
                     @endforeach
                 </select>
             </div>
@@ -88,58 +80,36 @@
             $("#filter-clear").click(function() {
                 $("#filter-field").val("Columna");
                 $("#filter-type").val("Tipo");
-                $("#filter-value").val("");
-                $("#filter-assist").val("Asistencia");
-                writeTable(tableData);                
+                $("#filter-value").val("");              
                 // Delete error column
-                table.deleteColumn("_children");
                 table.clearFilter();
             });
             //Getting data
-            var tableData = <?php echo json_encode($dataTotal); ?>;
-            var tableAttend = <?php echo json_encode($dataAttend); ?>;
-            var tableNoAttend = <?php echo json_encode($dataNoAttend); ?>;
-            var tableTotal = <?php echo json_encode($dataTotal); ?>;
-            var table;
-            // Write table on load page
-            window.onload = function() {
-                changeSomeData();
-                writeTable(tableData);                
-                // Delete error column
-                table.deleteColumn("_children");
-            };
-            // Put data on table
-            function writeTable(data){
-                var tableData = data;
-                // Write data on Tabulator table
-                table = new Tabulator("#example-table", {
-                    height:"380px",
-                    data:tableData,
-                    dataTree:true,
-                    dataTreeStartExpanded:true,
-                    autoColumns: true,
-                });
-            }
-            // Change some data
-            function changeSomeData() {
-                for ( var i=0 ; i<tableData.length ; i++ ) {
-                    tableData[i]._children[0].actividad = "Con asistencia";
-                    tableData[i]._children[1].actividad = "Sin asistencia";
-                    delete tableTotal[i]._children;
-                }
-            }
-            // Change for assist at attend, no assist or both
-            $("#filter-assist").change( function() {
-                if ( $("#filter-assist").val() == "attend" ) {
-                    // Write data on Tabulator table
-                    writeTable(tableAttend);
-                } else if ( $("#filter-assist").val() == "no-attend" ) {
-                    // Write data on Tabulator table
-                    writeTable(tableNoAttend);
-                } else if ( $("#filter-assist").val() == "all" ) {
-                    writeTable(tableTotal);
-                }
+            var tableData = <?php echo json_encode($table); ?>;
+            var functionarys = <?php echo json_encode($functionarys); ?>;
+            // Write data on Tabulator table
+            table = new Tabulator("#example-table", {
+                height:"380px",
+                data:tableData,
+                // autoColumns: true,
+                columns: [
+                    {title: "Actividad", field:"actividad"},
+                //  {title: "Funcionario", field:"nombre_funcionario"},
+                //  {title: "Con asistencia", field:"Con_Asistencia"},
+                //  {title: "Sin asistencia", field:"Sin_Asistencia"},
+                ],
             });
+            // Complete table
+            for(i=0 ; i<functionarys.length ; i++){
+                table.addColumn(
+                    {//create column group
+                        title:`${functionarys[i].nombre_funcionario}`,
+                        columns:[
+                            {title:"Con Asistenia", field:`${functionarys[i].nombre_funcionario}-si`, width:160, bottomCalc:"sum"},
+                            {title:"Sin Asistenia", field:`${functionarys[i].nombre_funcionario}-no`, width:160, bottomCalc:"sum"},
+                        ],
+                    }, false);
+            };
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

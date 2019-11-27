@@ -112,7 +112,7 @@
                     {title:"Asistencia", field:"asistencia"},
                     {title:"# atención mensual", field:""},
                     {title:"Funcionario", field:"nombre_funcionario"},
-                    {title:"Especialidad del funcionario", field:"descripcion"},
+                    {title:"Especialidad del funcionario", field:"especialidad"},
                 ],
             });
 

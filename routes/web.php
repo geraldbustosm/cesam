@@ -228,5 +228,3 @@ Route::post('etapa', 'GeneralController@selectStage');
 
 Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance');
 Route::post('ultima-atenciontapa', 'GeneralController@selectStage');
-
-Route::get('valores-rem', 'AdminController@test');

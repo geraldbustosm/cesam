@@ -38,7 +38,6 @@
                     <option value="especialidad">Especialidad</option>
                 </select>
             </div>
-
             <div class="form-group col-md-2">
                 <select class="form-control" id="filter-type">
                     <option selected>Tipo</option>
@@ -53,7 +52,7 @@
             <!-- Clean filters -->
             <a href="#" id="filter-clear" style="padding: 5px;"><i title='Restablecer valores' class="material-icons">highlight_off</i><span></span></a>
         </div>
-
+        <!-- Target for tabulator table -->
         <div id="example-table"></div>
         <script type="text/javascript">
             // Keep open sidebar
@@ -87,6 +86,8 @@
             //Getting data
             var tableData = <?php echo json_encode($data); ?>;
             var list = <?php echo json_encode($list); ?>;
+            console.log(tableData);
+            console.log(list);
             // Write data for download
             var table = new Tabulator("#example-table", {
                 height:"380px",
@@ -97,9 +98,9 @@
                     {//create column group
                         title:"Total",
                         columns:[
-                        {title:"Ambos Sexos", field:"0 - 4 - M", width:120, bottomCalc:"sum"},
-                        {title:"Hombres", field:"0 - 4 - H", width:120, bottomCalc:"sum"},
-                        {title:"Mujeres", field:"0 - 4 - M", width:120, bottomCalc:"sum"},
+                        {title:"Ambos Sexos", field:"", width:120, bottomCalc:"sum"},
+                        {title:"Hombres", field:"", width:120, bottomCalc:"sum"},
+                        {title:"Mujeres", field:"", width:120, bottomCalc:"sum"},
                         ],
                     },
                 ],
@@ -115,48 +116,12 @@
                         ],
                     }, false);
             };
-
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {
                     sheetName: "Reporte"
                 });
             });
-
-            // Write Values
-            // for ( i=0 ; i<tableData.length ; i++ ) {
-            //     var idAct = tableData[i].idAct;
-            //     var idSp = tableData[i].idSp;
-                // for( j=0 ; j<list.length ; j++ ) {
-                //     var vector = list[j].split(" - ");
-                //     if ( vector.length <= 1 ) {
-                //         var vector2 = vector[0].split("+");
-                //         vector[0] = vector2[0];
-                //         vector[1] = "300";
-                //     }
-                //     var min = Number(vector[0]);
-                //     var max = Number(vector[1]);
-                //     $.ajax({
-                //         url: "{{url('valores-rem')}}",
-                //         type: "GET",
-                //         dataType: "json",
-                //         data: {
-                //             min: min,
-                //             max: max,
-                //             idAct: idAct,
-                //             idSp: idSp,
-                //             sex: "hombre",
-                //         },
-                //         success: function(res) {
-                //             tableData[i][`${list[j]} - H`] = res;
-                //         },
-                //         error: function(xhr) {
-                //             tableData[i][`${list[j]} - H`] = 0;
-                //         }
-                //     });
-                //     console.log(tableData[i][`${list[j]} - H`]);
-            //     }
-            // }
         </script>
     </div>
 </div>
