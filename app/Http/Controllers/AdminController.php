@@ -143,6 +143,7 @@ class AdminController extends Controller
                 DB::raw("COUNT(atencion.asistencia) AS Ambos")
             )
             ->groupBy('actividad.descripcion', 'especialidad.descripcion')
+            ->orderBy('actividad.descripcion')
             ->get();
         $list = [];
         $data = [];
@@ -211,6 +212,7 @@ class AdminController extends Controller
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'mujer' THEN 1 ELSE 0 END) AS Mujeres")
             )
             ->groupBy('actividad.descripcion', 'especialidad.descripcion')
+            ->orderBy('actividad.descripcion')
             ->get();
         return $data;
     }
