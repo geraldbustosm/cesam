@@ -108,16 +108,16 @@
                 ],
             });
             // Complete table
-            // for(i=0 ; i<list.length ; i++){
-            //     table.addColumn(
-            //         {//create column group
-            //             title:`${list[i]}`,
-            //             columns:[
-            //             {title:"Hombres", field:`${list[i]} - H`, width:120, bottomCalc:"sum"},
-            //             {title:"Mujeres", field:`${list[i]} - M`, width:120, bottomCalc:"sum"},
-            //             ],
-            //         }, false);
-            // };
+            for(i=0 ; i<list.length ; i++){
+                table.addColumn(
+                    {//create column group
+                        title:`${list[i]}`,
+                        columns:[
+                        {title:"Hombres", field:`${list[i]} - H`, width:120, bottomCalc:"sum"},
+                        {title:"Mujeres", field:`${list[i]} - M`, width:120, bottomCalc:"sum"},
+                        ],
+                    }, false);
+            };
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {
