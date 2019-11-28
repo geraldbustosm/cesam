@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Activity;
 use App\Functionary;
 use App\Patient;
 use App\Provision;
@@ -85,11 +84,12 @@ class AdminController extends Controller
     public function showSummaryRecords()
     {
         // Get data
-        $data = DB::table('funcionarios')
+        $data = DB::table('atencion')
+            ->join('funcionarios', 'atencion.funcionario_id', '=', 'funcionarios.id')
             ->join('users', 'users.id', '=', 'funcionarios.user_id')
-            ->join('atencion', 'atencion.funcionario_id', '=', 'funcionarios.id')
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('funcionarios.activa', 1)
             ->select(
                 'actividad.descripcion as actividad',
                 DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario"),
@@ -125,8 +125,34 @@ class AdminController extends Controller
     // View for REM
     public function showRemRecords()
     {
-        // Get data of total
-        $totaldata = DB::table('atencion')
+        // Some variables
+        $end = 80;
+        $interval = 5;
+        $list = [];
+        $data = [];
+        // Get total data
+        $query = DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.asistencia', 1)
+            ->select(
+                'paciente.fecha_nacimiento as fecha',
+                'especialidad.descripcion as especialidad',
+                'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("COUNT(atencion.asistencia) AS Ambos")
+            )
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion', 'paciente.fecha_nacimiento')
+            ->orderBy('actividad.descripcion')
+            ->get();
+        // Get base data
+        $queryOriginal = DB::table('atencion')
             ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
             ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
             ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
@@ -138,87 +164,88 @@ class AdminController extends Controller
             ->select(
                 'especialidad.descripcion as especialidad',
                 'actividad.descripcion as actividad',
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'hombre' THEN 1 ELSE 0 END) AS Hombres"),
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'mujer' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
                 DB::raw("COUNT(atencion.asistencia) AS Ambos")
             )
             ->groupBy('actividad.descripcion', 'especialidad.descripcion')
             ->orderBy('actividad.descripcion')
             ->get();
-        $list = [];
-        $data = [];
-        $end = 80;
-        $interval = 5;
-        foreach ($totaldata as $record) {
-            // Create necesary objects
+
+        // Creating usseful data
+        foreach ($queryOriginal as $record1) {
+            // Create necesary object
             $obj = new \stdClass();
-            $obj->actividad = $record->actividad;
-            $obj->especialidad = $record->especialidad;
-            $obj->Hombres = $record->Hombres;
-            $obj->Mujeres = $record->Mujeres;
-            $obj->Ambos = $record->Ambos;
+            // Pass common data
+            $obj->actividad = $record1->actividad;
+            $obj->especialidad = $record1->especialidad;
+            $obj->Ambos = $record1->Ambos;
+            $obj->Hombres = $record1->Hombres;
+            $obj->Mujeres = $record1->Mujeres;
             $iterator = 0;
+            // Generate data for list
             while ($iterator < $end) {
                 $str = $iterator . " - " . ($iterator + $interval - 1);
-                $strH = $str  . " - H";
-                $strM = $str  . " - M";
-                $obj->$strH = 0;
-                $obj->$strM = 0;
-                $counts = $this->count($iterator, $iterator + $interval - 1, $record->especialidad, $record->actividad);
-                foreach ($counts as $record2) {
-                    $obj->$strH = (int) $record2->Hombres;
-                    $obj->$strM = (int) $record2->Mujeres;
-                }
-                $iterator = $iterator + $interval;
                 if (!in_array($str, $list)) {
                     array_push($list, $str);
                 }
+                // Put come default data
+                $strH = $str . " - H";
+                $strM = $str . " - M";
+                $obj->$strH =  0;
+                $obj->$strM =  0;
+                // Generate real data to use on view
+                foreach ($query as $record2) {
+                    // Get age of patient to number
+                    $age = Carbon::parse($record2->fecha)->age;
+                    /*
+                        Check match between queryOriginal and query
+                        To sure the data is the correct to upgrade
+                        And we check if is in range of age (range are in list[])
+                    */
+                    if (
+                        $record1->actividad == $record2->actividad
+                        && $record1->especialidad == $record2->especialidad
+                        &&  $age >= $iterator && $age <= ($iterator + $interval - 1)
+                    ) {
+                        $obj->$strH = $obj->$strH + $record2->Hombres;
+                        $obj->$strM = $obj->$strM + $record2->Mujeres;
+                    }
+                }
+                $iterator = $iterator + $interval;
             }
             $str = $iterator . " - más";
             if (!in_array($str, $list)) {
                 array_push($list, $str);
             }
+            // More default data for last range
             $strH = $str . " - H";
             $strM = $str . " - M";
             $obj->$strH = 0;
             $obj->$strM = 0;
-            $counts = $this->count($iterator, 300, $record->especialidad, $record->actividad);
-            foreach ($counts as $record2) {
-                $obj->$strH = (int) $record2->Hombres;
-                $obj->$strM = (int) $record2->Mujeres;
+            // Do the same for the last range (last value in list[])
+            foreach ($query as $record2) {
+                // Age of patient to numbre
+                $age = Carbon::parse($record2->fecha)->age;
+                /*
+                    Check match between queryOriginal and query
+                    To sure the data is the correct to upgrade
+                    And we check if is in range of age (range are in list[])
+                */
+                if (
+                    $record1->actividad == $record2->actividad
+                    && $record1->especialidad == $record2->especialidad
+                    &&  $age >= $iterator
+                ) {
+                    $obj->$strH = $obj->$strH + $record2->Hombres;
+                    $obj->$strM = $obj->$strM + $record2->Mujeres;
+                }
             }
             // Adding object to array
             array_push($data, $obj);
         }
 
-        return view('general.recordsRem', compact('totaldata', 'list', 'data'));
-    }
-    // count
-    public function count($min, $max, $sp, $act)
-    {
-        $from = Carbon::now()->subYears($max - 1)->addDays(1);
-        $to = Carbon::now()->subYears($min - 1)->addDays(1);
-        // Get data
-        $data = DB::table('atencion')
-            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
-            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
-            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
-            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
-            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
-            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-            ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
-            ->where('atencion.asistencia', 1)
-            ->where('especialidad.descripcion', $sp)
-            ->where('actividad.descripcion', $act)
-            ->select(
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'hombre' THEN 1 ELSE 0 END) AS Hombres"),
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'mujer' THEN 1 ELSE 0 END) AS Mujeres")
-            )
-            ->groupBy('actividad.descripcion', 'especialidad.descripcion')
-            ->orderBy('actividad.descripcion')
-            ->get();
-        return $data;
+        return view('general.recordsRem', compact('data', 'list'));
     }
     /***************************************************************************************************************************
                                                     HELPERS AND LOGIC FUNCTIONS

@@ -84,15 +84,14 @@
                 table.clearFilter();
             });
             //Getting data
-            var tableData = <?php echo json_encode($totaldata); ?>;
+            var tableData = <?php echo json_encode($data); ?>;
             var list = <?php echo json_encode($list); ?>;
-            var table = <?php echo json_encode($data); ?>;
+            console.log(tableData);
             console.log(list);
-            console.log(table);
             // Write data for download
             var table = new Tabulator("#example-table", {
                 height:"380px",
-                data:table,
+                data:tableData,
                 // autoColumns: true,
                 columns: [
                     {title:"Actividad", field:"actividad"},
