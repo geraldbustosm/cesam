@@ -166,28 +166,36 @@ class AdminController extends Controller
                 $obj->$strM = 0;
                 $counts = $this->count($iterator, $iterator + $interval - 1);
                 foreach ($counts as $record2) {
-                    $obj->$strH = (int) $record2->Hombres;
-                    $obj->$strM = (int) $record2->Mujeres;
+                    if ($counts->especialidad == $record->especialidad && $counts->actividad == $record->actividad) {
+                        $obj->$strH = (int) $record2->Hombres;
+                        $obj->$strM = (int) $record2->Mujeres;
+                    }
                 }
                 $iterator = $iterator + $interval;
-                array_push($list, $str);
+                if (!in_array($str, $list)) {
+                    array_push($list, $str);
+                }
             }
             $str = $iterator . " - más";
-            array_push($list, $str);
+            if (!in_array($str, $list)) {
+                array_push($list, $str);
+            }
             $strH = $str . " - H";
             $strM = $str . " - M";
             $obj->$strH = 0;
             $obj->$strM = 0;
             $counts = $this->count($iterator, 300);
             foreach ($counts as $record2) {
-                $obj->$strH = (int) $record2->Hombres;
-                $obj->$strM = (int) $record2->Mujeres;
+                if ($counts->especialidad == $record->especialidad && $counts->actividad == $record->actividad) {
+                    $obj->$strH = (int) $record2->Hombres;
+                    $obj->$strM = (int) $record2->Mujeres;
+                }
             }
             // Adding object to array
             array_push($data, $obj);
         }
 
-        return view('general.recordsRem', compact('totaldata', 'list', 'table'));
+        return view('general.recordsRem', compact('totaldata', 'list', 'data'));
     }
     // count
     public function count($min, $max)
