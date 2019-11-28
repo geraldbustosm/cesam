@@ -94,9 +94,6 @@
                 // autoColumns: true,
                 columns: [
                     {title: "Actividad", field:"actividad"},
-                //  {title: "Funcionario", field:"nombre_funcionario"},
-                //  {title: "Con asistencia", field:"Con_Asistencia"},
-                //  {title: "Sin asistencia", field:"Sin_Asistencia"},
                 ],
             });
             // Complete table

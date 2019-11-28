@@ -84,23 +84,25 @@
                 table.clearFilter();
             });
             //Getting data
-            var tableData = <?php echo json_encode($data); ?>;
+            var tableData = <?php echo json_encode($totaldata); ?>;
             var list = <?php echo json_encode($list); ?>;
-            console.log(tableData);
+            var table = <?php echo json_encode($table); ?>;
             console.log(list);
+            console.log(table);
             // Write data for download
             var table = new Tabulator("#example-table", {
                 height:"380px",
-                data:tableData,
+                data:table,
+                // autoColumns: true,
                 columns: [
                     {title:"Actividad", field:"actividad"},
                     {title:"Especialidad", field:"especialidad"},
                     {//create column group
                         title:"Total",
                         columns:[
-                        {title:"Ambos Sexos", field:"", width:120, bottomCalc:"sum"},
-                        {title:"Hombres", field:"", width:120, bottomCalc:"sum"},
-                        {title:"Mujeres", field:"", width:120, bottomCalc:"sum"},
+                        {title:"Ambos Sexos", field:"Ambos", width:120, bottomCalc:"sum"},
+                        {title:"Hombres", field:"Hombres", width:120, bottomCalc:"sum"},
+                        {title:"Mujeres", field:"Mujeres", width:120, bottomCalc:"sum"},
                         ],
                     },
                 ],

@@ -28,7 +28,7 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     VIEWS FOR ADMIN ROLE ONLY
      ****************************************************************************************************************************/
-    // clinical records
+    // View per month
     public function showMonthlyRecords()
     {
         $data = DB::table('paciente')
@@ -81,7 +81,7 @@ class AdminController extends Controller
         // Return to the view
         return view('general.recordsMonthly', ['main' => json_encode($data)]);
     }
-    // View for monthly summary
+    // View for month summary
     public function showSummaryRecords()
     {
         // Get data
@@ -120,81 +120,99 @@ class AdminController extends Controller
             array_push($table, $obj);
         }
         // Return to the view
-        return view('general.recordsSummary', compact('data', 'functionarys', 'activities', 'table'));
+        return view('general.recordsSummary', compact('functionarys', 'table'));
     }
     // View for REM
     public function showRemRecords()
     {
-        $end = 80;
-        $interval = 5;
-        $data = $this->getRemTable($interval, $end);
-        $iterator = 0;
-        $list = [];
-        while ($iterator < $end) {
-            $str = $iterator . " - " . ($iterator + $interval - 1);
-            array_push($list, $str);
-            $iterator = $iterator + $interval;
-        }
-        $str = $iterator . "+";
-        array_push($list, $str);
-
-        return view('general.recordsRem', compact('data', 'list'));
-    }
-    // Table for REM
-    public function getRemTable($interval, $end)
-    {
-        $activities = Activity::where('activa', 1)->orderBy('descripcion')->select('id', 'descripcion')->get();
-
-        $data = [];
-        $num = 0;
-        foreach ($activities as $record1) {
-            $speciality = $record1->speciality;
-            foreach ($speciality as $record2) {
-                // Create necesary objects
-                $obj = new \stdClass();
-                $obj->idAct = $record1->id;
-                $obj->actividad = $record1->descripcion;
-                $obj->idSp = $record2->id;
-                $obj->especialidad = $record2->descripcion;
-                $iterator = 0;
-                while ($iterator < $end) {
-                    $strH = $iterator . " - " . ($iterator + $interval - 1) . " - H";
-                    $strM = $iterator . " - " . ($iterator + $interval - 1) . " - M";
-                    $obj->$strH =  1;
-                    $obj->$strM =  2;
-                    $iterator = $iterator + $interval;
-                }
-                $strH = $iterator . "+ - H";
-                $strM = $iterator . "+ - M";
-                $obj->$strH = 3;
-                $obj->$strM = 4;
-                // Adding object to array
-                $data[$num] = $obj;
-                // Next position
-                $num++;
-            }
-        }
-        return $data;
-    }
-    // count
-    public function countActivitiesPerSpeciality($min, $max, $idAct, $idSp, $sex)
-    {
-        $from = Carbon::now()->subYears($max - 1)->addDays(1);
-        $to = Carbon::now()->subYears($min - 1)->addDays(1);
-        // Query to count total activities
-        $total = DB::table('atencion')
+        // Get data of total
+        $totaldata = DB::table('atencion')
             ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
             ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
-            ->where('funcionario_posee_especialidad.especialidad_id', $idSp)
-            ->where('atencion.actividad_id', $idAct)
-            ->whereRaw('lower(sexo.descripcion) like lower(?)', ["%{$sex}%"])
-            ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
+            ->where('atencion.asistencia', 1)
+            ->select(
+                'especialidad.descripcion as especialidad',
+                'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'hombre' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'mujer' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("COUNT(atencion.asistencia) AS Ambos")
+            )
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion')
             ->get();
-        // Return value
-        return $total->count();
+        $list = [];
+        $data = [];
+        $end = 80;
+        $interval = 5;
+        foreach ($totaldata as $record) {
+            // Create necesary objects
+            $obj = new \stdClass();
+            $obj->actividad = $record->actividad;
+            $obj->especialidad = $record->especialidad;
+            $obj->Hombres = $record->Hombres;
+            $obj->Mujeres = $record->Mujeres;
+            $obj->Ambos = $record->Ambos;
+            $iterator = 0;
+            while ($iterator < $end) {
+                $str = $iterator . " - " . ($iterator + $interval - 1);
+                $strH = $str  . " - H";
+                $strM = $str  . " - M";
+                $obj->$strH = 0;
+                $obj->$strM = 0;
+                $counts = $this->count($iterator, $iterator + $interval - 1);
+                foreach ($counts as $record2) {
+                    $obj->$strH = (int) $record2->Hombres;
+                    $obj->$strM = (int) $record2->Mujeres;
+                }
+                $iterator = $iterator + $interval;
+                array_push($list, $str);
+            }
+            $str = $iterator . " - más";
+            array_push($list, $str);
+            $strH = $str . " - H";
+            $strM = $str . " - M";
+            $obj->$strH = 0;
+            $obj->$strM = 0;
+            $counts = $this->count($iterator, 300);
+            foreach ($counts as $record2) {
+                $obj->$strH = (int) $record2->Hombres;
+                $obj->$strM = (int) $record2->Mujeres;
+            }
+            // Adding object to array
+            array_push($data, $obj);
+        }
+
+        return view('general.recordsRem', compact('totaldata', 'list', 'table'));
+    }
+    // count
+    public function count($min, $max)
+    {
+        $from = Carbon::now()->subYears($max - 1)->addDays(1);
+        $to = Carbon::now()->subYears($min - 1)->addDays(1);
+        // Get data
+        $data = DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.asistencia', 1)
+            ->select(
+                'especialidad.descripcion as especialidad',
+                'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'hombre' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'mujer' THEN 1 ELSE 0 END) AS Mujeres")
+            )
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion')
+            ->get();
+        return $data;
     }
     /***************************************************************************************************************************
                                                     HELPERS AND LOGIC FUNCTIONS
