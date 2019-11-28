@@ -166,10 +166,8 @@ class AdminController extends Controller
                 $obj->$strM = 0;
                 $counts = $this->count($iterator, $iterator + $interval - 1, $record->especialidad, $record->actividad);
                 foreach ($counts as $record2) {
-                    if ($counts->especialidad == $record->especialidad && $counts->actividad == $record->actividad) {
-                        $obj->$strH = (int) $record2->Hombres;
-                        $obj->$strM = (int) $record2->Mujeres;
-                    }
+                    $obj->$strH = (int) $record2->Hombres;
+                    $obj->$strM = (int) $record2->Mujeres;
                 }
                 $iterator = $iterator + $interval;
                 if (!in_array($str, $list)) {
@@ -186,10 +184,8 @@ class AdminController extends Controller
             $obj->$strM = 0;
             $counts = $this->count($iterator, 300, $record->especialidad, $record->actividad);
             foreach ($counts as $record2) {
-                if ($counts->especialidad == $record->especialidad && $counts->actividad == $record->actividad) {
-                    $obj->$strH = (int) $record2->Hombres;
-                    $obj->$strM = (int) $record2->Mujeres;
-                }
+                $obj->$strH = (int) $record2->Hombres;
+                $obj->$strM = (int) $record2->Mujeres;
             }
             // Adding object to array
             array_push($data, $obj);
