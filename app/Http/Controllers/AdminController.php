@@ -164,7 +164,7 @@ class AdminController extends Controller
                 $strM = $str  . " - M";
                 $obj->$strH = 0;
                 $obj->$strM = 0;
-                $counts = $this->count($iterator, $iterator + $interval - 1);
+                $counts = $this->count($iterator, $iterator + $interval - 1, $record->especialidad, $record->actividad);
                 foreach ($counts as $record2) {
                     if ($counts->especialidad == $record->especialidad && $counts->actividad == $record->actividad) {
                         $obj->$strH = (int) $record2->Hombres;
@@ -184,7 +184,7 @@ class AdminController extends Controller
             $strM = $str . " - M";
             $obj->$strH = 0;
             $obj->$strM = 0;
-            $counts = $this->count($iterator, 300);
+            $counts = $this->count($iterator, 300, $record->especialidad, $record->actividad);
             foreach ($counts as $record2) {
                 if ($counts->especialidad == $record->especialidad && $counts->actividad == $record->actividad) {
                     $obj->$strH = (int) $record2->Hombres;
@@ -198,7 +198,7 @@ class AdminController extends Controller
         return view('general.recordsRem', compact('totaldata', 'list', 'data'));
     }
     // count
-    public function count($min, $max)
+    public function count($min, $max, $sp, $act)
     {
         $from = Carbon::now()->subYears($max - 1)->addDays(1);
         $to = Carbon::now()->subYears($min - 1)->addDays(1);
@@ -213,9 +213,9 @@ class AdminController extends Controller
             ->whereBetween('paciente.fecha_nacimiento', [$from, $to])
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where('atencion.asistencia', 1)
+            ->where('especialidad.descripcion', $sp)
+            ->where('actividad.descripcion', $act)
             ->select(
-                'especialidad.descripcion as especialidad',
-                'actividad.descripcion as actividad',
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'hombre' THEN 1 ELSE 0 END) AS Hombres"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like 'mujer' THEN 1 ELSE 0 END) AS Mujeres")
             )
