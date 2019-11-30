@@ -27,6 +27,121 @@ class AdminController extends Controller
     /***************************************************************************************************************************
                                                     VIEWS FOR ADMIN ROLE ONLY
      ****************************************************************************************************************************/
+    // View admissions
+    public function showAdmissions()
+    {
+        $data = DB::table('etapa')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
+            ->join('programa', 'programa.id', '=', 'etapa.programa_id')
+            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
+            ->join('sigges', 'sigges.id', '=', 'etapa.sigges_id')
+            ->join('diagnostico', 'diagnostico.id', '=', 'etapa.diagnostico_id')
+            ->join('funcionarios', 'funcionarios.id', '=', 'etapa.funcionario_id')
+            ->join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->leftJoin('direccion', 'direccion.idPaciente', '=', 'paciente.id')
+            ->leftJoin('atencion', 'atencion.etapa_id', '=', 'etapa.id')
+            ->leftJoin('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
+            ->leftJoin('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
+            ->whereMonth('etapa.created_at', Carbon::now()->month)
+            ->where('etapa.activa', 1)
+            ->select(
+                'etapa.id as numero_ficha',
+                'paciente.DNI',
+                'paciente.nombre1',
+                'paciente.apellido1',
+                'paciente.apellido2',
+                'paciente.fecha_nacimiento',
+                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad"),
+                'sexo.descripcion as sexo',
+                'procedencia.descripcion as procedencia',
+                'programa.descripcion as programa',
+                'etapa.created_at as fecha_ingreso',
+                'prevision.descripcion as prevision',
+                DB::raw("(CASE WHEN lower(tipo_prestacion.descripcion) like '%ges%' THEN 'SI' ELSE 'NO' END) AS ges"),
+                'sigges.descripcion as sigges',
+                'diagnostico.descripcion as diagnostico',
+                DB::raw("(CASE WHEN direccion.departamento IS NOT NULL
+                THEN lower(CONCAT(direccion.calle,' #', direccion.numero , ' depto: ', direccion.departamento, ', ', direccion.comuna))
+                ELSE (CASE WHEN direccion.calle IS NOT NULL
+                THEN lower(CONCAT(direccion.calle,' #', direccion.numero, ', ', direccion.comuna))
+                ELSE ' ' END) END) AS direccion"),
+                DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as medico")
+            )
+            ->distinct('etapa.id')
+            ->orderBy('etapa.created_at')
+            ->get();
+        // Change date format
+        foreach ($data as $record) {
+            $dob = Carbon::createFromDate($record->fecha_nacimiento);
+            $addmission_date = Carbon::createFromDate($record->fecha_ingreso);
+            $record->fecha_nacimiento = $dob->format('d/m/Y');
+            $record->fecha_ingreso = $addmission_date->format('d/m/Y');
+        }
+        // Return to the view
+        return view('general.patientAdmissions', ['main' => json_encode($data)]);
+    }
+    // View discharges
+    public function showDischarges()
+    {
+        $data = DB::table('etapa')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
+            ->join('programa', 'programa.id', '=', 'etapa.programa_id')
+            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
+            ->join('sigges', 'sigges.id', '=', 'etapa.sigges_id')
+            ->join('diagnostico', 'diagnostico.id', '=', 'etapa.diagnostico_id')
+            ->join('funcionarios', 'funcionarios.id', '=', 'etapa.funcionario_id')
+            ->join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->join('alta', 'alta.id', '=', 'etapa.alta_id')
+            ->leftJoin('direccion', 'direccion.idPaciente', '=', 'paciente.id')
+            ->leftJoin('atencion', 'atencion.etapa_id', '=', 'etapa.id')
+            ->leftJoin('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
+            ->leftJoin('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
+            ->whereMonth('etapa.created_at', Carbon::now()->month)
+            ->where('etapa.activa', 0)
+            ->select(
+                'alta.created_at as fecha_egreso',
+                'alta.descripcion as alta',
+                'etapa.id as numero_ficha',
+                'paciente.DNI',
+                'paciente.nombre1',
+                'paciente.apellido1',
+                'paciente.apellido2',
+                'paciente.fecha_nacimiento',
+                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad"),
+                'sexo.descripcion as sexo',
+                'procedencia.descripcion as procedencia',
+                'programa.descripcion as programa',
+                'etapa.created_at as fecha_ingreso',
+                'prevision.descripcion as prevision',
+                DB::raw("(CASE WHEN lower(tipo_prestacion.descripcion) like '%ges%' THEN 'SI' ELSE 'NO' END) AS ges"),
+                'sigges.descripcion as sigges',
+                'diagnostico.descripcion as diagnostico',
+                DB::raw("(CASE WHEN direccion.departamento IS NOT NULL
+                THEN lower(CONCAT(direccion.calle,' #', direccion.numero , ' depto: ', direccion.departamento, ', ', direccion.comuna))
+                ELSE (CASE WHEN direccion.calle IS NOT NULL
+                THEN lower(CONCAT(direccion.calle,' #', direccion.numero, ', ', direccion.comuna))
+                ELSE ' ' END) END) AS direccion"),
+                DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as medico")
+            )
+            ->distinct('etapa.id')
+            ->orderBy('etapa.created_at')
+            ->get();
+        // Change date format
+        foreach ($data as $record) {
+            $dob = Carbon::createFromDate($record->fecha_nacimiento);
+            $addmission_date = Carbon::createFromDate($record->fecha_ingreso);
+            $discharge_date = Carbon::createFromDate($record->fecha_egreso);
+            $record->fecha_nacimiento = $dob->format('d/m/Y');
+            $record->fecha_ingreso = $addmission_date->format('d/m/Y');
+            $record->fecha_egreso = $discharge_date->format('d/m/Y');
+        }
+        // Return to the view
+        return view('general.patientDischarges', ['main' => json_encode($data)]);
+    }
     // View per month
     public function showMonthlyRecords()
     {
@@ -131,47 +246,9 @@ class AdminController extends Controller
         $list = [];
         $data = [];
         // Get total data
-        $query = DB::table('atencion')
-            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
-            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
-            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
-            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
-            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
-            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
-            ->where('atencion.asistencia', 1)
-            ->select(
-                'paciente.fecha_nacimiento as fecha',
-                'especialidad.descripcion as especialidad',
-                'actividad.descripcion as actividad',
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
-                DB::raw("COUNT(atencion.asistencia) AS Ambos")
-            )
-            ->groupBy('actividad.descripcion', 'especialidad.descripcion', 'paciente.fecha_nacimiento')
-            ->orderBy('actividad.descripcion')
-            ->get();
+        $query = $this->remQuery2();
         // Get base data
-        $queryOriginal = DB::table('atencion')
-            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
-            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
-            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
-            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
-            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
-            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-            ->whereMonth('atencion.fecha', Carbon::now()->month)
-            ->where('atencion.asistencia', 1)
-            ->select(
-                'especialidad.descripcion as especialidad',
-                'actividad.descripcion as actividad',
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
-                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
-                DB::raw("COUNT(atencion.asistencia) AS Ambos")
-            )
-            ->groupBy('actividad.descripcion', 'especialidad.descripcion')
-            ->orderBy('actividad.descripcion')
-            ->get();
-
+        $queryOriginal = $this->remQuery1();
         // Creating usseful data
         foreach ($queryOriginal as $record1) {
             // Create necesary object
@@ -198,6 +275,7 @@ class AdminController extends Controller
                 foreach ($query as $record2) {
                     // Get age of patient to number
                     $age = Carbon::parse($record2->fecha)->age;
+                    // Get 
                     /*
                         Check match between queryOriginal and query
                         To sure the data is the correct to upgrade
@@ -225,7 +303,7 @@ class AdminController extends Controller
             $obj->$strM = 0;
             // Do the same for the last range (last value in list[])
             foreach ($query as $record2) {
-                // Age of patient to numbre
+                // Age of patient to number
                 $age = Carbon::parse($record2->fecha)->age;
                 /*
                     Check match between queryOriginal and query
@@ -241,11 +319,88 @@ class AdminController extends Controller
                     $obj->$strM = $obj->$strM + $record2->Mujeres;
                 }
             }
+            // Get count of unique patient attended
+            $uniques = [];
+            $sename = [];
+            $obj->Beneficiarios = 0;
+            $obj->menoresSENAME = 0;
+            foreach ($query as $record2) {
+                $age = Carbon::parse($record2->fecha)->age;
+                if (
+                    $record1->actividad == $record2->actividad
+                    && $record1->especialidad == $record2->especialidad
+                ) {
+                    if (!in_array($record2->DNI, $uniques)) {
+                        array_push($uniques, $record2->DNI);
+                    }
+                    if (
+                        !in_array($record2->DNI, $sename)
+                        && $age < 19
+                        // && $record2->sename == 'Si'
+                    ) {
+                        array_push($sename, $record2->DNI);
+                    }
+                }
+            }
+            $obj->Beneficiarios = count($uniques);
+            $obj->menoresSENAME = count($sename);
             // Adding object to array
             array_push($data, $obj);
         }
 
         return view('general.recordsRem', compact('data', 'list'));
+    }
+    // Query with group especiality and functionary name
+    public function remQuery1()
+    {
+        $data =  DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.asistencia', 1)
+            ->select(
+                'especialidad.descripcion as especialidad',
+                'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("COUNT(atencion.asistencia) AS Ambos")
+            )
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion')
+            ->orderBy('actividad.descripcion')
+            ->get();
+
+        return $data;
+    }
+    // Query with group especiality, functionary name and patient birthdate (more rows)
+    public function remQuery2()
+    {
+        $data =  DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.asistencia', 1)
+            ->select(
+                'paciente.fecha_nacimiento as fecha',
+                'paciente.DNI as DNI',
+                'especialidad.descripcion as especialidad',
+                'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("COUNT(atencion.asistencia) AS Ambos")
+            )
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion', 'paciente.fecha_nacimiento', 'paciente.DNI')
+            ->orderBy('actividad.descripcion')
+            ->get();
+
+        return $data;
     }
     /***************************************************************************************************************************
                                                     HELPERS AND LOGIC FUNCTIONS

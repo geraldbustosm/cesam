@@ -216,9 +216,12 @@ Route::get('age-check','AdminController@checkAge');
 Route::get('charts','GraphsController@chart');
 Route::get('charts2','GraphsController@chart2');
 Route::get('charts3','GraphsController@chart3');
+
 Route::get('prestaciones/mensual', 'AdminController@showMonthlyRecords');
 Route::get('prestaciones/resumen', 'AdminController@showSummaryRecords');
 Route::get('prestaciones/rem', 'AdminController@showRemRecords');
+Route::get('prestaciones/ingresos', 'AdminController@showAdmissions');
+Route::get('prestaciones/egresos', 'AdminController@showDischarges');
 
 Route::get('alta/{DNI}', 'GeneralController@showAddRelease');
 Route::post('alta', 'GeneralController@addRelease');

@@ -10,6 +10,9 @@
         {{ session('status') }}
     </div>
     @endif
+    <div class="alert alert-danger collapse" role="alert" name="error" id="error" style="min-width:200px">
+        Debe seleccionar un alta!
+    </div>
     <form name="onSubmit" method="post" action="{{ url('alta') }}">
         @csrf
         <div class="form-group">
@@ -56,7 +59,23 @@
     });
 
     $('#continueBtn').on('click', function() {
-        document.onSubmit.submit();
+        if ($("#releases option:selected").text().includes("Seleccione")) {
+            $('#confirmModal').modal('hide');
+            $('#error').show();
+            var count = 1;
+            clearInterval(timer);
+            // Start count of 7 sec
+            var timer = setInterval(function() {
+                count--;
+                if (count == 0) {
+                    // Hide alert
+                    $('#error').hide();
+                }
+                // 7000 = 7 sec
+            }, 7000);
+        } else {
+            document.onSubmit.submit();
+        }
     });
 </script>
 @endsection

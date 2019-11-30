@@ -1,12 +1,12 @@
 @extends('layouts.main')
-@section('title','Tablas REM')
+@section('title','Prestaciones mensuales')
 @section('active-prestaciones','active')
-@section('active-rem','active')
+@section('active-egreso','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Infromación</h1>
+<h1>Despliegue de Información</h1>
 
 <div class="div-full">
     @if (session('status'))
@@ -34,17 +34,17 @@
             <div class="form-group col-md-4">
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
-                    <option value="actividad">Actividad</option>
-                    <option value="especialidad">Especialidad</option>
+                    <option value="nombre1">Nombre</option>
                 </select>
             </div>
+
             <div class="form-group col-md-2">
                 <select class="form-control" id="filter-type">
                     <option selected>Tipo</option>
                     <option value="=">=</option>
                     <option value="<=">&lt;=</option>
                     <option value=">=">&gt;=</option>
-                    <option value="like">igual</option>
+                    <option value="like">igual (texto)</option>
                 </select>
             </div>
             <!-- Value sought -->
@@ -52,13 +52,13 @@
             <!-- Clean filters -->
             <a href="#" id="filter-clear" style="padding: 5px;"><i title='Restablecer valores' class="material-icons">highlight_off</i><span></span></a>
         </div>
-        <!-- Target for tabulator table -->
+
         <div id="example-table"></div>
         <script type="text/javascript">
-            // Keep open sidebar
             document.getElementById('records_Submenu').className += ' show';
             //Trigger setFilter function with correct parameters
             function updateFilter() {
+
                 var filter = $("#filter-field").val() == "function" ? customFilter : $("#filter-field").val();
 
                 if ($("#filter-field").val() == "function") {
@@ -83,43 +83,23 @@
 
                 table.clearFilter();
             });
-            //Getting data
-            var tableData = <?php echo json_encode($data); ?>;
-            var list = <?php echo json_encode($list); ?>;
-            console.log(tableData);
-            console.log(list);
-            // Write data for download
+
+            //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
-                height:"380px",
-                data:tableData,
-                // autoColumns: true,
-                columns: [
-                    {title:"Actividad", field:"actividad"},
-                    {title:"Especialidad", field:"especialidad"},
-                    {//create column group
-                        title:"Total",
-                        columns:[
-                        {title:"Ambos Sexos", field:"Ambos", width:120, bottomCalc:"sum"},
-                        {title:"Hombres", field:"Hombres", width:120, bottomCalc:"sum"},
-                        {title:"Mujeres", field:"Mujeres", width:120, bottomCalc:"sum"},
-                        ],
-                    },
-                ],
+                height: "380px",
+                movableColumns: true,
+                autoColumns: true,
+                // columns: [
+                //     {title:"Programa", field:""}
+                // ],
             });
-            // Complete table
-            for(i=0 ; i<list.length ; i++){
-                table.addColumn(
-                    {//create column group
-                        title:`${list[i]}`,
-                        columns:[
-                        {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
-                        {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
-                        ],
-                    }, false);
-            };
-            // Add the last two columns
-            table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150}, false);
-            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150}, false);
+
+            //define some sample data
+            var tabledata = {!!$main!!};
+
+            //load sample data into the table
+            table.setData(tabledata);
+
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

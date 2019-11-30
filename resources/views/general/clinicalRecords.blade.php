@@ -52,7 +52,7 @@
     @php
     $stageCount = $stage->attendance->count();
     @endphp
-    @foreach($patientAtendances as $value)
+    @foreach($patientAttendances as $value)
     <div class="card">
         <div class="card-header">
             <div>Prestación #{{$stageCount}} </div>
@@ -83,14 +83,16 @@
             url: "{{ url('etapas') }}?id=" + id,
             success: function(res) {
                 if (res) {
-                    cant = 0;
+                    cant = res.length + 1;
                     $("#stages").append('<option value="' + stage_id + '">Ficha Activa</option>');
                     $.each(res, function(key, value) {
-                        cant += 1;
-                        if (currStage == value.id) {
-                            $("#stages").append('<option value="' + value.id + '"selected>Ficha ' + cant + '</option>');
-                        } else {
-                            $("#stages").append('<option value="' + value.id + '">Ficha ' + cant + '</option>');
+                        cant -= 1;
+                        if (value.id != stage_id){
+                            if (currStage == value.id) {
+                                $("#stages").append('<option value="' + value.id + '"selected>Ficha ' + cant + '</option>');
+                            } else {
+                                $("#stages").append('<option value="' + value.id + '">Ficha ' + cant + '</option>');
+                            }
                         }
                     });
                 } else {

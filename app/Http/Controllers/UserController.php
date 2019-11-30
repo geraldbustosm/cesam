@@ -27,7 +27,7 @@ class UserController extends Controller
         // Total users
         $cantUsers = $users->count();
         // Redirect to the view with list of: active patients, all previtions and all genders
-        return view('admin.views.users', compact('users', 'cantUsers'));
+        return view('admin.Views.users', compact('users', 'cantUsers'));
     }
 
     public function showInactiveUsers()

@@ -20,7 +20,11 @@
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/pace.js')}}"></script>
     <!-- Progress bar -->
-    <script>paceOptions = { elements: true }; </script>
+    <script>
+        paceOptions = {
+            elements: true
+        };
+    </script>
 
     <title>Cesam - @yield('title')</title>
 </head>
@@ -54,6 +58,12 @@
                         <li class="nav-item">
                             <a class="nav-link @yield('active-prestaciones')" href="#records_Submenu" data-toggle="collapse" class="dropdown-toggle"><i class="material-icons">assignment</i><span>Prestaciones</span></a>
                             <ul class="collapse list-unstyled" id="records_Submenu">
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('active-ingreso')" href="{{url('prestaciones/ingresos')}}"><span>Ingresos</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('active-egreso')" href="{{url('prestaciones/egresos')}}"><span>Egresos</span></a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link @yield('active-mensual')" href="{{url('prestaciones/mensual')}}"><span>Prestaciones mensuales</span></a>
                                 </li>

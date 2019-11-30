@@ -75,11 +75,11 @@ class GeneralController extends Controller
             return redirect(url()->previous())->with('error', 'Debe agregar una nueva etapa');
         } else {
             // Get array of attendance from the active stage
-            $patientAtendances = $stage->attendance;
+            $patientAttendances = $stage->attendance;
             // Identify active stage
             $activeStage = $stage;
             // Redirect to the view with successful status
-            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
+            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage'));
         }
     }
     /***************************************************************************************************************************
@@ -88,8 +88,7 @@ class GeneralController extends Controller
     public function stagesPerPatient(Request $request)
     {
         $id = $request->id;
-        $stages = Stage::where('paciente_id', $id)->where('activa', 0)->get();
-        // $stages = Stage::all();
+        $stages = Stage::where('paciente_id', $id)->where('activa', 0)->orderBy('created_at', 'desc')->get();
         return response()->json($stages);
     }
 
@@ -99,12 +98,12 @@ class GeneralController extends Controller
         $patient = Patient::find($patient_id);
         $stage_id = $request->stages;
         $stage = Stage::find($stage_id);
-        $patientAtendances = $stage->attendance;
+        $patientAttendances = $stage->attendance;
         $activeStage = Stage::where('paciente_id', $patient_id)
             ->where('activa', 1)
             ->select('id')
             ->first();
-        return view('general.clinicalRecords', compact('patient', 'stage', 'patientAtendances', 'activeStage'));
+        return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage'));
     }
 
     public function showAddRelease($DNI)
