@@ -186,8 +186,8 @@ class AdminController extends Controller
                     $strH = $iterator . " - " . ($iterator + $interval - 1) . " - H";
                     $strM = $iterator . " - " . ($iterator + $interval - 1) . " - M";
                     // $obj->$strH =  $this->test($iterator, $iterator + $interval, $record1->id, $record2->id, "hombre");
-                    $obj->$strH =  0;
-                    $obj->$strM =  0;
+                    $obj->$strH =  $this->test($iterator, $iterator + $interval, $record1->id, $record2->id, "hombre");
+                    $obj->$strM =  $this->test($iterator, $iterator + $interval, $record1->id, $record2->id, "mujer");
                     $iterator = $iterator + $interval;
                 }
                 $strH = $iterator . "+ - H";
