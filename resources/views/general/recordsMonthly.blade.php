@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información</h1>
+<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
 
 <div class="div-full">
     @if (session('status'))
@@ -20,23 +20,30 @@
 
     <div>
         @csrf
-        <!-- Buttons for download table -->
-        <div class="box red"></div>
-        <div class="table-controls">
-            <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-        </div>
-        <br>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>
         <!-- Select parameters for filter -->
         <div class="table-controls form-row">
-            <div class="form-group col-md-4">
-                <select class="form-control" id="filter-field">
+        <div class="form-group col-md-4 warpper">
+                <select class="form-control" id="filter-field" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
                     <option selected>Columna</option>
+                    <option value="procedencia">Procedencia</option>
+                    <option value="programa">Programa</option>
+                    <option value="DNI">Rut</option>
                     <option value="nombre1">Nombre</option>
-                    <option value="apellido1">Primer Apellido</option>
-                    <option value="apellido2">Segundo Apellido</option>
+                    <option value="apellido1">Apellido paterno</option>
+                    <option value="apellido2">Apellido materno</option>
+                    <option value="fecha_nacimiento">Fecha nacimiento</option>
+                    <option value="fecha">Fecha atención</option>
+                    <option value="edad">Edad</option>
+                    <option value="sexo">Sexo</option>
+                    <option value="prevision">Previsión</option>
+                    <option value="tipo">Tipo</option>
+                    <option value="actividad">Actividad</option>
+                    <option value="glosaTrasadora">Glosa trazadora</option>
+                    <option value="especialidad">Especialidad del funcionario</option>
+                    <option value="nombre_funcionario">Funcionario que atendió</option>
                 </select>
             </div>
 
@@ -88,7 +95,7 @@
 
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
-                height: "380px",
+                height: "420px",
                 movableColumns: true,
                 columns: [
                     {title:"Programa", field:"programa"},

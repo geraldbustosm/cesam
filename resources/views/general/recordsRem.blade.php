@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Infromación</h1>
+<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
 
 <div class="div-full">
     @if (session('status'))
@@ -20,12 +20,6 @@
 
     <div>
         @csrf
-        <!-- Buttons for download table -->
-        <div class="box red"></div>
-        <div class="table-controls">
-            <button class="btn btn-primary" id="download-xlsx">Descargar XLSX</button>
-        </div>
-        <br>
         <div class="table-controls-legend">
             <h3>Parametros para filtrar</h3>
         </div>
@@ -90,7 +84,7 @@
             console.log(list);
             // Write data for download
             var table = new Tabulator("#example-table", {
-                height:"380px",
+                height:"420px",
                 data:tableData,
                 // autoColumns: true,
                 columns: [
@@ -118,8 +112,8 @@
                     }, false);
             };
             // Add the last two columns
-            table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150}, false);
-            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150}, false);
+            table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150, bottomCalc:"sum"}, false);
+            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

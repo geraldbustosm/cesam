@@ -63,8 +63,10 @@
         </div>
         <div class="card-body">
             <h6 class="card-subtitle mb-2 text-muted">Profesional: {{ $value->functionary->user->primer_nombre }}, {{ $value->functionary->profesion}}</h6>
-            <h6 class="card-subtitle mb-4 text-muted">{{ $value->fecha}}</h6>
-            <h6 class="card-subtitle text-muted">{{ $value->provision->glosaTrasadora}}</p>
+            <h6 class="card-subtitle mb-4 text-muted">Fecha: {{ $value->fecha }}</h6>
+            <h6 class="card-subtitle text-muted">Glosa Trazadora: {{ $value->provision->glosaTrasadora }}</p>
+            <h6 class="card-subtitle text-muted">Atención: {{ $value->fecha }}</p>
+            <h6 class="card-subtitle text-muted">Observaciones: {{ $value->fecha }}</p>
         </div>
     </div>
     @php
@@ -75,6 +77,8 @@
 <script>
     $(document).ready(function() {
         // Run code
+        var test = <?php echo json_encode($patientAttendances); ?>;
+        console.log(test);
         var id = <?php echo json_encode($patient->id); ?>;
         var stage_id = <?php echo json_encode($activeStage->id); ?>;
         var currStage = <?php echo json_encode($stage->id); ?>;
