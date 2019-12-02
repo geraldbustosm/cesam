@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Functionary;
 use App\Activity;
 use App\Attendance;
 use App\Patient;
+use App\Speciality;
 use App\Stage;
 use App\TypeSpeciality;
 use App\Provision;
+
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
