@@ -353,7 +353,7 @@ class GeneralController extends Controller
             ->where('atencion.asistencia', 1)
             // ->where(function ($query) {
             //     $query->where('atencion.asistencia', 1)
-            //           ->orWhere('actividad', 'actividad_sin_atencion');
+            //           ->orWhereNotNull('actividad.sin_asistencia_id);
             // })
             ->select(
                 'especialidad.descripcion as especialidad',
