@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePacientePoseeDireccionTable extends Migration
+class CreateEspecialidadProgramaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreatePacientePoseeDireccionTable extends Migration
      */
     public function up()
     {
-        Schema::create('paciente_posee_direccion', function (Blueprint $table) {
+        Schema::create('especialidad_programa', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('descripcion')->unique();
+            $table->string('codigo')->unique();
             $table->timestamps();
-
-            $table->unsignedBigInteger('paciente_id');
-            $table->unsignedBigInteger('direccion_id');
-
-            $table->foreign('paciente_id')->references('id')->on('paciente');
-            $table->foreign('direccion_id')->references('id')->on('direccion');
             $table->boolean('activa')->default(1);
         });
     }
@@ -33,6 +29,6 @@ class CreatePacientePoseeDireccionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paciente_posee_direccion');
+        Schema::dropIfExists('especialidad_programa');
     }
 }

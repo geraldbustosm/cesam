@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDireccionTable extends Migration
+class CreateEtapaPoseeDiagnosticoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateDireccionTable extends Migration
      */
     public function up()
     {
-        Schema::create('direccion', function (Blueprint $table) {
+        Schema::create('etapa_posee_diagnostico', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('region')->nullable();
-            $table->string('comuna')->nullable();
-            $table->string('calle')->nullable();
-            $table->string('numero')->nullable();
             $table->timestamps();
+
+            $table->unsignedBigInteger('diagnostico_id');
+            $table->unsignedBigInteger('etapa_id');
+
+            $table->foreign('diagnostico_id')->references('id')->on('diagnostico');
+            $table->foreign('etapa_id')->references('id')->on('etapa');
             $table->boolean('activa')->default(1);
         });
     }
@@ -31,6 +33,6 @@ class CreateDireccionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('direccion');
+        Schema::dropIfExists('tipo_posee_especialidad_canasta');
     }
 }
