@@ -17,8 +17,6 @@ class CreateEtapaTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
 
-
-            $table->unsignedBigInteger('diagnostico_id');
             $table->unsignedBigInteger('programa_id');
             $table->unsignedBigInteger('alta_id')->nullable();
             $table->unsignedBigInteger('sigges_id');
@@ -27,7 +25,6 @@ class CreateEtapaTable extends Migration
             $table->unsignedBigInteger('paciente_id');
 
             $table->foreign('paciente_id')->references('id')->on('paciente');
-            $table->foreign('diagnostico_id')->references('id')->on('diagnostico');
             $table->foreign('programa_id')->references('id')->on('programa');
             $table->foreign('alta_id')->references('id')->on('alta')->nullable();
             $table->foreign('sigges_id')->references('id')->on('sigges');

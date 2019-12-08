@@ -16,7 +16,6 @@ class CreateFuncionariosTable extends Migration
         Schema::create('funcionarios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->string('profesion');
             $table->float('horasDeclaradas');
             $table->float('horasRealizadas')->default('0');
 

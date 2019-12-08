@@ -20,7 +20,7 @@ class CreateAtencionTable extends Migration
             $table->unsignedBigInteger('etapa_id');
             $table->unsignedBigInteger('funcionario_id');
             $table->unsignedBigInteger('prestacion_id');
-            $table->unsignedBigInteger('actividad_id')->nullable()->default(null);;
+            $table->unsignedBigInteger('actividad_id')->nullable()->default(null);
             $table->time('hora');
             $table->time('duracion');
             $table->boolean('abre_canasta')->default(0);

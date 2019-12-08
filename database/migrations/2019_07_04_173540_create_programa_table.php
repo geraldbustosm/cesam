@@ -18,6 +18,9 @@ class CreateProgramaTable extends Migration
             $table->string('especialidad');
             $table->string('descripcion')->unique();;
             $table->timestamps();
+            $table->unsignedBigInteger('especialidad_programa_id');
+            $table->foreign('especialidad_programa_id')->references('id')->on('especialidad_programa');
+
             $table->boolean('activa')->default(1);
         });
     }
