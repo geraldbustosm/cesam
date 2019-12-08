@@ -91,10 +91,9 @@ class ActivityController extends Controller
         $activity = new Activity;
         // Set the variables to the object activity
         // the variables name of object must be the same that database for save it
-        // descripcion
         $activity->descripcion = $request->activity;
-        // descripcion
         $activity->actividad_abre_canasta = $request->input('openCanasta', 0);
+        $activity->sin_asistencia = $request->input('noAssist', 0);
         // Pass the activity to database
         $activity->save();
         // Redirect to the view with successful status

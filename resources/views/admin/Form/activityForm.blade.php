@@ -42,7 +42,13 @@
                     
                     <div class="custom-control custom-checkbox checkbox-xl">
                         <input type="checkbox" class="custom-control-input" name="openCanasta" id="openCanasta" value="1" >
-                        <label style="font-weight: bold;   font-size: 120%; "class="custom-control-label" for="openCanasta">  ¿actividad abre canasta?</label>
+                        <label style="font-weight: bold;   font-size: 110%; "class="custom-control-label" for="openCanasta">&nbsp; ¿actividad abre canasta?</label>
+                    </div>
+                    <br>
+
+                    <div class="custom-control custom-checkbox checkbox-xl">
+                        <input type="checkbox" class="custom-control-input" name="noAssist" id="noAssist" value="1" >
+                        <label style="font-weight: bold;   font-size: 110%; "class="custom-control-label" for="noAssist">&nbsp; ¿actividad sin asistencia? (informes)</label>
                     </div>
                     <br><br>
                     <button type="submit" class="btn btn-primary">Registrar</button>

@@ -32,6 +32,6 @@ class Activity extends Model
    */
   protected $fillable = 
     [
-      'id', 'codigo_grupal', 'descripcion', 'actividad_abre_canasta','activa'
+      'id', 'codigo_grupal', 'descripcion', 'actividad_abre_canasta', 'sin_asistencia', 'activa'
     ];
 }
