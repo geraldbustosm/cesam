@@ -106,6 +106,10 @@ Route::post('desactivar-prevision', 'PrevitionController@deletingPrevition')->mi
 Route::get('inactivo/procedencia', 'ProvenanceController@showInactiveProvenance')->middleware('checkrole:1');
 Route::post('activar-procedencia', 'ProvenanceController@activateProvenance')->middleware('checkrole:1');
 Route::post('desactivar-procedencia', 'ProvenanceController@deletingProvenance')->middleware('checkrole:1');
+// Programa
+Route::get('inactivo/programa', 'ProgramController@showInactiveProgram')->middleware('checkrole:1');
+Route::post('activar-programa', 'ProgramController@activateProgram')->middleware('checkrole:1');
+Route::post('desactivar-programa', 'ProgramController@deletingProgram')->middleware('checkrole:1');
 // SiGGES
 Route::get('inactivo/sigges', 'SiGGESController@showInactiveSiGGES')->middleware('checkrole:1');
 Route::post('activar-sigges', 'SiGGESController@activateSiGGES')->middleware('checkrole:1');

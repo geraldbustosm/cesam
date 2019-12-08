@@ -57,11 +57,10 @@ function createRow(num, data) {
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = user;
     celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
-    celdas[3].innerHTML = data.profesion;
-    celdas[4].innerHTML = getSpeciality(data);
-    celdas[5].innerHTML = functionaryHoursAchived;
-    celdas[6].innerHTML = porcentageString;
-    celdas[7].innerHTML = actionBtns;
+    celdas[3].innerHTML = getSpeciality(data);
+    celdas[4].innerHTML = functionaryHoursAchived;
+    celdas[5].innerHTML = porcentageString;
+    celdas[6].innerHTML = actionBtns;
 }
 // Write DNI like rut standar format
 function writeRut(user) {

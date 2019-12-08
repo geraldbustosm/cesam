@@ -32,6 +32,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('inactivo/procedencia')}}">Procedencias</a>
+        </li>        
+        <li class="nav-item">
+            <a class="nav-link" href="{{url('inactivo/programa')}}">Programas</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('inactivo/sigges')}}">SiGGES</a>

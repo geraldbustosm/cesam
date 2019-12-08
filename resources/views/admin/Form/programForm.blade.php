@@ -1,9 +1,9 @@
-@extends('layouts.main')
+@extends('admin.Views.registerMain')
 @section('title','Registrar programa')
+@section('active-registrar','active')
 @section('active-ingresardatos','active')
-@section('active-ingresarprograma','active')
 
-@section('content')
+@section('sub-content')
 <h1>Registrar Programas</h1>
 <div class="div-full">
     @if ($errors->any())
@@ -26,13 +26,13 @@
             <div class="form-row">
                 <div class="col-6">
                     <select class="form-control" name="speciality">
-                        <option selected disabled>Por favor seleccione un especialidad </option>
+                        <option selected disabled>Por favor seleccione un especialidad para el programa</option>
                         @foreach($speciality as $especialidad)
                         <option value="{{ $especialidad->id}}">{{ $especialidad->descripcion}}</option>
                         @endforeach
                     </select>
                     <br>
-                    <input type="text" class="form-control {{ $errors->has('program') ? ' is-invalid' : '' }}" value="{{ old('program') }}" id="program" name="program" placeholder="Tipo de programa">
+                    <input type="text" class="form-control {{ $errors->has('program') ? ' is-invalid' : '' }}" value="{{ old('program') }}" id="program" name="program" placeholder="Ingrese el programa">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -64,9 +64,37 @@
         </div>
     </form>
 </div>
+<!-- Form to send id at controller -->
+<form name="onSubmit" method="post" action="{{ url('desactivar-programa') }}">
+    @csrf
+    <div class="form-group">
+        <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
+    </div>
+</form>
+<!-- Modal to continue with action -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Desea eliminar el programa?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
+    var table = <?php echo json_encode($table); ?>;
     document.getElementById('data_Submenu').className += ' show';
 </script>
 <!-- Adding script using on this view -->

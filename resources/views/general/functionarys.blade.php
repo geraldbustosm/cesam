@@ -32,8 +32,7 @@
     <tr>
       <th style="width: 3%;">#</th>      
       <th style="width: 15%;">Rut</th>
-      <th style="width: 20%;">Nombre</th>
-      <th style="width: 15%;">Profesion</th>
+      <th style="width: 30%;">Nombre</th>
       <th style="width: 20%">Especialidades</th>
       <th>Horas realizadas</th>
       <th>Porcentaje</th>

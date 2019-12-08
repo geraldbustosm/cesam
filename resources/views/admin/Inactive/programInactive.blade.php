@@ -1,21 +1,20 @@
 @extends('admin.Views.inactiveMain')
-@section('title','Prestaciones Inactivas')
-@section('active-ingresardatos','active')
+@section('title','Programas Inactivos')
 @section('active-inactivos','active')
+@section('active-ingresardatos','active')
 
 @section('sub-content')
-
-<h1>Prestaciones Inactivas</h1>
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+<h1>Registrar Programas</h1>
 <div class="div-full">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
@@ -26,14 +25,12 @@
         <div>
             <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
         </div><br>
-
         <div class="">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th style="width: 3%;">#</th>
-                        <th style="width: 70%;">Prestaciones</th>
-                        <th style="width: 10%;">Código</th>
+                        <th style="width: 70%;">Programas</th>
                         <th style="width: 10%;">Acciones</th>
                     </tr>
                 </thead>
@@ -42,7 +39,6 @@
                 </tbody>
             </table>
         </div>
-
         <div class="div-full">
             <ul class="pagination justify-content-center" id="paginate">
                 <!-- Generate in patientFilter.js->generatePaginationNum(); -->
@@ -51,7 +47,7 @@
     </div>
 </div>
 <!-- Form to send id at controller -->
-<form name="onSubmit" method="post" action="{{ url('activar-prestacion') }}">
+<form name="onSubmit" method="post" action="{{ url('activar-programa') }}">
     @csrf
     <div class="form-group">
         <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
@@ -68,7 +64,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Desea reactivar la prestación?
+                ¿Desea reactivar el programa?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
