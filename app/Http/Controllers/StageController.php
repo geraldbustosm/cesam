@@ -53,7 +53,7 @@ class StageController extends Controller
         // Set some variables with inputs of view
         // the variables name of object must be the same that database for save it
         // diagnostico_id, programa_id, sigges_id, procedencia_id, funcionario_id, paciente_id
-        $stage->diagnostico_id = $request->diagnostico_id;
+        
         $stage->programa_id = $request->programa_id;
         //$stage->alta_id = $request->alta_id;
         $stage->sigges_id = $request->sigges_id;
@@ -62,6 +62,7 @@ class StageController extends Controller
         $stage->paciente_id = $request->idpatient;
         // Pass the new stage to database
         $stage->save();
+        $stage->diagnosis()->sync($request->options);
         // Set variable with patient_id
         $DNI = $request->idpatient;
         // Get the patient
