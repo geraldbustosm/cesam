@@ -4,22 +4,35 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/color.css')}}">
-<div class="w">
-    <section>
+<div class="container">
+  <div class="row">
+    <div class="col">
         <div>
             <canvas id="pie-chart"></canvas>
         </div>
+    </div>
+    <div class="col">
         <div>
-            <canvas id="chart"></canvas>
+            <canvas id="pie-chart2" ></canvas>
         </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
         <div>
-            <canvas id="pie-chart2"></canvas>
+            <canvas id="chart" height="400px" width="400px"></canvas>
         </div>
+    </div>
+    <div class="col">
         <div>
-            <canvas id="line-chart3"></canvas>
+            <canvas id="line-chart3" height="400px" width="400px"></canvas>
         </div>
-    </section>
+    </div>
+  </div>
 </div>
+
+        
+    
+
 
 <script src="{{asset('js/chart.bundle.js')}}"></script>
 <!-- Import D3 Scale Chromatic -->
@@ -43,7 +56,7 @@
             var barChartData = {
                 labels: Years,
                 datasets: [{
-                    label: 'Infosys Price',
+                    label: 'Rendimiento',
                     data: Prices,
                     borderWidth: 1
                 }]
@@ -55,7 +68,7 @@
                 data: barChartData,
                 options: {
 
-                    responsive: true,
+                    responsive: false,
                     scales: {
                         yAxes: [{
                             ticks: {
@@ -131,7 +144,7 @@
                         }],
                     },
                     options: {
-                        responsive: true,
+                        responsive: false,
                         maintainAspectRatio: false,
                         legend: {
                             display: true,
@@ -202,7 +215,7 @@
                         }],
                     },
                     options: {
-                        responsive: true,
+                        responsive: false,
                         maintainAspectRatio: false,
                         legend: {
                             display: true,
@@ -269,7 +282,7 @@
                         }],
                     },
                     options: {
-                        responsive: true,
+                        responsive: false,
                         maintainAspectRatio: false,
                         legend: {
                             display: true,

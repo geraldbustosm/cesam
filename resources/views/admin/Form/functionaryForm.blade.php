@@ -22,9 +22,16 @@
 	@endif
 	<form method="post" action="{{ url('registrar/funcionario') }}">
 		@csrf
-		<div class="form-group">
-            <input type="text" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="profesion" name="profesion" placeholder="Profesion">
-		</div>
+		
+        <div class="form-group">
+            <select class="form-control" name="speciality" required>
+                <option selected disabled>Por favor seleccione una especialidad para asignar al funcionario</option>
+                @foreach($speciality as $speciality)
+                <option value="{{ $speciality->id}}">{{ $speciality->descripcion}}</option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="form-group">
             <input type="number" class="form-control {{ $errors->has('declared_hours') ? ' is-invalid' : '' }}" value="{{ old('declared_hours') }}" id="declared_hours" name="declared_hours" placeholder="Horas declaradas al ministerio">
 		</div>

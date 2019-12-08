@@ -19,6 +19,7 @@ class CreateActividadTable extends Migration
             $table->timestamps();
             $table->string('descripcion');
             $table->boolean('actividad_abre_canasta')->default(0);
+            $table->boolean('sin_asistencia')->default(0);
 
             $table->boolean('activa')->default(1);
         });

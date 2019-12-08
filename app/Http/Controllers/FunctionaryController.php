@@ -59,9 +59,12 @@ class FunctionaryController extends Controller
         $functionarys = Functionary::select('user_id')->get();
         $user = DB::table('users')
                 ->whereNotIn('id', $functionarys)
+                ->where('activa', 1)
+                ->get();
+        $speciality = DB::table('especialidad')
                 ->get();
         // Redirect to the view with list of users
-        return view('admin.Form.functionaryForm', compact('user'));
+        return view('admin.Form.functionaryForm', compact('user','speciality'));
     }
 
     /***************************************************************************************************************************
@@ -82,7 +85,6 @@ class FunctionaryController extends Controller
     {
         // Check the format of each variable of 'request'
         $validation = $request->validate([
-            'profesion' => 'required|string|max:255',
             'user' => 'required|integer|max:255',
             'declared_hours' => 'required'
         ]);
@@ -90,13 +92,14 @@ class FunctionaryController extends Controller
         $functionary = new Functionary;
         // Set some variables with inputs of view
         // the variables name of object must be the same that database for save it
-        // profesion, user_id, horasDeclaradas
-        $functionary->profesion = $request->profesion;
+        // speciality, user_id, horasDeclaradas
         // We need create user before the functionary
         $functionary->user_id = $request->user;
+        $codigos = $request->speciality;
         $functionary->horasDeclaradas = $request->declared_hours;
         // Pass the functionary to database
         $functionary->save();
+        $functionary->speciality()->sync($codigos);
         // Redirect to the view with successful status
         return redirect('asignar/especialidad');
     }
