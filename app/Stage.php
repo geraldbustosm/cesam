@@ -23,12 +23,13 @@ class Stage extends Model
    */
   public function diagnosis()
   {
-    return $this->hasOne('App\Diagnosis', 'diagnostico_id');
+    return $this->belongsToMany(Diagnosis::class, 'etapa_posee_diagnostico',  'etapa_id','diagnostico_id');
   }
   public function attendance()
   {
       return $this->hasMany('App\Attendance','etapa_id')->orderBy("fecha", "desc");
   }
+
   public function lastAttendance()
   {
     return $this->attendance()->orderBy("fecha", "desc")->take(1);
