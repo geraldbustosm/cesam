@@ -34,6 +34,9 @@
             <a class="nav-link" href="{{url('registrar/procedencia')}}">Procedencias</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{url('registrar/programa')}}">Programas</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{url('registrar/sigges')}}">SiGGES</a>
         </li>
         <li class="nav-item">

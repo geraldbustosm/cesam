@@ -132,13 +132,13 @@ class FunctionaryController extends Controller
     public function activateFunctionary(Request $request)
     {
         // Get the functionary
-        $functionary = Functionary::where('id', $request->id)->get();
+        $functionary = Functionary::find($request->id);
         // Update active to 1 bits
-        $functionary[0]->activa = 1;
+        $functionary->activa = 1;
         // Send update to database
-        $functionary[0]->save();
+        $functionary->save();
         // Get the user, because have the personal info
-        $user = User::where('id', $functionary[0]->user_id)->get();
+        $user = User::where('id', $functionary->user_id)->get();
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('funcionarios/inactivos')->with('status', 'Funcionario ' . $user[0]->rut . ' re-incorporado');
     }
@@ -146,13 +146,13 @@ class FunctionaryController extends Controller
     public function deletingFunctionary(Request $request)
     {
         // Get the functionary
-        $functionary = Functionary::where('id', $request->id)->get();
+        $functionary = Functionary::find($request->id);
         // Update active to 0 bits
-        $functionary[0]->activa = 0;
+        $functionary->activa = 0;
         // Send update to database
-        $functionary[0]->save();
+        $functionary->save();
         // Get the user, because have the personal info
-        $user = User::where('id', $functionary[0]->user_id)->get();
+        $user = User::where('id', $functionary->user_id)->get();
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('funcionarios')->with('status', 'Funcionario ' . $user[0]->rut . ' eliminado');
     }

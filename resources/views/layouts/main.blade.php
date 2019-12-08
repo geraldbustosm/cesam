@@ -148,9 +148,6 @@
                                     <a class="nav-link @yield('active-inactivos')" href="{{url('inactivo')}}"><span>Datos inactivos </span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-ingresarprograma')" href="{{url('registrar/programa')}}"><span>Asignar programa a especialidad</span></a>
-                                </li>
-                                <li>
                                     <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignar/especialidad')}}"><span>Asignar especialidades a funcionarios</span></a>
                                 </li>
                                 <li>

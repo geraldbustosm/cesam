@@ -20,9 +20,18 @@ class ProgramController extends Controller
         // Get list of specialitys
         $speciality = SpecialityProgram::where('activa', 1)->get();
         // Get programs in alfabetic order
-        $data = Program::orderBy('descripcion')->get();
+        $data = Program::where('activa', 1)->orderBy('descripcion')->get();
+        $table = "Programas";
         // Redirect to the view with list of specialitys, programs (standard name: data) and name of table in spanish (standard name: table)
-        return view('admin.Form.programForm', compact('speciality', 'data'));
+        return view('admin.Form.programForm', compact('speciality', 'data', 'table'));
+    }
+    public function showInactiveProgram()
+    {
+        // Get programs in alfabetic order
+        $data = Program::where('activa', 0)->orderBy('descripcion')->get();
+        $table = "Programas";
+        // Redirect to the view with list of specialitys, programs (standard name: data) and name of table in spanish (standard name: table)
+        return view('admin.Inactive.programInactive', compact('data', 'table'));
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
@@ -44,5 +53,31 @@ class ProgramController extends Controller
         $program->save();
         // Redirect to the view with successful status
         return redirect('registrar/programa')->with('status', 'Nuevo programa creado');
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateProgram(Request $request)
+    {
+        // Get the data
+        $data = Program::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/programa')->with('status', 'Previsión "' . $data->descripcion . '" re-activada');
+    }
+
+    public function deletingProgram(Request $request)
+    {
+        // Get the data
+        $data = Program::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/programa')->with('status', 'Previsión "' . $data->descripcion . '" eliminada');
     }
 }

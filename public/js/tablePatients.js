@@ -47,7 +47,11 @@ function createRow(num, data) {
     // Adding cells content
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = writeRut(data.DNI);
-    celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1 + ' ' + data.apellido2;
+    if (data.apellido2) {
+        celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1 + ' ' + data.apellido2;
+    } else {
+        celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1;
+    }
     celdas[3].innerHTML = sex;
     celdas[4].innerHTML = getAge(data.fecha_nacimiento);
     celdas[5].innerHTML = getPrevition(data);
