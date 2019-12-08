@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Functionary;
 use App\Activity;
 use App\Attendance;
 use App\Patient;
+use App\Speciality;
 use App\Stage;
 use App\TypeSpeciality;
 use App\Provision;
+
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
@@ -225,5 +228,64 @@ class AttendanceController extends Controller
             $users = Functionary::where('activa', 1)->get();
             return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
         }
+    }
+    /***************************************************************************************************************************
+                                                    ATTENDANCE LOGIC
+     ****************************************************************************************************************************/
+    // Return a specialitys from one functionary
+    public function getSpecialityPerFunctionary(Request $request)
+    {
+        // Get the functionary
+        $functionary = Functionary::find($request->functionary_id);
+        // Create a variable for send to the view
+        $speciality = $functionary->speciality;
+        // Return specialitys
+        return response()->json($speciality);
+    }
+    // Return a provisions from one speciality
+    public function getProvisionPerSpeciality(Request $request)
+    {
+        // Get the speciality
+        $specility = Speciality::find($request->speciality_id);
+        // Create a variable for send to the view
+        $provision = $specility->provision;
+        // Return provisions
+        return response()->json($provision);
+    }
+    // Return a activitys from one speciality
+    public function getActivityPerSpeciality(Request $request)
+    {
+        // Get the speciality
+        $specility = Speciality::find($request->speciality_id);
+        // Create a variable for send to the view
+        $activity = $specility->activity;
+        // Return activity's
+        return response()->json($activity);
+    }
+    // Compare age of patient and range age of provision
+    public function checkAge(Request $request)
+    {
+        // Get the patient
+        $patient = Patient::find(1);
+        // Get the provision
+        $provision = Provision::find($request->provision_id);
+        // Get age fo patient
+        $years = Carbon::parse($patient->fecha_nacimiento)->age;
+        // Get ranges
+        $inf = $provision->rangoEdad_inferior;
+        $sup = $provision->rangoEdad_superior;
+        // Default
+        $response = 0;
+        // Check if age is in range
+        if (($inf <= $years) && ($years <= $sup)) {
+            $response = 1;
+        } else {
+            $response = -1;
+        }
+        if (($inf == 0) && ($sup == 0)) {
+            $response = 1;
+        }
+        // Return provisions
+        return response()->json($response);
     }
 }

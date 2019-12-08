@@ -351,6 +351,10 @@ class GeneralController extends Controller
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where('atencion.asistencia', 1)
+            // ->where(function ($query) {
+            //     $query->where('atencion.asistencia', 1)
+            //           ->orWhereNotNull('actividad.sin_asistencia_id);
+            // })
             ->select(
                 'especialidad.descripcion as especialidad',
                 'actividad.descripcion as actividad',

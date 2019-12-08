@@ -80,8 +80,6 @@
             //Getting data
             var tableData = <?php echo json_encode($data); ?>;
             var list = <?php echo json_encode($list); ?>;
-            console.log(tableData);
-            console.log(list);
             // Write data for download
             var table = new Tabulator("#example-table", {
                 height:"420px",
