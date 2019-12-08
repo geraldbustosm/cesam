@@ -50,8 +50,8 @@ class SpecialityController extends Controller
     {
         // Get specialitys in alfabetic order
         $speciality = Speciality::orderBy('descripcion')->get();
-        // Get functionarys in alfabetic order by profesions
-        $functionary = Functionary::orderBy('profesion')->get();
+        // Get functionarys
+        $functionary = Functionary::where('activa', 1)->get();
         // Create some variables
         $rows = [];
         $columns = [];

@@ -20,7 +20,7 @@ class CreateDireccionTable extends Migration
             $table->string('comuna')->nullable();
             $table->string('calle')->nullable();
             $table->string('numero')->nullable();
-            $table->string('depto')->nullable();
+            $table->string('departamento')->nullable();
             $table->timestamps();
             $table->boolean('activa')->default(1);
             $table->bigInteger('idPaciente')->nullable();

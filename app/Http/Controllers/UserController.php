@@ -102,8 +102,10 @@ class UserController extends Controller
             // Get the last user added
             $id = DB::getPDO()->lastInsertId();
             $user = User::where('id', $id)->get();
+            $speciality = DB::table('especialidad')
+                ->get();
             // Return to the view just with the last user
-            return view('admin.Form.functionaryForm', compact('user'));
+            return view('admin.Form.functionaryForm', compact('user','speciality'));
         } else {
             // Redirect to the view with successful status
             return redirect('registrar/usuario')->with('status', 'Usuario creado');

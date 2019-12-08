@@ -4,6 +4,15 @@
 @section('active-ingresardatos','active')
 
 @section('sub-content')
+<style>
+.custom-control-label::before, 
+.custom-control-label::after {
+    left: -1.8rem;
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+</style>
 <h1>Registrar Actividades</h1>
 <div class="div-full">
     @if ($errors->any())
@@ -30,11 +39,14 @@
                 <div class="col-6">
                     <input type="text" class="form-control {{ $errors->has('activity') ? ' is-invalid' : '' }}" value="{{ old('activity') }}" id="activity" name="activity" placeholder="Tipo de Actividad">
                     <br>
-                    <div class="form-group form-check">
-                        <input type="checkbox" name="openCanasta" class="form-check-input" id="openCanasta" value="1">
-                        <label class="form-check-label" for="openCanasta"> ¿actividad abre canasta?</label>
+                    
+                    <div class="custom-control custom-checkbox checkbox-xl">
+                        <input type="checkbox" class="custom-control-input" name="openCanasta" id="openCanasta" value="1" >
+                        <label style="font-weight: bold;   font-size: 120%; "class="custom-control-label" for="openCanasta">  ¿actividad abre canasta?</label>
                     </div>
+                    <br><br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
+                    <br><br>
                 </div>
                 <div class="col">
                     <div>
