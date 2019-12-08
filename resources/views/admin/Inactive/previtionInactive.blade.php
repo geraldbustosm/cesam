@@ -1,10 +1,10 @@
 @extends('admin.Views.inactiveMain')
-@section('title','Registrar prevision')
+@section('title','Previsiones Inactivas')
 @section('active-inactivos','active')
 @section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Registrar Prevision</h1>
+<h1>Previsiones Inactivas</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">

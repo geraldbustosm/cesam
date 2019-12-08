@@ -26,6 +26,6 @@ class Program extends Model
      */
     protected $fillable =
     [
-        'id','especialidad', 'descripcion', 'activa'
+        'id','especialidad_programa_id', 'descripcion', 'activa'
     ];
 }

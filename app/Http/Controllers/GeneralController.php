@@ -353,7 +353,7 @@ class GeneralController extends Controller
             ->where('atencion.asistencia', 1)
             // ->where(function ($query) {
             //     $query->where('atencion.asistencia', 1)
-            //           ->orWhereNotNull('actividad.sin_asistencia_id);
+            //           ->orWhereNotNull('actividad.sin_asistencia);
             // })
             ->select(
                 'especialidad.descripcion as especialidad',
@@ -426,7 +426,8 @@ class GeneralController extends Controller
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->join('programa', 'programa.id', '=', 'etapa.programa_id')
             ->join('sigges', 'sigges.id', '=', 'etapa.sigges_id')
-            ->join('diagnostico', 'diagnostico.id', '=', 'etapa.diagnostico_id')
+            ->join('etapa_posee_diagnostico', 'etapa_posee_diagnostico.etapa_id', '=', 'etapa.id')
+            ->join('diagnostico', 'diagnostico.id', '=', 'etapa_posee_diagnostico.diagnostico_id')
             ->join('funcionarios', 'funcionarios.id', '=', 'etapa.funcionario_id')
             ->join('users', 'users.id', '=', 'funcionarios.user_id')
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
@@ -518,16 +519,16 @@ class GeneralController extends Controller
             $strM = $str . " - M";
             $obj->$strH = 0;
             $obj->$strM = 0;
-            // Check if is in range of age (range are in list[])
-            // Check the sex of record
-            $sex = strtolower($record->sexo);
-            $find = strpos($sex, 'hombre');
-            if ($record->edad >= $iterator) {
-                ($find !== false ? $obj->$strH = $obj->$strH + 1 : $obj->$strM = $obj->$strM + 1);
-            }
             $sename = [];
             $obj->menoresSENAME = 0;
             foreach ($data as $record) {
+                // Check if is in range of age (range are in list[])
+                // Check the sex of record
+                $sex = strtolower($record->sexo);
+                $find = strpos($sex, 'hombre');
+                if ($record->edad >= $iterator) {
+                    ($find !== false ? $obj->$strH = $obj->$strH + 1 : $obj->$strM = $obj->$strM + 1);
+                }
                 if ($record->diagnostico == $index->descripcion) {
                     if (!in_array($record->numero_ficha, $sename) && $record->edad < 18) {
                         // && $record->sename == 'Si'
@@ -563,7 +564,8 @@ class GeneralController extends Controller
     {
         $data =  DB::table('etapa')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
-            ->join('diagnostico', 'diagnostico.id', '=', 'etapa.diagnostico_id')
+            ->join('etapa_posee_diagnostico', 'etapa_posee_diagnostico.etapa_id', '=', 'etapa.id')
+            ->join('diagnostico', 'diagnostico.id', '=', 'etapa_posee_diagnostico.diagnostico_id')
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->leftJoin('alta', 'alta.id', '=', 'etapa.alta_id')

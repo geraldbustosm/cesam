@@ -4,7 +4,7 @@
 @section('active-registrar','active')
 
 @section('sub-content')
-<h1>Registrar Sexo o Genero</h1>
+<h1>Registrar Sexos</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -28,7 +28,7 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col">
-                    <input type="text" class="form-control {{ $errors->has('sexuality') ? ' is-invalid' : '' }}" value="{{ old('sexuality') }}" id="sexuality" name="sexuality" placeholder="Sexo o Genero">
+                    <input type="text" class="form-control {{ $errors->has('sexuality') ? ' is-invalid' : '' }}" value="{{ old('sexuality') }}" id="sexuality" name="sexuality" placeholder="Sexo o Género">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>

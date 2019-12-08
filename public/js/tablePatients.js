@@ -100,7 +100,7 @@ function writeActionButtons(data) {
         var active = data.activa;
         var tmp = ` <td> 
         <a href='ficha/${data.DNI}'><i title='Ver ficha' class='material-icons'>description</i></a>
-        <a href='pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>`;
+        <a href='/pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>`;
         if (active == 1) {
             // Generate action buttons for active patients
             tmp += `<a href='javascript:addAttendance(${data.DNI})'><i title='Añadir prestación' class='material-icons'>add</i></a>

@@ -16,14 +16,23 @@ class ProvisionController extends Controller
     /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
+    public function showInactiveProvision()
+    {
+        // Get active types
+        $type = Type::where('activa', 1)->get();
+        // Get provisions
+        $data = Provision::where('activa', 0)->get();
+        // Redirect to the view with list of types
+        return view('admin.Inactive.provisionInactive', ['table' => 'Glosas'],compact('type', 'data'));
+    }
     public function showAddProvision()
     {
         // Get active types
         $type = Type::where('activa', 1)->get();
         // Get provisions
-        $data = Provision::all();
+        $data = Provision::where('activa', 1)->get();
         // Redirect to the view with list of types
-        return view('admin.Form.provisionForm', ['table' => 'Prestaciones'],compact('type', 'data'));
+        return view('admin.Form.provisionForm', ['table' => 'Glosas'],compact('type', 'data'));
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
@@ -75,7 +84,7 @@ class ProvisionController extends Controller
             'frecuencia' => 'required|int',
             'glosa' => 'required|string|max:255',
             'ps_fam' => 'required|string|max:255',
-            'codigo' => 'required|string|max:255',
+            'codigo' => 'required|string|max:255|unique:prestacion,codigo',
             'lower_age' => 'required',
             'senior_age' => 'required',
             'medical_provision_type' => 'required'
@@ -128,5 +137,31 @@ class ProvisionController extends Controller
             }
             return redirect('asignar/especialidad-prestacion')->with('status', 'Especialidades y Prestaciones actualizadas');
         }
+    }
+    /***************************************************************************************************************************
+                                                    OTHER PROCESS
+     ****************************************************************************************************************************/
+    public function activateProvision(Request $request)
+    {
+        // Get the data
+        $data = Provision::find($request->id);
+        // Update active to 1 bits
+        $data->activa = 1;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('inactivo/prestacion')->with('status', 'Glosa "' . $data->glosaTrasadora . '" re-activada');
+    }
+
+    public function deletingProvision(Request $request)
+    {
+        // Get the data
+        $data = Provision::find($request->id);
+        // Update active to 0 bits
+        $data->activa = 0;
+        // Send update to database
+        $data->save();
+        // Redirect to the view with successful status (showing the user_rut)
+        return redirect('registrar/prestacion')->with('status', 'Glosa "' . $data->glosaTrasadora . '" eliminada');
     }
 }

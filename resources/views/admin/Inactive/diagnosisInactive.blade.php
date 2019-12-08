@@ -1,10 +1,10 @@
 @extends('admin.Views.inactiveMain')
-@section('title','Registrar diagnostico')
+@section('title','Diagnósticos Inactivos')
 @section('active-ingresardatos','active')
 @section('active-inactivos','active')
 
 @section('sub-content')
-<h1>Registrar Diagnostico</h1>
+<h1>Diagnósticos Inactivos</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">

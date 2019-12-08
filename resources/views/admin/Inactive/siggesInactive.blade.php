@@ -1,10 +1,10 @@
 @extends('admin.Views.inactiveMain')
-@section('title','Registrar SIGGES')
+@section('title','SIGGES Inactivos')
 @section('active-ingresardatos','active')
 @section('active-inactivos','active')
 
 @section('sub-content')
-<h1>Registrar SIGGES</h1>
+<h1>SIGGES Inactivos</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">

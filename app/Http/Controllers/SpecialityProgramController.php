@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Sex;
+use App\SpecialityProgram;
+use App\Functionary;
+use App\Provision;
 
-class SexController extends Controller
+class SpecialityProgramController extends Controller
 {
     public function __construct()
     {
@@ -14,106 +16,110 @@ class SexController extends Controller
     /***************************************************************************************************************************
                                                     INACTIVES
      ****************************************************************************************************************************/
-    public function showInactiveSex()
+    public function showInactiveSpeciality()
     {
-        // Get genders from database where 'activa' attribute is 0 bits
-        $data = Sex::where('activa', 0)->orderBy('descripcion')->get();
+        // Get specialitys from database where 'activa' attribute is 0 bits
+        $data = SpecialityProgram::where('activa', 0)->orderBy('descripcion')->get();
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
-        return view('admin.Inactive.sexInactive', ['data' => $data, 'table' => 'Géneros']);
+        return view('admin.Inactive.specialityProgramInactive', ['data' => $data, 'table' => 'Especialidad Glosa']);
     }
     /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
-    public function showAddSex()
+    public function showAddSpeciality()
     {
-        // Get genders in alfabetic order
-        $data = Sex::where('activa', 1)->orderBy('descripcion')->get();
-        // Redirect to the view with list of genders (standard name: data) and name of table in spanish (standard name: table)
-        return view('admin.Form.sexForm', ['data' => $data, 'table' => 'Géneros']);
+        // Get specialitys in alfabetic order
+        $data = SpecialityProgram::where('activa', 1)->orderBy('descripcion')->get();
+        // Redirect to the view with list of specialitys (standard name: data) and name of table in spanish (standard name: table)
+        return view('admin.Form.specialityProgramForm', ['data' => $data, 'table' => 'Especialidad Glosa']);
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-    public function showEditSex($id)
+    public function showEditSpeciality($id)
     {
-        // Get the specific gender
-        $sex = Sex::find($id);
-        // Redirect to the view with selected gender
-        return view('admin.Edit.sexEdit', compact('sex'));
+        // Get the specific speciality
+        $speciality = SpecialityProgram::find($id);
+        // Redirect to the view with selected speciality
+        return view('admin.Edit.specialityProgramEdit', compact('speciality'));
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
      ****************************************************************************************************************************/
-    public function registerSex(Request $request)
+    public function registerSpeciality(Request $request)
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'sexuality' => 'required|string|max:255'
+            'medical_speciality' => 'required|string|max:255',
+            'code_speciality' => 'required|string|max:255|unique:especialidad_programa,codigo',
         ]);
-        // Create the new 'object' sex
-        $sex = new Sex;
+        // Create a new 'object' speciality
+        $speciality = new SpecialityProgram;
         // Set the variable 'descripcion'
         // the variables name of object must be the same that database for save it
-        $sex->descripcion = $request->sexuality;
-        // Pass the gender to database
-        $sex->save();
+        $speciality->descripcion = $request->medical_speciality;
+        $speciality->codigo = $request->code_speciality;
+        // Pass the new speciality to database
+        $speciality->save();
         // Redirect to the view with successful status
-        return redirect('registrar/genero')->with('status', 'Nuevo Sexo / Género creado');
+        return redirect('registrar/especialidad-glosa')->with('status', 'Nueva especialidad creada');
     }
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
-    public function editSex(Request $request)
+    public function editSpeciality(Request $request)
     {
         // Validate the request variable
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
+            'code_speciality' => 'required|string|max:255|unique:especialidad_programa,codigo',
         ]);
-        // Get the gender that want to update
-        $sex = Sex::find($request->id);
+        // Get the speciality that want to update
+        $speciality = SpecialityProgram::find($request->id);
         // URL to redirect when process finish.
-        if($sex->activa == 1){
-            $url = "/registrar/genero/";
+        if($speciality->activa == 1){
+            $url = "/registrar/especialidad-glosa/";
         }else{
-            $url = "/inactivo/genero/";
+            $url = "/inactivo/especialidad-glosa/";
         }
         // If found it then update the data
-        if ($sex) {
+        if ($speciality) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $sex->descripcion = $request->descripcion;
+            $speciality->descripcion = $request->descripcion;
+            $speciality->codigo = $request->code_speciality;
             // Pass the new info for update
-            $sex->save();
+            $speciality->save();
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción de la sexualidad a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad a "'.$request->descripcion.'"');
         }
         // Redirect to the URL with failure status
-        return redirect($url)->with('err', 'No se pudo actualizar la descripción de la sexualidad');
+        return redirect($url)->with('err', 'Nose pudo actualizar la descripción de la especialidad');
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
      ****************************************************************************************************************************/
-    public function activateSex(Request $request)
+    public function activateSpeciality(Request $request)
     {
         // Get the data
-        $data = Sex::find($request->id);
+        $data = SpecialityProgram::find($request->id);
         // Update active to 1 bits
         $data->activa = 1;
         // Send update to database
         $data->save();
         // Redirect to the view with successful status (showing the user_rut)
-        return redirect('inactivo/genero')->with('status', 'Género "' . $data->descripcion . '" re-activada');
+        return redirect('inactivo/especialidad-glosa')->with('status', 'Especialidad "' . $data->descripcion . '" re-activada');
     }
 
-    public function deletingSex(Request $request)
+    public function deletingSpeciality(Request $request)
     {
         // Get the data
-        $data = Sex::find($request->id);
+        $data = SpecialityProgram::find($request->id);
         // Update active to 0 bits
         $data->activa = 0;
         // Send update to database
         $data->save();
         // Redirect to the view with successful status (showing the user_rut)
-        return redirect('registrar/genero')->with('status', 'Género "' . $data->descripcion . '" eliminada');
+        return redirect('registrar/especialidad-glosa')->with('status', 'Especialidad "' . $data->descripcion . '" eliminada');
     }
 }

@@ -1,26 +1,24 @@
-@extends('admin.Views.inactiveMain')
-@section('title','Altas Inactivas')
+@extends('admin.Views.registerMain')
+@section('title','Prestaciones Inactivas')
 @section('active-ingresardatos','active')
 @section('active-inactivos','active')
 
 @section('sub-content')
-<h1>Altas Inactivas</h1>
-<div class="div-full">
-    @if ($errors->any())
-    <div class="alert alert-danger">
+
+<h1>Prestaciones Inactivas</h1>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
         @foreach ($errors->all() as $error)
-        {{ $error }}
+        <li>{{ $error }}</li>
         @endforeach
-    </div>
-    @endif
+    </ul>
+</div>
+@endif
+<div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
         {{ session('status') }}
-    </div>
-    @endif
-    @if (session('err'))
-    <div class="alert alert-danger" role="alert">
-        {{ session('err') }}
     </div>
     @endif
 
@@ -28,12 +26,14 @@
         <div>
             <input class="form-control" id="searchbox" type="text" placeholder="Búsqueda...">
         </div><br>
+
         <div class="">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th style="width: 3%;">#</th>
-                        <th style="width: 70%;">Altas</th>
+                        <th style="width: 70%;">Prestaciones</th>
+                        <th style="width: 10%;">Código</th>
                         <th style="width: 10%;">Acciones</th>
                     </tr>
                 </thead>
@@ -42,6 +42,7 @@
                 </tbody>
             </table>
         </div>
+
         <div class="div-full">
             <ul class="pagination justify-content-center" id="paginate">
                 <!-- Generate in patientFilter.js->generatePaginationNum(); -->
@@ -50,7 +51,7 @@
     </div>
 </div>
 <!-- Form to send id at controller -->
-<form name="onSubmit" method="post" action="{{ url('activar-alta') }}">
+<form name="onSubmit" method="post" action="{{ url('activar-prestacion') }}">
     @csrf
     <div class="form-group">
         <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
@@ -67,7 +68,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Desea reactivar el alta?
+                ¿Desea reactivar la prestación?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -82,4 +83,8 @@
     var table = <?php echo json_encode($table); ?>;
     document.getElementById('data_Submenu').className += ' show';
 </script>
+<!-- Adding script using on this view -->
+<script type="text/javascript" src="{{asset('js/pagination.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/tableGenerator.js')}}"></script>
 @endsection

@@ -4,7 +4,7 @@
 @section('active-ingresarprograma','active')
 
 @section('content')
-<h1>Registrar Programa</h1>
+<h1>Registrar Programas</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -25,10 +25,10 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <select class="form-control" name="especiality">
+                    <select class="form-control" name="speciality">
                         <option selected disabled>Por favor seleccione un especialidad </option>
                         @foreach($speciality as $especialidad)
-                        <option value="{{ $especialidad->descripcion}}">{{ $especialidad->descripcion}}</option>
+                        <option value="{{ $especialidad->id}}">{{ $especialidad->descripcion}}</option>
                         @endforeach
                     </select>
                     <br>

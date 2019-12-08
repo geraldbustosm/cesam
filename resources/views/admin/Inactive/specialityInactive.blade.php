@@ -1,10 +1,10 @@
 @extends('admin.Views.inactiveMain')
-@section('title','Registrar Especialidad')
+@section('title','Especialidades Inactivos')
 @section('active-inactivos','active')
 @section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Registrar Especialidad Medica</h1>
+<h1>Especialidades Médicas Inactivas</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">

@@ -16,13 +16,13 @@
 
 /***************************************************************************************************************************
                                                     GENERAL
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 
 Auth::routes();
 Route::get('/', 'GeneralController@index');
 /***************************************************************************************************************************
                                                     ASIGNATIONS
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 // Especialidad
 Route::get('asignar/especialidad', 'SpecialityController@showAsignSpeciality')->middleware('checkrole:1');
 Route::post('asignar/especialidad', 'SpecialityController@AsignSpeciality')->middleware('checkrole:1');
@@ -39,7 +39,7 @@ Route::get('asignar/especialidad-tipo', 'TypeController@showAsignType')->middlew
 Route::post('asignar/especialidad-tipo', 'TypeController@AsignType')->middleware('checkrole:1');
 /***************************************************************************************************************************
                                                     VIEW INFO
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 // Fichas
 Route::post('ficha', 'AttendanceController@registerAttendance')->middleware('checkrole:1|2|3');
 Route::get('ficha/{DNI}', 'GeneralController@showClinicalRecords')->middleware('checkrole:1|2|3');
@@ -63,7 +63,7 @@ Route::get('usuarios/inactivos', 'UserController@showInactiveUsers')->middleware
 Route::post('usuarios/inactivos', 'UserController@activateUser')->middleware('checkrole:1');
 /***************************************************************************************************************************
                                                     INACTIVES
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 // Main
 Route::get('inactivo', 'ActivityController@showInactiveActivity')->middleware('checkrole:1');
 // Actividad
@@ -86,10 +86,18 @@ Route::post('desactivar-diagnostico', 'DiagnosisController@deletingDiagnosis')->
 Route::get('inactivo/especialidad', 'SpecialityController@showInactiveSpeciality')->middleware('checkrole:1');
 Route::post('activar-especialidad', 'SpecialityController@activateSpeciality')->middleware('checkrole:1');
 Route::post('desactivar-especialidad', 'SpecialityController@deletingSpeciality')->middleware('checkrole:1');
+// Especialidad Glosa
+Route::get('inactivo/especialidad-glosa', 'SpecialityProgramController@showInactiveSpeciality')->middleware('checkrole:1');
+Route::post('activar-especialidad-glosa', 'SpecialityProgramController@activateSpeciality')->middleware('checkrole:1');
+Route::post('desactivar-especialidad-glosa', 'SpecialityProgramController@deletingSpeciality')->middleware('checkrole:1');
 // Género
 Route::get('inactivo/genero', 'SexController@showInactiveSex')->middleware('checkrole:1');
 Route::post('activar-genero', 'SexController@activateSex')->middleware('checkrole:1');
 Route::post('desactivar-genero', 'SexController@deletingSex')->middleware('checkrole:1');
+// Prestación
+Route::get('inactivo/prestacion', 'ProvisionController@showInactiveProvision')->middleware('checkrole:1');
+Route::post('activar-prestacion', 'ProvisionController@activateProvision')->middleware('checkrole:1');
+Route::post('desactivar-prestacion', 'ProvisionController@deletingProvision')->middleware('checkrole:1');
 // Previsión
 Route::get('inactivo/prevision', 'PrevitionController@showInactivePrevition')->middleware('checkrole:1');
 Route::post('activar-prevision', 'PrevitionController@activatePrevition')->middleware('checkrole:1');
@@ -108,7 +116,7 @@ Route::post('activar-tipo', 'TypeController@activateType')->middleware('checkrol
 Route::post('desactivar-tipo', 'TypeController@deletingType')->middleware('checkrole:1');
 /***************************************************************************************************************************
                                                     REGISTERS
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 // Main
 Route::get('registrar', 'ActivityController@showAddActivity')->middleware('checkrole:1');
 // Actividades
@@ -128,6 +136,9 @@ Route::post('registrar/diagnostico', 'DiagnosisController@registerDiagnosis')->m
 // Especialidad
 Route::get('registrar/especialidad', 'SpecialityController@showAddSpeciality')->middleware('checkrole:1');
 Route::post('registrar/especialidad', 'SpecialityController@registerSpeciality')->middleware('checkrole:1');
+// Especialidad Glosa
+Route::get('registrar/especialidad-glosa', 'SpecialityProgramController@showAddSpeciality')->middleware('checkrole:1');
+Route::post('registrar/especialidad-glosa', 'SpecialityProgramController@registerSpeciality')->middleware('checkrole:1');
 // Funcionario
 Route::get('registrar/funcionario', 'FunctionaryController@showAddFunctionary')->middleware('checkrole:1');
 Route::post('registrar/funcionario', 'FunctionaryController@registerFunctionary')->middleware('checkrole:1');
@@ -157,14 +168,13 @@ Route::get('registrar/tipo', 'TypeController@showAddType')->middleware('checkrol
 Route::post('registrar/tipo', 'TypeController@registerType')->middleware('checkrole:1');
 // Usuario
 Route::get('registrar/usuario', 'UserController@showAddUser')->middleware('checkrole:1');
-Route::post('registrar/usuario','UserController@registerUser')->middleware('checkrole:1');
+Route::post('registrar/usuario', 'UserController@registerUser')->middleware('checkrole:1');
 /***************************************************************************************************************************
                                                     EDITS 
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 // Atención
 Route::get('paciente/{rut}/etapa/{etapa}/atencion/{atencion}/edit', 'AttendanceController@showEditAttendance')->middleware('checkrole:1');
 Route::put('editar/atencion', 'AttendanceController@editAttendance')->middleware('checkrole:1');
-
 // Actividad
 Route::get('actividades/edit/{id}', 'ActivityController@showEditActivity')->middleware('checkrole:1');
 Route::put('actividades/edit', 'ActivityController@editActivity')->middleware('checkrole:1');
@@ -208,7 +218,7 @@ Route::get('misdatos/edit', 'UserController@showEditData')->middleware('checkrol
 Route::put('misdatos/edit', 'UserController@editData')->middleware('checkrole:1|2|3');
 /***************************************************************************************************************************
                                                     REPORTS SECTION
-****************************************************************************************************************************/
+ ****************************************************************************************************************************/
 // Mensual
 Route::get('prestaciones/mensual', 'GeneralController@showMonthlyRecords')->middleware('checkrole:1|2|3');
 // Resumen
@@ -225,15 +235,15 @@ Route::get('prestaciones/egresos', 'GeneralController@showAdmissionDischarge')->
 Route::get('prestaciones/egresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
 /***************************************************************************************************************************
                                                     TESTING SECTION
-****************************************************************************************************************************/
-Route::get('lista-especialidades','AttendanceController@getSpecialityPerFunctionary')->middleware('checkrole:1|2|3');
-Route::get('lista-prestaciones','AttendanceController@getProvisionPerSpeciality')->middleware('checkrole:1|2|3');
-Route::get('lista-actividades','AttendanceController@getActivityPerSpeciality')->middleware('checkrole:1|2|3');
-Route::get('age-check','AttendanceController@checkAge')->middleware('checkrole:1|2|3');
+ ****************************************************************************************************************************/
+Route::get('lista-especialidades', 'AttendanceController@getSpecialityPerFunctionary')->middleware('checkrole:1|2|3');
+Route::get('lista-prestaciones', 'AttendanceController@getProvisionPerSpeciality')->middleware('checkrole:1|2|3');
+Route::get('lista-actividades', 'AttendanceController@getActivityPerSpeciality')->middleware('checkrole:1|2|3');
+Route::get('age-check', 'AttendanceController@checkAge')->middleware('checkrole:1|2|3');
 
-Route::get('charts','GraphsController@chart')->middleware('checkrole:1|2|3');
-Route::get('charts2','GraphsController@chart2')->middleware('checkrole:1|2|3');
-Route::get('charts3','GraphsController@chart3')->middleware('checkrole:1|2|3');
+Route::get('charts', 'GraphsController@chart')->middleware('checkrole:1|2|3');
+Route::get('charts2', 'GraphsController@chart2')->middleware('checkrole:1|2|3');
+Route::get('charts3', 'GraphsController@chart3')->middleware('checkrole:1|2|3');
 
 Route::get('alta/{DNI}', 'GeneralController@showAddRelease')->middleware('checkrole:1|2|3');
 Route::post('alta', 'GeneralController@addRelease')->middleware('checkrole:1|2|3');

@@ -1,10 +1,10 @@
 @extends('admin.Views.inactiveMain')
-@section('title','Altas Inactivas')
-@section('active-ingresardatos','active')
+@section('title','Especialidades Inactivos')
 @section('active-inactivos','active')
+@section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Altas Inactivas</h1>
+<h1>Especialidades de Glosa Inactivos</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                         <th style="width: 3%;">#</th>
-                        <th style="width: 70%;">Altas</th>
+                        <th style="width: 70%;">Especialidades</th>
                         <th style="width: 10%;">Acciones</th>
                     </tr>
                 </thead>
@@ -50,31 +50,31 @@
     </div>
 </div>
 <!-- Form to send id at controller -->
-<form name="onSubmit" method="post" action="{{ url('activar-alta') }}">
-    @csrf
-    <div class="form-group">
-        <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
-    </div>
+<form name="onSubmit" method="post" action="{{ url('activar-especialidad-glosa') }}">
+  @csrf
+  <div class="form-group">
+    <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
+  </div>
 </form>
 <!-- Modal to continue with action -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ¿Desea reactivar el alta?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Desea reactivar la especialidad?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
+      </div>
     </div>
+  </div>
 </div>
 <!-- Getting data -->
 <script>

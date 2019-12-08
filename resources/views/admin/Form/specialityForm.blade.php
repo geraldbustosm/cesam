@@ -4,7 +4,7 @@
 @section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Registrar Especialidad Medica</h1>
+<h1>Registrar Especialidades Médicas</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -28,7 +28,7 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('medical_speciality') ? ' is-invalid' : '' }}" value="{{ old('medical_speciality') }}" id="medical_speciality" name="medical_speciality" placeholder="Especialidad Medica">
+                    <input type="text" class="form-control {{ $errors->has('medical_speciality') ? ' is-invalid' : '' }}" value="{{ old('medical_speciality') }}" id="medical_speciality" name="medical_speciality" placeholder="Especialidad Médica">
                     <br>
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>

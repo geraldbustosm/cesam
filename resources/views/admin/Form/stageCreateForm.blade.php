@@ -3,6 +3,8 @@
 @section('active-ingresardatos','active')
 
 @section('content')
+
+<h1>Crear nueva etapa</h1>
 @if ($errors->any())
 <div class="alert alert-danger">
 	<ul>
@@ -12,7 +14,6 @@
 	</ul>
 </div>
 @endif
-<h1>Crear nueva etapa</h1>
 <div class="div-full">
 	@if (session('status'))
 	<div class="alert alert-success" role="alert">
@@ -27,7 +28,7 @@
 					<select class="form-control" name="funcionario_id" required>
 						<option selected disabled>Por favor seleccione un funcionario </option>
 						@foreach($functionarys as $funcionario)
-						<option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno." (".$funcionario->profesion.")"}}</option>
+						<option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno }}</option>
 						@endforeach
 					</select>
 				</div>

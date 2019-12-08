@@ -224,10 +224,12 @@
                         btn[0].style = "";
                         btn[1].style = "";
                         var provisionID = $(this).val();
+                        var patientID = <?php echo json_encode($DNI) ?>;
+                        console.log(patientID);
                         if (provisionID) {
                             $.ajax({
                                 type: "GET",
-                                url: "{{url('age-check')}}?provision_id=" + provisionID,
+                                url: "{{url('age-check')}}?provision_id=" + provisionID +"?patient_id=" + patientID,
                                 success: function(res) {
                                     if (res < 0) {
                                         $('#errorAge').show();

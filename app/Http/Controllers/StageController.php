@@ -33,7 +33,7 @@ class StageController extends Controller
         $functionarys = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
             ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'funcionarios.id')
             ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
-            ->select('funcionarios.id', 'funcionarios.profesion', 'users.primer_nombre', 'users.apellido_paterno')
+            ->select('funcionarios.id', 'users.primer_nombre', 'users.apellido_paterno')
             ->whereRaw("lower(especialidad.descripcion) like '%medico%'")
             ->orWhereRaw("lower(especialidad.descripcion) like '%médico%'")
             ->where('funcionarios.activa', 1)

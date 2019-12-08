@@ -4,7 +4,7 @@
 @section('active-ingresardatos','active')
 
 @section('sub-content')
-<h1>Registrar Prevision</h1>
+<h1>Registrar Previsiones</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">

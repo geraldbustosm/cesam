@@ -94,7 +94,7 @@ class PatientController extends Controller
     {
         // Check the format of each variable of 'request'
         $validation = $request->validate([
-            'dni' => 'required|string|unique:paciente,DNI',
+            'dni' => 'required|string|max:255|unique:paciente,DNI',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'second_last_name' => 'nullable|string|max:255',
@@ -162,7 +162,7 @@ class PatientController extends Controller
         $url = "pacientes/edit/" . $request->dni;
         // Validate the request variables
         $validation = $request->validate([
-            'dni' => 'required|string|max:255',
+            'dni' => 'required|string|max:255|unique:paciente,DNI',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'second_last_name' => 'nullable|string|max:255',

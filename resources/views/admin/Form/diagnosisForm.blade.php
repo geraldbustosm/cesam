@@ -4,7 +4,7 @@
 @section('active-registrar','active')
 
 @section('sub-content')
-<h1>Registrar Diagnostico</h1>
+<h1>Registrar Diagnósticos</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">

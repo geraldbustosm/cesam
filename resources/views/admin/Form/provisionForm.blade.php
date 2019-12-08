@@ -4,6 +4,8 @@
 @section('active-ingresardatos','active')
 
 @section('sub-content')
+
+<h1>Ingresar Prestaciones</h1>
 @if ($errors->any())
 <div class="alert alert-danger">
     <ul>
@@ -13,7 +15,6 @@
     </ul>
 </div>
 @endif
-<h1>Ingresar Prestacion</h1>
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -29,7 +30,7 @@
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col">
-                                <input type="text" class="form-control {{ $errors->has('glosa') ? ' is-invalid' : '' }}" value="{{ old('glosa') }}" id="glosa" name="glosa" placeholder="Glosa Trasadora">
+                                <input type="text" class="form-control {{ $errors->has('glosa') ? ' is-invalid' : '' }}" value="{{ old('glosa') }}" id="glosa" name="glosa" placeholder="Glosa Trasadora" required autofocus>
                             </div>
                         </div>
                     </div>
@@ -37,13 +38,13 @@
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col">
-                                <input type="text" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{ old('codigo') }}" id="apellido1" name="codigo" placeholder="Codigo">
+                                <input type="text" class="form-control {{ $errors->has('codigo') ? ' is-invalid' : '' }}" value="{{ old('codigo') }}" id="apellido1" name="codigo" placeholder="Código" required autofocus>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control" name="lower_age" required>
+                        <select class="form-control" name="lower_age" required autofocus>
                             <option selected disabled>Por favor seleccione el rango de edad inferior</option>
                             @for ($i = 0; $i <= 120; $i++) <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
@@ -51,7 +52,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control" name="senior_age" required>
+                        <select class="form-control" name="senior_age" required autofocus>
                             <option selected disabled>Por favor seleccione el rango de edad superior</option>
                             @for ($i = 0; $i <= 120; $i++) <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
@@ -59,15 +60,15 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="text" class="form-control {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="frecuencia" name="frecuencia" placeholder="Frecuencia">
+                        <input type="text" class="form-control {{ $errors->has('frecuencia') ? ' is-invalid' : '' }}" value="{{ old('profesion') }}" id="frecuencia" name="frecuencia" placeholder="Frecuencia" required autofocus>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" class="form-control {{ $errors->has('ps_fam') ? ' is-invalid' : '' }}" value="{{ old('ps_fam') }}" id="ps_fam" name="ps_fam" placeholder="ps-fam">
+                        <input type="text" class="form-control {{ $errors->has('ps_fam') ? ' is-invalid' : '' }}" value="{{ old('ps_fam') }}" id="ps_fam" name="ps_fam" placeholder="ps-fam" required autofocus>
                     </div>
 
                     <div class="form-group">
-                        <select class="form-control" name="medical_provision_type" required>
+                        <select class="form-control" name="medical_provision_type" required autofocus>
                             <option selected disabled>Por favor seleccione el tipo de prestación</option>
                             @foreach($type as $type)
                             <option value="{{ $type->id}}">{{ $type->descripcion}}</option>
@@ -109,11 +110,37 @@
         </div>
     </form>
 </div>
+<!-- Form to send id at controller -->
+<form name="onSubmit" method="post" action="{{ url('desactivar-prestacion') }}">
+    @csrf
+    <div class="form-group">
+        <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
+    </div>
+</form>
+<!-- Modal to continue with action -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Acción</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Desea eliminar la prestación?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="continueBtn">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Getting data -->
 <script>
     var fullArray = <?php echo json_encode($data); ?>;
     var table = <?php echo json_encode($table); ?>;
-    console.log(table);
     document.getElementById('data_Submenu').className += ' show';
 </script>
 <!-- Adding script using on this view -->

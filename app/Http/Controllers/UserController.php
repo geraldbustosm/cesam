@@ -71,7 +71,7 @@ class UserController extends Controller
             'nick' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'second_last_name' => 'required|string|max:255',
+            'second_last_name' => 'nullable|string|max:255',
             'rut' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'rol' => 'required|integer|max:255',
@@ -84,7 +84,6 @@ class UserController extends Controller
 
         if (!$posSpace) {
             $user->primer_nombre = $request->name;
-            $user->segundo_nombre = "";
         } else {
             $user->primer_nombre = substr($request->name, 0, $posSpace);
             $user->segundo_nombre = substr($request->name, $posSpace + 1);
