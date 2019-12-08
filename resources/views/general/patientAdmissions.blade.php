@@ -1,12 +1,15 @@
 @extends('layouts.main')
-@section('title','Tablas REM')
+@section('title','Ingresos mensuales')
 @section('active-prestaciones','active')
-@section('active-rem','active')
+@section('active-ingreso','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+<h1>Despliegue de Información
+    <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
+    <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
+</h1>
 
 <div class="div-full">
     @if (session('status'))
@@ -25,20 +28,33 @@
         </div>
         <!-- Select parameters for filter -->
         <div class="table-controls form-row">
-            <div class="form-group col-md-4">
-                <select class="form-control" id="filter-field">
+        <div class="form-group col-md-4 warpper">
+                <select class="form-control" id="filter-field" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
                     <option selected>Columna</option>
-                    <option value="actividad">Actividad</option>
-                    <option value="especialidad">Especialidad</option>
+                    <option value="DNI">Rut</option>
+                    <option value="nombre1">Nombre</option>
+                    <option value="apellido1">Apellido paterno</option>
+                    <option value="apellido2">Apellido materno</option>
+                    <option value="fecha_nacimiento">Fecha nacimiento</option>
+                    <option value="fecha_ingreso">Fecha ingreso</option>
+                    <option value="edad">Edad</option>
+                    <option value="sexo">Sexo</option>
+                    <option value="procedencia">Procedencia</option>
+                    <option value="prevision">Previsión</option>
+                    <option value="ges">GES</option>
+                    <option value="sigges">SIGGES</option>
+                    <option value="diagnostico">Diagnóstico</option>
+                    <option value="medico">Médico</option>
                 </select>
             </div>
+
             <div class="form-group col-md-2">
                 <select class="form-control" id="filter-type">
                     <option selected>Tipo</option>
                     <option value="=">=</option>
                     <option value="<=">&lt;=</option>
                     <option value=">=">&gt;=</option>
-                    <option value="like">igual</option>
+                    <option value="like">igual (texto)</option>
                 </select>
             </div>
             <!-- Value sought -->
@@ -46,13 +62,13 @@
             <!-- Clean filters -->
             <a href="#" id="filter-clear" style="padding: 5px;"><i title='Restablecer valores' class="material-icons">highlight_off</i><span></span></a>
         </div>
-        <!-- Target for tabulator table -->
+
         <div id="example-table"></div>
         <script type="text/javascript">
-            // Keep open sidebar
             document.getElementById('records_Submenu').className += ' show';
             //Trigger setFilter function with correct parameters
             function updateFilter() {
+
                 var filter = $("#filter-field").val() == "function" ? customFilter : $("#filter-field").val();
 
                 if ($("#filter-field").val() == "function") {
@@ -77,43 +93,45 @@
 
                 table.clearFilter();
             });
-            //Getting data
-            var tableData = <?php echo json_encode($data); ?>;
-            var list = <?php echo json_encode($list); ?>;
-            console.log(tableData);
-            console.log(list);
-            // Write data for download
+
+            //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
-                height:"420px",
-                data:tableData,
-                // autoColumns: true,
+                height: "420px",
+                movableColumns: true,
                 columns: [
-                    {title:"Actividad", field:"actividad"},
-                    {title:"Especialidad", field:"especialidad"},
-                    {//create column group
-                        title:"Total",
-                        columns:[
-                        {title:"Ambos Sexos", field:"Ambos", width:120, bottomCalc:"sum"},
-                        {title:"Hombres", field:"Hombres", width:120, bottomCalc:"sum"},
-                        {title:"Mujeres", field:"Mujeres", width:120, bottomCalc:"sum"},
-                        ],
-                    },
+                    {title:"# Ficha", field:"numero_ficha"},
+                    {title:"Rut", field:"DNI"},
+                    {title:"Nombre", field:"nombre1"},
+                    {title:"Apellido paterno", field:"apellido1"},
+                    {title:"Apellido materno", field:"apellido2"},
+                    {title:"Fecha nacimiento", field:"fecha_nacimiento"},
+                    {title:"Edad", field:"edad"},
+                    {title:"Sexo", field:"sexo"},
+                    {title:"Procedencia", field:"procedencia"},
+                    {title:"Fecha ingreso", field:"fecha_ingreso"},
+                    {title:"Fecha ingreso", field:"fecha_ingreso"},
+                    {title:"Previsión", field:"prevision"},
+                    {title:"GES", field:"ges"},
+                    {title:"SIGGES", field:"sigges"},
+                    {title:"Diagnóstico", field:"diagnostico"},
+                    {title:"Dirección", field:"direccion"},
+                    {title:"SENAME", field:""},
+                    {title:"Médico", field:"medico"},
                 ],
             });
-            // Complete table
-            for(i=0 ; i<list.length ; i++){
-                table.addColumn(
-                    {//create column group
-                        title:`${list[i]}`,
-                        columns:[
-                        {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
-                        {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
-                        ],
-                    }, false);
+
+            //define some sample data
+            var tabledata = {!!$main!!};
+            console.log(tabledata);
+
+            //load sample data into the table
+            table.setData(tabledata);
+
+            //trigger redirect to REM view
+            function redirectREM() {
+                window.location = "/prestaciones/ingresos/info"
             };
-            // Add the last two columns
-            table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150, bottomCalc:"sum"}, false);
-            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
+
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

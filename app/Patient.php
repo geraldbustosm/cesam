@@ -22,7 +22,7 @@ class Patient extends Model
    * @var array
    */
   protected $fillable = [
-      'id', 'DNI','nombre1', 'nombre2', 'apellido1', 'apellido2', 'sexo_id', 'fecha_nacimiento',
+      'id', 'DNI','nombre1', 'nombre2', 'apellido1', 'apellido2', 'sexo_id', 'fecha_nacimiento', 'prevision_id'
   ];
 
   public function stage()

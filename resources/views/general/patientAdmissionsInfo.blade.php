@@ -1,7 +1,7 @@
 @extends('layouts.main')
-@section('title','Prestaciones Realizadas')
+@section('title','Ingresos mensuales')
 @section('active-prestaciones','active')
-@section('active-prestacionesrealizadas','active')
+@section('active-ingreso','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -25,14 +25,10 @@
         </div>
         <!-- Select parameters for filter -->
         <div class="table-controls form-row">
-
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
-                    <option value="actividad">Actividad</option>
-                    @foreach($functionarys as $functionary)
-                    <option value="{{ $functionary->nombre_funcionario }}">{{ $functionary->nombre_funcionario }}</option>
-                    @endforeach
+                    <option value="nombre1">Nombre</option>
                 </select>
             </div>
 
@@ -46,18 +42,19 @@
                 </select>
             </div>
             <!-- Value sought -->
-            <div class="form-group col-md-3"><input class="form-control" id="filter-value" type="text" placeholder="Valor a filtrar"></div>
+            <div class="form-group col-md-4"><input class="form-control" id="filter-value" type="text" placeholder="Valor a filtrar"></div>
             <!-- Clean filters -->
             <a href="#" id="filter-clear" style="padding: 5px;"><i title='Restablecer valores' class="material-icons">highlight_off</i><span></span></a>
         </div>
 
         <div id="example-table"></div>
         <script type="text/javascript">
-            // Keep open sidebar
             document.getElementById('records_Submenu').className += ' show';
             //Trigger setFilter function with correct parameters
             function updateFilter() {
+
                 var filter = $("#filter-field").val() == "function" ? customFilter : $("#filter-field").val();
+
                 if ($("#filter-field").val() == "function") {
                     $("#filter-type").prop("disabled", true);
                     $("#filter-value").prop("disabled", true);
@@ -65,42 +62,52 @@
                     $("#filter-type").prop("disabled", false);
                     $("#filter-value").prop("disabled", false);
                 }
+
                 table.setFilter(filter, $("#filter-type").val(), $("#filter-value").val());
             }
             //Update filters on value change
             $("#filter-field, #filter-type").change(updateFilter);
             $("#filter-value").keyup(updateFilter);
+
             //Clear filters on "Clear Filters" button click
             $("#filter-clear").click(function() {
                 $("#filter-field").val("Columna");
                 $("#filter-type").val("Tipo");
-                $("#filter-value").val("");              
-                // Delete error column
+                $("#filter-value").val("");
+
                 table.clearFilter();
             });
-            //Getting data
-            var tableData = <?php echo json_encode($table); ?>;
-            var functionarys = <?php echo json_encode($functionarys); ?>;
-            // Write data on Tabulator table
-            table = new Tabulator("#example-table", {
-                height:"420px",
-                data:tableData,
-                // autoColumns: true,
+
+            //create Tabulator on DOM element with id "example-table"
+            var table = new Tabulator("#example-table", {
+                height: "420px",
+                movableColumns: true,
                 columns: [
-                    {title: "Actividad", field:"actividad"},
+                    {title:"Ingreso", field:"diagnostico"}
                 ],
             });
+
+            //define some sample data
+            var tabledata = {!!$main!!};
+            var list = {!!$list!!};
+
             // Complete table
-            for(i=0 ; i<functionarys.length ; i++){
+            for(i=0 ; i<list.length ; i++){
                 table.addColumn(
                     {//create column group
-                        title:`${functionarys[i].nombre_funcionario}`,
+                        title:`${list[i]}`,
                         columns:[
-                            {title:"Con Asistenia", field:`${functionarys[i].nombre_funcionario}-si`, width:160, bottomCalc:"sum"},
-                            {title:"Sin Asistenia", field:`${functionarys[i].nombre_funcionario}-no`, width:160, bottomCalc:"sum"},
+                        {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
+                        {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
                         ],
                     }, false);
             };
+            // Add the last two columns
+            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
+
+            //load sample data into the table
+            table.setData(tabledata);
+
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

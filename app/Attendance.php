@@ -34,8 +34,12 @@ class Attendance extends Model
   {
     return $this->belongsTo('App\Provision', 'prestacion_id');
   }
+  public function activity()
+  {
+    return $this->belongsTo('App\Activity', 'actividad_id');
+  }
   protected $fillable = 
     [
-      'id','funcionario_id','etapa_id','prestacion_id','fecha','asistencia','hora','duracion','activa','abre_canasta'
+      'id','funcionario_id','etapa_id','prestacion_id', 'actividad_id','fecha','asistencia','hora','duracion','activa','abre_canasta'
     ];
 }

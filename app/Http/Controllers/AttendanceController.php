@@ -9,6 +9,7 @@ use App\Attendance;
 use App\Patient;
 use App\Stage;
 use App\TypeSpeciality;
+use App\Provision;
 
 class AttendanceController extends Controller
 {
@@ -29,22 +30,23 @@ class AttendanceController extends Controller
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-    public function showEditAttendance($dni, $etapa, $atencion){
+    public function showEditAttendance($dni, $etapa, $atencion)
+    {
         // URL to redirect
         $url = 'ficha/' . $dni;
 
         $functionarys = Functionary::where('activa', 1)->get();
         $patient = Patient::where('dni', $dni)->first();
-        
-        if($patient){
+
+        if ($patient) {
             $stages = $patient->stage;
-            if($stages){
-                foreach ($stages as $stage){
-                    if($stage->id == $etapa){
+            if ($stages) {
+                foreach ($stages as $stage) {
+                    if ($stage->id == $etapa) {
                         $attendances = $stage->attendance;
-                        if($attendances){
-                            foreach($attendances as $attendance){
-                                if($attendance->id == $atencion){
+                        if ($attendances) {
+                            foreach ($attendances as $attendance) {
+                                if ($attendance->id == $atencion) {
                                     // Formatting date for the view
                                     $fecha = explode("-", $attendance->fecha);
                                     $fecha = $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0];
@@ -56,20 +58,21 @@ class AttendanceController extends Controller
                                 }
                             }
                             return redirect($url)->with('error', 'No se encontró la atención para la etapa del paciente');
-                        }else{
+                        } else {
                             return redirect($url)->with('error', 'No se encontraron atenciones para la etapa del paciente');
                         }
                     }
                 }
                 return redirect($url)->with('error', 'No se encontró la etapa del paciente');
-            }else{
+            } else {
                 return redirect($url)->with('error', 'No se encontaron etapas para el paciente');
             }
-        }else{
+        } else {
             return redirect('pacientes')->with('error', 'No se encontró el paciente');
         }
     }
-    public function editAttendance(Request $request){
+    public function editAttendance(Request $request)
+    {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
             //'descripcion' => 'required|string|max:255'
@@ -94,16 +97,30 @@ class AttendanceController extends Controller
         $date = str_replace('/', '-', $var);
         $correctDate = date('Y-m-d', strtotime($date));
         $attendance->fecha = $correctDate;
-        // Pass the attendance to database
-        $canasta = 0;
-        if (TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0) {
-            if (Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
-                if ($request->get('selectA') == 1) {
-                    $canasta = 1;
-                    $attendance->abre_canasta = $canasta;
+        // Set abre_canasta with 0;
+        $attendance->abre_canasta = 0;
+        // Get the active stage
+        $stage = Stage::find($request->id_stage);
+        $patientAttendances = $stage->attendance;
+        // Get the patient
+        $idPatient = $request->get('id');
+        // Check for abre_canasta
+        $patient = Patient::find($idPatient);
+        $typespeciality = TypeSpeciality::where('especialidad_id', $request->get('speciality'));
+        $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
+        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
+            $canasta = true;
+            foreach ($patientAttendances as $index) {
+                $provision = Provision::find($index->prestacion_id);
+                if ($index->abre_canasta == 1 && $provision->tipo_id == $typespeciality->tipo_id) {
+                    $canasta = false;
                 }
             }
+            if ($canasta) {
+                $attendance->abre_canasta = 1;
+            }
         }
+        // Pass attendance to database
         $attendance->save();
         // Update variable for functionary
         // functionary -> horasRealizadas
@@ -117,18 +134,11 @@ class AttendanceController extends Controller
         $functionary->horasRealizadas = $anterior + $hours + $minutes / 60;
         // Save the update
         $functionary->save();
-        // Get the patient
-        $idPatient = $request->get('id');
-        $patient = Patient::find($idPatient);
-        // Get the active stage
-        $stage = Stage::find($request->id_stage);
-        $patientAtendances = $stage->attendance;
-
         if ($request->register == 1) {
             $activeStage = Stage::where('paciente_id', $idPatient)
-                            ->where('activa', 1)
-                            ->select('id')
-                            ->first();
+                ->where('activa', 1)
+                ->select('id')
+                ->first();
             // Redirect to the view with successful status
             $url = 'ficha/' . $patient->DNI;
             return redirect($url)->with('status', 'Se actualizó la atención');
@@ -144,14 +154,8 @@ class AttendanceController extends Controller
      ****************************************************************************************************************************/
     public function registerAttendance(Request $request)
     {
-        // Check the format of each variable of 'request'
-        $validacion = $request->validate([
-            //'descripcion' => 'required|string|max:255'
-        ]);
         // Create a new 'object' attendance
         $attendance = new Attendance;
-        // Get the specific functionary
-        $functionary = Functionary::find($request->functionary);
         // Set some variables with functionary info and inputs of view
         // the variables name of object must be the same that database for save it
         // from attendanceForm: provision, id_stage, DNI, speciality, assistance, duration of attendance, date of attendance
@@ -161,6 +165,7 @@ class AttendanceController extends Controller
         $attendance->prestacion_id = $request->get('provision');
         $attendance->asistencia = $request->get('selectA');
         $attendance->hora = $request->get('timeInit');
+        // $attendance->tipo_paciente = $request->get('selectType');
         $attendance->actividad_id = $request->get('activity');
         $attendance->duracion = $request->get('duration');
         // Re-format database date to datepicker type
@@ -168,16 +173,30 @@ class AttendanceController extends Controller
         $date = str_replace('/', '-', $var);
         $correctDate = date('Y-m-d', strtotime($date));
         $attendance->fecha = $correctDate;
-        // Pass the attendance to database
-        $canasta = 0;
-        if (TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0) {
-            if (Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
-                if ($request->get('selectA') == 1) {
-                    $canasta = 1;
-                    $attendance->abre_canasta = $canasta;
+        // Set abre_canasta with 0;
+        $attendance->abre_canasta = 0;
+        // Get the active stage
+        $stage = Stage::find($request->id_stage);
+        $patientAttendances = $stage->attendance;
+        // Get the patient
+        $idPatient = $request->get('id');
+        $patient = Patient::find($idPatient);
+        // Check for abre_canasta
+        $typespeciality = TypeSpeciality::where('especialidad_id', $request->get('speciality'));
+        $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
+        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
+            $canasta = true;
+            foreach ($patientAttendances as $index) {
+                $provision = Provision::find($index->prestacion_id);
+                if ($index->abre_canasta == 1 && $provision->tipo_id == $typespeciality->tipo_id) {
+                    $canasta = false;
                 }
             }
+            if ($canasta) {
+                $attendance->abre_canasta = 1;
+            }
         }
+        // Pass attendance to database
         $attendance->save();
         // Update variable for functionary
         // functionary -> horasRealizadas
@@ -185,26 +204,21 @@ class AttendanceController extends Controller
         $vector     = explode(":", $duration);
         $hours      = $vector[0];
         $minutes    = $vector[1];
+        // Get the specific functionary
+        $functionary = Functionary::find($request->functionary);
         // Get previous hours worked
         $anterior   = $functionary->horasRealizadas;
         // Add the new hours
         $functionary->horasRealizadas = $anterior + $hours + $minutes / 60;
         // Save the update
         $functionary->save();
-        // Get the patient
-        $idPatient = $request->get('id');
-        $patient = Patient::find($idPatient);
-        // Get the active stage
-        $stage = Stage::find($request->id_stage);
-        $patientAtendances = $stage->attendance;
-
         if ($request->register == 1) {
             $activeStage = Stage::where('paciente_id', $idPatient)
-                            ->where('activa', 1)
-                            ->select('id')
-                            ->first();
+                ->where('activa', 1)
+                ->select('id')
+                ->first();
             // Redirect to the view with successful status
-            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAtendances','activeStage'));
+            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage'));
         }
         if ($request->register == 2) {
             // Get active functionarys
