@@ -114,9 +114,11 @@ class AttendanceController extends Controller
         if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
             $canasta = true;
             foreach ($patientAttendances as $index) {
-                $provision = Provision::find($index->prestacion_id);
-                if ($index->abre_canasta == 1 && $provision->tipo_id == $typespeciality->tipo_id) {
-                    $canasta = false;
+                foreach ($typespeciality as $type) {
+                    $provision = Provision::find($index->prestacion_id);
+                    if ($index->abre_canasta == 1 && $provision->tipo_id == $type->tipo_id) {
+                        $canasta = false;
+                    }
                 }
             }
             if ($canasta) {
@@ -185,14 +187,16 @@ class AttendanceController extends Controller
         $idPatient = $request->get('id');
         $patient = Patient::find($idPatient);
         // Check for abre_canasta
-        $typespeciality = TypeSpeciality::where('especialidad_id', $request->get('speciality'));
+        $typespeciality = TypeSpeciality::where('especialidad_id', 1)->get();
         $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
         if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
             $canasta = true;
             foreach ($patientAttendances as $index) {
-                $provision = Provision::find($index->prestacion_id);
-                if ($index->abre_canasta == 1 && $provision->tipo_id == $typespeciality->tipo_id) {
-                    $canasta = false;
+                foreach ($typespeciality as $type) {
+                    $provision = Provision::find($index->prestacion_id);
+                    if ($index->abre_canasta == 1 && $provision->tipo_id == $type->tipo_id) {
+                        $canasta = false;
+                    }
                 }
             }
             if ($canasta) {
@@ -216,12 +220,9 @@ class AttendanceController extends Controller
         // Save the update
         $functionary->save();
         if ($request->register == 1) {
-            $activeStage = Stage::where('paciente_id', $idPatient)
-                ->where('activa', 1)
-                ->select('id')
-                ->first();
             // Redirect to the view with successful status
-            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage'));
+            $DNI = $patient->DNI;
+            return redirect(`/ficha/${$DNI}`)->with('status', 'Atención agregada');
         }
         if ($request->register == 2) {
             // Get active functionarys
@@ -266,7 +267,7 @@ class AttendanceController extends Controller
     public function checkAge(Request $request)
     {
         // Get the patient
-        $patient = Patient::find(1);
+        $patient = Patient::find($request->patient_id);
         // Get the provision
         $provision = Provision::find($request->provision_id);
         // Get age fo patient

@@ -61,8 +61,7 @@ class FunctionaryController extends Controller
                 ->whereNotIn('id', $functionarys)
                 ->where('activa', 1)
                 ->get();
-        $speciality = DB::table('especialidad')
-                ->get();
+        $speciality = Speciality::all();
         // Redirect to the view with list of users
         return view('admin.Form.functionaryForm', compact('user','speciality'));
     }
