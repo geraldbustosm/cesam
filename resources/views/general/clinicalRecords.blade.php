@@ -35,7 +35,7 @@
 <div>
     <p><b>Paciente: </b>{{ $patient->nombre1 }} {{ $patient->apellido1 }} {{ $patient->apellido2 }}</p>
     <p class="mb-2"><b>Rut: </b>{{ $patient->DNI}}</p>
-    <button type="button" class="btn btn-primary mb-2" id="addPrevition">Añadir prestación</button>
+    <button type="button" class="btn btn-primary mb-2" id="addAttendance">Añadir prestación</button>
     @if($stage->activa == 1)
     <button type="button" class="btn btn-primary mb-2" id="addRelease">Dar alta</button>
     @endif
@@ -112,9 +112,9 @@
         document.onSubmit.submit();
     });
 
-    $('#addPrevition').on('click', function() {
+    $('#addAttendance').on('click', function() {
         var tagID = document.getElementById('DNI_stage');
-        tagID.value = <?php echo json_encode($patient->DNI); ?>;
+        tagID.value = <?php echo json_encode($patient->id); ?>;
         document.onSubmitAttendance.submit();
     });
 
