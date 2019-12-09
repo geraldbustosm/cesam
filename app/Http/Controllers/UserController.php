@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Functionary;
 use Illuminate\Http\Request;
+
+use App\Functionary;
+use App\Speciality;
 use App\User;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -98,13 +101,8 @@ class UserController extends Controller
         // Pass the user to database
         $user->save();
         if ($request->rol == 2) {
-            // Get the last user added
-            $id = DB::getPDO()->lastInsertId();
-            $user = User::where('id', $id)->get();
-            $speciality = DB::table('especialidad')
-                ->get();
-            // Return to the view just with the last user
-            return view('admin.Form.functionaryForm', compact('user','speciality'));
+            // Return to the view
+            return redirect('/registrar/funcionario')->with('status', 'Usuario creado');
         } else {
             // Redirect to the view with successful status
             return redirect('registrar/usuario')->with('status', 'Usuario creado');

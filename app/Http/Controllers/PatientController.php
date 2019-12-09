@@ -230,7 +230,7 @@ class PatientController extends Controller
         // Send update to database
         $patient->save();
         // Redirect to the view with successful status (showing the DNI)
-        return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $patient->DNI . ' reingresado');
+        return redirect('/pacientes/inactivos')->with('status', 'Paciente ' . $patient->DNI . ' reingresado');
     }
     public function deletingPatient(Request $request)
     {
@@ -241,6 +241,6 @@ class PatientController extends Controller
         // Send update to database
         $patient->save();
         // Redirect to the view with successful status (showing the DNI)
-        return redirect('pacientes')->with('status', 'Paciente ' . $patient->DNI . ' eliminado');
+        return redirect('/pacientes')->with('status', 'Paciente ' . $patient->DNI . ' eliminado');
     }
 }

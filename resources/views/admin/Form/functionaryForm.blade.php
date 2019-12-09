@@ -4,6 +4,7 @@
 @section('active-ingresarfuncionario','active')
 
 @section('content')
+<h1>Ingresar Funcionario</h1>
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -13,7 +14,6 @@
         </ul>
     </div>
 @endif
-<h1>Ingresar Funcionario</h1>
 <div class="div-full">
 	@if (session('status'))
 		<div class="alert alert-success" role="alert">
