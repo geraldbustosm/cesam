@@ -81,12 +81,12 @@ class StageController extends Controller
     // Check for an active stage for the patient (parameter)
     public function checkCurrStage(Request $request)
     {
-        // Set variable with patient DNI (rut)
-        $DNI = $request->DNI_stage;
         // Get the patient
-        $patient = Patient::where('DNI', $DNI)
+        $patient = Patient::where('id', $request->DNI_stage)
             ->where('activa', 1)
             ->first();
+        // Set variable with patient DNI (rut)
+        $DNI = $patient->DNI;
         // Set variable with patient id (from database)
         $id_patient = $patient->id;
         // Get the active stage

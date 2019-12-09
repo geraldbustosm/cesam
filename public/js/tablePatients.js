@@ -107,12 +107,12 @@ function writeActionButtons(data) {
         <a href='/pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>`;
         if (active == 1) {
             // Generate action buttons for active patients
-            tmp += `<a href='javascript:addAttendance(${data.DNI})'><i title='Añadir prestación' class='material-icons'>add</i></a>
-                    <a href='javascript:changeStatus(${data.DNI})'><i title='Borrar' class='material-icons'>delete</i></a>
+            tmp += `<a href='javascript:addAttendance(${data.id})'><i title='Añadir prestación' class='material-icons'>add</i></a>
+                    <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             // Generate action buttons for deactive patients
-            tmp += `<a href='javascript:changeStatus(${data.DNI})'><i title='Activar' class='material-icons'>person_add</i></a>
+            tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }
     } catch (ex) {

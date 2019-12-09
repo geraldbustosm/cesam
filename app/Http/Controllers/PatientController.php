@@ -21,7 +21,7 @@ class PatientController extends Controller
     {
         // Get patients from database where 'activa' attribute is 1 bits
         $patients = Patient::where('activa', 1)
-                            ->select('DNI','nombre1','nombre2','apellido1','apellido2','fecha_nacimiento','prevision_id','sexo_id','activa')
+                            ->select('id', 'DNI','nombre1','nombre2','apellido1','apellido2','fecha_nacimiento','prevision_id','sexo_id','activa')
                             ->get();
         // Count patients
         $cantPatients = $patients->count();
@@ -224,23 +224,23 @@ class PatientController extends Controller
     public function activatePatient(Request $request)
     {
         // Get the patient
-        $patient = Patient::where('DNI', $request->id)->get();
+        $patient = Patient::find($request->id);
         // Update active to 1 bits
-        $patient[0]->activa = 1;
+        $patient->activa = 1;
         // Send update to database
-        $patient[0]->save();
+        $patient->save();
         // Redirect to the view with successful status (showing the DNI)
-        return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $request->id . ' reingresado');
+        return redirect('pacientes/inactivos')->with('status', 'Paciente ' . $patient->DNI . ' reingresado');
     }
     public function deletingPatient(Request $request)
     {
         // Get the patient
-        $patient = Patient::where('DNI', $request->id)->get();
+        $patient = Patient::find($request->id);
         // Update active to 0 bits
-        $patient[0]->activa = 0;
+        $patient->activa = 0;
         // Send update to database
-        $patient[0]->save();
+        $patient->save();
         // Redirect to the view with successful status (showing the DNI)
-        return redirect('pacientes')->with('status', 'Paciente ' . $request->id . ' eliminado');
+        return redirect('pacientes')->with('status', 'Paciente ' . $patient->DNI . ' eliminado');
     }
 }
