@@ -220,6 +220,10 @@ Route::get('password/edit', 'UserController@showEditPassword')->middleware('chec
 Route::put('password/edit', 'UserController@editPassword')->middleware('checkrole:1|2|3');
 Route::get('misdatos/edit', 'UserController@showEditData')->middleware('checkrole:1|2|3');
 Route::put('misdatos/edit', 'UserController@editData')->middleware('checkrole:1|2|3');
+// Usuario, Manejo de horas
+Route::get('horas/edit', 'UserController@editHours')->middleware('checkrole:1|2|3');
+Route::post('horas/edit', 'UserController@saveHours')->middleware('checkrole:1|2|3');
+
 /***************************************************************************************************************************
                                                     REPORTS SECTION
  ****************************************************************************************************************************/
@@ -248,6 +252,7 @@ Route::get('age-check', 'AttendanceController@checkAge')->middleware('checkrole:
 Route::get('charts', 'GraphsController@chart')->middleware('checkrole:1|2|3');
 Route::get('charts2', 'GraphsController@chart2')->middleware('checkrole:1|2|3');
 Route::get('charts3', 'GraphsController@chart3')->middleware('checkrole:1|2|3');
+Route::get('charts4', 'GraphsController@chart4')->middleware('checkrole:1|2|3');
 
 Route::get('alta/{DNI}', 'GeneralController@showAddRelease')->middleware('checkrole:1|2|3');
 Route::post('alta', 'GeneralController@addRelease')->middleware('checkrole:1|2|3');

@@ -16,7 +16,6 @@
             <canvas id="pie-chart2" ></canvas>
         </div>
     </div>
-    <div class="w-100"></div>
     <div class="col">
         <div>
             <canvas id="chart" height="400px" width="400px"></canvas>
@@ -108,10 +107,7 @@
                 data.push(entry.stockPrice);
             });
             const arrayLength = labels.length;
-            console.log(Array.isArray(labels));
-            console.log(labels);
-            console.log(data);
-            console.log(labels.length);
+            
             const chartData = {
                 labels: labels,
                 data: data,
@@ -182,7 +178,7 @@
                 labels2.push(entry.glosa);
                 data2.push(entry.numero);
             });
-            const arrayLength = labels.length;
+            const arrayLength = labels2.length;
             const chartData2 = {
                 labels: labels2,
                 data: data2,
@@ -253,7 +249,7 @@
                 labels3.push(entry.Month);
                 data3.push(entry.Cantidad);
             });
-            const arrayLength = labels.length;
+            const arrayLength = labels3.length;
             const chartData3 = {
                 labels: labels3,
                 data: data3,

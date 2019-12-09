@@ -174,6 +174,9 @@
                                 <li>
                                     <a class="nav-link @yield('active-editarcontraseña')" href="{{url('password/edit')}}"><span>Editar contraseña</span></a>
                                 </li>
+                                <li>
+                                    <a class="nav-link @yield('active-editarhoras')" href="{{url('horas/edit')}}"><span>Editar mis horas</span></a>
+                                </li>
                             </ul>
                         </li>
                     </nav>

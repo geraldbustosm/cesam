@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Functionary;
 use App\Speciality;
+use App\Activity;
 use App\User;
+use App\Hours;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -109,6 +111,37 @@ class UserController extends Controller
         }
     }
     /***************************************************************************************************************************
+                                                    HOURS AND PERFORMANCE PROCESS
+     ****************************************************************************************************************************/
+    public function editHours(Request $request){
+        //$functionary = $this->middleware('auth');
+        $user = Auth::user();
+        if ($user->rol==2){
+            $activity = Activity::get();
+            $functionary = Functionary::where('user_id',$user->id)->first();
+            return view('general.reportFunctionaryHours', compact('activity','user','functionary'));
+        }    
+    }
+    public function saveHours (Request $request){
+        $activitiys = $request->activityId;
+        $hours = $request->hours2;
+        $functionary_id=2;
+        for ($i = 0; $i < count($activitiys);$i++){
+            $registro = Hours::updateOrCreate(
+                ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys[$i] ],
+                ['horasDeclaradas' => $hours[$i]]
+            );
+            if(is_null($registro->horasRealizadas)){
+                $registro->horasRealizadas=0;
+            }
+            $registro->save();
+        }
+        //$register = new $Hours;
+        //die(print_r( $hours));
+        return redirect('horas/edit')->with('status', 'Horas Actualizadas');
+    }
+   
+     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
     public function editPassword(Request $request)
