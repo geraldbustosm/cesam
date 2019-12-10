@@ -124,7 +124,13 @@
             });
 
             //define some sample data
-            var tabledata = {!!$main!!};
+            var tabledata = <?php echo json_encode($data); ?>;
+            var list = <?php echo json_encode($list); ?>;
+
+            // Complete table
+            for(i=0 ; i<list.length ; i++){
+                table.addColumn({ title:`Diagnóstico ${i+1}`, field:`diagnostico_${i}`, width:150}, false);
+            };
 
             //load sample data into the table
             table.setData(tabledata);

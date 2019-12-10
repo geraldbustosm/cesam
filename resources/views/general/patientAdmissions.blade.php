@@ -113,7 +113,6 @@
                     {title:"Previsión", field:"prevision"},
                     {title:"GES", field:"ges"},
                     {title:"SIGGES", field:"sigges"},
-                    {title:"Diagnóstico", field:"diagnostico"},
                     {title:"Dirección", field:"direccion"},
                     {title:"SENAME", field:""},
                     {title:"Médico", field:"medico"},
@@ -121,8 +120,13 @@
             });
 
             //define some sample data
-            var tabledata = {!!$main!!};
-            console.log(tabledata);
+            var tabledata = <?php echo json_encode($data); ?>;
+            var list = <?php echo json_encode($list); ?>;
+
+            // Complete table
+            for(i=0 ; i<list.length ; i++){
+                table.addColumn({ title:`Diagnóstico ${i+1}`, field:`diagnostico_${i}`, width:150}, false);
+            };
 
             //load sample data into the table
             table.setData(tabledata);

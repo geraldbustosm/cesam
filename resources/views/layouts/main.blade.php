@@ -84,9 +84,11 @@
                                 <li>
                                     <a class="nav-link @yield('active-pacientesactivos')" href="{{url('pacientes')}}"><span>Pacientes</span></a>
                                 </li>
+                                @if($auth->rol == 1)
                                 <li>
                                     <a class="nav-link @yield('active-pacientesinactivos')" href="{{url('pacientes/inactivos')}}"><span>Pacientes inactivos</span></a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     </nav>
@@ -98,9 +100,11 @@
                                 <li>
                                     <a class="nav-link @yield('active-funcionariosactivos')" href="{{url('funcionarios')}}"><span>Funcionarios</span></a>
                                 </li>
+                                @if($auth->rol == 1)
                                 <li>
                                     <a class="nav-link @yield('active-funcionariosinactivos')" href="{{url('funcionarios/inactivos')}}"><span>Funcionarios inactivos</span></a>
                                 </li>
+                                @endif
                             </ul>
                         </li>
                     </nav>

@@ -129,8 +129,11 @@ Route::post('registrar/actividad', 'ActivityController@registerActivity')->middl
 // Alta
 Route::get('registrar/alta', 'ReleaseController@showAddRelease')->middleware('checkrole:1');
 Route::post('registrar/alta', 'ReleaseController@registerRelease')->middleware('checkrole:1');
+// Dar de alta
+Route::get('alta/{DNI}', 'GeneralController@showAddRelease')->middleware('checkrole:1|2|3');
+Route::post('alta', 'GeneralController@addRelease')->middleware('checkrole:1|2|3');
 // Atención / Etapa
-Route::post('registrar/atencion', 'StageController@checkCurrStage')->middleware('checkrole:1');
+Route::post('registrar/atencion', 'StageController@checkCurrStage')->middleware('checkrole:1|2|3');
 // Atributos
 Route::get('registrar/atributos', 'AttributesController@showAddAttributes')->middleware('checkrole:1');
 Route::post('registrar/atributos', 'AttributesController@registerAttributes')->middleware('checkrole:1');
@@ -242,23 +245,22 @@ Route::get('prestaciones/egresos', 'GeneralController@showAdmissionDischarge')->
 // Egresos resumen
 Route::get('prestaciones/egresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
 /***************************************************************************************************************************
-                                                    TESTING SECTION
+                                                SUPPORT FUNCTIONS SECTION
  ****************************************************************************************************************************/
+// Datos para los asignar
 Route::get('lista-especialidades', 'AttendanceController@getSpecialityPerFunctionary')->middleware('checkrole:1|2|3');
 Route::get('lista-prestaciones', 'AttendanceController@getProvisionPerSpeciality')->middleware('checkrole:1|2|3');
 Route::get('lista-actividades', 'AttendanceController@getActivityPerSpeciality')->middleware('checkrole:1|2|3');
+// Revisa si la prestación está en rango de edad
 Route::get('age-check', 'AttendanceController@checkAge')->middleware('checkrole:1|2|3');
-
+// Gráficos de inicio
 Route::get('charts', 'GraphsController@chart')->middleware('checkrole:1|2|3');
 Route::get('charts2', 'GraphsController@chart2')->middleware('checkrole:1|2|3');
 Route::get('charts3', 'GraphsController@chart3')->middleware('checkrole:1|2|3');
 Route::get('charts4', 'GraphsController@chart4')->middleware('checkrole:1|2|3');
-
-Route::get('alta/{DNI}', 'GeneralController@showAddRelease')->middleware('checkrole:1|2|3');
-Route::post('alta', 'GeneralController@addRelease')->middleware('checkrole:1|2|3');
-
+// Selección de etapa por paciente
 Route::get('etapas', 'GeneralController@stagesPerPatient')->middleware('checkrole:1|2|3');
 Route::post('etapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');
-
+// Repetir última atención en otra fecha
 Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance')->middleware('checkrole:1|2|3');
 Route::post('ultima-atenciontapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');

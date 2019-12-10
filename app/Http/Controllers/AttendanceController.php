@@ -221,8 +221,8 @@ class AttendanceController extends Controller
         $functionary->save();
         if ($request->register == 1) {
             // Redirect to the view with successful status
-            $DNI = $patient->DNI;
-            return redirect(`/ficha/${$DNI}`)->with('status', 'Atención agregada');
+            $url = "/ficha/" . $patient->DNI;
+            return redirect($url)->with('status', 'Atención agregada');
         }
         if ($request->register == 2) {
             // Get active functionarys
