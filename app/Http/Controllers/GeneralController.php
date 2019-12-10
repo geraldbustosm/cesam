@@ -89,7 +89,7 @@ class GeneralController extends Controller
                                                     STAGE PROCESS
      ****************************************************************************************************************************/
     // Stage per patient
-     public function stagesPerPatient(Request $request)
+    public function stagesPerPatient(Request $request)
     {
         $id = $request->id;
         $stages = Stage::where('paciente_id', $id)->where('activa', 0)->orderBy('created_at', 'desc')->get();
@@ -113,7 +113,7 @@ class GeneralController extends Controller
                                                     RELEASE PROCESS
      ****************************************************************************************************************************/
     // View for release
-     public function showAddRelease($DNI)
+    public function showAddRelease($DNI)
     {
         $DNI = $DNI;
         $release = Release::where('activa', 1)->orderBy('descripcion')->get();
@@ -356,7 +356,7 @@ class GeneralController extends Controller
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
-                      ->orWhere('actividad.sin_asistencia' , 1);
+                    ->orWhere('actividad.sin_asistencia', 1);
             })
             ->select(
                 'especialidad.descripcion as especialidad',
@@ -383,7 +383,7 @@ class GeneralController extends Controller
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
-                      ->orWhere('actividad.sin_asistencia' , 1);
+                    ->orWhere('actividad.sin_asistencia', 1);
             })
             ->select(
                 'paciente.fecha_nacimiento as fecha',
@@ -409,6 +409,9 @@ class GeneralController extends Controller
         $url = explode("/", url()->current());
         $currUrl = strtolower($url[count($url) - 1]);
         ($currUrl == "ingresos" ? $data = $this->infoQuery1(1) : $data = $this->infoQuery1(2));
+        $allDiagnosis = DB::table('etapa_posee_diagnostico')
+            ->join('diagnostico', 'diagnostico.id', '=', 'etapa_posee_diagnostico.diagnostico_id')
+            ->get();
         $list = [];
         // Change date format
         foreach ($data as $record) {
@@ -418,16 +421,14 @@ class GeneralController extends Controller
             $record->fecha_nacimiento = $dob->format('d/m/Y');
             $record->fecha_ingreso = $addmission_date->format('d/m/Y');
             $record->fecha_egreso = $discharge_date->format('d/m/Y');
-            $diagnosis = DB::table('etapa_posee_diagnostico')
-                            ->join('diagnostico', 'diagnostico.id', '=', 'etapa_posee_diagnostico.diagnostico_id')
-                            ->where('etapa_posee_diagnostico.etapa_id', $record->numero_ficha)
-                            ->get();
             $num = 0;
-            foreach($diagnosis as $index){
-                $str = "diagnostico_" . $num;
-                (!in_array($str, $list) ? array_push($list, $str) : false);
-                $record->$str = $index->descripcion;
-                $num++;
+            foreach ($allDiagnosis as $index) {
+                if ($record->numero_ficha == $index->etapa_id) {
+                    $str = "diagnostico_" . $num;
+                    (!in_array($str, $list) ? array_push($list, $str) : false);
+                    $record->$str = $index->descripcion;
+                    $num++;
+                }
             }
         }
         // Return to the view
@@ -455,7 +456,7 @@ class GeneralController extends Controller
             ->leftJoin('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
             ->leftJoin('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
             ->when($status, function ($query, $status) {
-                if($status == 2){
+                if ($status == 2) {
                     return $query->whereMonth('alta.created_at', Carbon::now()->month)->where('etapa.activa', 0);
                 } else if ($status == 1) {
                     return $query->whereMonth('etapa.created_at', Carbon::now()->month);
@@ -589,7 +590,7 @@ class GeneralController extends Controller
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->leftJoin('alta', 'alta.id', '=', 'etapa.alta_id')
             ->when($status, function ($query, $status) {
-                if($status == 2){
+                if ($status == 2) {
                     return $query->whereMonth('alta.created_at', Carbon::now()->month)->where('etapa.activa', 0);
                 } else if ($status == 1) {
                     return $query->whereMonth('etapa.created_at', Carbon::now()->month);
