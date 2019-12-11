@@ -7,11 +7,13 @@ use App\Functionary;
 use App\FunctionarySpeciality;
 use App\Patient;
 use App\Prevition;
+use App\Program;
+use App\Provenance;
+use App\Release;
 use App\Sex;
 use App\Speciality;
 use App\Stage;
 use App\User;
-use App\Release;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -497,14 +499,19 @@ class GeneralController extends Controller
     // View with report of addmission/discharges
     public function showInfoAddmissionAndDischarge()
     {
+        // Get url for check if is addmission or discharge
         $url = explode("/", url()->current());
         $currUrl = strtolower($url[count($url) - 2]);
+        // Depends of which one is, we call the query with release/stage created at this month
         ($currUrl == "ingresos" ? $data = $this->infoQuery2(1) : $data = $this->infoQuery2(2));
         // Some variables
+        // Range of age
         $end = 80;
         $interval = 5;
+        // Storage data
         $list = [];
         $listData = [];
+        // Get diagnosis
         $diagnosis = Diagnosis::select('descripcion')->get();
         // Creating usseful data
         foreach ($diagnosis as $index) {
@@ -557,6 +564,7 @@ class GeneralController extends Controller
                     }
                 }
             }
+            // In process...
             if ($currUrl == "egresos") {
                 $obj->abandono = 0;
                 $obj->fallecimiento = 0;
@@ -607,6 +615,72 @@ class GeneralController extends Controller
             )
             ->distinct('etapa.id')
             ->orderBy('etapa.created_at')
+            ->get();
+        return $data;
+    }
+    /***************************************************************************************************************************
+                                                    SUMMARY OF REPORTS
+     ****************************************************************************************************************************/
+    // View with report of addmission/discharges
+    public function showSummaryAddmissionAndDischarge()
+    {
+        // Get main data
+        $data = $this->infoQuery3();
+        // Set programs 'infanto' and 'adulto', but we can add more (remember change query3)
+        $programs = ['Infanto','Adulto'];
+        // Get all provenances
+        $provenances = Provenance::select('descripcion')->get();
+        // Array with new objects
+        $dataList = [];
+        foreach ($programs as $index) {
+            // Create object
+            $obj = new \stdClass();
+            // Set program
+            $obj->programa = $index;
+            for ($i = 0; $i < count($provenances); $i++) {
+                // Get provenance like string
+                $provenance = $provenances[$i]->descripcion;
+                // Create one array with program name and set provenance (example: Infanto: ["APS", ... ])
+                $obj->$index[$i] = $provenance;
+                // Create attributes to the object for storage counts
+                $strYoung = $provenance . "_m";
+                $strOld = $provenance . "_M";
+                // Start count for young patient (< 15) with 0
+                $obj->$strYoung = 0;
+                // Start count for adult patient (> 15) with 0
+                $obj->$strOld = 0;
+                foreach ($data as $record) {
+                    if ($record->edad <= 15 && $record->programa == $index && $record->procedencia == $provenance) {
+                        // Increase count in 1 for young patient, if is the correct program and provenance
+                        $obj->$strYoung = $obj->$strYoung + 1;
+                    } else if ($record->programa == $index && $record->procedencia == $provenance){
+                        // Increase count in 1 for adult patient, if is the correct program and provenance
+                        $obj->$strOld = $obj->$strOld + 1;
+                    }
+                }
+            }
+            // Storage the object on the list
+            array_push($dataList, $obj);
+        }
+        // Return to the view
+        return view('general.patientRemSummary', compact('dataList'));
+    }
+    // Query with data for summary report
+    public function infoQuery3()
+    {
+        $data =  DB::table('etapa')
+            ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
+            ->join('programa', 'programa.id', '=', 'etapa.programa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->whereMonth('etapa.created_at', Carbon::now()->month)
+            ->select(
+                'etapa.id',
+                'procedencia.descripcion as procedencia',
+                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 as edad"),
+                DB::raw("(CASE WHEN lower(programa.descripcion) like '%infant%' THEN 'Infanto' ELSE 'Adulto' END) AS programa")
+            )
+            ->distinct('etapa.id')
+            ->groupBy('etapa.id', 'procedencia.descripcion', 'paciente.fecha_nacimiento', 'programa.descripcion')
             ->get();
         return $data;
     }

@@ -1,13 +1,15 @@
 @extends('layouts.main')
-@section('title','Egresos mensuales')
+@section('title','REM 5 - Egresos')
 @section('active-prestaciones','active')
 @section('active-egreso','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
-
+<h1>Despliegue de Información
+    <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
+    <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
+</h1>
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -116,6 +118,11 @@
 
             //load sample data into the table
             table.setData(tabledata);
+
+            //trigger redirect to REM Summary view
+            function redirectREM() {
+                window.location = "/prestaciones/ingresos/resumen"
+            };
 
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {

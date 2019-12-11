@@ -240,6 +240,8 @@ Route::get('prestaciones/rem', 'GeneralController@showRemRecords')->middleware('
 Route::get('prestaciones/ingresos', 'GeneralController@showAdmissionDischarge')->middleware('checkrole:1|2|3');
 // Ingresos resumen
 Route::get('prestaciones/ingresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
+// Ingresos resumen
+Route::get('prestaciones/ingresos/resumen', 'GeneralController@showSummaryAddmissionAndDischarge')->middleware('checkrole:1|2|3');
 // Egresos
 Route::get('prestaciones/egresos', 'GeneralController@showAdmissionDischarge')->middleware('checkrole:1|2|3');
 // Egresos resumen

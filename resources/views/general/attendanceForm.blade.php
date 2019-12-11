@@ -105,8 +105,8 @@
                 <div class="form-group col-10" style="min-width:200px">
                     <label for="title"><b>Tipo de paciente:</b></label>
                     <select name="selectType" class="form-control" style="min-width:200px">
-                        <option value="0" selected>Repetido</option>
-                        <option value="1">Nuevo</option>
+                        <option value="1" selected>Repetido</option>
+                        <option value="0">Nuevo</option>
                     </select>
                 </div>
 

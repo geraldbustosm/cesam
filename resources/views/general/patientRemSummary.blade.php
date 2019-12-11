@@ -1,15 +1,12 @@
 @extends('layouts.main')
-@section('title','REM 5 - Ingresos')
+@section('title','REM 5 - Resumen')
 @section('active-prestaciones','active')
-@section('active-ingreso','active')
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información
-    <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
-    <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
-</h1>
+<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -30,7 +27,7 @@
             <div class="form-group col-md-4">
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
-                    <option value="nombre1">Nombre</option>
+                    <option value="programa">Programa</option>
                 </select>
             </div>
 
@@ -85,35 +82,29 @@
                 height: "420px",
                 movableColumns: true,
                 columns: [
-                    {title:"Ingreso", field:"diagnostico"}
+                    {title:"Programa", field:"programa"}
                 ],
             });
 
             //define some sample data
-            var tabledata = {!!$main!!};
-            var list = {!!$list!!};
+            var tabledata = <?php echo json_encode($dataList); ?>;
+            console.log(tabledata);         
 
             // Complete table
-            for(i=0 ; i<list.length ; i++){
-                table.addColumn(
-                    {//create column group
-                        title:`${list[i]}`,
-                        columns:[
-                        {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
-                        {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
-                        ],
-                    }, false);
+            var infoInfanto = [];
+            var infoAdulto = [];
+            var size = tabledata[0][tabledata[0].programa].length;
+            for(i=0 ; i<size ; i++){
+                infoInfanto[i] = {title:`${tabledata[0][tabledata[0].programa][i]}`, field:`${tabledata[0][tabledata[0].programa][i]}_m`, width:150, bottomCalc:"sum"};
             };
-            // Add the last two columns
-            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
+            for(i=0 ; i<size ; i++){
+                infoAdulto[i] = {title:`${tabledata[0][tabledata[0].programa][i]}`, field:`${tabledata[0][tabledata[0].programa][i]}_M`, width:150, bottomCalc:"sum"};
+            };
+            table.addColumn({title:"Menores de 15 años", columns:infoInfanto }, false);
+            table.addColumn({title:"Mayores de 15 años", columns:infoAdulto }, false);
 
             //load sample data into the table
             table.setData(tabledata);
-
-            //trigger redirect to REM Summary view
-            function redirectREM() {
-                window.location = "/prestaciones/ingresos/resumen"
-            };
 
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
