@@ -85,7 +85,15 @@
                 height: "420px",
                 movableColumns: true,
                 columns: [
-                    {title:"Ingreso", field:"diagnostico"}
+                    {title:"Ingreso", field:"diagnostico"},
+                    {//create column group
+                        title:"Total",
+                        columns:[
+                        {title:"Ambos Sexos", field:"Ambos", width:120, bottomCalc:"sum"},
+                        {title:"Hombres", field:"Hombres", width:120, bottomCalc:"sum"},
+                        {title:"Mujeres", field:"Mujeres", width:120, bottomCalc:"sum"},
+                        ],
+                    },
                 ],
             });
 

@@ -516,7 +516,10 @@ class GeneralController extends Controller
         // Creating usseful data
         foreach ($diagnosis as $index) {
             $obj = new \stdClass();
-            $obj->diagnostico = $index->descripcion;
+            $obj->diagnostico = $index->descripcion;            
+            $obj->Ambos = 0;
+            $obj->Hombres = 0;
+            $obj->Mujeres = 0;
             $iterator = 0;
             // Generate data for list
             while ($iterator < $end) {
@@ -534,7 +537,14 @@ class GeneralController extends Controller
                         $sex = strtolower($record->sexo);
                         $find = strpos($sex, 'hombre');
                         if ($record->edad >= $iterator && $record->edad <= ($iterator + $interval - 1)) {
-                            ($find !== false ? $obj->$strH = $obj->$strH + 1 : $obj->$strM = $obj->$strM + 1);
+                            if ($find !== false){
+                                $obj->$strH = $obj->$strH + 1;
+                                $obj->Hombres = $obj->Hombres + 1;
+                            } else {
+                                $obj->$strM = $obj->$strM + 1;
+                                $obj->Mujeres = $obj->Mujeres + 1;
+                            }
+                            $obj->Ambos = $obj->Ambos + 1;
                         }
                     }
                 }
@@ -608,12 +618,11 @@ class GeneralController extends Controller
                 'procedencia.descripcion as procedencia',
                 'alta.descripcion as alta',
                 'etapa.id as numero_ficha',
-                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad"),
                 'sexo.descripcion as sexo',
                 'etapa.created_at as fecha_ingreso',
-                'diagnostico.descripcion as diagnostico'
+                'diagnostico.descripcion as diagnostico',
+                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad")
             )
-            ->distinct('etapa.id')
             ->orderBy('etapa.created_at')
             ->get();
         return $data;
@@ -627,7 +636,7 @@ class GeneralController extends Controller
         // Get main data
         $data = $this->infoQuery3();
         // Set programs 'infanto' and 'adulto', but we can add more (remember change query3)
-        $programs = ['Infanto','Adulto'];
+        $programs = ['Infanto', 'Adulto'];
         // Get all provenances
         $provenances = Provenance::select('descripcion')->get();
         // Array with new objects
@@ -653,7 +662,7 @@ class GeneralController extends Controller
                     if ($record->edad <= 15 && $record->programa == $index && $record->procedencia == $provenance) {
                         // Increase count in 1 for young patient, if is the correct program and provenance
                         $obj->$strYoung = $obj->$strYoung + 1;
-                    } else if ($record->programa == $index && $record->procedencia == $provenance){
+                    } else if ($record->programa == $index && $record->procedencia == $provenance) {
                         // Increase count in 1 for adult patient, if is the correct program and provenance
                         $obj->$strOld = $obj->$strOld + 1;
                     }
