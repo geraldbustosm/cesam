@@ -236,22 +236,24 @@ Route::post('horas/edit', 'UserController@saveHours')->middleware('checkrole:1|2
 /***************************************************************************************************************************
                                                     REPORTS SECTION
  ****************************************************************************************************************************/
-// Mensual
+// Egresos
+Route::get('prestaciones/egresos', 'GeneralController@showAdmissionDischarge')->middleware('checkrole:1|2|3');
+// Egresos REM 5
+Route::get('prestaciones/egresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
+// Ingresos
+Route::get('prestaciones/ingresos', 'GeneralController@showAdmissionDischarge')->middleware('checkrole:1|2|3');
+// Ingresos REM 5
+Route::get('prestaciones/ingresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
+// Ingresos REM 5 por procedencia
+Route::get('prestaciones/ingresos/resumen', 'GeneralController@showSummaryAddmissionAndDischarge')->middleware('checkrole:1|2|3');
+ // Mensual
 Route::get('prestaciones/mensual', 'GeneralController@showMonthlyRecords')->middleware('checkrole:1|2|3');
 // Resumen
 Route::get('prestaciones/resumen', 'GeneralController@showSummaryRecords')->middleware('checkrole:1|2|3');
 // REM
 Route::get('prestaciones/rem', 'GeneralController@showRemRecords')->middleware('checkrole:1|2|3');
-// Ingresos
-Route::get('prestaciones/ingresos', 'GeneralController@showAdmissionDischarge')->middleware('checkrole:1|2|3');
-// Ingresos resumen
-Route::get('prestaciones/ingresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
-// Ingresos resumen
-Route::get('prestaciones/ingresos/resumen', 'GeneralController@showSummaryAddmissionAndDischarge')->middleware('checkrole:1|2|3');
-// Egresos
-Route::get('prestaciones/egresos', 'GeneralController@showAdmissionDischarge')->middleware('checkrole:1|2|3');
-// Egresos resumen
-Route::get('prestaciones/egresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
+// REM 7
+Route::get('prestaciones/rem7', 'GeneralController@showRem7')->middleware('checkrole:1|2|3');
 /***************************************************************************************************************************
                                                 SUPPORT FUNCTIONS SECTION
  ****************************************************************************************************************************/

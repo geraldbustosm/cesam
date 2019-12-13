@@ -516,7 +516,7 @@ class GeneralController extends Controller
         // Creating usseful data
         foreach ($diagnosis as $index) {
             $obj = new \stdClass();
-            $obj->diagnostico = $index->descripcion;            
+            $obj->diagnostico = $index->descripcion;
             $obj->Ambos = 0;
             $obj->Hombres = 0;
             $obj->Mujeres = 0;
@@ -537,7 +537,7 @@ class GeneralController extends Controller
                         $sex = strtolower($record->sexo);
                         $find = strpos($sex, 'hombre');
                         if ($record->edad >= $iterator && $record->edad <= ($iterator + $interval - 1)) {
-                            if ($find !== false){
+                            if ($find !== false) {
                                 $obj->$strH = $obj->$strH + 1;
                                 $obj->Hombres = $obj->Hombres + 1;
                             } else {
@@ -690,6 +690,147 @@ class GeneralController extends Controller
             )
             ->distinct('etapa.id')
             ->groupBy('etapa.id', 'procedencia.descripcion', 'paciente.fecha_nacimiento', 'programa.descripcion')
+            ->get();
+        return $data;
+    }
+    /***************************************************************************************************************************
+                                                        REM 7
+     ****************************************************************************************************************************/
+    public function showRem7()
+    {
+        // Some variables
+        $end = 80;
+        $interval = 5;
+        $list = [];
+        // Get base data
+        $data = $this->queryRem1();
+        // Get helper data
+        $query = $this->queryRem4();
+        // Creating usseful data
+        foreach ($data as $record1) {
+            $iterator = 0;
+            $record1->Hombres = 0;
+            $record1->Mujeres = 0;
+            // Generate data for list
+            while ($iterator < $end) {
+                $str = $iterator . " - " . ($iterator + $interval - 1);
+                (!in_array($str, $list) ? array_push($list, $str) : false);
+                // Put come default data
+                $record1->$str =  0;
+                // Generate real data to use on view
+                foreach ($query as $record2) {
+                    /*
+                        Check match between queryOriginal and query
+                        To sure the data is the correct to upgrade
+                        And we check if is in range of age (range are in list[])
+                    */
+                    if (
+                        $record1->actividad == $record2->actividad
+                        && $record1->especialidad == $record2->especialidad
+                        &&  $record2->age >= $iterator && $record2->age <= ($iterator + $interval - 1)
+                    ) {
+                        $record1->Hombres = $record1->Hombres + $record2->Hombres;
+                        $record1->Mujeres = $record1->Mujeres + $record2->Mujeres;
+                        $record1->$str =  $record2->Hombres + $record2->Mujeres;
+                    }
+                }
+                $iterator = $iterator + $interval;
+            }
+            $str = $iterator . " - más";
+            (!in_array($str, $list) ? array_push($list, $str) : false);
+            // Do the same for the last range (last value in list[])
+            foreach ($query as $record2) {
+                /*
+                    Check match between queryOriginal and query
+                    To sure the data is the correct to upgrade
+                    And we check if is in range of age (range are in list[])
+                */
+                if (
+                    $record1->actividad == $record2->actividad
+                    && $record1->especialidad == $record2->especialidad
+                    &&  $record2->age >= $iterator
+                ) {
+                    $record1->Hombres = $record1->Hombres + $record2->Hombres;
+                    $record1->Mujeres = $record1->Mujeres + $record2->Mujeres;
+                    $record1->$str =  $record2->Hombres + $record2->Mujeres;
+                }
+            }
+            // Get count of unique patient attended
+            $uniques = [];
+            $record1->Beneficiarios = 0;
+            foreach ($query as $record2) {
+                if ($record1->actividad == $record2->actividad && $record1->especialidad == $record2->especialidad) {
+                    (!in_array($record2->DNI, $uniques) ? array_push($uniques, $record2->DNI) : false);
+                }
+            }
+            $record1->Beneficiarios = count($uniques);
+        }
+        return $data;
+        // Return to the view
+        return view('general.recordsRem7', compact('data', 'list'));
+    }
+    public function queryRem3()
+    {
+        $data = DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('funcionarios', 'funcionarios.id', '=', 'funcionario_posee_especialidad.funcionario_id')
+            ->join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where(function ($query) {
+                $query->where('atencion.asistencia', 1)
+                    ->orWhere('actividad.sin_asistencia', 1);
+            })
+            ->select(
+                'funcionarios.id as id',
+                'especialidad.descripcion as especialidad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("COUNT(atencion.asistencia) AS Ambos"),
+                DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
+            )
+            ->groupBy(
+                'especialidad.descripcion',
+                'users.primer_nombre',
+                'users.apellido_paterno',
+                'users.apellido_materno',
+                'funcionarios.id'
+            )
+            ->orderBy('actividad.descripcion')
+            ->get();
+        return $data;
+    }
+    
+    // Query helper for REM
+    public function queryRem4()
+    {
+        $data = DB::table('atencion')
+            ->join('funcionario_posee_especialidad', 'funcionario_posee_especialidad.funcionarios_id', '=', 'atencion.funcionario_id')
+            ->join('especialidad', 'especialidad.id', '=', 'funcionario_posee_especialidad.especialidad_id')
+            ->join('etapa', 'etapa.id', '=', 'atencion.etapa_id')
+            ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
+            ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where(function ($query) {
+                $query->where('atencion.asistencia', 1)
+                    ->orWhere('actividad.sin_asistencia', 1);
+            })
+            ->select(
+                'paciente.DNI as DNI',
+                'especialidad.descripcion as especialidad',
+                'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
+                DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
+                DB::raw("COUNT(atencion.asistencia) AS Ambos"),
+                DB::raw('DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS age')
+            )
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion', 'paciente.DNI')
+            ->orderBy('actividad.descripcion')
             ->get();
         return $data;
     }
