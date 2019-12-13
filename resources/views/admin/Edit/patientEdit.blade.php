@@ -13,13 +13,19 @@
 </div>
 @endif
 <h1>Editar paciente</h1>
-<div class="div-full">
+<div class="div-full">	
+	<!-- Return alert for success query -->
 	@if (session('status'))
 	<div class="alert alert-success" role="alert">
 		{{ session('status') }}
 	</div>
+	@endif	
+	<!-- Return alert for error query -->
+	@if (session('err'))
+	<div class="alert alert-danger" role="alert">
+		{{ session('err') }}
+	</div>
 	@endif
-
 	@if ($patient)
 	<form name="onSubmit" method="post" action="{{ url('pacientes/edit') }}">
 		@csrf
@@ -37,6 +43,7 @@
 				<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
 			</div>
 		</div>
+		<br>
 		<div class="form-group">
 			<div class="alert alert-success" role="alert" id="success">
 				Rut / Pasaporte correcto!

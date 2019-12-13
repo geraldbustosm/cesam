@@ -21,6 +21,12 @@
 		{{ session('status') }}
 	</div>
 	@endif
+	<!-- Return alert for error query -->
+	@if (session('err'))
+	<div class="alert alert-danger" role="alert">
+		{{ session('err') }}
+	</div>
+	@endif
 	<form name="onSubmit" method="post" action="{{ url('registrar/paciente') }}">
 		@csrf
 		<!-- UID -->

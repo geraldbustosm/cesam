@@ -170,7 +170,7 @@ class PatientController extends Controller
         $url = "pacientes/edit/" . $request->dni;
         // Validate the request variables
         $validation = $request->validate([
-            'dni' => 'required|string|max:255|unique:paciente,DNI',
+            'dni' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'second_last_name' => 'nullable|string|max:255',
@@ -202,7 +202,13 @@ class PatientController extends Controller
             }
             $patient->apellido1 = $request->last_name;
             $patient->apellido2 = $request->second_last_name;
-            $patient->DNI = $request->dni;
+            if ($request->dni != $patient->DNI){
+                $check = Patient::where('DNI', $request->dni)->get();
+                if ($check->count() > 0){
+                    return redirect($url)->with('err', 'El rut ya se encuentra utilizado!');
+                }
+                $patient->DNI = $request->dni;
+            }
             $patient->prevision_id = $request->prevition;
             $patient->sexo_id = $request->patient_sex;
             // Change datepicker format to database format
