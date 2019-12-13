@@ -39,6 +39,8 @@ class Patient extends Model
   }
   public function attributes()
   {
-      return $this->belongsToMany(Speciality::class, 'paciente_posee_atributos', 'paciente_id', 'atributos_id');
+      return $this->belongsToMany(Attributes::class, 'paciente_posee_atributos', 'paciente_id', 'atributos_id');
   }
+
+  
 }
