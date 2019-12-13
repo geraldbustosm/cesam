@@ -24,6 +24,7 @@ class CreateAtencionTable extends Migration
             $table->time('hora');
             $table->time('duracion');
             $table->boolean('abre_canasta')->default(0);
+            $table->boolean('repetido')->default(0);
             $table->timestamps();
 
             $table->foreign('etapa_id')->references('id')->on('etapa');

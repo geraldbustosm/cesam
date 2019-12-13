@@ -72,8 +72,8 @@ class PatientController extends Controller
         $prev = Prevition::where('activa',1)->get();
         // Get genders
         $sex = Sex::where('activa',1)->get();
-        // Get list of previtions
-        $previtions = Prevition::where('activa',1)->get();
+        // Get list of attributes
+        $attributes = Attributes::where('activa',1)->get();
         // Create variable for date
         $patient_birthdate = "";
         // Create variable for patient's address
@@ -87,8 +87,9 @@ class PatientController extends Controller
             // Get patient's address
             $address = Address::where('idPaciente', $patient->id)->first();
         }
+
         // Redirect to the view with list of prevition and gender, also return the patient and birthdate
-        return view('admin.Edit.patientEdit', compact('patient','address', 'patient_birthdate', 'prev', 'sex'));
+        return view('admin.Edit.patientEdit', compact('patient','address', 'patient_birthdate', 'prev', 'sex','attributes'));
     }
 
     /***************************************************************************************************************************
@@ -222,6 +223,7 @@ class PatientController extends Controller
             $address->departamento = $request->depto;
             $address->save();
         }
+        $patient->attributes()->sync($request->options);
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
     }

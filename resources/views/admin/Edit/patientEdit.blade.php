@@ -63,7 +63,7 @@
 		</div>	
 		<br>
 		<div class="form-row">
-			<div class="col-3">
+			<div class="col-2">
 				<label for="prevision">Previsión</label>
 			</div>
 			<div class="col-3">
@@ -77,33 +77,41 @@
 				</select>
 			</div>
 		</div>
-
-		<div class="form-group">
-			<label for="sex">Sexo</label>
-			<select class="form-control" name="patient_sex" required>
-				<option value="{{$patient->sex->id}}">{{$patient->sex->descripcion}}</option>
-				@foreach($sex as $sexo)
-				@if ($sexo->descripcion != $patient->sex->descripcion)
-				<option value="{{$sexo->id}}">{{ $sexo->descripcion}}</option>
-				@endif
-				@endforeach
-			</select>
+		<br>
+		<div class="form-row">
+			<div class="col-2">
+				<label for="sex">Sexo</label>
+			</div>
+			<div class="col-3">	
+				<select class="form-control" name="patient_sex" required>
+					<option value="{{$patient->sex->id}}">{{$patient->sex->descripcion}}</option>
+					@foreach($sex as $sexo)
+					@if ($sexo->descripcion != $patient->sex->descripcion)
+					<option value="{{$sexo->id}}">{{ $sexo->descripcion}}</option>
+					@endif
+					@endforeach
+				</select>
+			</div>
 		</div>
-
-		<div class="form-group">
-			<label for="datepicker">Fecha de nacimiento</label>
-			<input id="datepicker" name="datepicker" value="{{$patient_birthdate}}" width="276" required>
-			<script>
-				var config = {
-					format: 'dd/mm/yyyy',
-					locale: 'es-es',
-					uiLibrary: 'bootstrap4',
-					maxDate: new Date,
-				};
-				$('#datepicker').datepicker(config);
-			</script>
+		<br>
+		<div class="form-row">
+			<div class="col-2">
+				<label for="datepicker">Fecha de nacimiento</label>
+			</div>
+			<div class="col-2">
+				<input id="datepicker" name="datepicker" value="{{$patient_birthdate}}" width="276" required>
+				<script>
+					var config = {
+						format: 'dd/mm/yyyy',
+						locale: 'es-es',
+						uiLibrary: 'bootstrap4',
+						maxDate: new Date,
+					};
+					$('#datepicker').datepicker(config);
+				</script>
+			</div>
 		</div>
-
+		<br>
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
@@ -130,8 +138,37 @@
 				</div>
 			</div>
 		</div>
+		<br>
+		
+		<div class="form-row">
+			<div class="col-4">
+				<button type="button" class="btn btn-primary" id="btnSubmit">Editar paciente</button>
+			</div>
+			<div class="col-4">
+				<div class="overflow-auto" style="height:200px;">
+					@foreach($attributes as $att)
 
-		<button type="button" class="btn btn-primary" id="btnSubmit">Editar paciente</button>
+					<div class="card">
+						<div class="checkbox-container">
+							<label class="checkbox-label">
+								<input type="checkbox" name="options[]" value="{{ $att->id}}" 
+								<?php 
+								if(in_array($att->id,$patient->attributes()->pluck('atributos.id')->toArray()))
+								{
+									echo ("checked");
+								} ?>
+								>
+								<span class="checkbox-custom rectangular"></span>
+							</label>
+						</div>
+						<div class="input-title">{{ $att->descripcion}}</div>
+
+					</div>
+
+					@endforeach
+				</div>
+			</div>
+		</div>
 	</form>
 </div>
 @else
@@ -142,4 +179,5 @@
 
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
+<link rel="stylesheet" href="{{asset('css/card.css')}}">
 @endsection
