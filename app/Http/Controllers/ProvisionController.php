@@ -37,7 +37,12 @@ class ProvisionController extends Controller
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-
+    public function showEditProvision($id){
+        $provision = Provision::find($id);
+        $tipos_prestaciones = Type::where('activa', 1)->get();
+        $tipo_prestacion = Type::find($provision->tipo_id);
+        return view('admin.Edit.provisionEdit', compact('provision', 'tipos_prestaciones', 'tipo_prestacion'));
+    }
     /***************************************************************************************************************************
                                                     ASIGN FORM
      ****************************************************************************************************************************/
@@ -110,7 +115,42 @@ class ProvisionController extends Controller
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
+    public function editProvision(Request $request){
+        // Validate the request variable
+        $validation = $request->validate([
+            'glosaTrasadora' => 'required|string|max:255',
+            'codigo' => 'required|string|max:255',
+            'frecuencia' => 'required|numeric',
+            'ps_fam' => 'required|string|max:255',
+        ]);
 
+        // Get the program that want to update
+        $provision = Provision::find($request->id);
+
+        // URL to redirect
+        if($provision->activa == 1){
+            $url = "/registrar/prestacion/";
+        }else{
+            $url = "/inactivo/prestacion/";
+        }
+
+        if($request->lower_age > $request->senior_age){
+            return redirect('registrar/prestacion')->with('error', 'El rango menor es más grande que el rango mayor');
+        }
+
+        $provision->glosaTrasadora = $request->glosaTrasadora;
+        $provision->codigo = $request->codigo;
+        $provision->rangoEdad_inferior = $request->lower_age;
+        $provision->rangoEdad_superior = $request->senior_age;
+        $provision->frecuencia = $request->frecuencia;
+        $provision->ps_fam = $request->ps_fam;
+        $provision->tipo_id = $request->tipo_prestacion;
+
+        // Save changes
+        $provision->save();
+        return redirect('registrar/prestacion')->with('status', 'Se actualizaron los datos de la prestación');
+
+    }
     /***************************************************************************************************************************
                                                     ASIGN PROCESS
      ****************************************************************************************************************************/

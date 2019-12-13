@@ -221,6 +221,9 @@ Route::put('sigges/edit', 'SiGGESController@editSiGGES')->middleware('checkrole:
 // Tipo prestaciones
 Route::get('tipos/edit/{id}', 'TypeController@showEditType')->middleware('checkrole:1');
 Route::put('tipos/edit', 'TypeController@editType')->middleware('checkrole:1');
+// Prestación
+Route::get('prestaciones/edit/{id}', 'ProvisionController@showEditProvision');
+Route::put('prestaciones/edit', 'ProvisionController@editProvision');
 // Usuario
 Route::get('password/edit', 'UserController@showEditPassword')->middleware('checkrole:1|2|3');
 Route::put('password/edit', 'UserController@editPassword')->middleware('checkrole:1|2|3');
