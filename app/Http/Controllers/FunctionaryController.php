@@ -100,9 +100,8 @@ class FunctionaryController extends Controller
         $functionary->save();
         $functionary->speciality()->sync($codigos);
         // Redirect to the view with successful status
-        return redirect('asignar/especialidad');
+        return redirect('/funcionarios')->with('status', 'Funcionario creado!');
     }
-
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/

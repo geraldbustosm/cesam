@@ -56,14 +56,8 @@ function writeRut(rut) {
     for (i = DNI.length; 0 < i + 1; i--) {
         if (i == DNI.length - 1) {
             tmpstr = '-' + DNI.charAt(i);
-        } else if (i == DNI.length - 4) {
-            tmpstr = '.' + DNI.charAt(i) + tmpstr;
-        } else if (i == DNI.length - 7) {
-            tmpstr = '.' + DNI.charAt(i) + tmpstr;
-        } else if (i == DNI.length - 10) {
-            tmpstr = '.' + DNI.charAt(i) + tmpstr;
         } else {
-            tmpstr = DNI.charAt(i) + tmpstr
+            tmpstr = DNI.charAt(i) + tmpstr;
         }
     }
     return tmpstr;

@@ -86,7 +86,7 @@ class ProvisionController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'frecuencia' => 'required|int',
+            'frecuencia' => 'required|string|max:255',
             'glosa' => 'required|string|max:255',
             'ps_fam' => 'required|string|max:255',
             'codigo' => 'required|string|max:255|unique:prestacion,codigo',

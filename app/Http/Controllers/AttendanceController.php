@@ -169,7 +169,7 @@ class AttendanceController extends Controller
         $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
         $attendance->asistencia = $request->get('selectA');
-        // $attendance->tipo_paciente = $request->get('selectType');
+        $attendance->repetido = $request->get('selectType');
         $attendance->hora = $request->get('timeInit');
         $attendance->actividad_id = $request->get('activity');
         $attendance->duracion = $request->get('duration');
