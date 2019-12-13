@@ -114,7 +114,7 @@
                     {title:"GES", field:"ges"},
                     {title:"SIGGES", field:"sigges"},
                     {title:"Dirección", field:"direccion"},
-                    {title:"SENAME", field:""},
+                    {title:"SENAME", field:"SENAME"},
                     {title:"Médico", field:"medico"},
                 ],
             });

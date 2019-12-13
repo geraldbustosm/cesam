@@ -179,6 +179,7 @@ class GeneralController extends Controller
             ->join('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
             ->join('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
             ->join('programa', 'programa.id', '=', 'etapa.programa_id')
+            ->join('especialidad_programa', 'especialidad_programa.id', '=', 'programa.especialidad_programa_id')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->where('paciente.activa', '=', 1)
             ->whereMonth('atencion.fecha', Carbon::now()->month)
@@ -199,6 +200,8 @@ class GeneralController extends Controller
                 'paciente.apellido1',
                 'paciente.apellido2',
                 'paciente.fecha_nacimiento',
+                'especialidad_programa.descripcion as especialidad_programa',
+                DB::raw("(CASE WHEN atencion.repetido = 1 THEN 'REPETIDO' ELSE 'NUEVO' END) AS tipo_paciente"),
                 DB::raw("(CASE WHEN atencion.abre_canasta = 1 THEN 'SI' ELSE 'NO' END) AS canasta"),
                 DB::raw("(CASE WHEN atencion.asistencia = 1 THEN 'SI' ELSE 'NO' END) AS asistencia"),
                 DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario")
@@ -332,8 +335,7 @@ class GeneralController extends Controller
             $record1->menoresSENAME = 0;
             foreach ($query as $record2) {
                 if ($record1->actividad == $record2->actividad && $record1->especialidad == $record2->especialidad) {
-                    if (!in_array($record2->DNI, $sename) && $record2->age < 18) {
-                        // && $record2->sename == 'Si'
+                    if (!in_array($record2->DNI, $sename) && $record2->age < 18 && $record1->SENAME == 'SI') {
                         array_push($sename, $record2->DNI);
                     }
                     (!in_array($record2->DNI, $uniques) ? array_push($uniques, $record2->DNI) : false);
@@ -355,6 +357,8 @@ class GeneralController extends Controller
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
+            ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
@@ -363,11 +367,12 @@ class GeneralController extends Controller
             ->select(
                 'especialidad.descripcion as especialidad',
                 'actividad.descripcion as actividad',
+                DB::raw("(CASE WHEN lower(atributos.descripcion) like '%sename%' THEN 'SI' ELSE 'NO' END) AS SENAME"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
                 DB::raw("COUNT(atencion.asistencia) AS Ambos")
             )
-            ->groupBy('actividad.descripcion', 'especialidad.descripcion')
+            ->groupBy('actividad.descripcion', 'especialidad.descripcion', 'atributos.descripcion')
             ->orderBy('actividad.descripcion')
             ->get();
         return $data;
@@ -424,6 +429,23 @@ class GeneralController extends Controller
             $record->fecha_ingreso = $addmission_date->format('d/m/Y');
             $record->fecha_egreso = $discharge_date->format('d/m/Y');
             $num = 0;
+            $patient = Patient::where('DNI', $record->DNI)->first();
+            $patientStage = $patient->stage;
+            $keepSearching = true;
+            $record->ges = 'NO';
+            foreach ($patientStage as $index) {
+                $patientAttendances = $index->attendance;
+                foreach ($patientAttendances as $index2) {
+                    $type = strtolower($index2->provision->type->descripcion);
+                    $find = strpos($type, 'ges');
+                    if ($find !== false) {
+                        $record->ges = 'SI';
+                        $keepSearching = false;
+                    }
+                    if (!$keepSearching) break;
+                }
+                if (!$keepSearching) break;
+            }
             foreach ($allDiagnosis as $index) {
                 if ($record->numero_ficha == $index->etapa_id) {
                     $str = "diagnostico_" . $num;
@@ -455,8 +477,8 @@ class GeneralController extends Controller
             ->leftJoin('alta', 'alta.id', '=', 'etapa.alta_id')
             ->leftJoin('direccion', 'direccion.idPaciente', '=', 'paciente.id')
             ->leftJoin('atencion', 'atencion.etapa_id', '=', 'etapa.id')
-            ->leftJoin('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
-            ->leftJoin('tipo_prestacion', 'tipo_prestacion.id', '=', 'prestacion.tipo_id')
+            ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
+            ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')
             ->when($status, function ($query, $status) {
                 if ($status == 2) {
                     return $query->whereMonth('alta.created_at', Carbon::now()->month)->where('etapa.activa', 0);
@@ -473,20 +495,20 @@ class GeneralController extends Controller
                 'paciente.apellido1',
                 'paciente.apellido2',
                 'paciente.fecha_nacimiento',
-                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad"),
                 'sexo.descripcion as sexo',
                 'procedencia.descripcion as procedencia',
                 'programa.descripcion as programa',
                 'etapa.created_at as fecha_ingreso',
                 'prevision.descripcion as prevision',
-                DB::raw("(CASE WHEN lower(tipo_prestacion.descripcion) like '%ges%' THEN 'SI' ELSE 'NO' END) AS ges"),
                 'sigges.descripcion as sigges',
+                DB::raw("DATEDIFF(hour,paciente.fecha_nacimiento,GETDATE())/8766 AS edad"),
+                DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as medico"),
+                DB::raw("(CASE WHEN lower(atributos.descripcion) like '%sename%' THEN 'SI' ELSE 'NO' END) AS SENAME"),
                 DB::raw("(CASE WHEN direccion.departamento IS NOT NULL
                     THEN lower(CONCAT(direccion.calle,' #', direccion.numero , ' depto: ', direccion.departamento, ', ', direccion.comuna))
                     ELSE (CASE WHEN direccion.calle IS NOT NULL
                     THEN lower(CONCAT(direccion.calle,' #', direccion.numero, ', ', direccion.comuna))
-                    ELSE 'Sin dirección' END) END) AS direccion"),
-                DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as medico")
+                    ELSE 'Sin dirección' END) END) AS direccion")
             )
             ->distinct('etapa.id')
             ->orderBy('etapa.created_at')
@@ -804,7 +826,7 @@ class GeneralController extends Controller
             ->get();
         return $data;
     }
-    
+
     // Query helper for REM
     public function queryRem4()
     {

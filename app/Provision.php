@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Speciality;
+use App\Type;
 
 class Provision extends Model
 {
@@ -14,7 +15,7 @@ class Provision extends Model
     }
   public function type()
     {
-        return $this->hasOne('App\Type', 'tipo_id');
+        return $this->belongsTo(Type::class, 'tipo_id');
     }
     
 	use Notifiable;

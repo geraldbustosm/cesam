@@ -118,7 +118,7 @@
                     {title:"SIGGES", field:"sigges"},
                     {title:"Diagnóstico", field:"diagnostico"},
                     {title:"Dirección", field:"direccion"},
-                    {title:"SENAME", field:""},
+                    {title:"SENAME", field:"SENAME"},
                     {title:"Médico", field:"medico"},
                 ],
             });

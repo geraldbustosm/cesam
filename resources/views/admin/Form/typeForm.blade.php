@@ -41,7 +41,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Prestaciones</th>
+                                    <th style="width: 70%;">Tipo de prestaciones</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>

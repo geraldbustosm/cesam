@@ -152,16 +152,16 @@
                                     <a class="nav-link @yield('active-inactivos')" href="{{url('inactivo')}}"><span>Datos inactivos </span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignar/especialidad')}}"><span>Asignar especialidades a funcionarios</span></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignar/especialidad-prestacion')}}"><span>Asignar especialidades a prestaciones</span></a>
-                                </li>
-                                <li>
                                     <a class="nav-link @yield('active-asignarespecialidadactividad')" href="{{url('asignar/especialidad-actividad')}}"><span>Asignar especialidades a actividades</span></a>
                                 </li>
                                 <li>
                                     <a class="nav-link @yield('active-asignartipo')" href="{{url('asignar/especialidad-tipo')}}"><span>Asignar especialidades a tipo prestación</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignar/especialidad')}}"><span>Editar especialidades (funcionarios)</span></a>
+                                </li>
+                                <li>
+                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignar/especialidad-prestacion')}}"><span>Editar especialidades (prestaciones)</span></a>
                                 </li>
                             </ul>
                         </li>

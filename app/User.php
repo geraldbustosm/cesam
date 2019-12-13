@@ -14,8 +14,6 @@ class User extends Authenticatable
      * Especificando cual es la primary key
      */
 
-     protected $primaryKey = 'rut';
-
     public function functionary(){
         return $this->hasOne(Functionary::class);
     }

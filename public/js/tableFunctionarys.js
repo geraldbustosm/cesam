@@ -81,6 +81,7 @@ function getUser(data) {
     for (var j = 0; j < userArr.length; j++) {
         if (data.user_id == userArr[j].id) {
             user = writeRut(userArr[j].rut);
+            console.log(userArr[j].rut);
         }
     }
     return user;

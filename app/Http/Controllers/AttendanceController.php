@@ -191,13 +191,24 @@ class AttendanceController extends Controller
         $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
         if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
             $canasta = true;
-            foreach ($patientAttendances as $index) {
-                foreach ($typespeciality as $type) {
-                    $provision = Provision::find($index->prestacion_id);
-                    if ($index->abre_canasta == 1 && $provision->tipo_id == $type->tipo_id) {
-                        $canasta = false;
-                    }
-                }
+            $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
+                ->where('atencion.prestacion_id', $attendance->prestacion_id)
+                ->where('etapa.paciente_id', $idPatient)
+                ->whereMonth('atencion.fecha', Carbon::now()->month)
+                ->where('atencion.activa', 1)
+                ->where('etapa.activa', 1)
+                ->get();
+            // $query2 = Attendance::join('prestacion', 'prestacion.id', 'atencion.prestacion_id')
+            //     ->join('tipo_prestacion', 'tipo_prestacion.id', 'prestacion.tipo_id')
+            //     ->join('etapa', 'etapa.id', 'atencion.etapa_id')
+            //     ->where('etapa.paciente_id', $idPatient)
+            //     ->where('tipo_prestacion.id', $attendance->provision->type->id)
+            //     ->whereMonth('atencion.fecha', Carbon::now()->month)
+            //     ->where('atencion.activa', 1)
+            //     ->where('etapa.activa', 1)
+            //     ->get();
+            if ($query->count() > 0) {
+                $canasta = false;
             }
             if ($canasta) {
                 $attendance->abre_canasta = 1;
@@ -278,13 +289,10 @@ class AttendanceController extends Controller
         // Default
         $response = 0;
         // Check if age is in range
-        if (($inf <= $years) && ($years <= $sup)) {
+        if ((($inf <= $years) || $inf == 0) && (($years <= $sup) || $sup == 0)) {
             $response = 1;
         } else {
             $response = -1;
-        }
-        if (($inf == 0) && ($sup == 0)) {
-            $response = 1;
         }
         // Return provisions
         return response()->json($response);
