@@ -16,7 +16,7 @@ class CreatePrestacionTable extends Migration
         Schema::create('prestacion', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->double('frecuencia');
+            $table->string('frecuencia');
             $table->unsignedInteger('rangoEdad_inferior');
             $table->unsignedInteger('rangoEdad_superior');
             $table->string('ps_fam');

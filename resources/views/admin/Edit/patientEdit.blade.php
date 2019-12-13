@@ -29,9 +29,13 @@
 		<!-- Enviamos el ID del paciente para luego actualizarlo -->
 		<input id="id" name="id" type="hidden" value="{{$patient->id}}">
 
-		<div class="form-group">
-			<label for="dni">Rut o pasaporte</label>
-			<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
+		<div class="form-row">
+			<div class="col-2">
+				<label for="dni">Rut o pasaporte</label>
+			</div>
+			<div class="col-3">
+				<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
+			</div>
 		</div>
 		<div class="form-group">
 			<div class="alert alert-success" role="alert" id="success">
@@ -42,32 +46,36 @@
 			</div>
 		</div>
 
-		<!-- Names -->
-		<div class="form-group">
-			<label for="nombre">Nombre completo</label>
-			<div class="form-row">
-				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}}" id="name" name="name" placeholder="Nombres">
-				</div>
-				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido1}}" id="last_name" name="last_name" placeholder="Primer apellido">
-				</div>
-				<div class="col">
-					<input type="text" class="form-control {{ $errors->has('second_last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido2}}" id="second_last_name" name="second_last_name" placeholder="Segundo Apellido">
-				</div>
+		<!-- Names -->			
+		<div class="form-row">
+			<div class="col-2">
+				<label for="nombre">Nombre completo</label>
+			</div>	
+			<div class="col-3">
+				<input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}}" id="name" name="name" placeholder="Nombres">
 			</div>
-		</div>
-
-		<div class="form-group">
-			<label for="prevision">Previsión</label>
-			<select class="form-control" name="prevition" required>
-				<option value="{{$patient->prevition->id}}">{{$patient->prevition->descripcion}}</option>
-				@foreach($prev as $prevision)
-				@if ($prevision->descripcion != $patient->prevition->descripcion)
-				<option value="{{$prevision->id}}">{{$prevision->descripcion}}</option>
-				@endif
-				@endforeach
-			</select>
+			<div class="col-3">
+				<input type="text" class="form-control {{ $errors->has('last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido1}}" id="last_name" name="last_name" placeholder="Primer apellido">
+			</div>
+			<div class="col-3">
+				<input type="text" class="form-control {{ $errors->has('second_last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido2}}" id="second_last_name" name="second_last_name" placeholder="Segundo Apellido">
+			</div>
+		</div>	
+		<br>
+		<div class="form-row">
+			<div class="col-3">
+				<label for="prevision">Previsión</label>
+			</div>
+			<div class="col-3">
+				<select class="form-control" name="prevition" required>
+					<option value="{{$patient->prevition->id}}">{{$patient->prevition->descripcion}}</option>
+					@foreach($prev as $prevision)
+					@if ($prevision->descripcion != $patient->prevition->descripcion)
+					<option value="{{$prevision->id}}">{{$prevision->descripcion}}</option>
+					@endif
+					@endforeach
+				</select>
+			</div>
 		</div>
 
 		<div class="form-group">

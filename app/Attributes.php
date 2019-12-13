@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Patient;
 
 class Attributes extends Model
 {
@@ -20,6 +21,10 @@ class Attributes extends Model
    *
    * @var array
    */
+  public function patients()
+  {
+      return $this->belongsToMany(Patient::class, 'paciente_posee_atributos', 'atributos_id', 'paciente_id');
+  }
   protected $fillable = [
       'id','descripcion', 'tipo', 'activa'
   ];
