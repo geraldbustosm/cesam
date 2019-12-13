@@ -94,6 +94,10 @@ class ProvisionController extends Controller
             'senior_age' => 'required',
             'medical_provision_type' => 'required'
         ]);
+
+        if($request->lower_age > $request->senior_age){
+            return redirect('registrar/prestacion')->with('error', 'El rango menor es más grande que el rango mayor');
+        }
         // Create the new 'object' provision
         $provision = new Provision;
         // Set some variables with inputs of view
@@ -135,7 +139,7 @@ class ProvisionController extends Controller
         }
 
         if($request->lower_age > $request->senior_age){
-            return redirect('registrar/prestacion')->with('error', 'El rango menor es más grande que el rango mayor');
+            return redirect($url)->with('error', 'El rango menor es más grande que el rango mayor');
         }
 
         $provision->glosaTrasadora = $request->glosaTrasadora;
