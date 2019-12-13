@@ -212,6 +212,9 @@ Route::put('previsiones/edit', 'PrevitionController@editPrevition')->middleware(
 // Procedencias
 Route::get('procedencias/edit/{id}', 'ProvenanceController@showEditProvenance')->middleware('checkrole:1');
 Route::put('procedencias/edit', 'ProvenanceController@editProvenance')->middleware('checkrole:1');
+// Programas
+Route::get('programas/edit/{id}', 'ProgramController@showEditProgram');
+Route::put('programas/edit', 'ProgramController@editProgram');
 // Tipo GES
 Route::get('sigges/edit/{id}', 'SiGGESController@showEditSiGGES')->middleware('checkrole:1');
 Route::put('sigges/edit', 'SiGGESController@editSiGGES')->middleware('checkrole:1');

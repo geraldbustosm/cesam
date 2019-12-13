@@ -33,6 +33,49 @@ class ProgramController extends Controller
         // Redirect to the view with list of specialitys, programs (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Inactive.programInactive', compact('data', 'table'));
     }
+    
+    /***************************************************************************************************************************
+                                                    EDIT FORM
+    ****************************************************************************************************************************/
+    
+    public function showEditProgram($id){
+
+        // Get speciality-program
+        $data = SpecialityProgram::where('activa', 1)->get();
+        $program = Program::find($id);
+        $specialityprogram = SpecialityProgram::find($program->especialidad_programa_id);
+        return view('admin.Edit.programEdit', compact('data', 'program', 'specialityprogram'));
+    }
+
+    /***************************************************************************************************************************
+                                                    EDIT PROCESS
+     ****************************************************************************************************************************/
+    public function editProgram(Request $request)
+    {
+        // Validate the request variable
+        $validation = $request->validate([
+            'descripcion' => 'required|string|max:255',
+        ]);
+
+        // Get the program that want to update
+        $program = Program::find($request->id);
+
+        // URL to redirect
+        if($program->activa == 1){
+            $url = "/registrar/programa/";
+        }else{
+            $url = "/inactivo/programa/";
+        }
+
+        $program->descripcion = $request->descripcion;
+        $program->especialidad_programa_id = $request->speciality;
+
+        // Save changes
+        $program->save();
+
+        return redirect($url)->with('status', 'Se ha actualizado el programa');
+    }
+
     /***************************************************************************************************************************
                                                     CREATE PROCESS
      ****************************************************************************************************************************/
