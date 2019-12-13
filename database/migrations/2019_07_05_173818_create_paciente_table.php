@@ -22,6 +22,7 @@ class CreatePacienteTable extends Migration
             $table->string('apellido1');
             $table->string('apellido2')->nullable();
             $table->date('fecha_nacimiento');
+            $table->boolean('repetido')->default(0);
             
             $table->unsignedBigInteger('prevision_id');
             $table->foreign('prevision_id')->references('id')->on('prevision');

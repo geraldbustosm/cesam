@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Attributes;
 
 class Patient extends Model
 {
@@ -35,5 +36,9 @@ class Patient extends Model
   }
   public function sex(){
     return $this->belongsTo('App\Sex', 'sexo_id');
+  }
+  public function attributes()
+  {
+      return $this->belongsToMany(Speciality::class, 'paciente_posee_atributos', 'paciente_id', 'atributos_id');
   }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAltaTable extends Migration
+class CreateGrupoAltaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateAltaTable extends Migration
      */
     public function up()
     {
-        Schema::create('alta', function (Blueprint $table) {
+        Schema::create('grupo_alta', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descripcion')->unique();;
+            $table->string('descripcion')->unique();
             $table->timestamps();
-            $table->unsignedBigInteger('grupo_id');
-            $table->foreign('grupo_id')->references('id')->on('grupo_alta');
-
             $table->boolean('activa')->default(1);
         });
     }
@@ -31,6 +28,6 @@ class CreateAltaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('alta');
+        Schema::dropIfExists('grupo_alta');
     }
 }

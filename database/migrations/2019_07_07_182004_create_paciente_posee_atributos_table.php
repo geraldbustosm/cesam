@@ -23,10 +23,12 @@ class CreatePacientePoseeAtributosTable extends Migration
             $table->foreign('paciente_id')->references('id')->on('paciente');
             $table->foreign('atributos_id')->references('id')->on('atributos');
 
+            /*** IF in the future someone whants to  have attributes and time logic
             $table->boolean('estadoAtributo')->nullable();
             $table->boolean('reseteable')->nullable();
             $table->date('fechaAtributo')->nullable();
             $table->unsignedBigInteger('numeroDiasReseteo')->nullable();
+            ***/
 
             $table->boolean('activa')->default(1);
         });

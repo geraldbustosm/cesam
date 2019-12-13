@@ -96,20 +96,46 @@
 		<!-- Birthdate datepicker -->
 		<div class="form-group">
 			<label for="datepicker">Fecha de nacimiento</label>
-			<input id="datepicker" name="datepicker" width="276" required>
-			<script>
-				var config = {
-					format: 'dd/mm/yyyy',
-					locale: 'es-es',
-					uiLibrary: 'bootstrap4',
-					maxDate: new Date,
-					startView: 3,
-				};
-				$('#datepicker').datepicker(config);
-			</script>
 		</div>
+		<div class="form-group">
+			<div class="form-row">			
+				<div class="col-3">
+					<input id="datepicker" name="datepicker" width="276" required>
+					<script>
+						var config = {
+							format: 'dd/mm/yyyy',
+							locale: 'es-es',
+							uiLibrary: 'bootstrap4',
+							maxDate: new Date,
+							startView: 3,
+						};
+						$('#datepicker').datepicker(config);
+					</script>
+				</div>
+				<div class="col">
+					<button type="submit" class="btn btn-primary" id="btnSubmit">Registrar</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="overflow-auto" style="height:200px;">
+				@foreach($attributes as $attributes)
 
-		<button type="submit" class="btn btn-primary" id="btnSubmit">Registrar</button>
+				<div class="card">
+					<div class="checkbox-container">
+						<label class="checkbox-label">
+							<input type="checkbox" name="options[]" value="{{ $attributes->id}}">
+							<span class="checkbox-custom rectangular"></span>
+						</label>
+					</div>
+					<div class="input-title">{{ $attributes->descripcion}}</div>
+
+				</div>
+
+				@endforeach
+			</div>
+        </div>
+
 	</form>
 </div>
 
@@ -118,4 +144,5 @@
 </script>
 <!-- Adding script using on this view -->
 <script src="{{asset('js/idValidator.js')}}"></script>
+<link rel="stylesheet" href="{{asset('css/card.css')}}">
 @endsection

@@ -7,6 +7,7 @@ use App\Patient;
 use App\Prevition;
 use App\Address;
 use App\Sex;
+use App\Attributes;
 
 class PatientController extends Controller
 {
@@ -51,11 +52,13 @@ class PatientController extends Controller
     public function showAddPatient()
     {
         // Get list of genders
-        $sex = Sex::all();
+        $sex = Sex::where('activa',1)->get();
+        // Get list of attributes
+        $attributes = Attributes::where('activa',1)->get();
         // Get list of previtions
-        $previtions = Prevition::all();
+        $previtions = Prevition::where('activa',1)->get();
         // Redirect to view with list of genders and previtions
-        return view('admin.Form.patientForm', compact('sex', 'previtions'));
+        return view('admin.Form.patientForm', compact('sex', 'previtions','attributes'));
     }
 
     /***************************************************************************************************************************
@@ -66,9 +69,11 @@ class PatientController extends Controller
         // Get the first patient that match with DNI
         $patient = Patient::where('DNI', $dni)->first();
         // Get previtions
-        $prev = Prevition::all();
+        $prev = Prevition::where('activa',1)->get();
         // Get genders
-        $sex = Sex::all();
+        $sex = Sex::where('activa',1)->get();
+        // Get list of previtions
+        $previtions = Prevition::where('activa',1)->get();
         // Create variable for date
         $patient_birthdate = "";
         // Create variable for patient's address
@@ -148,6 +153,8 @@ class PatientController extends Controller
         $patient_id= Patient::where('DNI', $request->dni)->first()->id;
         $address->idPaciente = $patient_id;
         $address->save();
+
+        $patient->attributes()->sync($request->options);
         // Redirect to the view with successful status
         return redirect('registrar/paciente')->with('status', 'Usuario creado');
     }
