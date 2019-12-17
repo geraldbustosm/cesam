@@ -86,29 +86,31 @@
                 data:tableData,
                 // autoColumns: true,
                 columns: [
-                    {title:"Actividad", field:"actividad"},
-                    {title:"Especialidad", field:"especialidad"},
-                    {//create column group
-                        title:"Total",
-                        columns:[
-                        {title:"Ambos Sexos", field:"Ambos", width:120, bottomCalc:"sum"},
-                        {title:"Hombres", field:"Hombres", width:120, bottomCalc:"sum"},
-                        {title:"Mujeres", field:"Mujeres", width:120, bottomCalc:"sum"},
-                        ],
-                    },
+                    {title:"ESPECIALIDADES Y SUB-ESPECIALIDADES", field:"nombre_funcionario"},
+                    {title:"ESPECIALIDAD", field:"especialidad"},
+                    {title:"TOTAL", field:"Ambos", width:120, bottomCalc:"sum"},
                 ],
             });
             // Complete table
             for(i=0 ; i<list.length ; i++){
-                table.addColumn(
-                    {//create column group
-                        title:`${list[i]}`,
-                        columns:[
-                        {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
-                        {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
-                        ],
-                    }, false);
+                table.addColumn({title:`${list[i]}`, field:`${list[i]}`, width:150, bottomCalc:"sum"}, false);
             };
+            table.addColumn(
+                {//create column group
+                    title:`A BENEFICIARIOS`,
+                    columns:[
+                        {title:`Menos de 15 años`, field:`menores`, width:150, bottomCalc:"sum"},
+                        {title:`15 años y más`, field:`mayores`, width:150, bottomCalc:"sum"},
+                    ],
+                }, false);
+            table.addColumn(
+                {//create column group
+                    title:`POR SEXO`,
+                    columns:[
+                        {title:`Hombres`, field:`Hombres`, width:150, bottomCalc:"sum"},
+                        {title:`Mujeres`, field:`Mujeres`, width:150, bottomCalc:"sum"},
+                    ],
+                }, false);
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

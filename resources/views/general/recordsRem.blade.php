@@ -104,8 +104,8 @@
                     {//create column group
                         title:`${list[i]}`,
                         columns:[
-                        {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
-                        {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
+                            {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
+                            {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
                         ],
                     }, false);
             };
