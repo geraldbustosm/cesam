@@ -90,10 +90,10 @@ Route::post('desactivar-especialidad', 'SpecialityController@deletingSpeciality'
 Route::get('inactivo/especialidad-glosa', 'SpecialityProgramController@showInactiveSpeciality')->middleware('checkrole:1');
 Route::post('activar-especialidad-glosa', 'SpecialityProgramController@activateSpeciality')->middleware('checkrole:1');
 Route::post('desactivar-especialidad-glosa', 'SpecialityProgramController@deletingSpeciality')->middleware('checkrole:1');
-// Género
-Route::get('inactivo/genero', 'SexController@showInactiveSex')->middleware('checkrole:1');
-Route::post('activar-genero', 'SexController@activateSex')->middleware('checkrole:1');
-Route::post('desactivar-genero', 'SexController@deletingSex')->middleware('checkrole:1');
+// Grupo de Altas
+Route::get('inactivo/grupo-altas', 'ReleaseController@showInactiveReleaseGroup')->middleware('checkrole:1');
+Route::post('activar-grupo-altas', 'ReleaseController@activateReleaseGroup')->middleware('checkrole:1');
+Route::post('desactivar-grupo-altas', 'ReleaseController@deletingReleaseGroup')->middleware('checkrole:1');
 // Prestación
 Route::get('inactivo/prestacion', 'ProvisionController@showInactiveProvision')->middleware('checkrole:1');
 Route::post('activar-prestacion', 'ProvisionController@activateProvision')->middleware('checkrole:1');
@@ -110,6 +110,10 @@ Route::post('desactivar-procedencia', 'ProvenanceController@deletingProvenance')
 Route::get('inactivo/programa', 'ProgramController@showInactiveProgram')->middleware('checkrole:1');
 Route::post('activar-programa', 'ProgramController@activateProgram')->middleware('checkrole:1');
 Route::post('desactivar-programa', 'ProgramController@deletingProgram')->middleware('checkrole:1');
+// Sexo
+Route::get('inactivo/genero', 'SexController@showInactiveSex')->middleware('checkrole:1');
+Route::post('activar-genero', 'SexController@activateSex')->middleware('checkrole:1');
+Route::post('desactivar-genero', 'SexController@deletingSex')->middleware('checkrole:1');
 // SiGGES
 Route::get('inactivo/sigges', 'SiGGESController@showInactiveSiGGES')->middleware('checkrole:1');
 Route::post('activar-sigges', 'SiGGESController@activateSiGGES')->middleware('checkrole:1');
@@ -149,6 +153,9 @@ Route::post('registrar/especialidad-glosa', 'SpecialityProgramController@registe
 // Funcionario
 Route::get('registrar/funcionario', 'FunctionaryController@showAddFunctionary')->middleware('checkrole:1');
 Route::post('registrar/funcionario', 'FunctionaryController@registerFunctionary')->middleware('checkrole:1');
+// Grupo altas
+Route::get('registrar/grupo-altas', 'ReleaseController@showAddReleaseGroup')->middleware('checkrole:1');
+Route::post('registrar/grupo-altas', 'ReleaseController@registerReleaseGroup')->middleware('checkrole:1');
 // Paciente
 Route::get('registrar/paciente', 'PatientController@showAddPatient')->middleware('checkrole:1');
 Route::post('registrar/paciente', 'PatientController@registerPatient')->middleware('checkrole:1');
@@ -206,9 +213,12 @@ Route::put('especialidades/edit', 'SpecialityController@editSpeciality')->middle
 // Funcionario
 Route::get('funcionario/edit/{id}', 'FunctionaryController@showEditFunctionary')->middleware('checkrole:1');
 Route::put('funcionario/edit', 'FunctionaryController@editFunctionary')->middleware('checkrole:1');
-// Sexo
-Route::get('géneros/edit/{id}', 'SexController@showEditSex')->middleware('checkrole:1');
-Route::put('géneros/edit', 'SexController@editSex')->middleware('checkrole:1');
+// Grupo altas
+Route::get('grupo-altas/edit/{id}', 'ReleaseController@showEditReleaseGroup')->middleware('checkrole:1');
+Route::put('grupo-altas/edit', 'ReleaseController@editReleaseGroup')->middleware('checkrole:1');
+// Prestación
+Route::get('prestaciones/edit/{id}', 'ProvisionController@showEditProvision');
+Route::put('prestaciones/edit', 'ProvisionController@editProvision');
 // Previsiones
 Route::get('previsiones/edit/{id}', 'PrevitionController@showEditPrevition')->middleware('checkrole:1');
 Route::put('previsiones/edit', 'PrevitionController@editPrevition')->middleware('checkrole:1');
@@ -218,15 +228,15 @@ Route::put('procedencias/edit', 'ProvenanceController@editProvenance')->middlewa
 // Programas
 Route::get('programas/edit/{id}', 'ProgramController@showEditProgram');
 Route::put('programas/edit', 'ProgramController@editProgram');
+// Sexo
+Route::get('géneros/edit/{id}', 'SexController@showEditSex')->middleware('checkrole:1');
+Route::put('géneros/edit', 'SexController@editSex')->middleware('checkrole:1');
 // Tipo GES
 Route::get('sigges/edit/{id}', 'SiGGESController@showEditSiGGES')->middleware('checkrole:1');
 Route::put('sigges/edit', 'SiGGESController@editSiGGES')->middleware('checkrole:1');
 // Tipo prestaciones
 Route::get('tipos/edit/{id}', 'TypeController@showEditType')->middleware('checkrole:1');
 Route::put('tipos/edit', 'TypeController@editType')->middleware('checkrole:1');
-// Prestación
-Route::get('prestaciones/edit/{id}', 'ProvisionController@showEditProvision');
-Route::put('prestaciones/edit', 'ProvisionController@editProvision');
 // Usuario
 Route::get('password/edit', 'UserController@showEditPassword')->middleware('checkrole:1|2|3');
 Route::put('password/edit', 'UserController@editPassword')->middleware('checkrole:1|2|3');

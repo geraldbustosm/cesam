@@ -31,6 +31,9 @@
             <a class="nav-link" href="{{url('inactivo/prestacion')}}">Glosas</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{url('inactivo/grupo-altas')}}">Grupo-Altas</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{url('inactivo/prevision')}}">Previsiones</a>
         </li>
         <li class="nav-item">

@@ -31,6 +31,9 @@
             <a class="nav-link" href="{{url('registrar/prestacion')}}">Glosas</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{url('registrar/grupo-altas')}}">Grupo-Altas</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{url('registrar/prevision')}}">Previsiones</a>
         </li>
         <li class="nav-item">

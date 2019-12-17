@@ -1,10 +1,10 @@
 @extends('admin.Views.registerMain')
-@section('title','Registrar alta')
+@section('title','Registrar grupo de altas')
 @section('active-ingresardatos','active')
 @section('active-registrar','active')
 
 @section('sub-content')
-<h1>Registrar Altas</h1>
+<h1>Registrar Grupo de Altas</h1>
 <div class="div-full">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -23,23 +23,13 @@
         {{ session('err') }}
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/alta') }}">
+    <form method="post" action="{{ url('registrar/grupo-altas') }}">
         @csrf
         <div class="form-group">
             <div class="form-row">
                 <div class="col-6">
-                    <input type="text" class="form-control {{ $errors->has('medical_discharge') ? ' is-invalid' : '' }}" value="{{ old('medical_discharge') }}" id="medical_discharge" name="medical_discharge" placeholder="Motivo del Alta">
+                    <input type="text" class="form-control {{ $errors->has('medical_discharge') ? ' is-invalid' : '' }}" value="{{ old('medical_discharge') }}" id="medical_discharge" name="medical_discharge" placeholder="Grupo de Altas">
                     <br>
-                    
-                    <div class="form-group">
-                        <select name="releases_group" id="releases_group" class="form-control" required>
-                            <option value="" selected disabled>Seleccione un Grupo</option>
-                            @foreach ($list as $index) <option value="{{ $index->id }}">{{ $index->descripcion }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <br>
-
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
                 <div class="col">
@@ -51,7 +41,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 3%;">#</th>
-                                    <th style="width: 70%;">Altas</th>
+                                    <th style="width: 70%;">Grupo de Altas</th>
                                     <th style="width: 10%;">Acciones</th>
                                 </tr>
                             </thead>
@@ -71,7 +61,7 @@
     </form>
 </div>
 <!-- Form to send id at controller -->
-<form name="onSubmit" method="post" action="{{ url('desactivar-alta') }}">
+<form name="onSubmit" method="post" action="{{ url('desactivar-grupo-altas') }}">
     @csrf
     <div class="form-group">
         <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
@@ -88,7 +78,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Desea eliminar el alta?
+                ¿Desea eliminar el grupo?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

@@ -110,7 +110,6 @@
     $(document).ready(function() {
         // Run code
         var test = <?php echo json_encode($patientAttendances); ?>;
-        console.log(test);
         var id = <?php echo json_encode($patient->id); ?>;
         var stage_id = <?php echo json_encode($activeStage->id); ?>;
         var currStage = <?php echo json_encode($stage->id); ?>;

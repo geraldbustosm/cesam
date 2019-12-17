@@ -1,9 +1,9 @@
 @extends('layouts.main')
-@section('title','Editar alta')
+@section('title','Editar grupo de altas')
 @section('active-ingresardatos','active')
 
 @section('content')
-<h1>Editar alta</h1>
+<h1>Editar grupo de altas</h1>
 <div class="div-full">
 	@if ($errors->any())
 	<div class="alert alert-danger">
@@ -16,7 +16,7 @@
 	@endif
 
 	@if ($release)
-	<form method="post" action="{{ url('altas/edit') }}">
+	<form method="post" action="{{ url('grupo-altas/edit') }}">
 		@csrf
 
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
@@ -29,18 +29,7 @@
 			<input type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : '' }}" value="{{$release->descripcion}}" placeholder="{{$release->descripcion}}" id="descripcion" name="descripcion">
 		</div>
 
-		<div class="form-group">	
-			<select class="form-control" name="grupo" required>
-				<option value="{{$release->group->id}}">{{$release->group->descripcion}}</option>
-				@foreach($list as $index)
-				@if ($index->descripcion != $release->group->descripcion)
-				<option value="{{$index->id}}">{{ $index->descripcion}}</option>
-				@endif
-				@endforeach
-			</select>
-		</div>
-
-		<button type="submit" class="btn btn-primary">Editar alta</button>
+		<button type="submit" class="btn btn-primary">Editar grupo</button>
 	</form>
 </div>
 @else
