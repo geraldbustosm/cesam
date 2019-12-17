@@ -21,7 +21,7 @@ class SpecialityProgramController extends Controller
         // Get specialitys from database where 'activa' attribute is 0 bits
         $data = SpecialityProgram::where('activa', 0)->orderBy('descripcion')->get();
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
-        return view('admin.Inactive.specialityProgramInactive', ['data' => $data, 'table' => 'Especialidad Glosa']);
+        return view('admin.Inactive.specialityProgramInactive', ['data' => $data, 'table' => 'Especialidad-Glosa']);
     }
     /***************************************************************************************************************************
                                                     CREATE FORM
@@ -31,7 +31,7 @@ class SpecialityProgramController extends Controller
         // Get specialitys in alfabetic order
         $data = SpecialityProgram::where('activa', 1)->orderBy('descripcion')->get();
         // Redirect to the view with list of specialitys (standard name: data) and name of table in spanish (standard name: table)
-        return view('admin.Form.specialityProgramForm', ['data' => $data, 'table' => 'Especialidad Glosa']);
+        return view('admin.Form.specialityProgramForm', ['data' => $data, 'table' => 'Especialidad-Glosa']);
     }
     /***************************************************************************************************************************
                                                     EDIT FORM

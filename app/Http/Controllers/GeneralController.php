@@ -69,12 +69,20 @@ class GeneralController extends Controller
     {
         // Get patient
         $patient = Patient::where('DNI', $DNI)->first();
-        // Get patient id
-        $patient_id = $patient->id;
         // Get the stage
-        $stage = Stage::where('paciente_id', $patient_id)
+        $stage = Stage::where('paciente_id', $patient->id)
             ->where('activa', 1)
             ->first();
+        // Get attributes
+        $attributes = "";
+        foreach ($patient->attributes as $index) {
+            $attributes = $index->descripcion . ", " . $attributes;
+        }
+        // Get diagnosis
+        $diagnosis = "";
+        foreach ($stage->diagnosis as $index) {
+            $diagnosis = $index->descripcion . ", " . $diagnosis;
+        }
         // If have no active stage
         if (empty($stage)) {
             return redirect(url()->previous())->with('error', 'Debe agregar una nueva etapa');
@@ -84,7 +92,7 @@ class GeneralController extends Controller
             // Identify active stage
             $activeStage = $stage;
             // Redirect to the view with successful status
-            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage'));
+            return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage', 'attributes', 'diagnosis'));
         }
     }
     /***************************************************************************************************************************
@@ -100,8 +108,10 @@ class GeneralController extends Controller
     // Selec stage by dropbox from view
     public function selectStage(Request $request)
     {
+        // Get the patient
         $patient_id = $request->id;
         $patient = Patient::find($patient_id);
+        // Get the stage
         $stage_id = $request->stages;
         $stage = Stage::find($stage_id);
         $patientAttendances = $stage->attendance;
@@ -109,7 +119,17 @@ class GeneralController extends Controller
             ->where('activa', 1)
             ->select('id')
             ->first();
-        return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage'));
+        // Get attributes
+        $attributes = "";
+        foreach ($patient->attributes as $index) {
+            $attributes = $attributes . ", " . $index->descripcion;
+        }
+        // Get diagnosis
+        $diagnosis = "";
+        foreach ($stage->diagnosis as $index) {
+            $diagnosis = $diagnosis . ", " . $index->descripcion;
+        }
+        return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage', 'attributes', 'diagnosis'));
     }
     /***************************************************************************************************************************
                                                     RELEASE PROCESS

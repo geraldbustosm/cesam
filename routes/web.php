@@ -249,7 +249,7 @@ Route::get('prestaciones/ingresos', 'GeneralController@showAdmissionDischarge')-
 Route::get('prestaciones/ingresos/info', 'GeneralController@showInfoAddmissionAndDischarge')->middleware('checkrole:1|2|3');
 // Ingresos REM 5 por procedencia
 Route::get('prestaciones/ingresos/resumen', 'GeneralController@showSummaryAddmissionAndDischarge')->middleware('checkrole:1|2|3');
- // Mensual
+// Mensual
 Route::get('prestaciones/mensual', 'GeneralController@showMonthlyRecords')->middleware('checkrole:1|2|3');
 // Resumen
 Route::get('prestaciones/resumen', 'GeneralController@showSummaryRecords')->middleware('checkrole:1|2|3');
@@ -277,3 +277,5 @@ Route::post('etapa', 'GeneralController@selectStage')->middleware('checkrole:1|2
 // Repetir última atención en otra fecha
 Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance')->middleware('checkrole:1|2|3');
 Route::post('ultima-atenciontapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');
+// Eliminar atención
+Route::post('eliminar-atención', 'AttendanceController@deleteAttendance')->middleware('checkrole:1');

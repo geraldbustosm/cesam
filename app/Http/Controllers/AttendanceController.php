@@ -297,4 +297,12 @@ class AttendanceController extends Controller
         // Return provisions
         return response()->json($response);
     }
+    /***************************************************************************************************************************
+                                                    DELETE LOGIC
+     ****************************************************************************************************************************/
+    public function deleteAttendance(Request $request)
+    {
+        $attendance = Attendance::find($request->id_attendance);
+        return redirect(url()->previous())->with('status','La prestación ha sido eliminada');
+    }
 }

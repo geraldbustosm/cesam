@@ -80,11 +80,11 @@ function createRow(num, data) {
         celdas[2].innerHTML = data.codigo;
         if (data.activa == 1) {
             celdas[3].innerHTML = `
-            <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+            <a href='/prestaciones/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
             <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
         } else {
             celdas[3].innerHTML = `
-            <a href='#'><i title='Editar' class='material-icons'>create</i></a>
+            <a href='/prestaciones/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
             <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
         }
     }

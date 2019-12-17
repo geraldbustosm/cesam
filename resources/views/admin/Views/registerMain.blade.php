@@ -22,10 +22,13 @@
             <a class="nav-link" href="{{url('registrar/especialidad')}}">Especialidades</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{url('registrar/especialidad-glosa')}}">Especialidad Glosa</a>
+            <a class="nav-link" href="{{url('registrar/especialidad-glosa')}}">Especialidad-Glosa</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('registrar/genero')}}">Géneros</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url('registrar/prestacion')}}">Glosas</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('registrar/prevision')}}">Previsiones</a>
@@ -41,9 +44,6 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('registrar/tipo')}}">Tipos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{url('registrar/prestacion')}}">Glosas</a>
         </li>
     </ul><br>
 </div>

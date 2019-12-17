@@ -22,10 +22,13 @@
             <a class="nav-link" href="{{url('inactivo/especialidad')}}">Especialidades</a>
         </li>        
         <li class="nav-item">
-            <a class="nav-link" href="{{url('inactivo/especialidad-glosa')}}">Especialidad Glosa</a>
+            <a class="nav-link" href="{{url('inactivo/especialidad-glosa')}}">Especialidad-Glosa</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('inactivo/genero')}}">Géneros</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url('inactivo/prestacion')}}">Glosas</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('inactivo/prevision')}}">Previsiones</a>
@@ -41,9 +44,6 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{url('inactivo/tipo')}}">Tipos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{url('inactivo/prestacion')}}">Glosas</a>
         </li>
     </ul><br>
 </div>
