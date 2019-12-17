@@ -182,6 +182,9 @@ Route::post('registrar/usuario', 'UserController@registerUser')->middleware('che
 // Atención
 Route::get('paciente/{rut}/etapa/{etapa}/atencion/{atencion}/edit', 'AttendanceController@showEditAttendance')->middleware('checkrole:1');
 Route::put('editar/atencion', 'AttendanceController@editAttendance')->middleware('checkrole:1');
+// Etapa
+Route::get('etapas/edit/{id}', 'StageController@showEditStage');
+Route::put('etapas/edit', 'StageController@editStage');
 // Actividad
 Route::get('actividades/edit/{id}', 'ActivityController@showEditActivity')->middleware('checkrole:1');
 Route::put('actividades/edit', 'ActivityController@editActivity')->middleware('checkrole:1');

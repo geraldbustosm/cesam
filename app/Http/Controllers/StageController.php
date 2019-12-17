@@ -42,6 +42,22 @@ class StageController extends Controller
         return view('admin.Form.stageCreateForm', ['idpatient' => $patient_id])->with(compact('functionarys', 'diagnosis', 'program', 'Sigges', 'provenance'));
     }
     /***************************************************************************************************************************
+                                                    EDIT FORM
+     ****************************************************************************************************************************/
+    public function showEditStage($id){
+        $stage = Stage::find($id);
+        $functionarys = Functionary::where('activa', 1)->get();
+        $functionary = Functionary::find($stage->funcionario_id);
+        $sigges = SiGGES::where('activa', 1)->get();
+        $sigge = SiGGES::find($stage->sigges_id);
+        $programs = Program::where('activa', 1)->get();
+        $program = Program::find($stage->programa_id);
+        $provenances = Provenance::where('activa', 1)->get();
+        $provenance = Provenance::find($stage->procedencia_id);
+        $diagnosis = Diagnosis::where('activa', 1)->get();
+        return view('admin.Edit.stageEdit', compact('stage', 'functionarys', 'functionary', 'sigges', 'sigge', 'programs', 'program', 'provenances', 'provenance', 'diagnosis', 'stageDiagnosis'));
+    }
+    /***************************************************************************************************************************
                                                     CREATE PROCESS
      ****************************************************************************************************************************/
     public function registerStage(Request $request)
@@ -74,6 +90,30 @@ class StageController extends Controller
         // Redirect to the view with stage, users (functionarys), patient, DNI (id of patient, we use DNI as standard in several views)
         // Also pass to the view the id of stage as stage_id
         return view('general.attendanceForm')->with(compact('stage', 'users', 'patient', 'DNI'));
+    }
+    
+    /***************************************************************************************************************************
+                                                    EDIT PROCESS
+     ****************************************************************************************************************************/
+    public function editStage(Request $request){
+        // Get the stage
+        $stage = Stage::find($request->id);
+        $patient = Patient::find($stage->paciente_id);
+        
+        // Massage and redirect url
+        $url = 'etapas/edit/' . $stage->id;
+        $msg = 'Se actualizaron los datos de la etapa del paciente '
+         . $patient->nombre1 . ' ' . $patient->apellido1;
+
+        // Updating data
+
+        $stage->programa_id = $request->programs;
+        $stage->sigges_id = $request->sigges;
+        $stage->procedencia_id = $request->provenances;
+        $stage->funcionario_id = $request->functionarys;
+        $stage->diagnosis()->sync($request->options);
+        $stage->save();
+        return redirect($url)->with('status', $msg);
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
