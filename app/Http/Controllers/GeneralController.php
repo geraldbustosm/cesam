@@ -643,7 +643,7 @@ class GeneralController extends Controller
             $record1->menoresSENAME = 0;
             foreach ($query as $record2) {
                 if ($record1->actividad == $record2->actividad && $record1->especialidad == $record2->especialidad) {
-                    if (!in_array($record2->DNI, $sename) && $record2->age < 18 && $record1->SENAME > 0) {
+                    if (!in_array($record2->DNI, $sename) && $record2->age < 18 && $record2->SENAME > 0) {
                         array_push($sename, $record2->DNI);
                     }
                     (!in_array($record2->DNI, $uniques) ? array_push($uniques, $record2->DNI) : false);
@@ -665,8 +665,6 @@ class GeneralController extends Controller
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
-            ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
-            ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
@@ -675,7 +673,6 @@ class GeneralController extends Controller
             ->select(
                 'especialidad.descripcion as especialidad',
                 'actividad.descripcion as actividad',
-                DB::raw("SUM(CASE WHEN lower(atributos.descripcion) like '%sename%' THEN 1 ELSE 0 END) AS SENAME"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
                 DB::raw("COUNT(atencion.asistencia) AS Ambos")
@@ -695,6 +692,8 @@ class GeneralController extends Controller
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
+            ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
+            ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
@@ -705,6 +704,7 @@ class GeneralController extends Controller
                 'paciente.DNI as DNI',
                 'especialidad.descripcion as especialidad',
                 'actividad.descripcion as actividad',
+                DB::raw("SUM(CASE WHEN lower(atributos.descripcion) like '%sename%' THEN 1 ELSE 0 END) AS SENAME"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%hombre%' THEN 1 ELSE 0 END) AS Hombres"),
                 DB::raw("SUM(CASE WHEN lower(sexo.descripcion) like '%mujer%' THEN 1 ELSE 0 END) AS Mujeres"),
                 DB::raw("COUNT(atencion.asistencia) AS Ambos"),
