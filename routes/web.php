@@ -91,9 +91,9 @@ Route::get('inactivo/especialidad-glosa', 'SpecialityProgramController@showInact
 Route::post('activar-especialidad-glosa', 'SpecialityProgramController@activateSpeciality')->middleware('checkrole:1');
 Route::post('desactivar-especialidad-glosa', 'SpecialityProgramController@deletingSpeciality')->middleware('checkrole:1');
 // Grupo de Altas
-Route::get('inactivo/grupo-altas', 'ReleaseController@showInactiveReleaseGroup')->middleware('checkrole:1');
-Route::post('activar-grupo-altas', 'ReleaseController@activateReleaseGroup')->middleware('checkrole:1');
-Route::post('desactivar-grupo-altas', 'ReleaseController@deletingReleaseGroup')->middleware('checkrole:1');
+Route::get('inactivo/grupo-altas', 'ReleaseGroupController@showInactiveReleaseGroup')->middleware('checkrole:1');
+Route::post('activar-grupo-altas', 'ReleaseGroupController@activateReleaseGroup')->middleware('checkrole:1');
+Route::post('desactivar-grupo-altas', 'ReleaseGroupController@deletingReleaseGroup')->middleware('checkrole:1');
 // Prestación
 Route::get('inactivo/prestacion', 'ProvisionController@showInactiveProvision')->middleware('checkrole:1');
 Route::post('activar-prestacion', 'ProvisionController@activateProvision')->middleware('checkrole:1');
@@ -154,8 +154,8 @@ Route::post('registrar/especialidad-glosa', 'SpecialityProgramController@registe
 Route::get('registrar/funcionario', 'FunctionaryController@showAddFunctionary')->middleware('checkrole:1');
 Route::post('registrar/funcionario', 'FunctionaryController@registerFunctionary')->middleware('checkrole:1');
 // Grupo altas
-Route::get('registrar/grupo-altas', 'ReleaseController@showAddReleaseGroup')->middleware('checkrole:1');
-Route::post('registrar/grupo-altas', 'ReleaseController@registerReleaseGroup')->middleware('checkrole:1');
+Route::get('registrar/grupo-altas', 'ReleaseGroupController@showAddReleaseGroup')->middleware('checkrole:1');
+Route::post('registrar/grupo-altas', 'ReleaseGroupController@registerReleaseGroup')->middleware('checkrole:1');
 // Paciente
 Route::get('registrar/paciente', 'PatientController@showAddPatient')->middleware('checkrole:1');
 Route::post('registrar/paciente', 'PatientController@registerPatient')->middleware('checkrole:1');
@@ -210,12 +210,15 @@ Route::put('diagnósticos/edit', 'DiagnosisController@editDiagnostic')->middlewa
 // Especialidades
 Route::get('especialidades/edit/{id}', 'SpecialityController@showEditSpeciality')->middleware('checkrole:1');
 Route::put('especialidades/edit', 'SpecialityController@editSpeciality')->middleware('checkrole:1');
+// Especialidades por programa
+Route::get('especialidad-glosa/edit/{id}', 'SpecialityProgramController@showEditSpeciality')->middleware('checkrole:1');
+Route::put('especialidad-glosa/edit', 'SpecialityProgramController@editSpeciality')->middleware('checkrole:1');
 // Funcionario
 Route::get('funcionario/edit/{id}', 'FunctionaryController@showEditFunctionary')->middleware('checkrole:1');
 Route::put('funcionario/edit', 'FunctionaryController@editFunctionary')->middleware('checkrole:1');
 // Grupo altas
-Route::get('grupo-altas/edit/{id}', 'ReleaseController@showEditReleaseGroup')->middleware('checkrole:1');
-Route::put('grupo-altas/edit', 'ReleaseController@editReleaseGroup')->middleware('checkrole:1');
+Route::get('grupo-altas/edit/{id}', 'ReleaseGroupController@showEditReleaseGroup')->middleware('checkrole:1');
+Route::put('grupo-altas/edit', 'ReleaseGroupController@editReleaseGroup')->middleware('checkrole:1');
 // Prestación
 Route::get('prestaciones/edit/{id}', 'ProvisionController@showEditProvision');
 Route::put('prestaciones/edit', 'ProvisionController@editProvision');

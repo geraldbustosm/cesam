@@ -1,5 +1,5 @@
 @extends('admin.Views.registerMain')
-@section('title','Registrar Especialidad')
+@section('title','Registrar Especialidades Glosa')
 @section('active-registrar','active')
 @section('active-ingresardatos','active')
 
@@ -43,7 +43,7 @@
               <thead>
                 <tr>
                   <th style="width: 3%;">#</th>
-                  <th style="width: 70%;">Especialidades</th>
+                  <th style="width: 70%;">Especialidades-Glosa</th>
                   <th style="width: 10%;">Acciones</th>
                 </tr>
               </thead>
