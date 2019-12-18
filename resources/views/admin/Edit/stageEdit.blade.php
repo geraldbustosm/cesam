@@ -33,6 +33,7 @@
 		<input id="id" name="id" type="hidden" value="{{$stage->id}}">
 
 		<div class="form-group">
+			<label for="functionarys">Médico a cargo</label>
 			<select class="form-control" name="functionarys">
 				<option value="{{$stage->funcionario_id}}">{{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}}</option>
 				@foreach($functionarys as $fc)
@@ -44,6 +45,7 @@
 		</div>
 
 		<div class="form-group">
+			<label for="sigges">SiGGES</label>
 			<select class="form-control" name="sigges">
 				<option value="{{$stage->sigges_id}}">{{$sigge->descripcion}}</option>
 				@foreach($sigges as $sg)
@@ -55,6 +57,7 @@
 		</div>
 
 		<div class="form-group">
+			<label for="programs">Programa</label>
 			<select class="form-control" name="programs">
 				<option value="{{$stage->programa_id}}">{{$program->descripcion}}</option>
 				@foreach($programs as $pg)
@@ -66,6 +69,7 @@
 		</div>
 
 		<div class="form-group">
+			<label for="provenances">Procedencia</label>
 			<select class="form-control" name="provenances">
 				<option value="{{$stage->procedencia_id}}">{{$provenance->descripcion}}</option>
 				@foreach($provenances as $pv)

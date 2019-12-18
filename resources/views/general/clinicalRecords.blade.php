@@ -21,9 +21,6 @@
     @endif
     <form name="onSubmit" method="post" action="{{ url('etapa') }}">
         @csrf
-        <!-- <div class="form-group">
-            <select name="stages" id="stages" class="form-control"></select>
-        </div> -->
         <div class="form-group">
             <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
         </div>
@@ -45,8 +42,9 @@
     <h4><b>Paciente: </b>{{ $patient->nombre1 }} {{ $patient->apellido1 }} {{ $patient->apellido2 }}</h4>
     <h5 class="mb-2"><b>Rut: </b>{{ $patient->DNI }}</h5>
     <br>
-    <button type="button" class="btn btn-primary mb-2" id="addAttendance">Añadir prestación</button>
     @if($stage->activa == 1)
+    <button type="button" class="btn btn-primary mb-2" id="addAttendance">Añadir prestación</button>
+    <button type="button" class="btn btn-primary mb-2" id="editDiagnosis">Editar diagnósticos</button>
     <button type="button" class="btn btn-primary mb-2" id="addRelease">Dar alta</button>
     @endif
 </div>
@@ -147,6 +145,11 @@
         var tagID = document.getElementById('DNI_stage');
         tagID.value = <?php echo json_encode($patient->id); ?>;
         document.onSubmitAttendance.submit();
+    });
+
+    $('#editDiagnosis').on('click', function() {
+        var stage = <?php echo json_encode($stage->id); ?>;
+        window.location.href = `/etapas/edit/${stage}`;
     });
 
     $('#addRelease').on('click', function() {
