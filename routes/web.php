@@ -189,6 +189,9 @@ Route::post('registrar/usuario', 'UserController@registerUser')->middleware('che
 // Atención
 Route::get('paciente/{rut}/etapa/{etapa}/atencion/{atencion}/edit', 'AttendanceController@showEditAttendance')->middleware('checkrole:1');
 Route::put('editar/atencion', 'AttendanceController@editAttendance')->middleware('checkrole:1');
+// Paciente atributos 
+Route::get('paciente-atributos/{id}', 'PatientController@showEditPatientAttributes');
+Route::put('paciente-atributos/edit', 'PatientController@editPatientAttributes');
 // Etapa
 Route::get('etapas/edit/{id}', 'StageController@showEditStage');
 Route::put('etapas/edit', 'StageController@editStage');
