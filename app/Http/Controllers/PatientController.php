@@ -92,6 +92,12 @@ class PatientController extends Controller
         return view('admin.Edit.patientEdit', compact('patient','address', 'patient_birthdate', 'prev', 'sex','attributes'));
     }
 
+    public function showEditPatientAttributes($dni){
+        $patient = Patient::where('dni', $dni)->first();
+        $attributes = Attributes::where('activa', 1)->get();
+        return view('admin.Edit.patientAttributesEdit', compact('patient', 'attributes'));
+    }
+
     /***************************************************************************************************************************
                                                     CREATE PROCESS
      ****************************************************************************************************************************/
@@ -232,6 +238,16 @@ class PatientController extends Controller
         $patient->attributes()->sync($request->options);
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
+    }
+
+    public function editPatientAttributes(Request $request){
+        $patient = Patient::where('dni', $request->dni)->first();
+        $patient->attributes()->sync($request->options);
+        $patient->save();
+        
+        // URL to redirect
+        $url = 'paciente-atributos/' . $request->dni;
+        return redirect($url)->with('status', 'Se actualizaron los atributos del paciente');
     }
     /***************************************************************************************************************************
                                                     OTHER PROCESS
