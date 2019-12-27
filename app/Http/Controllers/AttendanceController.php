@@ -227,9 +227,21 @@ class AttendanceController extends Controller
         // Get previous hours worked
         $anterior   = $functionary->horasRealizadas;
         // Add the new hours
-        $functionary->horasRealizadas = $anterior + $hours + $minutes / 60;
+        $new_hours =  $hours + $minutes / 60;
+        $functionary->horasRealizadas = $anterior +$new_hours;
+        // Update specific relationship in functionary - Activiti Hours
+        $activitiys = $request->get('activity');
+        $functionary_id=$functionary->id;
+        $registro = Hours::updateOrCreate(
+                ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys ],
+                ['horasRealizadas' => is_null($registro->horasDeclaradas) ? $new_hours : 'horasRealizadas' + $new_hours]
+            );
+        if(is_null($registro->horasDeclaradas)){
+            $registro->horasDeclaradas=0;
+        }
         // Save the update
         $functionary->save();
+        $registro->save();
         if ($request->register == 1) {
             // Redirect to the view with successful status
             $url = "/ficha/" . $patient->DNI;
@@ -241,6 +253,14 @@ class AttendanceController extends Controller
             return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
         }
     }
+    public function addHours (Request $request){
+        
+        
+        //$register = new $Hours;
+        //die(print_r( $hours));
+        return redirect('horas/edit')->with('status', 'Horas Actualizadas');
+    }
+
     /***************************************************************************************************************************
                                                     ATTENDANCE LOGIC
      ****************************************************************************************************************************/

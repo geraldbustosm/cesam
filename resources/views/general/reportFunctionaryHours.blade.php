@@ -14,7 +14,7 @@
     <form method="Post" action="{{ url('horas/edit') }}">
         @csrf
         <div class="form-group">
-            <h4 class="titulo2">Funcionario: {{ $user->primer_nombre." ".$user->segundo_nombre }}</h4>
+            <h4 class="titulo2">Funcionario: {{ $user->primer_nombre."  ".$user->segundo_nombre." ".$user->apellido_paterno." ".$user->apellido_materno }}</h4>
             <input id="functID" name="functID" type="hidden" value="{{ $functionary->id}}">
             <span class="titulo3">Horas Totales:</span>
             <span class="horasTotales">{{$functionary->horasDeclaradas }}</span>
@@ -97,8 +97,7 @@
     <script>
         var data2 = [];
         var labels2 = [];
-        //var ID = document.getElementById("functID").value;
-        var ID = 2;
+        var ID = document.getElementById("functID").value; 
         var endpoint = "{{url('charts4')}}?functionary_id="+ID;
         $.ajax({
             method: "GET",

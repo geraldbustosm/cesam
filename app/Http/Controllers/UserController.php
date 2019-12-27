@@ -123,22 +123,26 @@ class UserController extends Controller
         }    
     }
     public function saveHours (Request $request){
-        $activitiys = $request->activityId;
-        $hours = $request->hours2;
-        $functionary_id=2;
-        for ($i = 0; $i < count($activitiys);$i++){
-            $registro = Hours::updateOrCreate(
-                ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys[$i] ],
-                ['horasDeclaradas' => $hours[$i]]
-            );
-            if(is_null($registro->horasRealizadas)){
-                $registro->horasRealizadas=0;
+        $user = Auth::user();
+        if ($user->rol==2){
+            $activitiys = $request->activityId;
+            $hours = $request->hours2;
+            $functionary = Functionary::where('user_id',$user->id)->first();
+            $functionary_id=$functionary->id;
+            for ($i = 0; $i < count($activitiys);$i++){
+                $registro = Hours::updateOrCreate(
+                    ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys[$i] ],
+                    ['horasDeclaradas' => $hours[$i]]
+                );
+                if(is_null($registro->horasRealizadas)){
+                    $registro->horasRealizadas=0;
+                }
+                $registro->save();
             }
-            $registro->save();
+            //$register = new $Hours;
+            //die(print_r( $hours));
+            return redirect('horas/edit')->with('status', 'Horas Actualizadas');
         }
-        //$register = new $Hours;
-        //die(print_r( $hours));
-        return redirect('horas/edit')->with('status', 'Horas Actualizadas');
     }
    
      /***************************************************************************************************************************
