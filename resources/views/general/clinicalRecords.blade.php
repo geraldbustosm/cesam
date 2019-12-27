@@ -44,6 +44,7 @@
     <br>
     @if($stage->activa == 1)
     <button type="button" class="btn btn-primary mb-2" id="addAttendance">Añadir prestación</button>
+    <button type="button" class="btn btn-primary mb-2" id="editAttributes">Editar atributos</button>
     <button type="button" class="btn btn-primary mb-2" id="editDiagnosis">Editar diagnósticos</button>
     <button type="button" class="btn btn-primary mb-2" id="addRelease">Dar alta</button>
     @endif
@@ -145,6 +146,11 @@
         var tagID = document.getElementById('DNI_stage');
         tagID.value = <?php echo json_encode($patient->id); ?>;
         document.onSubmitAttendance.submit();
+    });
+
+    $('#editAttributes').on('click', function() {
+        var patient = <?php echo json_encode($patient->DNI); ?>;
+        window.location.href = `/paciente-atributos/${patient}`;
     });
 
     $('#editDiagnosis').on('click', function() {

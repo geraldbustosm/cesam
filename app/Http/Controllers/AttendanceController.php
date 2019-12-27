@@ -323,6 +323,8 @@ class AttendanceController extends Controller
     public function deleteAttendance(Request $request)
     {
         $attendance = Attendance::find($request->id_attendance);
+        $attendance->activa = 0;
+        $attendance->save();
         return redirect(url()->previous())->with('status','La prestación ha sido eliminada');
     }
 }

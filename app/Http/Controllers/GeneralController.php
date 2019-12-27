@@ -201,7 +201,8 @@ class GeneralController extends Controller
             ->join('programa', 'programa.id', '=', 'etapa.programa_id')
             ->join('especialidad_programa', 'especialidad_programa.id', '=', 'programa.especialidad_programa_id')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
-            ->where('paciente.activa', '=', 1)
+            ->where('paciente.activa', 1)
+            ->where('atencion.activa', 1)
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->select(
                 'prevision.descripcion as prevision',
@@ -271,6 +272,7 @@ class GeneralController extends Controller
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
             ->where('funcionarios.activa', 1)
+            ->where('atencion.activa', 1)
             ->select(
                 'actividad.descripcion as actividad',
                 DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario"),
@@ -353,6 +355,7 @@ class GeneralController extends Controller
             ->leftJoin('atencion', 'atencion.etapa_id', '=', 'etapa.id')
             ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
             ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')
+            ->where('atencion.activa', 1)
             ->when($status, function ($query, $status) {
                 if ($status == 2) {
                     return $query->whereMonth('alta.created_at', Carbon::now()->month)->where('etapa.activa', 0);
@@ -686,6 +689,7 @@ class GeneralController extends Controller
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.activa', 1)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
                     ->orWhere('actividad.sin_asistencia', 1);
@@ -715,6 +719,7 @@ class GeneralController extends Controller
             ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
             ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')
             ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.activa', 1)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
                     ->orWhere('actividad.sin_asistencia', 1);
@@ -808,6 +813,7 @@ class GeneralController extends Controller
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             ->whereRaw('lower(actividad.descripcion) like ?', ['consulta%'])
             ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.activa', 1)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
                     ->orWhere('actividad.sin_asistencia', 1);
@@ -843,6 +849,7 @@ class GeneralController extends Controller
             ->join('actividad', 'actividad.id', '=', 'atencion.actividad_id')
             // ->whereRaw('lower(actividad.descripcion) like ?', ['consulta%'])
             ->whereMonth('atencion.fecha', Carbon::now()->month)
+            ->where('atencion.activa', 1)
             ->where(function ($query) {
                 $query->where('atencion.asistencia', 1)
                     ->orWhere('actividad.sin_asistencia', 1);
