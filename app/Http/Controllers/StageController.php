@@ -146,7 +146,8 @@ class StageController extends Controller
                 return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
             }
             if ($user->rol==2){
-                return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+                $functionary = Functionary::where('user_id', $user->id)->select('id')->get();
+                return view('general.attendanceFormFunctionary', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
             }
             if ($user->rol==3){
                 $users = Functionary::where('activa', 1)->get();
@@ -155,7 +156,11 @@ class StageController extends Controller
                 $speciality = $functionary->speciality->first();
                 $DNI = $patient->dni;
                 $activity = $speciality->activity;
-                return view('general.attendanceFormLast', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient','functionary','speciality','attendance','activity'));
+                if ($attendance->count() != 0){
+                    return view('general.attendanceFormLast', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient','functionary','speciality','attendance','activity'));
+                } else {
+                    return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+                }
                 
             }
             else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));

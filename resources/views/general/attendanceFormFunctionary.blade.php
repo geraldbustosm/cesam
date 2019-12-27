@@ -19,9 +19,9 @@
         <div class="row">
             <div class="column">
 
-                <div class="form-group col-10">
+                <div class="form-group col-10" style="min-width:200px">
                     <label class="form-group col-12" for="datepicker">Fecha de la atención</label>
-                    <input class="form-control col-12"id="datepicker" name="datepicker" value="" required>
+                    <input class="form-control col-12" id="datepicker" name="datepicker" value="" required>
                     <script>
                         var config = {
                             format: 'dd/mm/yyyy',
@@ -32,9 +32,9 @@
                         $('#datepicker').datepicker(config);
                     </script>
                 </div>
-                <div class="form-group col-10">
+                <div class="form-group col-10" style="min-width:200px">
                     <label class="form-group col-12" for="time" class="form-group col-6">Hora inicio de la atención</label>
-                    <input class="form-control col-12" id="timeInit" name="timeInit"  value="" required>
+                    <input class="form-control col-12" id="timeInit" name="timeInit" value="" required>
                     <script>
                         $('#timeInit').timepicker({
                             defaultTime: 'value',
@@ -45,7 +45,7 @@
                         });
                     </script>
                 </div>
-                <div class="form-group col-10">
+                <div class="form-group col-10" style="min-width:200px">
                     <label class="form-group col-12" for="timeEnd" class="form-group col-6">Hora termino de la atención</label>
                     <input class="form-control col-12" id="timeEnd" name="timeEnd" value="" required>
                     <script>
@@ -58,10 +58,10 @@
                         });
                     </script>
                 </div>
-                <div class="form-grou col-10">
-                    <label for="duration">Duración <b>(HH:MM)</b> </label>
+                <div class="form-grou col-10" style="min-width:200px">
+                    <label for="duration" style="margin-top: 15px">Duración <b>(HH:MM)</b> </label>
                     <br>
-                    <input class = "form-control col-12" id="duration" name="duration" value="" required readonly>
+                    <input class="form-control col-12" id="duration" name="duration" value="" required readonly>
                     <script type="text/javascript">
                         var init = document.getElementById('timeInit');
                         var end = document.getElementById('timeEnd');
@@ -93,49 +93,52 @@
                         }
                     </script>
                 </div>
-                <div class="form-group col-10">
+
+                <div class="form-group col-10" style="margin-top: 20px">
                     <label for="selectA">Asistencia: </label>
-                    <select name="selectA" class="form-control col-12">
+                    <select name="selectA" id="selectA" class="form-control col-12">
                         <option value="1" selected>Si </option>
                         <option value="0">No</option>
                     </select>
                 </div>
             </div>
+
             <div class="column">
-                
-                <div class="form-group">
-                    <label for="title"><b>Asigne el funcionario y la prestación:</b></label>
-                </div>
-                <div class="panel-heading">Seleccione el funcionario</div>
-                <div class="form-group">
-                    <select id="functionary" name="functionary" class="form-control" style="width:350px">
-                        <option value="" selected disabled>Seleccione un Funcionario</option>
-                        @foreach($users as $key => $user)
-                        <option value="{{$user->id}}"> {{$user->profesion}}</option>
-                        @endforeach
+                <div class="form-group col-10" style="min-width:200px">
+                    <label for="title"><b>Tipo de paciente:</b></label>
+                    <select name="selectType" class="form-control" style="min-width:200px">
+                        <option value="1" selected>Repetido</option>
+                        <option value="0">Nuevo</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="title">Seleccione la especialidad:</label>
-                    <select name="speciality" id="speciality" class="form-control" style="width:350px"></select>
-                </div>
-                <div class="form-group">
-                    <label for="title">Seleccione la prestación:</label>
-                    <select name="provision" id="provision" class="form-control" style="width:350px"></select>
+
+                <div class="panel-heading">Funcionario</div>
+                <div class="form-control">
+                    <label class="form-group col-10">{{ $user->primer_nombre." ".$user->segundo_nombre }}</label>
+                    <input hidden id="functionary" name="functionary" value="{{ $functionary->id}}"></input>
                 </div>
 
-                <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge">
+                <div class="form-group col-10" style="margin-top: 20px">
+                    <label for="title">Seleccione la especialidad:</label>
+                    <select name="speciality" id="speciality" class="form-control" required></select>
+                </div>
+                <div class="form-group col-10" style="margin-top: 20px">
+                    <label for="title">Seleccione la prestación:</label>
+                    <select name="provision" id="provision" class="form-control" required></select>
+                </div>
+
+                <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge" style="min-width:200px">
                     La edad del paciente no esta en el rango de la prestación!!!
                 </div>
-                <div class="form-group">
+                <div class="form-group col-10" style="margin-top: 20px">
                     <label for="title">Seleccione la actividad:</label>
-                    <select name="activity" id="activity" class="form-control" style="width:350px"></select>
+                    <select name="activity" id="activity" class="form-control" required></select>
                 </div>
                 <script type="text/javascript">
                     var btn = document.getElementsByName("register");
 
-                    $('#functionary').change(function() {
-                        var functionaryID = $(this).val();
+                    $(document).ready(function() {
+                        var functionaryID = <?php echo json_encode($functionary->id)?>;
                         if (functionaryID) {
                             $.ajax({
                                 type: "GET",
@@ -148,7 +151,7 @@
                                         $("#speciality").empty();
                                         $("#provision").empty();
                                         $("#activity").empty();
-                                        $("#speciality").append('<option>Seleccione la especialidad</option>');
+                                        $("#speciality").append('<option value="" selected disabled>Seleccione la especialidad</option>');
                                         $.each(res, function(key, value) {
                                             $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
@@ -164,7 +167,6 @@
                     });
 
                     $('#speciality').on('change', function() {
-                        $('#errorAge').hide();
                         var specialityID = $(this).val();
                         if (specialityID) {
                             $.ajax({
@@ -174,8 +176,9 @@
                                     if (res) {
                                         btn[0].style = "";
                                         btn[1].style = "";
+                                        $('#errorAge').hide();
                                         $("#provision").empty();
-                                        $("#provision").append('<option>Seleccione la prestación</option>');
+                                        $("#provision").append('<option value="" selected disabled>Seleccione la prestación</option>');
                                         $.each(res, function(key, value) {
                                             $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
                                         });
@@ -198,7 +201,7 @@
                                 success: function(res) {
                                     if (res) {
                                         $("#activity").empty();
-                                        $("#activity").append('<option>Seleccione la actividad</option>');
+                                        $("#activity").append('<option value="" selected disabled>Seleccione la actividad</option>');
                                         $.each(res, function(key, value) {
                                             $("#activity").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
@@ -213,21 +216,22 @@
                     });
 
                     $('#provision').on('change', function() {
-                        $('#errorAge').hide();
                         btn[0].style = "";
                         btn[1].style = "";
                         var provisionID = $(this).val();
+                        var patientID = <?php echo json_encode($patient->id); ?>;
                         if (provisionID) {
                             $.ajax({
                                 type: "GET",
-                                url: "{{url('age-check')}}?provision_id=" + provisionID,
+                                url: "{{url('age-check')}}",
+                                data: {provision_id: provisionID, patient_id: patientID},
                                 success: function(res) {
                                     if (res < 0) {
                                         $('#errorAge').show();
                                         btn[0].style.display = "none";
                                         btn[1].style.display = "none";
                                     } else {
-                                        $('#errorAge').addClass('hide');
+                                        $('#errorAge').hide();
                                     }
                                 }
                             });
@@ -235,8 +239,20 @@
                             $("#activity").empty();
                         }
                     });
+
+                    $('#activity').on('change', function() {
+                        if ($("#activity option:selected").text().toLowerCase().includes('informe') ||
+                            $("#activity option:selected").text().toLowerCase().includes('ipg')) {
+                            $("#selectA").empty();
+                            $("#selectA").append('<option value="0" selected>No</option>');
+                        } else {
+                            $("#selectA").empty();
+                            $("#selectA").append('<option value="1" selected>Si</option>');
+                            $("#selectA").append('<option value="0">No</option>');
+                        }
+                    });
                 </script>
-                <div class="form-group" class="register">
+                <div class="form-group col-10" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
                     <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
@@ -245,6 +261,6 @@
             </div>
         </div>
     </form>
-    @endsection
-    @push('styles')
+@endsection
+@push('styles')
     <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">

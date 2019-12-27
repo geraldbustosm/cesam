@@ -63,13 +63,6 @@ class AttendanceControllerLast extends Controller
      ****************************************************************************************************************************/
     public function registerAttendance(Request $request)
     {
-        if ($request->register == 3) {
-            // Get active functionarys
-            $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
-        }
-        else{
-
         // Create a new 'object' attendance
         $attendance = new Attendance;
         // Set some variables with functionary info and inputs of view
@@ -157,6 +150,5 @@ class AttendanceControllerLast extends Controller
             return redirect($url)->with('status', 'Atención agregada');
         }
         
-    }
     }
 }
