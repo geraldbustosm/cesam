@@ -104,7 +104,7 @@
             <div class="column">
                 
                 <div class="form-group">
-                    <label for="title"><b>Asigne el funcionario y la prestación:</b></label>
+                    <label for="title"><b>Asingne la actividad:</b></label>
                 </div>
                 <div class="panel-heading">Funcionario</div>
                 <div class="form-control">
@@ -135,7 +135,7 @@
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
                     <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
-                    <button type="submit" name="register" id="register" value="2" class="btn btn-primary">Agregar Otro</button>
+                    <button type="submit" name="register" id="register" value="3" class="btn btn-primary">Modificar Atención</button>
                 </div>
             </div>
         </div>

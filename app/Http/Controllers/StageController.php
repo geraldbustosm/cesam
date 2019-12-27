@@ -11,6 +11,7 @@ use App\Release;
 use App\SiGGES;
 use App\Provenance;
 use App\Stage;
+use Illuminate\Support\Facades\Auth;
 
 class StageController extends Controller
 {
@@ -140,7 +141,24 @@ class StageController extends Controller
         } else {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+            $user = Auth::user();
+            if ($user->rol==1){
+                return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+            }
+            if ($user->rol==2){
+                return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+            }
+            if ($user->rol==3){
+                $users = Functionary::where('activa', 1)->get();
+                $attendance = $stage->attendance->first();
+                $functionary = $attendance->functionary;
+                $speciality = $functionary->speciality->first();
+                $DNI = $patient->dni;
+                $activity = $speciality->activity;
+                return view('general.attendanceFormLast', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient','functionary','speciality','attendance','activity'));
+                
+            }
+            else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
         }
     }
 }

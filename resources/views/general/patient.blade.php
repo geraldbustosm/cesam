@@ -58,7 +58,7 @@
     <input type="hidden" class="form-control {{ $errors->has('id') ? ' is-invalid' : '' }}" value="{{ old('id') }}" id="id" name="id">
   </div>
 </form>
-<form name="onSubmitStage" method="post" action="{{ url('registrar/atencion') }}">
+<form name="onSubmitStage" method="post" action= "{{ url('registrar/atencion') }}">
   @csrf
   <div class="form-group">
     <input type="hidden" class="form-control {{ $errors->has('DNI_stage') ? ' is-invalid' : '' }}" value="{{ old('DNI_stage') }}" id="DNI_stage" name="DNI_stage">
