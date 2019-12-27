@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Functionary;
 use App\Activity;
@@ -9,6 +9,7 @@ use App\Attendance;
 use App\Patient;
 use App\Stage;
 use App\TypeSpeciality;
+use App\Hours;
 
 class AttendanceControllerLast extends Controller
 {
@@ -62,14 +63,15 @@ class AttendanceControllerLast extends Controller
      ****************************************************************************************************************************/
     public function registerAttendance(Request $request)
     {
-        // Check the format of each variable of 'request'
-        $validacion = $request->validate([
-            //'descripcion' => 'required|string|max:255'
-        ]);
+        if ($request->register == 3) {
+            // Get active functionarys
+            $users = Functionary::where('activa', 1)->get();
+            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
+        }
+        else{
+
         // Create a new 'object' attendance
         $attendance = new Attendance;
-        // Get the specific functionary
-        $functionary = Functionary::find($request->functionary);
         // Set some variables with functionary info and inputs of view
         // the variables name of object must be the same that database for save it
         // from attendanceForm: provision, id_stage, DNI, speciality, assistance, duration of attendance, date of attendance
@@ -78,6 +80,7 @@ class AttendanceControllerLast extends Controller
         $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
         $attendance->asistencia = $request->get('selectA');
+        $attendance->repetido = 1;
         $attendance->hora = $request->get('timeInit');
         $attendance->actividad_id = $request->get('activity');
         $attendance->duracion = $request->get('duration');
@@ -86,16 +89,43 @@ class AttendanceControllerLast extends Controller
         $date = str_replace('/', '-', $var);
         $correctDate = date('Y-m-d', strtotime($date));
         $attendance->fecha = $correctDate;
-        // Pass the attendance to database
-        $canasta = 0;
-        if (TypeSpeciality::where('especialidad_id', $request->get('speciality'))->count() > 0) {
-            if (Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1)->count() > 0) {
-                if ($request->get('selectA') == 1) {
-                    $canasta = 1;
-                    $attendance->abre_canasta = $canasta;
-                }
+        // Set abre_canasta with 0;
+        $attendance->abre_canasta = 0;
+        // Get the active stage
+        $stage = Stage::find($request->id_stage);
+        $patientAttendances = $stage->attendance;
+        // Get the patient
+        $idPatient = $request->get('id');
+        $patient = Patient::find($idPatient);
+        // Check for abre_canasta
+        $typespeciality = TypeSpeciality::where('especialidad_id', 1)->get();
+        $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
+        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
+            $canasta = true;
+            $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
+                ->where('atencion.prestacion_id', $attendance->prestacion_id)
+                ->where('etapa.paciente_id', $idPatient)
+                ->whereMonth('atencion.fecha', Carbon::now()->month)
+                ->where('atencion.activa', 1)
+                ->where('etapa.activa', 1)
+                ->get();
+            // $query2 = Attendance::join('prestacion', 'prestacion.id', 'atencion.prestacion_id')
+            //     ->join('tipo_prestacion', 'tipo_prestacion.id', 'prestacion.tipo_id')
+            //     ->join('etapa', 'etapa.id', 'atencion.etapa_id')
+            //     ->where('etapa.paciente_id', $idPatient)
+            //     ->where('tipo_prestacion.id', $attendance->provision->type->id)
+            //     ->whereMonth('atencion.fecha', Carbon::now()->month)
+            //     ->where('atencion.activa', 1)
+            //     ->where('etapa.activa', 1)
+            //     ->get();
+            if ($query->count() > 0) {
+                $canasta = false;
+            }
+            if ($canasta) {
+                $attendance->abre_canasta = 1;
             }
         }
+        // Pass attendance to database
         $attendance->save();
         // Update variable for functionary
         // functionary -> horasRealizadas
@@ -103,28 +133,30 @@ class AttendanceControllerLast extends Controller
         $vector     = explode(":", $duration);
         $hours      = $vector[0];
         $minutes    = $vector[1];
+        // Get the specific functionary
+        $functionary = Functionary::find($request->functionary);
         // Get previous hours worked
         $anterior   = $functionary->horasRealizadas;
         // Add the new hours
-        $functionary->horasRealizadas = $anterior + $hours + $minutes / 60;
+        $new_hours =  $hours + $minutes / 60;
+        $functionary->horasRealizadas = $anterior +$new_hours;
+        // Update specific relationship in functionary - Activiti Hours
+        $activitiys = $request->get('activity');
+        $functionary_id=$functionary->id;
+        $registro = Hours::firstOrNew(['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys ]);
+        $registro->horasRealizadas = ($registro->horasRealizadas + $new_hours);
+        if(is_null($registro->horasDeclaradas)){
+            $registro->horasDeclaradas=0;
+        }
         // Save the update
         $functionary->save();
-        // Get the patient
-        $idPatient = $request->get('id');
-        $patient = Patient::find($idPatient);
-        // Get the active stage
-        $stage = Stage::find($request->id_stage);
-        $patientAtendances = $stage->attendance;
-
+        $registro->save();
         if ($request->register == 1) {
-
             // Redirect to the view with successful status
-            return view('admin.Views.clinicalRecords', compact('patient', 'stage', 'patientAtendances'));
+            $url = "/ficha/" . $patient->DNI;
+            return redirect($url)->with('status', 'Atención agregada');
         }
-        if ($request->register == 2) {
-            // Get active functionarys
-            $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
-        }
+        
+    }
     }
 }

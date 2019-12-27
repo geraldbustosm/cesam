@@ -10,7 +10,7 @@
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('ficha') }}">
+    <form method="post" action="{{ url('ultima-atencion') }}">
         @csrf
         <input type="hidden" id="id" name="id" value=<?= $patient->id; ?>>
         <div class="form-group">
@@ -122,8 +122,8 @@
                     <input hidden id="provision" name="provision" value="1" ></input>
                 </div>
                 <div class="form-group">
-                    <select class="form-control" name="patient_sex" required>
-                    <option selected disabled>Seleccione la actividad: </option>
+                    <select class="form-control" name="activity" required>
+                    <option value = "" selected disabled>Seleccione la actividad: </option>
                     @foreach($activity as $activity)
                     <option value="{{ $activity->id}}">{{ $activity->descripcion}}</option>
                     @endforeach
@@ -135,11 +135,19 @@
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
                     <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
-                    <button type="submit" name="register" id="register" value="3" class="btn btn-primary">Modificar Atención</button>
                 </div>
             </div>
         </div>
     </form>
+    <form name="onSubmitStage" method="post" action= "{{ url('registrar/atencion') }}">
+    @csrf
+    <div class="form-group">
+        <input type="hidden" class="form-control {{ $errors->has('DNI_stage') ? ' is-invalid' : '' }}" value="{{ old('DNI_stage') }}" id="DNI_stage" name="DNI_stage">
+        <button type="button" onclick="addAttendace( {{ $patient->id }})"  class="btn btn-primary">Modificar Atención</button>
+    </div>
+    </form>
+    <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
     @endsection
     @push('styles')
-    <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">
+    

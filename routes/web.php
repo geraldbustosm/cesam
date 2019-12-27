@@ -292,6 +292,6 @@ Route::get('etapas', 'GeneralController@stagesPerPatient')->middleware('checkrol
 Route::post('etapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');
 // Repetir última atención en otra fecha
 Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance')->middleware('checkrole:1|2|3');
-Route::post('ultima-atenciontapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');
+Route::post('ultima-atencion', 'AttendanceControllerLast@registerAttendance')->middleware('checkrole:1|2|3');
 // Eliminar atención
 Route::post('eliminar-atención', 'AttendanceController@deleteAttendance')->middleware('checkrole:1');

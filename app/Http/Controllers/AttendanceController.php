@@ -10,6 +10,8 @@ use App\Speciality;
 use App\Stage;
 use App\TypeSpeciality;
 use App\Provision;
+use App\Hours;
+
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -234,7 +236,7 @@ class AttendanceController extends Controller
         $functionary_id=$functionary->id;
         $registro = Hours::updateOrCreate(
                 ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys ],
-                ['horasRealizadas' => is_null($registro->horasDeclaradas) ? $new_hours : 'horasRealizadas' + $new_hours]
+                ['horasRealizadas' => \DB::raw("horasRealizadas + '$new_hours'")]
             );
         if(is_null($registro->horasDeclaradas)){
             $registro->horasDeclaradas=0;
@@ -253,13 +255,7 @@ class AttendanceController extends Controller
             return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
         }
     }
-    public function addHours (Request $request){
-        
-        
-        //$register = new $Hours;
-        //die(print_r( $hours));
-        return redirect('horas/edit')->with('status', 'Horas Actualizadas');
-    }
+    
 
     /***************************************************************************************************************************
                                                     ATTENDANCE LOGIC
