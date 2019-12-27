@@ -21,7 +21,7 @@
 
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="datepicker">Fecha de la atención</label>
-                    <input class="form-control col-12"id="datepicker" name="datepicker" value="" required>
+                    <input class="form-control col-12" id="datepicker" name="datepicker" value="" required>
                     <script>
                         var config = {
                             format: 'dd/mm/yyyy',
@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="time" class="form-group col-6">Hora inicio de la atención</label>
-                    <input class="form-control col-12" id="timeInit" name="timeInit"  value="" required>
+                    <input class="form-control col-12" id="timeInit" name="timeInit" value="" required>
                     <script>
                         $('#timeInit').timepicker({
                             defaultTime: 'value',
@@ -61,7 +61,7 @@
                 <div class="form-grou col-10">
                     <label for="duration">Duración <b>(HH:MM)</b> </label>
                     <br>
-                    <input class = "form-control col-12" id="duration" name="duration" value="" required readonly>
+                    <input class="form-control col-12" id="duration" name="duration" value="" required readonly>
                     <script type="text/javascript">
                         var init = document.getElementById('timeInit');
                         var end = document.getElementById('timeEnd');
@@ -102,52 +102,58 @@
                 </div>
             </div>
             <div class="column">
-                
+
                 <div class="form-group">
                     <label for="title"><b>Asingne la actividad:</b></label>
                 </div>
                 <div class="panel-heading">Funcionario</div>
                 <div class="form-control">
-                    <label  class="form-group col-10" >{{ $functionary->user->primer_nombre." ".$functionary->user->segundo_nombre.", ".$functionary->profesion}}</label> 
-                    <input hidden id="functionary" name="functionary" value="{{ $functionary->id}}" ></input>
+                    <label class="form-group col-10">{{ $functionary->user->primer_nombre." ".$functionary->user->segundo_nombre.", ".$functionary->profesion}}</label>
+                    <input hidden id="functionary" name="functionary" value="{{ $functionary->id}}"></input>
                 </div>
                 <div class="form-group">
                     <label for="title">Especialidad:</label>
-                    <label class="form-control col-10" >{{ $speciality->descripcion}}</label> 
-                    <input hidden id="speciality" name="speciality" value="{{ $speciality->id}}" ></input>
+                    <label class="form-control col-10">{{ $speciality->descripcion}}</label>
+                    <input hidden id="speciality" name="speciality" value="{{ $speciality->id}}"></input>
                 </div>
                 <div class="form-group">
                     <label for="title">Prestación:</label>
-                    <label class="form-control col-10" >{{ $attendance->provision->glosaTrasadora}}</label> 
-                    <input hidden id="provision" name="provision" value="1" ></input>
+                    <label class="form-control col-10">{{ $attendance->provision->glosaTrasadora}}</label>
+                    <input hidden id="provision" name="provision" value="1"></input>
                 </div>
                 <div class="form-group">
                     <select class="form-control" name="activity" required>
-                    <option value = "" selected disabled>Seleccione la actividad: </option>
-                    @foreach($activity as $activity)
-                    <option value="{{ $activity->id}}">{{ $activity->descripcion}}</option>
-                    @endforeach
+                        <option value="" selected disabled>Seleccione la actividad: </option>
+                        @foreach($activity as $activity)
+                        <option value="{{ $activity->id}}">{{ $activity->descripcion}}</option>
+                        @endforeach
                     </select>
                 </div>
-                
+
 
                 <div class="form-group" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
                     <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
+                    <button type="button" id="addAttendance" class="btn btn-primary" formnovalidate>Modificar Atención</button>
                 </div>
             </div>
         </div>
     </form>
-    <form name="onSubmitStage" method="post" action= "{{ url('registrar/atencion') }}">
+</div>
+<form name="onSubmitStage" method="post" action="{{ url('registrar/atencion') }}">
     @csrf
     <div class="form-group">
         <input type="hidden" class="form-control {{ $errors->has('DNI_stage') ? ' is-invalid' : '' }}" value="{{ old('DNI_stage') }}" id="DNI_stage" name="DNI_stage">
-        <button type="button" onclick="addAttendace( {{ $patient->id }})"  class="btn btn-primary">Modificar Atención</button>
     </div>
-    </form>
-    <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="{{asset('js/actionButtons.js')}}"></script>
-    @endsection
-    @push('styles')
-    
+</form>
+<link href="{{ asset('css/attendance.css') }}" rel="stylesheet">
+<script>
+    $('#addAttendance').on('click', function() {
+        var tagID = document.getElementById('DNI_stage');
+        tagID.value = <?php echo $patient->id ?>;
+        document.onSubmitStage.submit();
+    });
+</script>
+@endsection
+@push('styles')
