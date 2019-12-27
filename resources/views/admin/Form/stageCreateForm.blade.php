@@ -69,38 +69,24 @@
 
             </div>
         </div>
+        <h4> Seleccione diagnosticos </h4>
         <div class="form-group">
-            <h4> Seleccione diagnosticos </h4>
-            <div class="form-row">
-                <div class="col-4">
-                    <div class="overflow-auto" style="height:450px">
-                        @foreach($diagnosis as $diagnostico)
-
-                        <div class="card">
-                            <div class="checkbox-container">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="options[]" value="{{ $diagnostico->id}}">
-                                    <span class="checkbox-custom rectangular"></span>
-                                </label>
-                            </div>
-                            <div class="input-title">{{ $diagnostico->descripcion}}</div>
-
-                        </div>
-
-                        @endforeach
-                    </div>
-                </div>
-                <div class="col-4 center-block">
-                    <div class="form-group text-center" class="register">
-                        <input type="hidden" class="form-control {{ $errors->has('idpatient') ? ' is-invalid' : '' }}" value="<?= $idpatient; ?>" id="idpatient" name="idpatient">
-                        <button type="submit" class="btn btn-primary ">Registrar</button>
-                    </div>
+            <div class="card p-2">
+                <div class="overflow-auto" style="height:300px">
+                    @foreach($diagnosis as $index)
+                        <label><input type="checkbox" name="options[]" value="{{ $index->id}}"> {{ $index->descripcion}}</label>
+                        <br>
+                    @endforeach
                 </div>
             </div>
         </div>
-
+        <div class="col-4 center-block">
+            <div class="form-group text-center" class="register">
+                <input type="hidden" class="form-control {{ $errors->has('idpatient') ? ' is-invalid' : '' }}" value="<?= $idpatient; ?>" id="idpatient" name="idpatient">
+                <button type="submit" class="btn btn-primary ">Registrar</button>
+            </div>
+        </div>
     </form>
 </div>
 <script src="{{asset('js/checkbox-required.js')}}"></script>
-<link rel="stylesheet" href="{{asset('css/card.css')}}">
 @endsection

@@ -27,7 +27,7 @@ class Stage extends Model
   }
   public function attendance()
   {
-      return $this->hasMany('App\Attendance','etapa_id')->orderBy("fecha", "desc");
+      return $this->hasMany('App\Attendance','etapa_id')->where('atencion.activa', 1)->orderBy("fecha", "desc");
   }
 
   public function lastAttendance()
