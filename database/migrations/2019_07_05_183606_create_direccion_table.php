@@ -23,8 +23,8 @@ class CreateDireccionTable extends Migration
             $table->string('departamento')->nullable();
             $table->timestamps();
             $table->boolean('activa')->default(1);
-            $table->bigInteger('idPaciente')->nullable();
-            $table->foreign('idPaciente')->references('id')->on('paciente');
+            $table->bigInteger('paciente_id')->nullable();
+            $table->foreign('paciente_id')->references('id')->on('paciente');
         });
     }
 

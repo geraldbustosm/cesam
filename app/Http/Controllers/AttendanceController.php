@@ -15,6 +15,7 @@ use App\Hours;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -236,7 +237,7 @@ class AttendanceController extends Controller
         $functionary_id=$functionary->id;
         $registro = Hours::updateOrCreate(
                 ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys ],
-                ['horasRealizadas' => \DB::raw("horasRealizadas + '$new_hours'")]
+                ['horasRealizadas' => DB::raw("horasRealizadas + '$new_hours'")]
             );
         if(is_null($registro->horasDeclaradas)){
             $registro->horasDeclaradas=0;

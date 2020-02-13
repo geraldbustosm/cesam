@@ -10,9 +10,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * Especificando cual es la primary key
-     */
+    /**/
 
     public function functionary(){
         return $this->hasOne(Functionary::class);
