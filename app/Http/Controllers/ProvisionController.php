@@ -31,7 +31,11 @@ class ProvisionController extends Controller
         $type = Type::where('activa', 1)->get();
         // Get provisions
         $data = Provision::where('activa', 1)->get();
-        // Redirect to the view with list of types
+        // Check if are at least one type to add
+        if ($type->count() == 0) {
+            return redirect('/registrar/tipo')->with('err', 'Primero debe crear algun tipo (GES/PPV)');
+        }
+        // Else redirect to the view with list of types
         return view('admin.Form.provisionForm', ['table' => 'Glosas'],compact('type', 'data'));
     }
     /***************************************************************************************************************************

@@ -109,7 +109,6 @@
                     {title:"Sexo", field:"sexo"},
                     {title:"Procedencia", field:"procedencia"},
                     {title:"Fecha ingreso", field:"fecha_ingreso"},
-                    {title:"Fecha ingreso", field:"fecha_ingreso"},
                     {title:"Previsión", field:"prevision"},
                     {title:"GES", field:"ges"},
                     {title:"SIGGES", field:"sigges"},

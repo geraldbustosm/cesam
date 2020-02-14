@@ -58,22 +58,23 @@ class FunctionaryController extends Controller
         // $user = User::where('activa', 1)->get();
         $functionarys = Functionary::select('user_id')->get();
         $user = DB::table('users')
-                ->whereNotIn('id', $functionarys)
-                ->where('activa', 1)
-                ->get();
-        $speciality = Speciality::all();
+            ->whereNotIn('id', $functionarys)
+            ->where('activa', 1)
+            ->get();
+        $speciality = Speciality::where('activa', 1)->get();
         // Redirect to the view with list of users
-        return view('admin.Form.functionaryForm', compact('user','speciality'));
+        return view('admin.Form.functionaryForm', compact('user', 'speciality'));
     }
 
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-    public function showEditFunctionary($id){
+    public function showEditFunctionary($id)
+    {
         // Get the user through dni
         $user = User::where('rut', $id)->first();
         // Get the functionary through id of that user
-        $functionary = Functionary::where('user_id',$user->id)->first();
+        $functionary = Functionary::where('user_id', $user->id)->first();
         // Redirect to the view with the functionary
         return view('admin.Edit.functionaryEdit', compact('functionary'));
     }
@@ -105,16 +106,17 @@ class FunctionaryController extends Controller
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
-    public function editFunctionary(Request $request){
+    public function editFunctionary(Request $request)
+    {
         $user = User::where('id', $request->id)->first();
         $url = 'funcionario/edit/' . $user->rut;
-        
+
         $validation = $request->validate([
             'profesion' => 'required',
             'horasDeclaradas' => 'required|numeric',
             'horasRealizadas' => 'required|numeric',
         ]);
-        
+
         $functionary = Functionary::where('user_id', $request->id)->first();
         $functionary->profesion = $request->profesion;
         $functionary->horasDeclaradas = $request->horasDeclaradas;

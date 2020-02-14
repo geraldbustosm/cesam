@@ -85,7 +85,7 @@ class PatientController extends Controller
             // Set date array as new date format (yyyy/mm/dd)
             $patient_birthdate = join("/", array($patient_birthdate[2], $patient_birthdate[1], $patient_birthdate[0]));
             // Get patient's address
-            $address = Address::where('idPaciente', $patient->id)->first();
+            $address = Address::where('paciente_id', $patient->id)->first();
         }
 
         // Redirect to the view with list of prevition and gender, also return the patient and birthdate
@@ -158,7 +158,7 @@ class PatientController extends Controller
         $address->departamento = $request->depto;
         
         $patient_id= Patient::where('DNI', $request->dni)->first()->id;
-        $address->idPaciente = $patient_id;
+        $address->paciente_id = $patient_id;
         $address->save();
 
         $patient->attributes()->sync($request->options);
@@ -222,17 +222,18 @@ class PatientController extends Controller
             $date = str_replace('/', '-', $var);
             $correctDate = date('Y-m-d', strtotime($date));
             $patient->fecha_nacimiento = $correctDate;
-            // Pass the new info for update
-            $patient->save();
 
             // Edit address
-            $address = Address::where('idPaciente', $patient->id)->first();
+            $address = Address::where('paciente_id', $patient->id)->first();
             $address->pais = $request->pais;
             $address->region = $request->region;
             $address->comuna = $request->comuna;
             $address->calle  = $request->calle;
             $address->numero = $request->numero;
             $address->departamento = $request->depto;
+            
+            // Pass the new info for update
+            $patient->save();
             $address->save();
         }
         $patient->attributes()->sync($request->options);

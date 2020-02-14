@@ -7,18 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{asset('img/favicon.png')}}" sizes="48x48" type="image/png">
     <!-- CSS -->
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/material-icons.css')}}">
-    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/gijgo.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/pace.css')}}">
     <!-- JS -->
     <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
-    <script src="{{asset('js/gijgo.min.js')}}"></script>
-    <script src="{{asset('js/messages.es-es.min.js')}}"></script>
-    <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/gijgo.min.js')}}"></script>
     <script src="{{asset('js/pace.js')}}"></script>
+    <script src="{{asset('js/messages.es-es.min.js')}}"></script>
     <!-- Progress bar -->
     <script>
         paceOptions = {
@@ -161,7 +161,7 @@
                                     <a class="nav-link @yield('active-asignarespecialidad')" href="{{url('asignar/especialidad')}}"><span>Editar especialidades (funcionarios)</span></a>
                                 </li>
                                 <li>
-                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignar/especialidad-prestacion')}}"><span>Editar especialidades (prestaciones)</span></a>
+                                    <a class="nav-link @yield('active-asignarespecialidadprestacion')" href="{{url('asignar/especialidad-prestacion')}}"><span>Editar especialidades (glosas)</span></a>
                                 </li>
                             </ul>
                         </li>

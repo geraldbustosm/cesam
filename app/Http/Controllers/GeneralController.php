@@ -351,7 +351,7 @@ class GeneralController extends Controller
             ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->leftJoin('alta', 'alta.id', '=', 'etapa.alta_id')
-            ->leftJoin('direccion', 'direccion.idPaciente', '=', 'paciente.id')
+            ->leftJoin('direccion', 'direccion.paciente_id', '=', 'paciente.id')
             ->leftJoin('atencion', 'atencion.etapa_id', '=', 'etapa.id')
             ->leftJoin('paciente_posee_atributos', 'paciente_posee_atributos.paciente_id', '=', 'paciente.id')
             ->leftJoin('atributos', 'atributos.id', '=', 'paciente_posee_atributos.atributos_id')

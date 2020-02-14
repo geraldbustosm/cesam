@@ -21,9 +21,9 @@
         {{ session('status') }}
     </div>
     @endif
-    @if (session('error'))
+    @if (session('err'))
     <div class="alert alert-danger" role="alert">
-        {{ session('error') }}
+        {{ session('err') }}
     </div>
     @endif
     <form method="post" action="{{ url('registrar/prestacion') }}">
