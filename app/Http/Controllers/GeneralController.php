@@ -10,6 +10,7 @@ use App\Prevition;
 use App\Program;
 use App\Provenance;
 use App\Release;
+use App\ReleaseGroup;
 use App\Sex;
 use App\Speciality;
 use App\Stage;
@@ -413,6 +414,11 @@ class GeneralController extends Controller
         $listData = [];
         // Get diagnosis
         $diagnosis = Diagnosis::select('descripcion')->get();
+        // Get terapeutic release
+        $release = ReleaseGroup::whereRaw('lower(grupo_alta.descripcion) like ?', ['terapéutica%'])->select('id')->first();
+        // Get Release-Group
+        $groups = ReleaseGroup::whereRaw('lower(grupo_alta.descripcion) <> ?', ['terapéutica%'])->where('activa', 1)->get();
+        // die(json_encode($groups));
         // Creating usseful data
         foreach ($diagnosis as $index) {
             $obj = new \stdClass();
@@ -431,7 +437,7 @@ class GeneralController extends Controller
                 $obj->$strH =  0;
                 $obj->$strM =  0;
                 foreach ($data as $record) {
-                    if ($record->diagnostico == $index->descripcion) {
+                    if ($record->diagnostico == $index->descripcion && ($currUrl == "ingresos" || $record->grupo == $release->id)) {
                         // Check if is in range of age (range are in list[])
                         // Check the sex of record
                         $sex = strtolower($record->sexo);
@@ -460,19 +466,21 @@ class GeneralController extends Controller
             $sename = [];
             $obj->menoresSENAME = 0;
             foreach ($data as $record) {
-                // Check if is in range of age (range are in list[])
-                // Check the sex of record
-                $sex = strtolower($record->sexo);
-                $find = strpos($sex, 'hombre');
-                if ($record->edad >= $iterator) {
-                    if ($find !== false) {
-                        $obj->$strH = $obj->$strH + 1;
-                        $obj->Hombres = $obj->Hombres + 1;
-                    } else {
-                        $obj->$strM = $obj->$strM + 1;
-                        $obj->Mujeres = $obj->Mujeres + 1;
+                if ($record->diagnostico == $index->descripcion && ($currUrl == "ingresos" || $record->grupo == $release->id)) {
+                    // Check if is in range of age (range are in list[])
+                    // Check the sex of record
+                    $sex = strtolower($record->sexo);
+                    $find = strpos($sex, 'hombre');
+                    if ($record->edad >= $iterator) {
+                        if ($find !== false) {
+                            $obj->$strH = $obj->$strH + 1;
+                            $obj->Hombres = $obj->Hombres + 1;
+                        } else {
+                            $obj->$strM = $obj->$strM + 1;
+                            $obj->Mujeres = $obj->Mujeres + 1;
+                        }
+                        $obj->Ambos = $obj->Ambos + 1;
                     }
-                    $obj->Ambos = $obj->Ambos + 1;
                 }
                 if ($record->diagnostico == $index->descripcion) {
                     if (!in_array($record->numero_ficha, $sename) && $record->edad < 18) {
@@ -483,16 +491,20 @@ class GeneralController extends Controller
             }
             /************************************************************************************************************
                 In process...
-            *************************************************************************************************************/
+             *************************************************************************************************************/
             if ($currUrl == "egresos") {
-                $obj->abandono = 0;
-                $obj->fallecimiento = 0;
-                $obj->traslado = 0;
+                foreach ($groups as $group) {
+                    $str = $group->descripcion;
+                    $obj->$str = 0;
+                }
                 foreach ($data as $record) {
                     if ($record->diagnostico == $index->descripcion) {
-                        (strtolower($record->alta) == "abandono" ? $obj->abandono = $obj->abandono + 1 : false);
-                        (strtolower($record->alta) == "fallecimiento" ? $obj->fallecimiento = $obj->fallecimiento + 1 : false);
-                        (strtolower($record->alta) == "traslado" ? $obj->traslado = $obj->traslado + 1 : false);
+                        foreach ($groups as $group) {
+                            if ($record->grupo == $group->id) {
+                                $str = $group->descripcion;
+                                $obj->$str = $obj->$str + 1;
+                            }
+                        }
                     }
                 }
             }
@@ -517,6 +529,7 @@ class GeneralController extends Controller
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
             ->join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
             ->leftJoin('alta', 'alta.id', '=', 'etapa.alta_id')
+            ->leftJoin('grupo_alta', 'grupo_alta.id', '=', 'alta.grupo_id')
             ->when($status, function ($query, $status) {
                 if ($status == 2) {
                     return $query->whereMonth('alta.created_at', Carbon::now()->month)->where('etapa.activa', 0);
@@ -527,6 +540,7 @@ class GeneralController extends Controller
             ->select(
                 'procedencia.descripcion as procedencia',
                 'alta.descripcion as alta',
+                'alta.grupo_id as grupo',
                 'etapa.id as numero_ficha',
                 'sexo.descripcion as sexo',
                 'etapa.created_at as fecha_ingreso',

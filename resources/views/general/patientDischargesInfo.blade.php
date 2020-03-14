@@ -100,6 +100,7 @@
             //define some sample data
             var tabledata = {!!$main!!};
             var list = {!!$list!!};
+            console.log(tabledata);
 
             // Complete table
             for(i=0 ; i<list.length ; i++){
@@ -112,13 +113,14 @@
                         ],
                     }, false);
             };
+            //create column group
             table.addColumn(
-                {//create column group
+                {
                     title:"EGRESOS",
                     columns:[
-                    {title:"Abandono", field:"abandono", width:150, bottomCalc:"sum"},
-                    {title:"Fallecimiento", field:"fallecimiento", width:150, bottomCalc:"sum"},
-                    {title:"Traslado", field:"traslado", width:150, bottomCalc:"sum"},
+                    {title:"Abandono", field:"Abandono", width:150, bottomCalc:"sum"},
+                    {title:"Fallecimiento", field:"Fallecimiento", width:150, bottomCalc:"sum"},
+                    {title:"Traslado", field:"Traslado", width:150, bottomCalc:"sum"},
                     ],
                 }, false);
             // Add the last two columns
