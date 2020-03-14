@@ -33,6 +33,6 @@ class CreateEtapaPoseeDiagnosticoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_posee_especialidad_canasta');
+        Schema::dropIfExists('etapa_posee_diagnostico');
     }
 }

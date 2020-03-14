@@ -73,20 +73,20 @@ class GeneralController extends Controller
         $stage = Stage::where('paciente_id', $patient->id)
             ->where('activa', 1)
             ->first();
-        // Get attributes
-        $attributes = "";
-        foreach ($patient->attributes as $index) {
-            $attributes = $index->descripcion . ", " . $attributes;
-        }
-        // Get diagnosis
-        $diagnosis = "";
-        foreach ($stage->diagnosis as $index) {
-            $diagnosis = $index->descripcion . ", " . $diagnosis;
-        }
         // If have no active stage
         if (empty($stage)) {
             return redirect(url()->previous())->with('error', 'Debe agregar una nueva etapa');
         } else {
+            // Get attributes
+            $attributes = "";
+            foreach ($patient->attributes as $index) {
+                $attributes = $index->descripcion . ", " . $attributes;
+            }
+            // Get diagnosis
+            $diagnosis = "";
+            foreach ($stage->diagnosis as $index) {
+                $diagnosis = $index->descripcion . ", " . $diagnosis;
+            }
             // Get array of attendance from the active stage
             $patientAttendances = $stage->attendance;
             // Identify active stage
@@ -240,19 +240,19 @@ class GeneralController extends Controller
         // Get data
         $data = $this->querySummary();
         // Get functionarys and activities
-        $functionarys = $data->unique('nombre_funcionario');
+        $functionarys = $data->unique('rut');
         $activities = $data->unique('actividad');
         $table = [];
         foreach ($activities as $index1) {
             $obj = new \stdClass();
             $obj->actividad = $index1->actividad;
             foreach ($functionarys as $index2) {
-                $strYes = $index2->nombre_funcionario . '-si';
+                $strYes = $index2->rut . '-si';
                 $obj->$strYes = 0;
-                $strNo = $index2->nombre_funcionario . '-no';
+                $strNo = $index2->rut . '-no';
                 $obj->$strNo = 0;
                 foreach ($data as $record) {
-                    if ($record->nombre_funcionario == $index2->nombre_funcionario && $record->actividad == $index1->actividad) {
+                    if ($record->rut == $index2->rut && $record->actividad == $index1->actividad) {
                         $obj->$strYes = (int) $record->Con_Asistencia;
                         $obj->$strNo = (int) $record->Sin_Asistencia;
                     }
@@ -275,11 +275,12 @@ class GeneralController extends Controller
             ->where('atencion.activa', 1)
             ->select(
                 'actividad.descripcion as actividad',
+                'users.rut',
                 DB::raw("CONCAT(users.primer_nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) as nombre_funcionario"),
                 DB::raw("SUM(CASE WHEN atencion.asistencia = 0 THEN 1 ELSE 0 END) AS Sin_Asistencia"),
                 DB::raw("SUM(CASE WHEN atencion.asistencia = 1 THEN 1 ELSE 0 END) AS Con_Asistencia")
             )
-            ->groupBy('actividad.descripcion', 'users.primer_nombre', 'users.apellido_paterno', 'users.apellido_materno')
+            ->groupBy('actividad.descripcion', 'users.primer_nombre', 'users.apellido_paterno', 'users.apellido_materno', 'users.rut')
             ->get();
         return $data;
     }
@@ -464,7 +465,14 @@ class GeneralController extends Controller
                 $sex = strtolower($record->sexo);
                 $find = strpos($sex, 'hombre');
                 if ($record->edad >= $iterator) {
-                    ($find !== false ? $obj->$strH = $obj->$strH + 1 : $obj->$strM = $obj->$strM + 1);
+                    if ($find !== false) {
+                        $obj->$strH = $obj->$strH + 1;
+                        $obj->Hombres = $obj->Hombres + 1;
+                    } else {
+                        $obj->$strM = $obj->$strM + 1;
+                        $obj->Mujeres = $obj->Mujeres + 1;
+                    }
+                    $obj->Ambos = $obj->Ambos + 1;
                 }
                 if ($record->diagnostico == $index->descripcion) {
                     if (!in_array($record->numero_ficha, $sename) && $record->edad < 18) {
@@ -473,7 +481,9 @@ class GeneralController extends Controller
                     }
                 }
             }
-            // In process...
+            /************************************************************************************************************
+                In process...
+            *************************************************************************************************************/
             if ($currUrl == "egresos") {
                 $obj->abandono = 0;
                 $obj->fallecimiento = 0;
@@ -486,6 +496,7 @@ class GeneralController extends Controller
                     }
                 }
             }
+            /************************************************************************************************************/
             $obj->menoresSENAME = count($sename);
             array_push($listData, $obj);
         }

@@ -15,7 +15,7 @@ class CreateDireccionTable extends Migration
     {
         Schema::create('direccion', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('Pais')->nullable();
+            $table->string('pais')->nullable();
             $table->string('region')->nullable();
             $table->string('comuna')->nullable();
             $table->string('calle')->nullable();

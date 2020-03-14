@@ -30,7 +30,13 @@
 		@csrf
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
-		
+
+		<!-- UID -->
+		<div class="form-gorup">
+			<label for="rut">Rut</label>
+			<input type="text" class="form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{$auth->rut}}" id="rut" name="rut" placeholder="RUT">
+		</div><br>
+
 		<!-- Names -->
 		<div class="form-group">
 			<label for="nombres">Nombre completo</label>
@@ -80,6 +86,34 @@
 
 <script>
 	document.getElementById('info_Submenu').className += ' show';
+
+	// Write DNI like rut standar format
+	$(document).ready(function() {
+		rut = <?php echo json_encode($auth->rut) ?>;
+		var len = rut.length;
+		var rut = formatear(rut, rut.substring(len - 1, len));
+		document.getElementById('rut').value = rut;
+	});
+
+	function formatear(Rut, digitoVerificador) {
+		var sRut = new String(Rut);
+		var sRutFormateado = '';
+		if (digitoVerificador) {
+			var sDV = sRut.charAt(sRut.length - 1);
+			sRut = sRut.substring(0, sRut.length - 1);
+		}
+		while (sRut.length > 3) {
+			sRutFormateado = "." + sRut.substr(sRut.length - 3) + sRutFormateado;
+			sRut = sRut.substring(0, sRut.length - 3);
+		}
+		sRutFormateado = sRut + sRutFormateado;
+		if (sRutFormateado != "" && digitoVerificador) {
+			sRutFormateado += "-" + sDV;
+		} else if (digitoVerificador) {
+			sRutFormateado += sDV;
+		}
+		return sRutFormateado;
+	}
 </script>
 
 @endsection

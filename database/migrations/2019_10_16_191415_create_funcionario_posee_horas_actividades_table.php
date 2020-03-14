@@ -20,7 +20,7 @@ class CreateFuncionarioPoseeHorasActividadesTable extends Migration
             $table->unsignedBigInteger('funcionario_id');
             $table->unsignedBigInteger('actividad_id');
             
-            $table->float('horasDeclaradas');
+            $table->float('horasDeclaradas')->default('0');
             $table->float('horasRealizadas')->default('0');
 
             $table->foreign('funcionario_id')->references('id')->on('funcionarios');
@@ -36,6 +36,6 @@ class CreateFuncionarioPoseeHorasActividadesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_posee_especialidad_canasta');
+        Schema::dropIfExists('funcionario_posee_horas_actividad');
     }
 }

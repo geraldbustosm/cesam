@@ -231,17 +231,12 @@ class AttendanceController extends Controller
         $anterior   = $functionary->horasRealizadas;
         // Add the new hours
         $new_hours =  $hours + $minutes / 60;
-        $functionary->horasRealizadas = $anterior +$new_hours;
-        // Update specific relationship in functionary - Activiti Hours
+        $functionary->horasRealizadas = $anterior + $new_hours;
+        // Update specific relationship in functionary - Activity Hours
         $activitiys = $request->get('activity');
-        $functionary_id=$functionary->id;
-        $registro = Hours::updateOrCreate(
-                ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys ],
-                ['horasRealizadas' => DB::raw("horasRealizadas + '$new_hours'")]
-            );
-        if(is_null($registro->horasDeclaradas)){
-            $registro->horasDeclaradas=0;
-        }
+        $functionary_id = $functionary->id;
+        $registro = Hours::updateOrCreate(['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys, 'horasRealizadas' => $new_hours, 'horasDeclaradas' => 0]);
+
         // Save the update
         $functionary->save();
         $registro->save();
@@ -256,7 +251,7 @@ class AttendanceController extends Controller
             return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
         }
     }
-    
+
 
     /***************************************************************************************************************************
                                                     ATTENDANCE LOGIC
@@ -322,6 +317,6 @@ class AttendanceController extends Controller
         $attendance = Attendance::find($request->id_attendance);
         $attendance->activa = 0;
         $attendance->save();
-        return redirect(url()->previous())->with('status','La prestación ha sido eliminada');
+        return redirect(url()->previous())->with('status', 'La prestación ha sido eliminada');
     }
 }

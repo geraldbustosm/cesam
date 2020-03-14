@@ -33,6 +33,6 @@ class CreateActividadPoseeEspecialidadTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ActivitySpeciality');
+        Schema::dropIfExists('actividad_posee_especialidad');
     }
 }

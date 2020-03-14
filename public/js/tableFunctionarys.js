@@ -40,11 +40,6 @@ function createRow(num, data) {
         celdas[i] = fila.insertCell(i);
         if (i == 0) celdas[i].className = "bold-cell";
     }
-    // Get Full Name
-    var userPrimerNombre = getFirstName(data);
-    var userApellidoPaterno = getLastName1(data);
-    // Get user rut
-    var user = getUser(data);
     // Get Hours 
     var functionaryHoursAchived = parseFloat(data.horasRealizadas).toFixed(2);
     var functionaryHoursAsigned = parseFloat(data.horasDeclaradas).toFixed(2);
@@ -55,87 +50,25 @@ function createRow(num, data) {
     var actionBtns = getBtns(data);
     //Adding cells content
     celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = user;
-    celdas[2].innerHTML = userPrimerNombre + ' ' + userApellidoPaterno;
-    celdas[3].innerHTML = getSpeciality(data);
+    celdas[1].innerHTML = data.run;
+    celdas[2].innerHTML = data.primer_nombre + ' ' + data.apellido_paterno + (data.apellido_materno ? ' ' + data.apellido_materno : '');
+    celdas[3].innerHTML = getSpeciality(data.speciality);
     celdas[4].innerHTML = functionaryHoursAchived;
     celdas[5].innerHTML = porcentageString;
     celdas[6].innerHTML = actionBtns;
 }
-// Write DNI like rut standar format
-function writeRut(user) {
-    var tmpstr = '';
-    var DNI = user.toString();
-    for (i = DNI.length; 0 < i + 1; i--) {
-        if (i == DNI.length - 1) {
-            tmpstr = '-' + DNI.charAt(i);
-        } else {
-            tmpstr = DNI.charAt(i) + tmpstr;
-        }
-    }
-    return tmpstr;
-}
-// Getting users
-function getUser(data) {
-    var user;
-    for (var j = 0; j < userArr.length; j++) {
-        if (data.user_id == userArr[j].id) {
-            user = writeRut(userArr[j].rut);
-            console.log(userArr[j].rut);
-        }
-    }
-    return user;
-}
-// Getting first name
-function getFirstName(data) {
-    var userPrimerNombre;
-    for (var j = 0; j < userArr.length; j++) {
-        if (data.user_id == userArr[j].id) {
-            userPrimerNombre = userArr[j].primer_nombre;
-        }
-    }
-    return userPrimerNombre;
-}
-// Getting more names
-function getLastName1(data) {
-    var userApellidoPaterno;
-    for (var j = 0; j < userArr.length; j++) {
-        if (data.user_id == userArr[j].id) {
-            userApellidoPaterno = userArr[j].apellido_paterno;
-        }
-    }
-    return userApellidoPaterno;
-}
 // Getting speciality
 function getSpeciality(data) {
-    var speciality = "";
-    for (var k = 0; k < fsArr.length; k++) {
-        if (data.id == fsArr[k].funcionarios_id) {
-            for (var j = 0; j < specialityArr.length; j++) {
-                if (fsArr[k].especialidad_id == specialityArr[j].id) {
-                    speciality += specialityArr[j].descripcion + "/";
-                }
-            }
-        }
-    }
-    return speciality;
-}
-// Getting user id
-function getUID(data) {
-    var id;
-    for (var j = 0; j < userArr.length; j++) {
-        if (data.user_id == userArr[j].id) {
-            id = userArr[j].rut;
-        }
-    }
-    return id;
+    tmpstr = '';
+    data.forEach(element => tmpstr += element.descripcion + '/ ');
+    return tmpstr;
 }
 // Action buttons by active status
 function getBtns(data) {
     try {
         var active = data.activa;
         var tmp = ` <td>
-                    <a href='/funcionario/edit/${getUID(data)}'><i title='Editar' class='material-icons'>create</i></a>`;
+                    <a href='/funcionario/edit/${data.rut}'><i title='Editar' class='material-icons'>create</i></a>`;
         if (active == 1) {
             tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`;
@@ -177,12 +110,12 @@ function filter(searchText) {
 // Wait 0.8 sec by every keyup and then call filter function
 function search() {
     // Listener for every keyup
-    searchbox.addEventListener("keyup", function() {
+    searchbox.addEventListener("keyup", function () {
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        var timer = setInterval(function() {
+        var timer = setInterval(function () {
             count--;
             if (count == 0) {
                 // Get text from searchbox item (id of tag)

@@ -96,8 +96,8 @@
                     {//create column group
                         title:`${functionarys[i].nombre_funcionario}`,
                         columns:[
-                            {title:"Con Asistenia", field:`${functionarys[i].nombre_funcionario}-si`, width:160, bottomCalc:"sum"},
-                            {title:"Sin Asistenia", field:`${functionarys[i].nombre_funcionario}-no`, width:160, bottomCalc:"sum"},
+                            {title:"Con Asistenia", field:`${functionarys[i].rut}-si`, width:160, bottomCalc:"sum"},
+                            {title:"Sin Asistenia", field:`${functionarys[i].rut}-no`, width:160, bottomCalc:"sum"},
                         ],
                     }, false);
             };

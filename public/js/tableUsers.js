@@ -44,23 +44,10 @@ function createRow(num, data) {
     }
     // Adding cells content
     celdas[0].innerHTML = num + 1;
-    celdas[1].innerHTML = writeRut(data.rut);
+    celdas[1].innerHTML = data.run;
     celdas[2].innerHTML = data.primer_nombre + ' ' + data.apellido_paterno + ' ' + data.apellido_materno;
     celdas[3].innerHTML = data.nombre;
     celdas[4].innerHTML = writeActionButtons(data);
-}
-// Write DNI like rut standar format
-function writeRut(rut) {
-    var tmpstr = '';
-    var DNI = rut.toString();
-    for (i = DNI.length; 0 < i + 1; i--) {
-        if (i == DNI.length - 1) {
-            tmpstr = '-' + DNI.charAt(i);
-        } else {
-            tmpstr = DNI.charAt(i) + tmpstr;
-        }
-    }
-    return tmpstr;
 }
 // Action buttons by active status
 function writeActionButtons(data) {
@@ -69,11 +56,11 @@ function writeActionButtons(data) {
         var tmp = ` <td>`;
         if (active == 1) {
             // Generate action buttons for active patients
-            tmp += `<a href='javascript:changeStatus(${data.rut})'><i title='Borrar' class='material-icons'>delete</i></a>
+            tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`
         } else {
             // Generate action buttons for deactive patients
-            tmp += `<a href='javascript:changeStatus(${data.rut})'><i title='Activar' class='material-icons'>person_add</i></a>
+            tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
                     </td>`
         }
     } catch (ex) {

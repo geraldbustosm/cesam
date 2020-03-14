@@ -27,10 +27,14 @@ class UserController extends Controller
     {
         // Get patients from database where 'activa' attribute is 1 bits
         $users = User::where('activa', 1)
-                ->select('rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
-                ->get();
+            ->select('id', 'rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+            ->get();
         // Total users
         $cantUsers = $users->count();
+
+        foreach ($users as $user) {
+            $this->formatRut($user);
+        }
         // Redirect to the view with list of: active patients, all previtions and all genders
         return view('admin.Views.users', compact('users', 'cantUsers'));
     }
@@ -39,8 +43,12 @@ class UserController extends Controller
     {
         // Get patients from database where 'activa' attribute is 0 bits
         $users = User::where('activa', 0)
-                ->select('rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
-                ->get();
+            ->select('id', 'rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+            ->get();
+
+        foreach ($users as $user) {
+            $this->formatRut($user);
+        }
         // Redirect to the view with list of: inactive patients, all previtions and all genders
         return view('admin.Inactive.usersInactive', compact('users'));
     }
@@ -113,29 +121,31 @@ class UserController extends Controller
     /***************************************************************************************************************************
                                                     HOURS AND PERFORMANCE PROCESS
      ****************************************************************************************************************************/
-    public function editHours(Request $request){
+    public function editHours(Request $request)
+    {
         //$functionary = $this->middleware('auth');
         $user = Auth::user();
-        if ($user->rol==2){
+        if ($user->rol == 2) {
             $activity = Activity::get();
-            $functionary = Functionary::where('user_id',$user->id)->first();
-            return view('general.reportFunctionaryHours', compact('activity','user','functionary'));
-        }    
+            $functionary = Functionary::where('user_id', $user->id)->first();
+            return view('general.reportFunctionaryHours', compact('activity', 'user', 'functionary'));
+        }
     }
-    public function saveHours (Request $request){
+    public function saveHours(Request $request)
+    {
         $user = Auth::user();
-        if ($user->rol==2){
+        if ($user->rol == 2) {
             $activitiys = $request->activityId;
             $hours = $request->hours2;
-            $functionary = Functionary::where('user_id',$user->id)->first();
-            $functionary_id=$functionary->id;
-            for ($i = 0; $i < count($activitiys);$i++){
+            $functionary = Functionary::where('user_id', $user->id)->first();
+            $functionary_id = $functionary->id;
+            for ($i = 0; $i < count($activitiys); $i++) {
                 $registro = Hours::updateOrCreate(
-                    ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys[$i] ],
+                    ['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys[$i]],
                     ['horasDeclaradas' => $hours[$i]]
                 );
-                if(is_null($registro->horasRealizadas)){
-                    $registro->horasRealizadas=0;
+                if (is_null($registro->horasRealizadas)) {
+                    $registro->horasRealizadas = 0;
                 }
                 $registro->save();
             }
@@ -144,8 +154,8 @@ class UserController extends Controller
             return redirect('horas/edit')->with('status', 'Horas Actualizadas');
         }
     }
-   
-     /***************************************************************************************************************************
+
+    /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
     public function editPassword(Request $request)
@@ -210,7 +220,7 @@ class UserController extends Controller
     public function activateUser(Request $request)
     {
         // Get the user
-        $user = User::where('rut', $request->id)->first();
+        $user = User::find($request->id);
         // Update active to 1 bits
         $user->activa = 1;
         // Send update to database
@@ -230,7 +240,7 @@ class UserController extends Controller
     public function deletingUser(Request $request)
     {
         // Get the user
-        $user = User::where('rut', $request->id)->first();
+        $user = User::find($request->id);
         // Update active to 0 bits
         $user->activa = 0;
         // Send update to database
@@ -246,5 +256,27 @@ class UserController extends Controller
         }
         // Redirect to the view with successful status (showing the DNI)
         return redirect('usuarios')->with('status', 'Usuario ' . $request->id . ' eliminado');
+    }
+
+    public function formatRut($index)
+    {
+        $sRut = $index->rut;
+        $sRutFormateado = '';
+        $digitoVerificador = substr($sRut, -1);
+        if ($digitoVerificador) {
+            $sDV = substr($sRut, -1);
+            $sRut = substr($sRut, 0, -1);
+        }
+        while (strlen($sRut) > 3) {
+            $sRutFormateado = "." . substr($sRut, -3) . $sRutFormateado;
+            $sRut = substr($sRut, 0, strlen($sRut) - 3);
+        }
+        $sRutFormateado = $sRut . $sRutFormateado;
+        if ($sRutFormateado != "" && $digitoVerificador) {
+            $sRutFormateado = $sRutFormateado . "-" . $sDV;
+        } else if ($digitoVerificador) {
+            $sRutFormateado = $sRutFormateado . $sDV;
+        }
+        $index->run = $sRutFormateado;
     }
 }

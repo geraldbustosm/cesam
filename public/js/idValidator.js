@@ -2,22 +2,31 @@
                                                     VARIABLES
 ****************************************************************************************************************************/
 var alertDanger = document.getElementById("danger");
+var alertSuccess = document.getElementById("success");
+var btn = document.getElementById('btnSubmit');
+// Setting alerts display = none
+alertDanger.style.display = "none";
+alertSuccess.style.display = "none";
 /***************************************************************************************************************************
                                                     MAIN FUNCTION
 ****************************************************************************************************************************/
 // Start the validation
 function validator() {
-    // Setting alerts display = none
-    alertDanger.style.display = "none";
-    // Getting button for submit, country and Rut / Passport
-    var id = document.getElementById('dni');
-    var pais = document.getElementById('pais');
-    var btn = document.getElementById('btnSubmit');
     // Listener for submit
-    btn.addEventListener("click", function() {
+    btn.addEventListener("click", function () {
+        // Reset alerts
+        alertDanger.style.display = "none";
+        alertSuccess.style.display = "none";
+        // Getting button for submit, country and Rut / Passport
+        var id = document.getElementById('dni');
+        var pais = document.getElementById('pais');
         var status = checkCountry(id, pais);
+        console.log(status);
         if (status) {
+            alertSuccess.style.display = "block";
             document.onSubmit.submit();
+        } else {
+            alertDanger.style.display = "block";
         }
     });
 }
@@ -27,18 +36,15 @@ function validator() {
 // Check origin country
 function checkCountry(id, country) {
     if (country.value.toLowerCase().includes('chile')) {
-        console.log(id);
+        console.log(country.value.toLowerCase());
         // For Chilean check rut
-        CheckRUT(id);
+        return CheckRUT(id);
     } else {
         return true;
     }
 }
 // Check RUT
 function CheckRUT(object) {
-    // Reset status of alerts
-    alertDanger.style.display = "none";
-
     var tmpstr = "";
     var intlen = object.value
 
@@ -47,7 +53,6 @@ function CheckRUT(object) {
         len = crut.length;
 
         if (len < 2) {
-            alertDanger.style.display = "block";
             object.focus()
             return false;
         }
@@ -93,12 +98,10 @@ function CheckRUT(object) {
         }
 
         if (dvr != dv.toLowerCase()) {
-            alertDanger.style.display = "block";
             object.focus()
             return false;
         }
         object.focus()
-        console.log(tmpstr);
         return true;
     }
 }

@@ -46,14 +46,11 @@ function createRow(num, data) {
             celdas[0].innerHTML = num + 1;
             celdas[1].innerHTML = descripcion;
             celdas[2].innerHTML = canasta;
+            celdas[3].innerHTML = `<a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>`;
             if (data.activa == 1) {
-                celdas[3].innerHTML = `
-                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-                <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+                celdas[3].innerHTML += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
             } else {
-                celdas[3].innerHTML = `
-                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-                <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
+                celdas[3].innerHTML += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
             }
         } else {
             // If have 'descripcion' is a 'simple data'
@@ -61,14 +58,13 @@ function createRow(num, data) {
             // Adding cells content
             celdas[0].innerHTML = num + 1;
             celdas[1].innerHTML = descripcion;
+            if (!descripcion.includes('Hombre') && !descripcion.includes('Mujer'))
+                celdas[2].innerHTML = `<a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>`;
+            
             if (data.activa == 1) {
-                celdas[2].innerHTML = `
-                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-                <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+                celdas[2].innerHTML += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
             } else {
-                celdas[2].innerHTML = `
-                <a href='/${table.toLowerCase()}/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-                <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
+                celdas[2].innerHTML += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
             }
         }
     } else {
@@ -78,14 +74,11 @@ function createRow(num, data) {
         celdas[0].innerHTML = num + 1;
         celdas[1].innerHTML = glosa;
         celdas[2].innerHTML = data.codigo;
+        celdas[3].innerHTML = `<a href='/prestaciones/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>`;
         if (data.activa == 1) {
-            celdas[3].innerHTML = `
-            <a href='/prestaciones/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-            <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
+            celdas[3].innerHTML += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a></td>`;
         } else {
-            celdas[3].innerHTML = `
-            <a href='/prestaciones/edit/${data.id}'><i title='Editar' class='material-icons'>create</i></a>
-            <a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
+            celdas[3].innerHTML += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>add</i></a></td>`;
         }
     }
 }
@@ -112,12 +105,12 @@ function filter(searchText) {
 // Wait 0.8 sec by every keyup and then call filter function
 function search() {
     // Listener for every keyup
-    searchbox.addEventListener("keyup", function() {
+    searchbox.addEventListener("keyup", function () {
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        var timer = setInterval(function() {
+        var timer = setInterval(function () {
             count--;
             if (count == 0) {
                 // Get text from searchbox item (id of tag)
@@ -155,7 +148,7 @@ function init(page) {
     aListener();
     try {
         topNav();
-    } catch {}
+    } catch { }
 }
 
 init(1);

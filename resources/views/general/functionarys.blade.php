@@ -79,10 +79,7 @@
 </div>
 
 <script>
-  var fullArray = <?php echo json_encode($functionary); ?>;
-  var userArr = <?php echo json_encode($user); ?>;
-  var specialityArr = <?php echo json_encode($speciality); ?>;
-  var fsArr = <?php echo json_encode($fs); ?>;
+  var fullArray = <?php echo json_encode($functionaries); ?>;
   document.getElementById('functionarys_Submenu').className += ' show';
 </script>
 

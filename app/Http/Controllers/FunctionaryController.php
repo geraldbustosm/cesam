@@ -22,31 +22,35 @@ class FunctionaryController extends Controller
     public function showFunctionarys()
     {
         // Get functionarys from database where 'activa' attribute is 1 bits
-        $functionary = Functionary::where('activa', 1)->get();
-        // Get the list of users
-        $user = User::all();
-        // Get the list of specialitys
-        $speciality = Speciality::all();
-        // Get the list of speciality per functionary
-        $fs = FunctionarySpeciality::all();
+        $functionaries = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->where('funcionarios.activa', 1)
+            ->select('funcionarios.*', 'users.rut', 'users.primer_nombre', 'users.apellido_paterno', 'users.apellido_materno')
+            ->get();
+
+        foreach ($functionaries as $index) {
+            $index->speciality;
+            app('App\Http\Controllers\UserController')->formatRut($index);
+        }
         // Total functionarys
-        $cantFunctionarys = $functionary->count();
+        $cantFunctionarys = $functionaries->count();
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
-        return view('general.functionarys', compact('functionary', 'user', 'speciality', 'fs', 'cantFunctionarys'));
+        return view('general.functionarys', compact('functionaries', 'cantFunctionarys'));
     }
 
     public function showInactiveFunctionarys()
     {
         // Get Functionarys from database where 'activa' attribute is 0 bits
-        $functionary = Functionary::where('activa', 0)->get();
-        // Get the list of users
-        $user = User::all();
-        // Get the list of specialitys
-        $speciality = Speciality::all();
-        // Get the list of speciality per functionary
-        $fs = FunctionarySpeciality::all();
+        $functionaries = Functionary::join('users', 'users.id', '=', 'funcionarios.user_id')
+            ->where('funcionarios.activa', 0)
+            ->select('funcionarios.*', 'users.rut', 'users.primer_nombre', 'users.apellido_paterno', 'users.apellido_materno')
+            ->get();
+
+        foreach ($functionaries as $index) {
+            $index->speciality;
+            app('App\Http\Controllers\UserController')->formatRut($index);
+        }
         // Redirect to the view with list of: active functionarys, all users, all speciality and speciality per functionarys 
-        return view('admin.Inactive.funtionaryInactive', compact('functionary', 'user', 'speciality', 'fs'));
+        return view('admin.Inactive.funtionaryInactive', compact('functionaries'));
     }
 
     /***************************************************************************************************************************

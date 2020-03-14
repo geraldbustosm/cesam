@@ -158,7 +158,8 @@
                                         $("#activity").empty();
                                         $("#speciality").append('<option value="" selected disabled>Seleccione la especialidad</option>');
                                         $.each(res, function(key, value) {
-                                            $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
+                                            if (value.activa == true)
+                                                $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
                                     } else {
                                         $("#speciality").empty();
@@ -185,7 +186,8 @@
                                         $("#provision").empty();
                                         $("#provision").append('<option value="" selected disabled>Seleccione la prestación</option>');
                                         $.each(res, function(key, value) {
-                                            $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
+                                            if (value.activa == true)
+                                                $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
                                         });
                                     } else {
                                         $("#provision").empty();
@@ -208,7 +210,8 @@
                                         $("#activity").empty();
                                         $("#activity").append('<option value="" selected disabled>Seleccione la actividad</option>');
                                         $.each(res, function(key, value) {
-                                            $("#activity").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
+                                            if (value.activa == true)
+                                                $("#activity").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
                                     } else {
                                         $("#activity").empty();
@@ -229,7 +232,10 @@
                             $.ajax({
                                 type: "GET",
                                 url: "{{url('age-check')}}",
-                                data: {provision_id: provisionID, patient_id: patientID},
+                                data: {
+                                    provision_id: provisionID,
+                                    patient_id: patientID
+                                },
                                 success: function(res) {
                                     if (res < 0) {
                                         $('#errorAge').show();
@@ -266,6 +272,6 @@
             </div>
         </div>
     </form>
-@endsection
-@push('styles')
+    @endsection
+    @push('styles')
     <link href="{{ asset('css/attendance.css') }}" rel="stylesheet">

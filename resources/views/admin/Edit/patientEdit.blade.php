@@ -40,7 +40,7 @@
 				<label for="dni">Rut o pasaporte</label>
 			</div>
 			<div class="col-3">
-				<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->DNI}}" id="dni" name="dni" placeholder="Rut o pasaporte">
+				<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->dni}}" id="dni" name="dni" placeholder="Rut o pasaporte">
 			</div>
 		</div>
 		<br>

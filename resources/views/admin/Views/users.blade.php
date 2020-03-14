@@ -33,7 +33,7 @@
       <th style="width: 3%;">#</th>      
       <th style="width: 15%;">Rut</th>
       <th style="width: 30%;">Usuario</th>
-      <th style="width: 20%;">Nombre</th>
+      <th style="width: 20%;">Nick</th>
       <th style="width: 10%;">Acciones</th>
     </tr>
   </thead>

@@ -8,10 +8,12 @@ use App\Prevition;
 use App\Address;
 use App\Sex;
 use App\Attributes;
+use Carbon\Carbon;
 
 class PatientController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
@@ -21,15 +23,26 @@ class PatientController extends Controller
     public function showPatients()
     {
         // Get patients from database where 'activa' attribute is 1 bits
-        $patients = Patient::where('activa', 1)
-                            ->select('id', 'DNI','nombre1','nombre2','apellido1','apellido2','fecha_nacimiento','prevision_id','sexo_id','activa')
-                            ->get();
+        $patients = Patient::join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
+            ->where('paciente.activa', 1)
+            ->select('paciente.id', 'DNI', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nacimiento', 'prevision.descripcion as prevision', 'sexo.descripcion as sexo', 'paciente.activa')
+            ->get();
         // Count patients
         $cantPatients = $patients->count();
-        // Get the list of previtions
-        $prev = Prevition::all();
-        // Get the list of genders
-        $sex = Sex::all();
+        foreach ($patients as $patient) {
+            // Get patient's address
+            $address = Address::where('paciente_id', $patient->id)->first();
+            (strpos(strtolower($address->pais), 'chile') !== false ? $this->formatRut($patient) : false);
+            // Get age
+            $age = Carbon::createFromDate($patient->fecha_nacimiento);
+                $patient->fecha = $age->format('d/m/Y');
+                if ($age->age != 0) {
+                    $patient->edad = $age->diff(Carbon::now())->format('%y años');
+                } else {
+                    $patient->edad = $age->diff(Carbon::now())->format('%m meses y %d días');
+                }
+        }
         // Redirect to the view with list of: active patients, all previtions and all genders
         return view('general.patient', compact('patients', 'prev', 'sex', 'cantPatients'));
     }
@@ -37,11 +50,26 @@ class PatientController extends Controller
     public function showInactivePatients()
     {
         // Get patients from database where 'activa' attribute is 0 bits
-        $patients = Patient::where('activa', 0)->get();
-        // Get the list of previtions
-        $prev = Prevition::all();
-        // Get the list of genders
-        $sex = Sex::all();
+        $patients = Patient::join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
+            ->where('paciente.activa', 0)
+            ->select('paciente.id', 'DNI', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nacimiento', 'prevision.descripcion as prevision', 'sexo.descripcion as sexo', 'paciente.activa')
+            ->get();
+        // Count patients
+        $cantPatients = $patients->count();
+        foreach ($patients as $patient) {
+            // Get patient's address
+            $address = Address::where('paciente_id', $patient->id)->first();
+            (strpos(strtolower($address->pais), 'chile') !== false ? $this->formatRut($patient) : false);
+            // Get age
+            $age = Carbon::createFromDate($patient->fecha_nacimiento);
+                $patient->fecha = $age->format('d/m/Y');
+                if ($age->age != 0) {
+                    $patient->edad = $age->diff(Carbon::now())->format('%y años');
+                } else {
+                    $patient->edad = $age->diff(Carbon::now())->format('%m meses y %d días');
+                }
+        }
         // Redirect to the view with list of: inactive patients, all previtions and all genders
         return view('admin.Inactive.patientInactive', compact('patients', 'prev', 'sex'));
     }
@@ -52,13 +80,13 @@ class PatientController extends Controller
     public function showAddPatient()
     {
         // Get list of genders
-        $sex = Sex::where('activa',1)->get();
+        $sex = Sex::where('activa', 1)->get();
         // Get list of attributes
-        $attributes = Attributes::where('activa',1)->get();
+        $attributes = Attributes::where('activa', 1)->get();
         // Get list of previtions
-        $previtions = Prevition::where('activa',1)->get();
+        $previtions = Prevition::where('activa', 1)->get();
         // Redirect to view with list of genders and previtions
-        return view('admin.Form.patientForm', compact('sex', 'previtions','attributes'));
+        return view('admin.Form.patientForm', compact('sex', 'previtions', 'attributes'));
     }
 
     /***************************************************************************************************************************
@@ -69,11 +97,11 @@ class PatientController extends Controller
         // Get the first patient that match with DNI
         $patient = Patient::where('DNI', $dni)->first();
         // Get previtions
-        $prev = Prevition::where('activa',1)->get();
+        $prev = Prevition::where('activa', 1)->get();
         // Get genders
-        $sex = Sex::where('activa',1)->get();
+        $sex = Sex::where('activa', 1)->get();
         // Get list of attributes
-        $attributes = Attributes::where('activa',1)->get();
+        $attributes = Attributes::where('activa', 1)->get();
         // Create variable for date
         $patient_birthdate = "";
         // Create variable for patient's address
@@ -86,13 +114,14 @@ class PatientController extends Controller
             $patient_birthdate = join("/", array($patient_birthdate[2], $patient_birthdate[1], $patient_birthdate[0]));
             // Get patient's address
             $address = Address::where('paciente_id', $patient->id)->first();
+            (strpos(strtolower($address->pais), 'chile') !== false ? $this->formatRut($patient) : false);
         }
-
         // Redirect to the view with list of prevition and gender, also return the patient and birthdate
-        return view('admin.Edit.patientEdit', compact('patient','address', 'patient_birthdate', 'prev', 'sex','attributes'));
+        return view('admin.Edit.patientEdit', compact('patient', 'address', 'patient_birthdate', 'prev', 'sex', 'attributes'));
     }
 
-    public function showEditPatientAttributes($dni){
+    public function showEditPatientAttributes($dni)
+    {
         $patient = Patient::where('dni', $dni)->first();
         $attributes = Attributes::where('activa', 1)->get();
         return view('admin.Edit.patientAttributesEdit', compact('patient', 'attributes'));
@@ -101,7 +130,7 @@ class PatientController extends Controller
     /***************************************************************************************************************************
                                                     CREATE PROCESS
      ****************************************************************************************************************************/
-    
+
     public function registerPatient(Request $request)
     {
         // Check the format of each variable of 'request'
@@ -156,8 +185,8 @@ class PatientController extends Controller
         $address->calle  = $request->calle;
         $address->numero = $request->numero;
         $address->departamento = $request->depto;
-        
-        $patient_id= Patient::where('DNI', $request->dni)->first()->id;
+
+        $patient_id = Patient::where('DNI', $request->dni)->first()->id;
         $address->paciente_id = $patient_id;
         $address->save();
 
@@ -208,9 +237,9 @@ class PatientController extends Controller
             }
             $patient->apellido1 = $request->last_name;
             $patient->apellido2 = $request->second_last_name;
-            if ($request->dni != $patient->DNI){
+            if ($request->dni != $patient->DNI) {
                 $check = Patient::where('DNI', $request->dni)->get();
-                if ($check->count() > 0){
+                if ($check->count() > 0) {
                     return redirect($url)->with('err', 'El rut ya se encuentra utilizado!');
                 }
                 $patient->DNI = $request->dni;
@@ -231,7 +260,7 @@ class PatientController extends Controller
             $address->calle  = $request->calle;
             $address->numero = $request->numero;
             $address->departamento = $request->depto;
-            
+
             // Pass the new info for update
             $patient->save();
             $address->save();
@@ -241,11 +270,12 @@ class PatientController extends Controller
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
     }
 
-    public function editPatientAttributes(Request $request){
+    public function editPatientAttributes(Request $request)
+    {
         $patient = Patient::where('dni', $request->dni)->first();
         $patient->attributes()->sync($request->options);
         $patient->save();
-        
+
         // URL to redirect
         $url = 'paciente-atributos/' . $request->dni;
         return redirect($url)->with('status', 'Se actualizaron los atributos del paciente');
@@ -274,5 +304,28 @@ class PatientController extends Controller
         $patient->save();
         // Redirect to the view with successful status (showing the DNI)
         return redirect('/pacientes')->with('status', 'Paciente ' . $patient->DNI . ' eliminado');
+    }
+
+    public function formatRut($index)
+    {
+        $sRut = $index->DNI;
+        $sRutFormateado = '';
+        $digitoVerificador = substr($sRut, -1);
+        if ($digitoVerificador) {
+            $sDV = substr($sRut, -1);
+            $sRut = substr($sRut, 0, -1);
+        }
+        while (strlen($sRut) > 3) {
+            $sRutFormateado = "." . substr($sRut, -3) . $sRutFormateado;
+            $sRut = substr($sRut, 0, strlen($sRut) - 3);
+        }
+        $sRutFormateado = $sRut . $sRutFormateado;
+        if ($sRutFormateado != "" && $digitoVerificador) {
+            $sRutFormateado = $sRutFormateado . "-" . $sDV;
+        } else if ($digitoVerificador) {
+            $sRutFormateado = $sRutFormateado . $sDV;
+        }
+        $index->dni = $sRutFormateado;
+        return $index;
     }
 }

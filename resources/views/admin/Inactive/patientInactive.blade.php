@@ -79,8 +79,6 @@
 
 <script>
   var fullArray = <?php echo json_encode($patients); ?>;
-  var prevArr = <?php echo json_encode($prev); ?>;
-  var sexArr = <?php echo json_encode($sex); ?>;
   document.getElementById('patients_Submenu').className += ' show';
 </script>
 
