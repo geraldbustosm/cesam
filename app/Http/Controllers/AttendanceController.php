@@ -235,7 +235,7 @@ class AttendanceController extends Controller
         // Update specific relationship in functionary - Activity Hours
         $activitiys = $request->get('activity');
         $functionary_id = $functionary->id;
-        $registro = Hours::updateOrCreate(['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys, 'horasRealizadas' => $new_hours, 'horasDeclaradas' => 0]);
+        $registro = Hours::updateOrCreate(['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys, 'horasRealizadas' => $new_hours]);
 
         // Save the update
         $functionary->save();
