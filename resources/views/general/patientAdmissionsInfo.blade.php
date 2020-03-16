@@ -98,8 +98,8 @@
             });
 
             //define some sample data
-            var tabledata = {!!$main!!};
-            var list = {!!$list!!};
+            var tabledata = <?php echo $main; ?>;
+            var list = <?php echo $list; ?>
 
             // Complete table
             for(i=0 ; i<list.length ; i++){
@@ -113,6 +113,7 @@
                     }, false);
             };
             // Add the last two columns
+            table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150, bottomCalc:"sum"}, false);
             table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
 
             //load sample data into the table

@@ -80,6 +80,7 @@
             //Getting data
             var tableData = <?php echo json_encode($data); ?>;
             var list = <?php echo json_encode($list); ?>;
+            var provenances = <?php echo json_encode($provenances); ?>;
             // Write data for download
             var table = new Tabulator("#example-table", {
                 height:"420px",
@@ -111,6 +112,31 @@
                         {title:`Mujeres`, field:`Mujeres`, width:150, bottomCalc:"sum"},
                     ],
                 }, false);
+            // Generate the sub-columns for each macro-column
+            colYoung = new Array();
+            colOld = new Array();
+            provenances.forEach(element => colYoung.push({title:`${element.descripcion}`, field:`${element.descripcion}_m`, width:150, bottomCalc:"sum"}));
+            provenances.forEach(element => colOld.push({title:`${element.descripcion}`, field:`${element.descripcion}_M`, width:150, bottomCalc:"sum"}));
+            // Macro-Columns
+            table.addColumn(
+                {//create column group
+                    title:`Menos de 15 años`,
+                    columns:colYoung,
+                }, false);
+            table.addColumn(
+                {//create column group
+                    title:`De 15 y más años`,
+                    columns:colOld,
+                }, false);
+            table.addColumn(
+                {//create column group
+                    title:`INASISTENTE A CONSULTA MÉDICA (NSP)`,
+                    columns:[
+                        {title:`NUEVAS`, field:`nuevo`, width:150, bottomCalc:"sum"},
+                        {title:`CONTROLES`, field:`repetido`, width:150, bottomCalc:"sum"},
+                    ],
+                }, false);
+
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {
                 table.download("xlsx", "data.xlsx", {

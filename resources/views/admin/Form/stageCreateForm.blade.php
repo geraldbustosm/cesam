@@ -26,7 +26,7 @@
             <div class="form-row">
                 <div class="col-4">
                     <select class="form-control" name="funcionario_id" required>
-                        <option selected disabled>Por favor seleccione un funcionario </option>
+                        <option value="" selected disabled>Por favor seleccione un funcionario </option>
                         @foreach($functionarys as $funcionario)
                         <option value="{{ $funcionario->id}}">{{ $funcionario->primer_nombre." ".$funcionario->apellido_paterno }}</option>
                         @endforeach
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-4">
                     <select class="form-control" name="programa_id" required>
-                        <option selected disabled>Por favor seleccione un programa </option>
+                        <option value="" selected disabled>Por favor seleccione un programa </option>
                         @foreach($program as $programa)
                         <option value="{{ $programa->id}}">{{ $programa->descripcion}}</option>
                         @endforeach
@@ -50,7 +50,7 @@
 
                 <div class="col-4">
                     <select class="form-control" name="sigges_id" required>
-                        <option selected disabled>Por favor seleccione un sigges </option>
+                        <option value="" selected disabled>Por favor seleccione un sigges </option>
                         @foreach($Sigges as $sigges)
                         <option value="{{ $sigges->id}}">{{ $sigges->descripcion}}</option>
                         @endforeach
@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-4">
                     <select class="form-control" name="procedencia_id" required>
-                        <option selected disabled>Por favor seleccione una procedencia </option>
+                        <option value="" selected disabled>Por favor seleccione una procedencia </option>
                         @foreach($provenance as $procedencia)
                         <option value="{{ $procedencia->id}}">{{ $procedencia->descripcion}}</option>
                         @endforeach

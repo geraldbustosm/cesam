@@ -92,24 +92,17 @@
                             }
                         }
                     </script>
-                </div>
-                <div class="form-group col-10" style="margin-top: 20px">
-                    <label for="selectA">Asistencia: </label>
-                    <select name="selectA" id="selectA" class="form-control col-12">
-                        <option value="1" selected>Si </option>
-                        <option value="0">No</option>
-                    </select>
-                </div>
-            </div>
-            <div class="column">
+                </div><br>
                 <div class="form-group col-10" style="min-width:200px">
-                    <label for="title"><b>Tipo de paciente:</b></label>
+                    <label for="title">Tipo de paciente</label>
                     <select name="selectType" class="form-control" style="min-width:200px">
                         <option value="1" selected>Repetido</option>
                         <option value="0">Nuevo</option>
                     </select>
                 </div>
+            </div>
 
+            <div class="column">
                 <div class="form-group col-10" style="margin-top: 20px">
                     <label for="title"><b>Asigne el funcionario y la prestación:</b></label>
                 </div>
@@ -263,6 +256,13 @@
                         }
                     });
                 </script>
+                <div class="form-group col-10" style="margin-top: 20px">
+                    <label for="selectA">Asistencia: </label>
+                    <select name="selectA" id="selectA" class="form-control col-12">
+                        <option value="1" selected>Si </option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
                 <div class="form-group col-10" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
