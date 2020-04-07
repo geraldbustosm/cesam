@@ -73,6 +73,9 @@
                                 <li>
                                     <a class="nav-link @yield('active-rem')" href="{{url('prestaciones/rem')}}"><span>Tablas REM</span></a>
                                 </li>
+                                <li>
+                                    <a class="nav-link @yield('active-rem7')" href="{{url('prestaciones/rem7')}}"><span>Tablas REM-7</span></a>
+                                </li>
                             </ul>
                         </li>
                     </nav>

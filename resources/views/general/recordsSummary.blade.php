@@ -6,7 +6,27 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+<div class="div-full row">
+    <div class="col">
+        <h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+    </div>
+    <div class="float-left">
+        <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+                <label class="col-sm-2 col-form-label" for="year">Año</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="year" id="year"></select>
+            </div>
+            <div class="col-auto my-1">
+                <label for="month">Mes</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="month" id="month"></select>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="div-full">
     @if (session('status'))
@@ -16,6 +36,7 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('js/redirectRecords.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -81,6 +102,7 @@
             //Getting data
             var tableData = <?php echo json_encode($table); ?>;
             var functionarys = <?php echo json_encode($functionarys); ?>;
+            var currDate = <?php echo json_encode($date); ?>;
             // Write data on Tabulator table
             table = new Tabulator("#example-table", {
                 height:"420px",

@@ -6,7 +6,27 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+<div class="div-full row">
+    <div class="col">
+        <h1>Despliegue de Información <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+    </div>
+    <div class="float-left">
+        <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+                <label class="col-sm-2 col-form-label" for="year">Año</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="year" id="year"></select>
+            </div>
+            <div class="col-auto my-1">
+                <label for="month">Mes</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="month" id="month"></select>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="div-full">
     @if (session('status'))
@@ -16,6 +36,8 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('js/redirectRecords.js')}}"></script>
+    <script src="{{asset('js/rem.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -80,47 +102,47 @@
             //Getting data
             var tableData = <?php echo json_encode($data); ?>;
             var list = <?php echo json_encode($list); ?>;
+            var currDate = <?php echo json_encode($date); ?>;
             // Write data for download
             var table = new Tabulator("#example-table", {
-                height:"420px",
-                data:tableData,
+                height: "420px",
+                data: tableData,
                 // autoColumns: true,
-                columns: [
-                    {title:"Actividad", field:"actividad"},
-                    {title:"Especialidad", field:"especialidad"},
-                    {//create column group
-                        title:"Total",
-                        columns:[
-                        {title:"Ambos Sexos", field:"Ambos", width:120, bottomCalc:"sum"},
-                        {title:"Hombres", field:"Hombres", width:120, bottomCalc:"sum"},
-                        {title:"Mujeres", field:"Mujeres", width:120, bottomCalc:"sum"},
+                columns: [{
+                        title: "Actividad",
+                        field: "actividad"
+                    },
+                    {
+                        title: "Especialidad",
+                        field: "especialidad"
+                    },
+                    { //create column group
+                        title: "Total",
+                        columns: [{
+                                title: "Ambos Sexos",
+                                field: "Ambos",
+                                width: 120,
+                                bottomCalc: "sum"
+                            },
+                            {
+                                title: "Hombres",
+                                field: "Hombres",
+                                width: 120,
+                                bottomCalc: "sum"
+                            },
+                            {
+                                title: "Mujeres",
+                                field: "Mujeres",
+                                width: 120,
+                                bottomCalc: "sum"
+                            },
                         ],
                     },
                 ],
-            });
-            // Complete table
-            for(i=0 ; i<list.length ; i++){
-                table.addColumn(
-                    {//create column group
-                        title:`${list[i]}`,
-                        columns:[
-                            {title:"Hombres", field:`${list[i]} - H`, width:150, bottomCalc:"sum"},
-                            {title:"Mujeres", field:`${list[i]} - M`, width:150, bottomCalc:"sum"},
-                        ],
-                    }, false);
-            };
-            // Add the last two columns
-            table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150, bottomCalc:"sum"}, false);
-            table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
-            //trigger download of data.xlsx file
-            $("#download-xlsx").click(function() {
-                table.download("xlsx", "data.xlsx", {
-                    sheetName: "Reporte"
-                });
             });
         </script>
     </div>
 </div>
 @endsection
 @push('styles')
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">

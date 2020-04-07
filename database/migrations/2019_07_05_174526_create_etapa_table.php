@@ -15,7 +15,8 @@ class CreateEtapaTable extends Migration
     {
         Schema::create('etapa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+            $table->timestamps()->nullable();
+            $table->date('pci');
 
             $table->unsignedBigInteger('programa_id');
             $table->unsignedBigInteger('alta_id')->nullable();
