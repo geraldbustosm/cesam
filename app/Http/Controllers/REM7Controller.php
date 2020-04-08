@@ -19,15 +19,13 @@ class REM7Controller extends Controller
      * The MAIN function is ShowReports, is the one that make the union between queries
      */
 
-    public function showRem7()
+    public function showRem7(Request $request)
     {
-        $date = Carbon::now();
-        return $this->showReport($date);
-    }
-
-    public function showRem7Date(Request $request)
-    {
-        $date = Carbon::createFromDate($request->year, $request->month, 1);
+        if ($request->year) {
+            $date = Carbon::createFromDate($request->year, $request->month, 1);
+        } else {
+            $date = Carbon::now();
+        }
         return $this->showReport($date);
     }
 

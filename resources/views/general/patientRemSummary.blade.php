@@ -5,7 +5,28 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+
+<div class="div-full row">
+    <div class="col">
+        <h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
+    </div>
+    <form class="float-left" name="onSubmit" action="{{ url('prestaciones/ingresos/resumen') }}">
+        <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+                <label class="col-sm-2 col-form-label" for="year">Año</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="year" id="year"></select>
+            </div>
+            <div class="col-auto my-1">
+                <label for="month">Mes</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="month" id="month"></select>
+            </div>
+        </div>
+    </form>
+</div>
 
 <div class="div-full">
     @if (session('status'))
@@ -15,6 +36,7 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('js/redirectRecords.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -77,34 +99,32 @@
                 table.clearFilter();
             });
 
+            //define some sample data
+            var tableData = <?php echo json_encode($dataList); ?>;
+            var currDate = <?php echo json_encode($date); ?>;
+
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
                 height: "420px",
+                data: tableData,
                 movableColumns: true,
                 columns: [
                     {title:"Programa", field:"programa"}
                 ],
-            });
-
-            //define some sample data
-            var tabledata = <?php echo json_encode($dataList); ?>;
-            console.log(tabledata);         
+            });   
 
             // Complete table
             var infoInfanto = [];
             var infoAdulto = [];
-            var size = tabledata[0][tabledata[0].programa].length;
+            var size = tableData[0][tableData[0].programa].length;
             for(i=0 ; i<size ; i++){
-                infoInfanto[i] = {title:`${tabledata[0][tabledata[0].programa][i]}`, field:`${tabledata[0][tabledata[0].programa][i]}_m`, width:150, bottomCalc:"sum"};
+                infoInfanto[i] = {title:`${tableData[0][tableData[0].programa][i]}`, field:`${tableData[0][tableData[0].programa][i]}_m`, width:150, bottomCalc:"sum"};
             };
             for(i=0 ; i<size ; i++){
-                infoAdulto[i] = {title:`${tabledata[0][tabledata[0].programa][i]}`, field:`${tabledata[0][tabledata[0].programa][i]}_M`, width:150, bottomCalc:"sum"};
+                infoAdulto[i] = {title:`${tableData[0][tableData[0].programa][i]}`, field:`${tableData[0][tableData[0].programa][i]}_M`, width:150, bottomCalc:"sum"};
             };
             table.addColumn({title:"Menores de 15 años", columns:infoInfanto }, false);
             table.addColumn({title:"Mayores de 15 años", columns:infoAdulto }, false);
-
-            //load sample data into the table
-            table.setData(tabledata);
 
             //trigger download of data.xlsx file
             $("#download-xlsx").click(function() {

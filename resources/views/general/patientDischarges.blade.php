@@ -6,10 +6,31 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información
-    <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
-    <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
-</h1>
+
+<div class="div-full row">
+    <div class="col">
+        <h1>Despliegue de Información
+            <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
+            <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
+        </h1>
+    </div>
+    <form class="float-left" name="onSubmit" action="{{ url('prestaciones/egresos') }}">
+        <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+                <label class="col-sm-2 col-form-label" for="year">Año</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="year" id="year"></select>
+            </div>
+            <div class="col-auto my-1">
+                <label for="month">Mes</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="month" id="month"></select>
+            </div>
+        </div>
+    </form>
+</div>
 
 <div class="div-full">
     @if (session('status'))
@@ -19,6 +40,7 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('js/redirectRecords.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -96,9 +118,15 @@
                 table.clearFilter();
             });
 
+            //define some sample data
+            var tableData = <?php echo json_encode($data); ?>;
+            var list = <?php echo json_encode($list); ?>;
+            var currDate = <?php echo json_encode($date); ?>;
+
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
                 height: "420px",
+                data: tableData,
                 movableColumns: true,
                 columns: [
                     {title:"Fecha egreso", field:"fecha_egreso"},
@@ -123,17 +151,10 @@
                 ],
             });
 
-            //define some sample data
-            var tabledata = <?php echo json_encode($data); ?>;
-            var list = <?php echo json_encode($list); ?>;
-
             // Complete table
             for(i=0 ; i<list.length ; i++){
                 table.addColumn({ title:`Diagnóstico ${i+1}`, field:`diagnostico_${i}`, width:150}, false);
             };
-
-            //load sample data into the table
-            table.setData(tabledata);
 
             //trigger redirect to REM view
             function redirectREM() {

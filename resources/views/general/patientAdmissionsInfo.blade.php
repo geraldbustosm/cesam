@@ -6,10 +6,32 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
-<h1>Despliegue de Información
-    <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
-    <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
-</h1>
+
+<div class="div-full row">
+    <div class="col">
+        <h1>Despliegue de Información
+            <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a>
+            <a href="#" onclick="redirectREM()"><i title='Ver REM 5' class="material-icons">forward</i></a>
+        </h1>
+    </div>
+    <form class="float-left" name="onSubmit" action="{{ url('prestaciones/ingresos/info') }}">
+        <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+                <label class="col-sm-2 col-form-label" for="year">Año</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="year" id="year"></select>
+            </div>
+            <div class="col-auto my-1">
+                <label for="month">Mes</label>
+            </div>
+            <div class="col-auto my-1">
+                <select class="custom-select mr-sm-2" name="month" id="month"></select>
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="div-full">
     @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -18,6 +40,7 @@
     @endif
     <!-- Adding script using on this view -->
     <script src="{{asset('js/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('js/redirectRecords.js')}}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
 
     <div>
@@ -79,10 +102,17 @@
 
                 table.clearFilter();
             });
+            
+
+            //define some sample data
+            var tableData = <?php echo $main; ?>;
+            var list = <?php echo $list; ?>;
+            var currDate = <?php echo $date; ?>;
 
             //create Tabulator on DOM element with id "example-table"
             var table = new Tabulator("#example-table", {
                 height: "420px",
+                data: tableData,
                 movableColumns: true,
                 columns: [
                     {title:"Ingreso", field:"diagnostico"},
@@ -96,10 +126,6 @@
                     },
                 ],
             });
-
-            //define some sample data
-            var tabledata = <?php echo $main; ?>;
-            var list = <?php echo $list; ?>
 
             // Complete table
             for(i=0 ; i<list.length ; i++){
@@ -115,9 +141,6 @@
             // Add the last two columns
             table.addColumn({ title:"Beneficiarios", field:"Beneficiarios", width:150, bottomCalc:"sum"}, false);
             table.addColumn({ title:"Niños, Niñas, Adolescentes y Jóvenes Población SENAME", field:"menoresSENAME", width:150, bottomCalc:"sum"}, false);
-
-            //load sample data into the table
-            table.setData(tabledata);
 
             //trigger redirect to REM Summary view
             function redirectREM() {

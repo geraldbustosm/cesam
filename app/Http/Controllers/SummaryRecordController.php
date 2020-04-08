@@ -14,15 +14,13 @@ class SummaryRecordController extends Controller
      * This one get all information for the report like prevition, attendance, activity, procedance, dex, code, ps-fam, birthdate, etc.
      */
 
-    public function showSummaryRecords()
+    public function showSummaryRecords(Request $request)
     {
-        $date = Carbon::now();
-        return $this->showReport($date);
-    }
-
-    public function showSummaryDate(Request $request)
-    {
-        $date = Carbon::createFromDate($request->year, $request->month, 1);
+        if ($request->year) {
+            $date = Carbon::createFromDate($request->year, $request->month, 1);
+        } else {
+            $date = Carbon::now();
+        }
         return $this->showReport($date);
     }
 

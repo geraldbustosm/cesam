@@ -267,16 +267,12 @@ Route::get('prestaciones/ingresos/info', 'AdmissionDischargeController@showInfoA
 Route::get('prestaciones/ingresos/resumen', 'AdmissionDischargeController@showSummaryAddmissionAndDischarge')->middleware('checkrole:1|2|3');
 // Mensual
 Route::get('prestaciones/mensual', 'MonthlyRecordController@showMonthlyRecords')->middleware('checkrole:1|2|3');
-Route::get('prestaciones/mensual/{year}/{month}', 'MonthlyRecordController@showMonthlyDate')->middleware('checkrole:1|2|3');
 // Resumen
 Route::get('prestaciones/resumen', 'SummaryRecordController@showSummaryRecords')->middleware('checkrole:1|2|3');
-Route::get('prestaciones/resumen/{year}/{month}', 'SummaryRecordController@showSummaryDate')->middleware('checkrole:1|2|3');
 // REM
 Route::get('prestaciones/rem', 'RemController@showRemRecords')->middleware('checkrole:1|2|3');
-Route::get('prestaciones/rem/{year}/{month}', 'RemController@showRecordsDate')->middleware('checkrole:1|2|3');
 // REM 7
 Route::get('prestaciones/rem7', 'REM7Controller@showRem7')->middleware('checkrole:1|2|3');
-Route::get('prestaciones/rem7/{year}/{month}', 'REM7Controller@showRem7Date')->middleware('checkrole:1|2|3');
 /***************************************************************************************************************************
                                                 SUPPORT FUNCTIONS SECTION
  ****************************************************************************************************************************/

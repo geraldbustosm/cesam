@@ -16,15 +16,13 @@ class RemController extends Controller
      * The MAIN function is ShowReports, is the one that make the union between both queries
      */
 
-    public function showRemRecords()
+    public function showRemRecords(Request $request)
     {
-        $date = Carbon::now();
-        return $this->showReport($date);
-    }
-
-    public function showRecordsDate(Request $request)
-    {
-        $date = Carbon::createFromDate($request->year, $request->month, 1);
+        if ($request->year) {
+            $date = Carbon::createFromDate($request->year, $request->month, 1);
+        } else {
+            $date = Carbon::now();
+        }
         return $this->showReport($date);
     }
 
@@ -110,7 +108,7 @@ class RemController extends Controller
         // Return to the view
         return view('general.recordsRem', compact('data', 'list', 'date'));
     }
-    
+
     // Query original for REM
     public function queryRem1($date)
     {

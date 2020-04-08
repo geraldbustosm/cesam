@@ -2,24 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Diagnosis;
+use App\Patient;
+use App\Provenance;
+use App\ReleaseGroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdmissionDischargeController extends Controller
 {
+
+    public function showAdmissionDischarge(Request $request)
+    {
+        if ($request->year) {
+            $date = Carbon::createFromDate($request->year, $request->month, 1);
+        } else {
+            $date = Carbon::now();
+        }
+        return $this->showReport($date);
+    }
+
+    public function showInfoAddmissionAndDischarge(Request $request)
+    {
+        if ($request->year) {
+            $date = Carbon::createFromDate($request->year, $request->month, 1);
+        } else {
+            $date = Carbon::now();
+        }
+        return $this->showInfoReport($date);
+    }
+
+    public function showSummaryAddmissionAndDischarge(Request $request)
+    {
+        if ($request->year) {
+            $date = Carbon::createFromDate($request->year, $request->month, 1);
+        } else {
+            $date = Carbon::now();
+        }
+        return $this->showSummaryReport($date);
+    }
     /***************************************************************************************************************************
                                                     REPORTS
      ****************************************************************************************************************************/
     // View Admission/Discharge
-    public function showAdmissionDischarge()
+    public function showReport($date)
     {
-        // Variables
-        $month = Carbon::now()->month;
         // 
         $url = explode("/", url()->current());
         $currUrl = strtolower($url[count($url) - 1]);
-        ($currUrl == "ingresos" ? $data = $this->infoQuery1(1, $month) : $data = $this->infoQuery1(2, $month));
+        ($currUrl == "ingresos" ? $data = $this->infoQuery1(1, $date) : $data = $this->infoQuery1(2, $date));
         $allDiagnosis = DB::table('etapa_posee_diagnostico')
             ->join('diagnostico', 'diagnostico.id', '=', 'etapa_posee_diagnostico.diagnostico_id')
             ->get();
@@ -59,18 +91,19 @@ class AdmissionDischargeController extends Controller
                 }
             }
         }
+        $date = $date->format('Y-m-d');
         // Return to the view
         if ($currUrl == "ingresos") {
-            return view('general.patientAdmissions', compact('data', 'list'));
+            return view('general.patientAdmissions', compact('data', 'list', 'date'));
         } else {
-            return view('general.patientDischarges', compact('data', 'list'));
+            return view('general.patientDischarges', compact('data', 'list', 'date'));
         }
     }
     // Query with with all info of admission/discharges
-    public function infoQuery1($status, $month)
+    public function infoQuery1($status, $date)
     {
         $arr = [];
-        $arr = [$status, $month];
+        $arr = [$status, $date];
         $data =  DB::table('etapa')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->join('programa', 'programa.id', '=', 'etapa.programa_id')
@@ -88,9 +121,12 @@ class AdmissionDischargeController extends Controller
             ->where('atencion.activa', 1)
             ->when($arr, function ($query, $arr) {
                 if ($arr[0] == 2) {
-                    return $query->whereMonth('alta.created_at', $arr[1])->where('etapa.activa', 0);
+                    return $query->whereMonth('alta.created_at', $arr[1]->month)
+                        ->whereYear('alta.created_at', $arr[1]->year)
+                        ->where('etapa.activa', 0);
                 } else if ($arr[0] == 1) {
-                    return $query->whereMonth('etapa.created_at', $arr[1]);
+                    return $query->whereMonth('etapa.created_at', $arr[1]->month)
+                        ->whereYear('etapa.created_at', $arr[1]->year);
                 }
             })
             ->select(
@@ -126,15 +162,13 @@ class AdmissionDischargeController extends Controller
                                                     REPORTS INFO
      ****************************************************************************************************************************/
     // View with report of addmission/discharges
-    public function showInfoAddmissionAndDischarge()
+    public function showInfoReport($date)
     {
-        // Variables
-        $month = Carbon::now()->month;
         // Get url for check if is addmission or discharge
         $url = explode("/", url()->current());
         $currUrl = strtolower($url[count($url) - 2]);
         // Depends of which one is, we call the query with release/stage created at this month
-        ($currUrl == "ingresos" ? $data = $this->infoQuery2(1, $month) : $data = $this->infoQuery2(2, $month));
+        ($currUrl == "ingresos" ? $data = $this->infoQuery2(1, $date) : $data = $this->infoQuery2(2, $date));
         // Some variables
         // Range of age
         $end = 80;
@@ -247,17 +281,20 @@ class AdmissionDischargeController extends Controller
             array_push($listData, $obj);
         }
 
+        $date = $date->format('Y-m-d');
+
         // Return to the view
         if ($currUrl == "ingresos") {
-            return view('general.patientAdmissionsInfo', ['main' => json_encode($listData), 'list' => json_encode($list), 'diagnosis' => json_encode($diagnosis)]);
+            return view('general.patientAdmissionsInfo', ['main' => json_encode($listData), 'list' => json_encode($list), 'diagnosis' => json_encode($diagnosis), 'date' => json_encode($date)]);
         } else {
-            return view('general.patientDischargesInfo', ['main' => json_encode($listData), 'list' => json_encode($list), 'diagnosis' => json_encode($diagnosis)]);
+            return view('general.patientDischargesInfo', ['main' => json_encode($listData), 'list' => json_encode($list), 'diagnosis' => json_encode($diagnosis), 'date' => json_encode($date)]);
         }
     }
+
     // Query with necessary data for reports
-    public function infoQuery2($status, $month)
+    public function infoQuery2($status, $date)
     {
-        $arr = [$status, $month];
+        $arr = [$status, $date];
         $data =  DB::table('etapa')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->join('etapa_posee_diagnostico', 'etapa_posee_diagnostico.etapa_id', '=', 'etapa.id')
@@ -268,9 +305,12 @@ class AdmissionDischargeController extends Controller
             ->leftJoin('grupo_alta', 'grupo_alta.id', '=', 'alta.grupo_id')
             ->when($arr, function ($query, $arr) {
                 if ($arr[0] == 2) {
-                    return $query->whereMonth('alta.created_at', $arr[1])->where('etapa.activa', 0);
+                    return $query->whereMonth('alta.created_at', $arr[1]->month)
+                        ->whereYear('alta.created_at', $arr[1]->year)
+                        ->where('etapa.activa', 0);
                 } else if ($arr[0] == 1) {
-                    return $query->whereMonth('etapa.created_at', $arr[1]);
+                    return $query->whereMonth('etapa.created_at', $arr[1]->month)
+                        ->whereYear('etapa.created_at', $arr[1]->year);
                 }
             })
             ->select(
@@ -292,12 +332,10 @@ class AdmissionDischargeController extends Controller
                                                     SUMMARY OF REPORTS
      ****************************************************************************************************************************/
     // View with report of addmission/discharges
-    public function showSummaryAddmissionAndDischarge()
+    public function showSummaryReport($date)
     {
-        // Variables
-        $month = Carbon::now()->month;
         // Get main data
-        $data = $this->infoQuery3($month);
+        $data = $this->infoQuery3($date);
         // Set programs 'infanto' and 'adulto', but we can add more (remember change query3)
         $programs = ['Infanto', 'Adulto'];
         // Get all provenances
@@ -334,17 +372,20 @@ class AdmissionDischargeController extends Controller
             // Storage the object on the list
             array_push($dataList, $obj);
         }
+        $date = $date->format('Y-m-d');
         // Return to the view
-        return view('general.patientRemSummary', compact('dataList'));
+        return view('general.patientRemSummary', compact('dataList', 'date'));
     }
+
     // Query with data for summary report
-    public function infoQuery3($month)
+    public function infoQuery3($date)
     {
         $data =  DB::table('etapa')
             ->join('procedencia', 'procedencia.id', '=', 'etapa.procedencia_id')
             ->join('programa', 'programa.id', '=', 'etapa.programa_id')
             ->join('paciente', 'paciente.id', '=', 'etapa.paciente_id')
-            ->whereMonth('etapa.created_at', $month)
+            ->whereMonth('etapa.created_at', $date->month)
+            ->whereYear('etapa.created_at', $date->year)
             ->select(
                 'etapa.id',
                 'procedencia.descripcion as procedencia',

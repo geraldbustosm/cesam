@@ -10,7 +10,7 @@
     <div class="col">
         <h1>Despliegue de Información   <a href="#" id="download-xlsx" style="padding: 5px;"><i title='Descargar tabla' class="material-icons">get_app</i></a></h1>
     </div>
-    <div class="float-left">
+    <form class="float-left" name="onSubmit" action="{{ url('prestaciones/resumen') }}">
         <div class="form-row align-items-center">
             <div class="col-auto my-1">
                 <label class="col-sm-2 col-form-label" for="year">Año</label>
@@ -25,7 +25,7 @@
                 <select class="custom-select mr-sm-2" name="month" id="month"></select>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <div class="div-full">

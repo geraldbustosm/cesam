@@ -75,8 +75,7 @@ function redirectRecords() {
     $('#month').change(function () {
         var month = $(this).val();
         var year = $('#year').val();
-        var parts = window.location.href.split('/');
-        window.location.href = `/${parts[3]}/${parts[4]}/${year}/${month}`;
+        document.onSubmit.submit();
     })
 }
 /***************************************************************************************************************************
