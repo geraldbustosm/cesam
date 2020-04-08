@@ -40,7 +40,7 @@
                 <tr>
                     <td><strong>{{ " ".$kriteria1." " }}</strong></td>
                     @foreach($columns as $kriteria2 => $nombre1)
-                    @inject('provider', 'App\Http\Controllers\AdminController')
+                    @inject('provider', 'app\Http\Controllers\AdminController')
                     
                     <td>                  
                     <label class="pure-material-checkbox">        
