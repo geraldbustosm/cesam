@@ -23,7 +23,9 @@
 		</div>
 	@endif
 	<form method="post" action="{{ url('asignar/especialidad') }}">
-		@csrf
+		@csrf        
+        @inject('provider', 'App\Http\Controllers\AdminController')
+
         <div style="overflow-x:auto;">
             <table  class="table table-striped table-bordered table-sm">
                 <thead>
@@ -39,7 +41,6 @@
                     <tr>
                         <td><strong>{{ " ".$kriteria1." " }}</strong></td>
                         @foreach($columns as $kriteria2 => $nombre1)
-                        @inject('provider', 'app\Http\Controllers\AdminController')
                         
                         <td>                  
                         <label class="pure-material-checkbox">    

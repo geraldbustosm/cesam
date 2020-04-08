@@ -25,6 +25,7 @@
 	<form method="post" action="{{ url('asignar/especialidad-tipo') }}">
 		@csrf
         
+        @inject('provider', 'App\Http\Controllers\AdminController')
 
         <table  class="table table-striped table-bordered table-sm">
             <thead>
@@ -39,9 +40,7 @@
             @foreach($rows as $kriteria1 => $columns)
                 <tr>
                     <td><strong>{{ " ".$kriteria1." " }}</strong></td>
-                    @foreach($columns as $kriteria2 => $nombre1)
-                    @inject('provider', 'app\Http\Controllers\AdminController')
-                    
+                    @foreach($columns as $kriteria2 => $nombre1)                    
                     <td>                  
                     <label class="pure-material-checkbox">        
                     <input type="checkbox" 
