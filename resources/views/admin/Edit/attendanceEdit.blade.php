@@ -49,6 +49,9 @@
                             showMeridian: false
                         });
                     </script>
+                    <script>
+                        $('#timeInit').timepicker({ mode: '24hr' });
+                    </script>
                 </div>
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="timeEnd" class="form-group col-6">Hora termino de la atención</label>
