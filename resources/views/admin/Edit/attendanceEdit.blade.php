@@ -118,7 +118,7 @@
                     <select id="functionary" name="functionary" class="form-control" style="width:350px" required>
                         <option value="" selected disabled>Seleccione un Funcionario</option>
                         @foreach($functionarys as $functionary)
-                            <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
+                            <option value="{{$functionary->id}}" {{($attendance->funcionario_id) == $functionary->id ? 'selected' : ''}}> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -141,8 +141,8 @@
                 <div class="form-group">
                     <label for="selectA">Asistencia: </label>
                     <select name="selectA" class="form-control" style="width:350px">
-                        <option value="1" selected>Si </option>
-                        <option value="0">No</option>
+                        <option value="1" {{($attendance->asistencia ? 'selected' : '')}}>Si </option>
+                        <option value="0" {{(!$attendance->asistencia ? 'selected' : '')}}>No</option>
                     </select>
                 </div>
                 <script type="text/javascript">
@@ -151,6 +151,7 @@
                     $('#functionary').change(function() {
                         var functionaryID = $(this).val();
                         if (functionaryID) {
+                            $('#speciality').prop('required', true);
                             $.ajax({
                                 type: "GET",
                                 url: "{{url('lista-especialidades')}}?functionary_id=" + functionaryID,
@@ -162,7 +163,7 @@
                                         $("#speciality").empty();
                                         $("#provision").empty();
                                         $("#activity").empty();
-                                        $("#speciality").append('<option>Seleccione la especialidad</option>');
+                                        $("#speciality").append('<option value="">Seleccione la especialidad</option>');
                                         $.each(res, function(key, value) {
                                             $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
@@ -181,6 +182,7 @@
                         $('#errorAge').hide();
                         var specialityID = $(this).val();
                         if (specialityID) {
+                            $('#provision').prop('required', true);
                             $.ajax({
                                 type: "GET",
                                 url: "{{url('lista-prestaciones')}}?speciality_id=" + specialityID,
@@ -189,7 +191,7 @@
                                         btn[0].style = "";
                                         btn[1].style = "";
                                         $("#provision").empty();
-                                        $("#provision").append('<option>Seleccione la prestación</option>');
+                                        $("#provision").append('<option value="">Seleccione la prestación</option>');
                                         $.each(res, function(key, value) {
                                             $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
                                         });
@@ -205,14 +207,15 @@
 
                     $('#speciality').on('change', function() {
                         var specialityID = $(this).val();
-                        if (specialityID) {
+                        if (specialityID) {                            
+                            $('#activity').prop('required', true);
                             $.ajax({
                                 type: "GET",
                                 url: "{{url('lista-actividades')}}?speciality_id=" + specialityID,
                                 success: function(res) {
                                     if (res) {
                                         $("#activity").empty();
-                                        $("#activity").append('<option>Seleccione la actividad</option>');
+                                        $("#activity").append('<option value="">Seleccione la actividad</option>');
                                         $.each(res, function(key, value) {
                                             $("#activity").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
