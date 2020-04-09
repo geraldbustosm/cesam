@@ -20,7 +20,7 @@
         </ul>
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/usuario') }}">
+    <form method="post" action="{{ url('registrar/usuario') }}"  name="onSubmit" id="onSubmit">
         @csrf
         <!-- Nickname -->
         <div class="form-group">
@@ -68,7 +68,21 @@
     </form>
 </div>
 
+<!-- Scripts for view -->
+<script src="{{asset('js/rutValidator.js')}}"></script>
 <script>
     document.getElementById('people_Submenu').className += ' show';
+    // Submit listener
+    const form = document.getElementById('onSubmit');
+    form.addEventListener('submit', async (e) => {
+        // No reaload
+        e.preventDefault();
+        await CheckRUT(document.getElementById('rut')).then(res => {
+            if (res)
+                document.onSubmit.submit()
+            else
+                Swal.fire('Error!', `El rut no es válido`, 'error');
+        })
+    });
 </script>
 @endsection

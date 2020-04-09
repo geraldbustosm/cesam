@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{asset('img/favicon.png')}}" sizes="48x48" type="image/png">
     <!-- CSS -->
+    <link rel="stylesheet" href="{{asset('css/sweetalert2.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/material-icons.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/gijgo.min.css')}}">
@@ -19,6 +20,7 @@
     <script src="{{asset('js/gijgo.min.js')}}"></script>
     <script src="{{asset('js/pace.js')}}"></script>
     <script src="{{asset('js/messages.es-es.min.js')}}"></script>
+    <script src="{{asset('js/sweetalert2.min.js')}}"></script>
     <!-- Progress bar -->
     <script>
         paceOptions = {
