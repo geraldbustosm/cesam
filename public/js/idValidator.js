@@ -1,32 +1,23 @@
 /***************************************************************************************************************************
                                                     VARIABLES
 ****************************************************************************************************************************/
-var alertDanger = document.getElementById("danger");
-var alertSuccess = document.getElementById("success");
 var btn = document.getElementById('btnSubmit');
-// Setting alerts display = none
-alertDanger.style.display = "none";
-alertSuccess.style.display = "none";
 /***************************************************************************************************************************
                                                     MAIN FUNCTION
 ****************************************************************************************************************************/
 // Start the validation
 function validator() {
     // Listener for submit
-    btn.addEventListener("click", function () {
-        // Reset alerts
-        alertDanger.style.display = "none";
-        alertSuccess.style.display = "none";
+    btn.addEventListener("click", function() {
         // Getting button for submit, country and Rut / Passport
         var id = document.getElementById('dni');
         var pais = document.getElementById('pais');
         var status = checkCountry(id, pais);
         console.log(status);
         if (status) {
-            alertSuccess.style.display = "block";
             document.onSubmit.submit();
         } else {
-            alertDanger.style.display = "block";
+            Swal.fire('Error!', `El rut no es válido`, 'error');
         }
     });
 }

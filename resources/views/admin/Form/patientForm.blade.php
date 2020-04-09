@@ -33,12 +33,6 @@
 		<div class="form-group">
 			<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{ old('dni') }}" id="dni" name="dni" placeholder="Rut o pasaporte">
 		</div>
-		<!-- Check UID for Chilean -->
-		<div class="form-group">
-			<div class="alert alert-danger" role="alert" id="danger">
-				Rut inválido...
-			</div>
-		</div>
 		<!-- Names -->
 		<div class="form-group">
 			<div class="form-row">
@@ -101,32 +95,26 @@
 		</div>
 		<!-- Birthdate datepicker -->
 		<div class="form-group">
-			<label for="datepicker">Fecha de nacimiento</label>
+			<input id="datepicker" name="datepicker" placeholder="Fecha de nacimiento" required>
+			<script>
+				var config = {
+					format: 'dd/mm/yyyy',
+					locale: 'es-es',
+					uiLibrary: 'bootstrap4',
+					maxDate: new Date,
+					startView: 3,
+				};
+				$('#datepicker').datepicker(config);
+			</script>
 		</div>
+
+		<div class="form-group text-center">
+			<button type="submit" class="btn btn-primary" id="btnSubmit" >Registrar</button>
+		</div>
+
 		<div class="form-group">
-			<div class="form-row">			
-				<div class="col-3">
-					<input id="datepicker" name="datepicker" width="276" required>
-					<script>
-						var config = {
-							format: 'dd/mm/yyyy',
-							locale: 'es-es',
-							uiLibrary: 'bootstrap4',
-							maxDate: new Date,
-							startView: 3,
-						};
-						$('#datepicker').datepicker(config);
-					</script>
-				</div>
-				<div class="col">
-					<button type="submit" class="btn btn-primary" id="btnSubmit">Registrar</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-4">
 			<div class="overflow-auto" style="height:200px;">
 				@foreach($attributes as $attributes)
-
 				<div class="card">
 					<div class="checkbox-container">
 						<label class="checkbox-label">
@@ -137,10 +125,9 @@
 					<div class="input-title">{{ $attributes->descripcion}}</div>
 
 				</div>
-
 				@endforeach
 			</div>
-        </div>
+		</div>
 
 	</form>
 </div>

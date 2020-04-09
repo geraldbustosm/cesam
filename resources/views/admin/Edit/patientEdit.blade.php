@@ -42,16 +42,7 @@
 			<div class="col-3">
 				<input type="text" class="form-control {{ $errors->has('dni') ? ' is-invalid' : '' }}" value="{{$patient->dni}}" id="dni" name="dni" placeholder="Rut o pasaporte">
 			</div>
-		</div>
-		<br>
-		<div class="form-group">
-			<div class="alert alert-success" role="alert" id="success">
-				Rut / Pasaporte correcto!
-			</div>
-			<div class="alert alert-danger" role="alert" id="danger">
-				Rut inválido...
-			</div>
-		</div>
+		</div><br>
 
 		<!-- Names -->			
 		<div class="form-row">
@@ -103,10 +94,7 @@
 		<br>
 		<div class="form-row">
 			<div class="col-2">
-				<label for="datepicker">Fecha de nacimiento</label>
-			</div>
-			<div class="col-2">
-				<input id="datepicker" name="datepicker" value="{{$patient_birthdate}}" width="276" required>
+				<input id="datepicker" name="datepicker" value="{{$patient_birthdate}}" placeholder="Fecha de nacimiento" required>
 				<script>
 					var config = {
 						format: 'dd/mm/yyyy',
