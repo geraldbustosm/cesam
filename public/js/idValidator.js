@@ -28,7 +28,7 @@ function validator() {
 function checkCountry(id, country) {
     if (country.value.toLowerCase().includes('chile')) {
         console.log(country.value.toLowerCase());
-        // For Chilean check rut
+        // For Chilean validate rut
         return CheckRUT(id);
     } else {
         return true;
