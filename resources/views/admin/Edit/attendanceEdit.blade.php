@@ -49,8 +49,12 @@
                             showMeridian: false
                         });
                     </script>
+                </div>
+                <div class="form-group col-10">
+                    <label class="form-group col-12" for="time" class="form-group col-6">Prueba</label>
+                    <input id="timepicker" width="312" />
                     <script>
-                        $('#timeInit').timepicker({ mode: '24hr' });
+                        $('#timepicker').timepicker({ mode: '24hr' });
                     </script>
                 </div>
                 <div class="form-group col-10">
