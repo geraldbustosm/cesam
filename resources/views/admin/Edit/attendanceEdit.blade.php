@@ -41,7 +41,7 @@
                     <input class="form-control col-12" id="timeInit" name="timeInit"  value="{{$hora}}" required>
                     <script>
                         $('#timeInit').timepicker({
-                            format: 'HH.MM'
+                            mode: '24hr'
                             defaultTime: 'value',
                             minuteStep: 1,
                             disableFocus: true,
