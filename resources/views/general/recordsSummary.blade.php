@@ -101,7 +101,9 @@
             });
             //Getting data
             var tableData = <?php echo json_encode($table); ?>;
+            console.log(tableData)
             var functionarys = <?php echo json_encode($functionarys); ?>;
+            console.log(functionarys)
             var currDate = <?php echo json_encode($date); ?>;
             // Write data on Tabulator table
             table = new Tabulator("#example-table", {

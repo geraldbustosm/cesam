@@ -148,6 +148,10 @@
                 <script type="text/javascript">
                     var btn = document.getElementsByName("register");
 
+                    /**
+                     * This function must be here because ajax dosn't work on js file
+                     */
+
                     $('#functionary').change(function() {
                         var functionaryID = $(this).val();
                         if (functionaryID) {
