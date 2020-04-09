@@ -49,7 +49,7 @@ function CheckRUT(object) {
         }
 
         for (i = 0; i < crut.length; i++)
-            if (crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-') {
+            if (crut.charAt(i) != ' ' && crut.charAt(i) != '.' && crut.charAt(i) != '-' && crut.charAt(i) != ',') {
                 tmpstr = tmpstr + crut.charAt(i);
             }
         rut = tmpstr;
