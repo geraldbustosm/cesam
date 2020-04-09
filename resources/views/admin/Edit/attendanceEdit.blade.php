@@ -94,18 +94,19 @@
                                 }).join(':');
                                 document.getElementById('duration').value = result;
                             } else {
+                                document.getElementById('duration').value = '00:00';
                                 alert("Error en la duración");
                             }
                         }
                     </script>
                 </div>
-                <div class="form-group col-10">
-                    <label for="selectA">Asistencia: </label>
-                    <select name="selectA" class="form-control col-12">
-                        <option value="1" selected>Si </option>
-                        <option value="0">No</option>
-                    </select>
-                </div>
+                <div class="form-group col-10" style="min-width:200px">
+                        <label for="title">Tipo de paciente</label>
+                        <select name="selectType" class="form-control" style="min-width:200px">
+                            <option value="1" {{($attendance->repetido ? 'checked' : '' )}}>Repetido</option>
+                            <option value="0">Nuevo</option>
+                        </select>
+                    </div>
             </div>
             <div class="column">
                 
@@ -117,7 +118,7 @@
                     <select id="functionary" name="functionary" class="form-control" style="width:350px">
                         <option value="" selected disabled>Seleccione un Funcionario</option>
                         @foreach($functionarys as $functionary)
-                            <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
+                            <option value="{{$functionary->id}}" {{($functionary->id == $attendance->funcionario_id ? 'selected' : '')}}> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -136,6 +137,13 @@
                 <div class="form-group">
                     <label for="title">Seleccione la actividad:</label>
                     <select name="activity" id="activity" class="form-control" style="width:350px"></select>
+                </div>
+                <div class="form-group">
+                    <label for="selectA">Asistencia: </label>
+                    <select name="selectA" class="form-control" style="width:350px">
+                        <option value="1" selected>Si </option>
+                        <option value="0">No</option>
+                    </select>
                 </div>
                 <script type="text/javascript">
                     var btn = document.getElementsByName("register");

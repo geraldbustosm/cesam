@@ -91,13 +91,13 @@ class AttendanceController extends Controller
         // the variables name of object must be the same that database for save it
         // from attendanceForm: provision, id_stage, DNI, speciality, assistance, duration of attendance, date of attendance
         // attendancte -> funcionario_id, etapa_id, prestacion_id, fecha, hora, asistencia, duracion
-        $attendance->funcionario_id = $request->functionary;
+        ($request->functionary ? $attendance->funcionario_id = $request->functionary : false);
         $attendance->etapa_id = $request->id_stage;
-        $attendance->prestacion_id = $request->get('provision');
+        ($request->get('provision') ? $attendance->prestacion_id = $request->get('provision') : false);
         $attendance->asistencia = $request->get('selectA');
         $attendance->hora = $request->get('timeInit');
-        $attendance->actividad_id = $request->get('activity');
-        $attendance->duracion = $request->get('duration');
+        ($request->get('activity') ? $attendance->actividad_id = $request->get('activity') : false);
+        ($request->get('duration') ? $attendance->duracion = $request->get('duration') : false);
         // Re-format database date to datepicker type
         $var = $request->get('datepicker');
         $date = str_replace('/', '-', $var);
