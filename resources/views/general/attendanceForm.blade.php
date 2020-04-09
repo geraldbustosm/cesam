@@ -130,10 +130,18 @@
                     <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge" style="min-width:200px">
                         La edad del paciente no esta en el rango de la prestación!!!
                     </div>
-                    <div class="form-group col-10" style="margin-top: 20px">
+                    <div class="form-group col" style="margin-top: 20px">
                         <label for="title">Seleccione la actividad:</label>
                         <select name="activity" id="activity" class="form-control" required></select>
                     </div>
+                    <div class="form-group col" style="margin-top: 20px">
+                        <label for="selectA">Asistencia: </label>
+                        <select name="selectA" id="selectA" class="form-control col-12">
+                            <option value="1" selected>Si </option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
                     <script type="text/javascript">
                         var btn = document.getElementsByName("register");
 
@@ -258,13 +266,6 @@
                             }
                         });
                     </script>
-                    <div class="form-group col-10" style="margin-top: 20px">
-                        <label for="selectA">Asistencia: </label>
-                        <select name="selectA" id="selectA" class="form-control col-12">
-                            <option value="1" selected>Si </option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
                     <div class="form-group col-10" class="register">
                         <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                         <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
