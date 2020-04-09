@@ -37,7 +37,7 @@
                     </script>
                 </div>
                 <div class="form-group col-10">
-                    <label class="form-group col-12" for="time" class="form-group col-6">Hora inicio de la atención</label>
+                    <label class="form-group col-12" for="time" class="form-group col-6">Hora inicio de la atención Prueba</label>
                     <input class="form-control col-12" id="timeInit" name="timeInit"  value="{{$hora}}" required>
                     <script>
                         $('#timeInit').timepicker({
@@ -51,14 +51,14 @@
                     </script>
                 </div>
                 <div class="form-group col-10">
-                    <label class="form-group col-12" for="time" class="form-group col-6">Prueba</label>
+                    <label class="form-group col-12" for="time" class="form-group col-6">Prueba </label>
                     <input id="timepicker" width="312" />
                     <script>
                         $('#timepicker').timepicker({ mode: '24hr' });
                     </script>
                 </div>
                 <div class="form-group col-10">
-                    <label class="form-group col-12" for="timeEnd" class="form-group col-6">Hora termino de la atención</label>
+                    <label class="form-group col-12" for="timeEnd" class="form-group col-6">Hora termino de la atención Prueba</label>
                     <input class="form-control col-12" id="timeEnd" name="timeEnd" value="" required>
                     <script>
                         $('#timeEnd').timepicker({
