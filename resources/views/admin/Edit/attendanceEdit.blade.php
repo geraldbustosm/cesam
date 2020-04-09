@@ -126,7 +126,7 @@
                     <select name="speciality" id="speciality" class="form-control" style="width:350px"></select>
                 </div>
                 <div class="form-group">
-                    <label for="title">Seleccione la prestación:</label>
+                    <label for="title">Seleccione la glosa:</label>
                     <select name="provision" id="provision" class="form-control" style="width:350px"></select>
                 </div>
 

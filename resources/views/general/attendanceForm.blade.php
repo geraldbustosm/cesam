@@ -123,7 +123,7 @@
                         <select name="speciality" id="speciality" class="form-control" required></select>
                     </div>
                     <div class="form-group col-12" style="margin-top: 20px">
-                        <label for="title">Seleccione la prestación:</label>
+                        <label for="title">Seleccione la glosa:</label>
                         <select name="provision" id="provision" class="form-control" required></select>
                     </div>
                     <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge" style="min-width:200px">
