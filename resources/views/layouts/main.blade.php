@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{asset('img/favicon.png')}}" sizes="48x48" type="image/png">
     <!-- CSS -->
@@ -30,6 +30,11 @@
 </head>
 
 <body>
+    <div class="hamburger closed">
+    <div class="line one"></div>
+    <div class="line two"></div>
+    <div class="line three"></div>
+    </div>
     <div class="top-bar">
         <div><img class="" src="{{asset('img/logo.png')}}" alt="" width="185" height="46"></div>
         <!-- El logout no se puede realizar por link, puesto que sería enviarlo por get y este debe
@@ -44,7 +49,7 @@
         </div>
     </div>
     <div class="wrap">
-        <div class="dashboard">
+        <div class="dashboard menu">
             <nav>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -190,8 +195,60 @@
                 </ul>
             </nav>
         </div>
-        <div class="page-content">@yield('content')</div>
+        <div class="page-content col-xs-12 col-sm-12">@yield('content')</div>
     </div>
 </body>
+<script>
+    let icon = document.querySelector('.hamburger');
+    let menu = document.querySelector('.menu');
+    let one = document.querySelector('.one');
+    let two = document.querySelector('.two');
+    let three = document.querySelector('.three');
 
+
+    let open = () => {
+        one.style.transform = 'rotate(45deg)';
+        two.style.transform = 'rotate(-45deg)';
+        one.style.top = '12px';
+        two.style.top = '12px';
+        three.style.top = '24px';
+        three.style.opacity = '0';
+
+        menu.style.transform = 'translateX(0)';
+
+        icon.classList.remove('closed');
+        icon.classList.add('open');
+        
+        icon.removeEventListener('click', open);
+        icon.addEventListener('click', close);
+    };
+
+    let close = () => {
+        
+        one.style.transform = 'rotate(0)';
+        two.style.transform = 'rotate(0)';
+
+        three.style.opacity = '1';
+    
+        one.style.top = '0';
+        two.style.top = '12px';
+        three.style.top = '24px';
+
+        menu.style.transform = 'translateX(-100%)';
+
+        icon.classList.remove('open');
+        icon.classList.add('closed');
+    
+        icon.removeEventListener('click', close);
+        icon.addEventListener('click', open);
+    };
+
+
+    if(icon.classList.contains('closed')){
+        icon.addEventListener('click', open);
+    } else {
+        icon.addEventListener('click', close);
+    }
+</script>
+   
 </html>
