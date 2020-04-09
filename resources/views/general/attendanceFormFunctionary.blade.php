@@ -37,6 +37,7 @@
                     <input class="form-control col-12" id="timeInit" name="timeInit" value="" required>
                     <script>
                         $('#timeInit').timepicker({
+                            mode: '24hr',
                             defaultTime: 'value',
                             minuteStep: 1,
                             disableFocus: true,
@@ -50,6 +51,7 @@
                     <input class="form-control col-12" id="timeEnd" name="timeEnd" value="" required>
                     <script>
                         $('#timeEnd').timepicker({
+                            mode: '24hr',
                             defaultTime: 'value',
                             minuteStep: 1,
                             disableFocus: true,
