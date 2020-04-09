@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class CanastaController extends Controller
 {
     /**
      * Create a new controller instance.
