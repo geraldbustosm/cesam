@@ -115,10 +115,10 @@
                 </div>
                 <div class="panel-heading">Seleccione el funcionario</div>
                 <div class="form-group">
-                    <select id="functionary" name="functionary" class="form-control" style="width:350px">
+                    <select id="functionary" name="functionary" class="form-control" style="width:350px" required>
                         <option value="" selected disabled>Seleccione un Funcionario</option>
                         @foreach($functionarys as $functionary)
-                            <option value="{{$functionary->id}}" {{($functionary->id == $attendance->funcionario_id ? 'selected' : '')}}> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
+                            <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
                         @endforeach
                     </select>
                 </div>
