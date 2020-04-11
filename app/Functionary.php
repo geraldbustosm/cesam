@@ -35,7 +35,7 @@ class Functionary extends Model
   
   public function stage()
     {
-        return $this->hasMany('App\Stage');
+        return $this->hasMany('App\Stage', 'funcionario_id');
     }
   protected $table = 'funcionarios';
   

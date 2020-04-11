@@ -61,6 +61,9 @@ Route::post('usuarios', 'UserController@deletingUser')->middleware('checkrole:1'
 // Usuarios desactivados
 Route::get('usuarios/inactivos', 'UserController@showInactiveUsers')->middleware('checkrole:1');
 Route::post('usuarios/inactivos', 'UserController@activateUser')->middleware('checkrole:1');
+
+// Pacientes que posee un medico
+Route::get('funcionario/{id}/pacientes', 'FunctionaryController@showPatients');
 /***************************************************************************************************************************
                                                     INACTIVES
  ****************************************************************************************************************************/

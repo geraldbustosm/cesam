@@ -33,6 +33,10 @@ class Stage extends Model
   {
     return $this->attendance()->orderBy("fecha", "desc")->take(1);
   }
+
+  public function patient(){
+    return $this->belongsTo('App\Patient','paciente_id');
+  }
   protected $fillable = 
     [
       'id','diagnostico_id','programa_id','alta_id','sigges_id','procedencia_id','funcionario_id','paciente_id','activa'

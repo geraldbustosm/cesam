@@ -53,6 +53,37 @@ class FunctionaryController extends Controller
         return view('admin.Inactive.funtionaryInactive', compact('functionaries'));
     }
 
+    public function showPatients($id)
+    {
+        // Get functionary
+        $functionary = Functionary::where('id', $id)->where('activa', '1')->get()->first();
+        
+        if($functionary){
+            $especialidades = $functionary->speciality;
+
+            $esMedico = false;
+
+            foreach($especialidades as $especialidad){
+                if($especialidad->id == 1){
+                    $esMedico = true;
+                }
+            }
+            $patients = array();
+            
+            if($esMedico){
+                $etapas = $functionary->stage;
+
+                foreach($etapas as $etapa){
+                    if($etapa->activa == '1'){
+                        array_push($patients, $etapa->patient);
+                    }
+                }
+            }
+        }
+        
+        return view('admin.Views.functionaryPatients', compact('functionary','patients'));
+    }
+
     /***************************************************************************************************************************
                                                     CREATE FORM
      ****************************************************************************************************************************/
