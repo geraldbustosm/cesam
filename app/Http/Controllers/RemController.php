@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class RemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Show the reports of REM
      * Use 2 queries for get the information

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class AdmissionDischargeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function showAdmissionDischarge(Request $request)
     {

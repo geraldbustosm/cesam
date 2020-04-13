@@ -17,7 +17,9 @@ class CreateLogsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('descripcion');
+
             $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
