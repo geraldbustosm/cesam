@@ -68,7 +68,8 @@ function getBtns(data) {
     try {
         var active = data.activa;
         var tmp = ` <td>
-                    <a href='/funcionario/edit/${data.rut}'><i title='Editar' class='material-icons'>create</i></a>`;
+                    <a href='/funcionario/edit/${data.rut}'><i title='Editar' class='material-icons'>create</i></a>
+                    <a href='/funcionario/${data.id}/pacientes'><i title='Ver pacientes' class='material-icons'>description</i></a>`;
         if (active == 1) {
             tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
                     </td>`;
@@ -110,12 +111,12 @@ function filter(searchText) {
 // Wait 0.8 sec by every keyup and then call filter function
 function search() {
     // Listener for every keyup
-    searchbox.addEventListener("keyup", function () {
+    searchbox.addEventListener("keyup", function() {
         // Reset count and release timer
         var count = 1;
         clearInterval(timer);
         // Start count of 0.8 sec for do the filter
-        var timer = setInterval(function () {
+        var timer = setInterval(function() {
             count--;
             if (count == 0) {
                 // Get text from searchbox item (id of tag)

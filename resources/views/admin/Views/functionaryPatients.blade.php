@@ -5,7 +5,9 @@
 @section('content')
 <div class="div-full">
 @if($functionary)
-<h1>Médico: {{$functionary->user->primer_nombre }} {{$functionary->user->apellido_paterno}}</h1>
+<h1>Médico: {{$functionary->user->primer_nombre }} {{$functionary->user->apellido_paterno}}</h1><hr><br>
+
+<h3>Lista de pacientes:</h3><br>
 
 @if(count($patients) > 0)
 <!-- Table with users -->

@@ -169,10 +169,10 @@ class GeneralController extends Controller
     /***************************************************************************************************************************
                                                     LOGS PROCESS
      ****************************************************************************************************************************/
-    public function addLog($logAction){
+    public function addLog($logAction){        
+        $user = Auth::user();
         $logs = new Log();
         $logs->descripcion = $logAction;
-        $user = Auth::user();
         $logs->user_id = $user->id;
         $logs->save();
     }
