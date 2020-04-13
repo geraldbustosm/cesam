@@ -22,54 +22,20 @@ class PatientController extends Controller
      ****************************************************************************************************************************/
     public function showPatients()
     {
-        // Get patients from database where 'activa' attribute is 1 bits
-        $patients = Patient::join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
-            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
-            ->where('paciente.activa', 1)
-            ->select('paciente.id', 'DNI', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nacimiento', 'prevision.descripcion as prevision', 'sexo.descripcion as sexo', 'paciente.activa')
-            ->get();
+        // Get patients from database where 'activa' attribute is TRUE (1 bit)
+        $patients = $this->getPatients(1);
         // Count patients
         $cantPatients = $patients->count();
-        foreach ($patients as $patient) {
-            // Get patient's address
-            $address = Address::where('paciente_id', $patient->id)->first();
-            (strpos(strtolower($address->pais), 'chile') !== false ? $this->formatRut($patient) : false);
-            // Get age
-            $age = Carbon::createFromDate($patient->fecha_nacimiento);
-                $patient->fecha = $age->format('d/m/Y');
-                if ($age->age != 0) {
-                    $patient->edad = $age->diff(Carbon::now())->format('%y años');
-                } else {
-                    $patient->edad = $age->diff(Carbon::now())->format('%m meses y %d días');
-                }
-        }
         // Redirect to the view with list of: active patients, all previtions and all genders
         return view('general.patient', compact('patients', 'prev', 'sex', 'cantPatients'));
     }
 
     public function showInactivePatients()
     {
-        // Get patients from database where 'activa' attribute is 0 bits
-        $patients = Patient::join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
-            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
-            ->where('paciente.activa', 0)
-            ->select('paciente.id', 'DNI', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nacimiento', 'prevision.descripcion as prevision', 'sexo.descripcion as sexo', 'paciente.activa')
-            ->get();
+        // Get patients from database where 'activa' attribute is FALSE (0 bits)
+        $patients = $this->getPatients(0);
         // Count patients
         $cantPatients = $patients->count();
-        foreach ($patients as $patient) {
-            // Get patient's address
-            $address = Address::where('paciente_id', $patient->id)->first();
-            (strpos(strtolower($address->pais), 'chile') !== false ? $this->formatRut($patient) : false);
-            // Get age
-            $age = Carbon::createFromDate($patient->fecha_nacimiento);
-                $patient->fecha = $age->format('d/m/Y');
-                if ($age->age != 0) {
-                    $patient->edad = $age->diff(Carbon::now())->format('%y años');
-                } else {
-                    $patient->edad = $age->diff(Carbon::now())->format('%m meses y %d días');
-                }
-        }
         // Redirect to the view with list of: inactive patients, all previtions and all genders
         return view('admin.Inactive.patientInactive', compact('patients', 'prev', 'sex'));
     }
@@ -327,5 +293,28 @@ class PatientController extends Controller
         }
         $index->dni = $sRutFormateado;
         return $index;
+    }
+
+    public function getPatients($active)
+    {
+        $patients = Patient::join('sexo', 'sexo.id', '=', 'paciente.sexo_id')
+            ->join('prevision', 'prevision.id', '=', 'paciente.prevision_id')
+            ->where('paciente.activa', $active)
+            ->select('paciente.id', 'DNI', 'nombre1', 'nombre2', 'apellido1', 'apellido2', 'fecha_nacimiento', 'prevision.descripcion as prevision', 'sexo.descripcion as sexo', 'paciente.activa')
+            ->get();
+        foreach ($patients as $patient) {
+            // Get patient's address
+            $address = Address::where('paciente_id', $patient->id)->first();
+            (strpos(strtolower($address->pais), 'chile') !== false ? $this->formatRut($patient) : false);
+            // Get age
+            $age = Carbon::createFromDate($patient->fecha_nacimiento);
+            $patient->fecha = $age->format('d/m/Y');
+            if ($age->age != 0) {
+                $patient->edad = $age->diff(Carbon::now())->format('%y años');
+            } else {
+                $patient->edad = $age->diff(Carbon::now())->format('%m meses y %d días');
+            }
+        }
+        return $patients;
     }
 }

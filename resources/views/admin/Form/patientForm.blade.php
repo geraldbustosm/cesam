@@ -27,7 +27,7 @@
 		{{ session('err') }}
 	</div>
 	@endif
-	<form name="onSubmit" method="post" action="{{ url('registrar/paciente') }}">
+	<form name="onSubmit" id="onSubmit" method="post" action="{{ url('registrar/paciente') }}">
 		@csrf
 		<!-- UID -->
 		<div class="form-group">
@@ -51,7 +51,7 @@
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
-					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="País">
+					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{ old('pais') }}" id="pais" name="pais" placeholder="Nacionalidad">
 				</div>
 				<div class="col">
 					<input type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" value="{{ old('region') }}" id="region" name="region" placeholder="Region">
@@ -136,6 +136,7 @@
 	document.getElementById('people_Submenu').className += ' show';
 </script>
 <!-- Adding script using on this view -->
+<script src="{{asset('js/rutValidator.js')}}"></script>
 <script src="{{asset('js/idValidator.js')}}"></script>
 <link rel="stylesheet" href="{{asset('css/card.css')}}">
 @endsection

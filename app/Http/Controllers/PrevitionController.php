@@ -48,7 +48,7 @@ class PrevitionController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'prevition' => 'required|string|max:255'
+            'prevition' => 'required|string|max:255|unique:prevision,descripcion'
         ]);
         // Create the 'object' prevition
         $prevition = new Prevition;
@@ -67,16 +67,13 @@ class PrevitionController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:prevision,descripcion',
         ]);
         // Get the prevition that want to update
         $prevition = Prevition::find($request->id);
         // URL to redirect when process finish.
-        if($prevition->activa == 1){
-            $url = "/registrar/prevision/";
-        }else{
-            $url = "/inactivo/prevision/";
-        }
+        if($prevition->activa == 1) $url = "/registrar/prevision/";
+        else $url = "/inactivo/prevision/";
         // If found it then update the data
         if ($prevition) {
             // Set the variable 'descripcion'

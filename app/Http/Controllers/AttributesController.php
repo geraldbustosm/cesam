@@ -48,7 +48,7 @@ class AttributesController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'attribute' => 'required|string|max:255'
+            'attribute' => 'required|string|max:255|unique:atributos,descripcion'
         ]);
         // Create a new 'object' attribute
         $attribute = new Attributes;
@@ -67,7 +67,7 @@ class AttributesController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:atributos,descripcion',
         ]);
         // Get the attribute that want to update
         $attribute = Attributes::find($request->id);

@@ -56,23 +56,16 @@ class ProgramController extends Controller
         $validation = $request->validate([
             'descripcion' => 'required|string|max:255',
         ]);
-
         // Get the program that want to update
         $program = Program::find($request->id);
-
         // URL to redirect
-        if($program->activa == 1){
-            $url = "/registrar/programa/";
-        }else{
-            $url = "/inactivo/programa/";
-        }
-
+        if($program->activa == 1) $url = "/registrar/programa/";
+        else $url = "/inactivo/programa/";
+        // Set the new info
         $program->descripcion = $request->descripcion;
         $program->especialidad_programa_id = $request->speciality;
-
         // Save changes
         $program->save();
-
         return redirect($url)->with('status', 'Se ha actualizado el programa');
     }
 

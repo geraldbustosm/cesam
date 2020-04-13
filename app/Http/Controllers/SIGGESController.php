@@ -48,7 +48,7 @@ class SIGGESController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'sigges' => 'required|string|max:255'
+            'sigges' => 'required|string|max:255|unique:sigges,descripcion'
         ]);
         // Create the new 'object' sigges
         $sigges = new SiGGES;
@@ -67,16 +67,13 @@ class SIGGESController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:sigges,descripcion',
         ]);
         // Get the gender that want to update
         $sigges = SiGGES::find($request->id);
         // URL to redirect when process finish.
-        if($sigges->activa == 1){
-            $url = "/registrar/sigges/";
-        }else{
-            $url = "/inactivo/sigges/";
-        }
+        if($sigges->activa == 1) $url = "/registrar/sigges/";
+        else $url = "/inactivo/sigges/";
         // If found it then update the data
         if ($sigges) {
             // Set the variable 'descripcion'

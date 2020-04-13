@@ -48,7 +48,7 @@ class SexController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'sexuality' => 'required|string|max:255'
+            'sexuality' => 'required|string|max:255|unique:sexo,descripcion'
         ]);
         // Create the new 'object' sex
         $sex = new Sex;
@@ -67,16 +67,13 @@ class SexController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:sexo,descripcion',
         ]);
         // Get the gender that want to update
         $sex = Sex::find($request->id);
         // URL to redirect when process finish.
-        if($sex->activa == 1){
-            $url = "/registrar/genero/";
-        }else{
-            $url = "/inactivo/genero/";
-        }
+        if($sex->activa == 1) $url = "/registrar/genero/";
+        else $url = "/inactivo/genero/";
         // If found it then update the data
         if ($sex) {
             // Set the variable 'descripcion'

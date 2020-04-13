@@ -48,7 +48,7 @@ class ProvenanceController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'provenance' => 'required|string|max:255'
+            'provenance' => 'required|string|max:255|unique:procedencia,descripcion'
         ]);
         // Create the new 'object' provenance
         $provenance = new Provenance;
@@ -67,16 +67,13 @@ class ProvenanceController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:procedencia,descripcion'
         ]);
         // Get the provenance that want to update
         $provenance = Provenance::find($request->id);
         // URL to redirect when process finish.
-        if($provenance->activa == 1){
-            $url = "/registrar/procedencia/";
-        }else{
-            $url = "/inactivo/procedencia/";
-        }
+        if($provenance->activa == 1) $url = "/registrar/procedencia/";
+        else $url = "/inactivo/procedencia/";
         // If found it then update the data
         if ($provenance) {
             // Set the variable 'descripcion'

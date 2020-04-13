@@ -16,15 +16,12 @@ async function CheckRUT(object) {
         crut = tmpstr;
         len = crut.length;
 
-        if (len > 2)
-            rut = crut.substring(0, len - 1);
-        else
-            rut = crut.charAt(0);
+        if (len > 2) rut = crut.substring(0, len - 1);
+        else rut = crut.charAt(0);
 
         dv = crut.charAt(len - 1);
 
-        if (rut == null || dv == null)
-            return false;
+        if (rut == null || dv == null) return false;
 
         var dvr = '0';
         add = 0;
@@ -32,17 +29,13 @@ async function CheckRUT(object) {
 
         for (i = rut.length - 1; i >= 0; i--) {
             add = add + rut.charAt(i) * mul;
-            if (mul == 7)
-                mul = 2;
-            else
-                mul++;
+            if (mul == 7) mul = 2;
+            else mul++;
         }
 
         sub = add % 11;
-        if (sub == 1)
-            dvr = 'k';
-        else if (sub == 0)
-            dvr = '0';
+        if (sub == 1) dvr = 'k';
+        else if (sub == 0) dvr = '0';
         else {
             dvi = 11 - sub;
             dvr = dvi + "";

@@ -48,7 +48,7 @@ class ReleaseGroupController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'medical_discharge' => 'required|string|max:255'
+            'medical_discharge' => 'required|string|max:255|unique:grupo_alta,descripcion'
         ]);
         // Create a new 'object' release
         $release_group = new ReleaseGroup;
@@ -68,16 +68,13 @@ class ReleaseGroupController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:grupo_alta,descripcion',
         ]);
         // Get the release that want to update
         $release = ReleaseGroup::find($request->id);
         // URL to redirect when process finish.
-        if ($release->activa == 1) {
-            $url = "/registrar/grupo-altas/";
-        } else {
-            $url = "/inactivo/grupo-altas/";
-        }
+        if ($release->activa == 1) $url = "/registrar/grupo-altas/";
+        else $url = "/inactivo/grupo-altas/";
         // If found it then update the data
         if ($release) {
             // Set the variable 'descripcion'

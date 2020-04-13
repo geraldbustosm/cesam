@@ -15,7 +15,7 @@ class CreateEspecialidadProgramaTable extends Migration
     {
         Schema::create('especialidad_programa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descripcion')->unique();
+            $table->string('descripcion');
             $table->string('codigo')->unique();
             $table->timestamps();
             $table->boolean('activa')->default(1);

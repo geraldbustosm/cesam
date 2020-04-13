@@ -13,13 +13,13 @@
 </div>
 @endif
 <h1>Editar paciente</h1>
-<div class="div-full">	
+<div class="div-full">
 	<!-- Return alert for success query -->
 	@if (session('status'))
 	<div class="alert alert-success" role="alert">
 		{{ session('status') }}
 	</div>
-	@endif	
+	@endif
 	<!-- Return alert for error query -->
 	@if (session('err'))
 	<div class="alert alert-danger" role="alert">
@@ -27,7 +27,7 @@
 	</div>
 	@endif
 	@if ($patient)
-	<form name="onSubmit" method="post" action="{{ url('pacientes/edit') }}">
+	<form name="onSubmit" id="onSubmit" method="post" action="{{ url('pacientes/edit') }}">
 		@csrf
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
@@ -44,11 +44,11 @@
 			</div>
 		</div><br>
 
-		<!-- Names -->			
+		<!-- Names -->
 		<div class="form-row">
 			<div class="col-2">
 				<label for="nombre">Nombre completo</label>
-			</div>	
+			</div>
 			<div class="col-3">
 				<input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{$patient->nombre1}} {{$patient->nombre2}}" id="name" name="name" placeholder="Nombres">
 			</div>
@@ -58,7 +58,7 @@
 			<div class="col-3">
 				<input type="text" class="form-control {{ $errors->has('second_last_name') ? ' is-invalid' : '' }}" value="{{$patient->apellido2}}" id="second_last_name" name="second_last_name" placeholder="Segundo Apellido">
 			</div>
-		</div>	
+		</div>
 		<br>
 		<div class="form-row">
 			<div class="col-2">
@@ -80,7 +80,7 @@
 			<div class="col-2">
 				<label for="sex">Sexo</label>
 			</div>
-			<div class="col-3">	
+			<div class="col-3">
 				<select class="form-control" name="patient_sex" required>
 					<option value="{{$patient->sex->id}}">{{$patient->sex->descripcion}}</option>
 					@foreach($sex as $sexo)
@@ -110,7 +110,7 @@
 		<div class="form-group">
 			<div class="form-row">
 				<div class="col-7">
-					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{$address->pais}}" id="pais" name="pais" placeholder="País">
+					<input type="text" class="form-control {{ $errors->has('pais') ? ' is-invalid' : '' }}" value="{{$address->pais}}" id="pais" name="pais" placeholder="Nacionalidad">
 				</div>
 				<div class="col">
 					<input type="text" class="form-control {{ $errors->has('region') ? ' is-invalid' : '' }}" value="{{$address->region}}" id="region" name="region" placeholder="Region">
@@ -134,10 +134,10 @@
 			</div>
 		</div>
 		<br>
-		
+
 		<div class="form-row">
 			<div class="col-4">
-				<button type="button" class="btn btn-primary" id="btnSubmit">Editar paciente</button>
+				<button type="submit" class="btn btn-primary">Editar paciente</button>
 			</div>
 			<div class="col-4">
 				<div class="overflow-auto" style="height:200px;">
@@ -146,13 +146,7 @@
 					<div class="card">
 						<div class="checkbox-container">
 							<label class="checkbox-label">
-								<input type="checkbox" name="options[]" value="{{ $att->id}}" 
-								<?php 
-								if(in_array($att->id,$patient->attributes()->pluck('atributos.id')->toArray()))
-								{
-									echo ("checked");
-								} ?>
-								>
+								<input type="checkbox" name="options[]" value="{{ $att->id}}" {{(in_array($att->id,$patient->attributes()->pluck('atributos.id')->toArray()) ? 'checked' : '')}}>
 								<span class="checkbox-custom rectangular"></span>
 							</label>
 						</div>
@@ -173,6 +167,7 @@
 @endif
 
 <!-- Adding script using on this view -->
+<script src="{{asset('js/rutValidator.js')}}"></script>
 <script src="{{asset('js/idValidator.js')}}"></script>
 <link rel="stylesheet" href="{{asset('css/card.css')}}">
 @endsection

@@ -48,7 +48,7 @@ class DiagnosisController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'diagnosis' => 'required|string|max:382'
+            'diagnosis' => 'required|string|max:255|unique:diagnostico,descripcion'
         ]);
         // Create a new 'object' diagnosis
         $diagnosis = new Diagnosis;
@@ -67,16 +67,13 @@ class DiagnosisController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:diagnostico,descripcion',
         ]);
         // Get the diagnostic that want to update
         $diagnostic = Diagnosis::find($request->id);
         // URL to redirect when process finish.
-        if($diagnostic->activa == 1){
-            $url = "/registrar/diagnostico/";
-        }else{
-            $url = "/inactivo/diagnostico/";
-        }
+        if($diagnostic->activa == 1) $url = "/registrar/diagnostico/";
+        else $url = "/inactivo/diagnostico/";
         // If found it then update the data
         if ($diagnostic) {
             // Set the variable 'descripcion'

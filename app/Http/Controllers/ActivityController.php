@@ -85,7 +85,7 @@ class ActivityController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'activity' => 'required|string|max:255'
+            'activity' => 'required|string|max:255|unique:actividad,descripcion'
         ]);
         // Create a new 'object' activity
         $activity = new Activity;
@@ -107,22 +107,18 @@ class ActivityController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:actividad,descripcion',
         ]);
         // Get the release that want to update
         $activity = Activity::find($request->id);
         // URL to redirect when process finish.
-        if($activity->activa == 1){
-            $url = "/registrar/actividad/";
-        }else{
-            $url = "/inactivo/actividad/";
-        }
+        if ($activity->activa == 1) $url = "/registrar/actividad/";
+        else $url = "/inactivo/actividad/";
         // If found it then update the data
         if ($activity) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
             $activity->descripcion = $request->descripcion;
-
             // Set variable openCanasta when that option was clicked
             if ($request->openCanasta) {
                 $activity->actividad_abre_canasta = 1;
@@ -132,7 +128,7 @@ class ActivityController extends Controller
             // Pass the new info for update
             $activity->save();
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la información de la actividad a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la información de la actividad a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la información de la actividad');

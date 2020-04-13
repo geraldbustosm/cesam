@@ -86,7 +86,7 @@ class SpecialityController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'medical_speciality' => 'required|string|max:255'
+            'medical_speciality' => 'required|string|max:255|unique:especialidad,descripcion'
         ]);
         // Create a new 'object' speciality
         $speciality = new Speciality;
@@ -108,16 +108,13 @@ class SpecialityController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255|unique:especialidad,descripcion',
         ]);
         // Get the speciality that want to update
         $speciality = Speciality::find($request->id);
         // URL to redirect when process finish.
-        if($speciality->activa == 1){
-            $url = "/registrar/especialidad/";
-        }else{
-            $url = "/inactivo/especialidad/";
-        }
+        if($speciality->activa == 1) $url = "/registrar/especialidad/";
+        else $url = "/inactivo/especialidad/";
         // If found it then update the data
         if ($speciality) {
             // Set the variable 'descripcion'

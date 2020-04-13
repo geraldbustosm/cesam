@@ -23,7 +23,7 @@ class ProvisionController extends Controller
         // Get provisions
         $data = Provision::where('activa', 0)->get();
         // Redirect to the view with list of types
-        return view('admin.Inactive.provisionInactive', ['table' => 'Glosas'],compact('type', 'data'));
+        return view('admin.Inactive.provisionInactive', ['table' => 'Glosas'], compact('type', 'data'));
     }
     public function showAddProvision()
     {
@@ -36,12 +36,13 @@ class ProvisionController extends Controller
             return redirect('/registrar/tipo')->with('err', 'Primero debe crear algun tipo (GES/PPV)');
         }
         // Else redirect to the view with list of types
-        return view('admin.Form.provisionForm', ['table' => 'Glosas'],compact('type', 'data'));
+        return view('admin.Form.provisionForm', ['table' => 'Glosas'], compact('type', 'data'));
     }
     /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
-    public function showEditProvision($id){
+    public function showEditProvision($id)
+    {
         $provision = Provision::find($id);
         $tipos_prestaciones = Type::where('activa', 1)->get();
         $tipo_prestacion = Type::find($provision->tipo_id);
@@ -91,7 +92,7 @@ class ProvisionController extends Controller
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
             'frecuencia' => 'required|string|max:255',
-            'glosa' => 'required|string|max:255',
+            'glosa' => 'required|string|max:255|unique:prestacion,glosaTrasadora',
             'ps_fam' => 'required|string|max:255',
             'codigo' => 'required|string|max:255|unique:prestacion,codigo',
             'lower_age' => 'required',
@@ -99,7 +100,7 @@ class ProvisionController extends Controller
             'medical_provision_type' => 'required'
         ]);
 
-        if($request->lower_age > $request->senior_age && $request->senior_age != 0){
+        if ($request->lower_age > $request->senior_age && $request->senior_age != 0) {
             return redirect('registrar/prestacion')->with('error', 'El rango menor es más grande que el rango mayor');
         }
         // Create the new 'object' provision
@@ -123,41 +124,36 @@ class ProvisionController extends Controller
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
-    public function editProvision(Request $request){
+    public function editProvision(Request $request)
+    {
         // Validate the request variable
         $validation = $request->validate([
-            'glosaTrasadora' => 'required|string|max:255',
-            'codigo' => 'required|string|max:255',
+            'glosaTrasadora' => 'required|string|max:255|unique:prestacion,glosaTrasadora',
+            'codigo' => 'required|string|max:255|unique:prestacion,codigo',
             'frecuencia' => 'required|numeric',
             'ps_fam' => 'required|string|max:255',
         ]);
 
         // Get the program that want to update
         $provision = Provision::find($request->id);
-
         // URL to redirect
-        if($provision->activa == 1){
-            $url = "/registrar/prestacion/";
-        }else{
-            $url = "/inactivo/prestacion/";
+        if ($provision->activa == 1) $url = "/registrar/prestacion/";
+        else $url = "/inactivo/prestacion/";
+
+        if ($request->lower_age > $request->senior_age) return redirect($url)->with('error', 'El rango menor es más grande que el rango mayor');
+        if ($provision->count() != 0) {
+            $provision->glosaTrasadora = $request->glosaTrasadora;
+            $provision->codigo = $request->codigo;
+            $provision->rangoEdad_inferior = $request->lower_age;
+            $provision->rangoEdad_superior = $request->senior_age;
+            $provision->frecuencia = $request->frecuencia;
+            $provision->ps_fam = $request->ps_fam;
+            $provision->tipo_id = $request->tipo_prestacion;
+            // Save changes
+            $provision->save();
+            return redirect($url)->with('status', 'Se actualizaron los datos de la prestación');
         }
-
-        if($request->lower_age > $request->senior_age){
-            return redirect($url)->with('error', 'El rango menor es más grande que el rango mayor');
-        }
-
-        $provision->glosaTrasadora = $request->glosaTrasadora;
-        $provision->codigo = $request->codigo;
-        $provision->rangoEdad_inferior = $request->lower_age;
-        $provision->rangoEdad_superior = $request->senior_age;
-        $provision->frecuencia = $request->frecuencia;
-        $provision->ps_fam = $request->ps_fam;
-        $provision->tipo_id = $request->tipo_prestacion;
-
-        // Save changes
-        $provision->save();
-        return redirect('registrar/prestacion')->with('status', 'Se actualizaron los datos de la prestación');
-
+        return redirect($url)->with('err', 'No se actualizaron los datos de la prestación');
     }
     /***************************************************************************************************************************
                                                     ASIGN PROCESS
