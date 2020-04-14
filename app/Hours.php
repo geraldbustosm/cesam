@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hours extends Model
 {
-    protected $table = 'funcionario_posee_horas_actividad'; 
+    public $table = 'funcionario_posee_horas_actividad'; 
     /**
    * The attributes that are mass assignable.
    *

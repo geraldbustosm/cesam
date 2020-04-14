@@ -67,7 +67,7 @@ class DiagnosisController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:diagnostico,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the diagnostic that want to update
         $diagnostic = Diagnosis::find($request->id);
@@ -78,7 +78,11 @@ class DiagnosisController extends Controller
         if ($diagnostic) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $diagnostic->descripcion = $request->descripcion;
+            if ($diagnostic->descripcion != $request->descripcion) {
+                $check = Diagnosis::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $diagnostic->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Diagnóstico con el mismo nombre');
+            }
             // Pass the new info for update
             $diagnostic->save();
             // Redirect to the URL with successful status

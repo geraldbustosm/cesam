@@ -12,40 +12,40 @@ use App\Stage;
 class Functionary extends Model
 {
   public function speciality()
-    {
-        return $this->belongsToMany(Speciality::class, 'funcionario_posee_especialidad', 'funcionarios_id', 'especialidad_id');
-    }
+  {
+    return $this->belongsToMany(Speciality::class, 'funcionario_posee_especialidad', 'funcionarios_id', 'especialidad_id');
+  }
 
-    public function user()
-    {
-        return $this->belongsTO(User::class,'user_id','id');
-    }
-    public function posibleProvisions()
-    {
-      return $this->hasManyThrough(Provision::class, Speciality::class);
-    }
- 
-    
-	use Notifiable;
+  public function user()
+  {
+    return $this->belongsTO(User::class, 'user_id', 'id');
+  }
+  public function posibleProvisions()
+  {
+    return $this->hasManyThrough(Provision::class, Speciality::class);
+  }
+
+
+  use Notifiable;
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  
+
   public function stage()
-    {
-        return $this->hasMany('App\Stage', 'funcionario_id');
-    }
-  protected $table = 'funcionarios';
-  
+  {
+    return $this->hasMany('App\Stage', 'funcionario_id');
+  }
+  public $table = 'funcionarios';
+
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = 
-    [
-      'id', 'user_id', 'activa','horasDeclaradas','horasRealizadas'
-    ];
+  protected $fillable =
+  [
+    'id', 'user_id', 'activa', 'horasDeclaradas', 'horasRealizadas'
+  ];
 }

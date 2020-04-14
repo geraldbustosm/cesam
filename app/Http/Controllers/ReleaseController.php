@@ -78,7 +78,7 @@ class ReleaseController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:alta,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the release that want to update
         $release = Release::find($request->id);
@@ -89,7 +89,11 @@ class ReleaseController extends Controller
         if ($release) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $release->descripcion = $request->descripcion;
+            if ($release->descripcion != $request->descripcion) {
+                $check = Release::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $release->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Alta con el mismo nombre');
+            }
             $release->grupo_id = $request->grupo;
             // Pass the new info for update
             $release->save();

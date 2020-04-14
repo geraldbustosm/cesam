@@ -67,7 +67,7 @@ class SIGGESController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:sigges,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the gender that want to update
         $sigges = SiGGES::find($request->id);
@@ -78,7 +78,11 @@ class SIGGESController extends Controller
         if ($sigges) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $sigges->descripcion = $request->descripcion;
+            if ($sigges->descripcion != $request->descripcion) {
+                $check = SiGGES::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $sigges->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'SiGGES con el mismo nombre');
+            }
             // Pass the new info for update
             $sigges->save();
             // Redirect to the URL with successful status

@@ -298,3 +298,5 @@ Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance')->mid
 Route::post('ultima-atencion', 'AttendanceControllerLast@registerAttendance')->middleware('checkrole:1|2|3');
 // Eliminar atención
 Route::post('eliminar-atención', 'AttendanceController@deleteAttendance')->middleware('checkrole:1');
+
+Route::get('logs', 'AdminController@showLogs')->middleware('checkrole:1');

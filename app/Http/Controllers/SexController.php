@@ -67,18 +67,23 @@ class SexController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:sexo,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the gender that want to update
         $sex = Sex::find($request->id);
         // URL to redirect when process finish.
         if($sex->activa == 1) $url = "/registrar/genero/";
         else $url = "/inactivo/genero/";
+        if ($request->id == 0 || $request->id == 1) return redirect($url)->with('err', 'No se puede editar estos valores');
         // If found it then update the data
         if ($sex) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $sex->descripcion = $request->descripcion;
+            if ($sex->descripcion != $request->descripcion) {
+                $check = Sex::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $sex->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Sexo con el mismo nombre');
+            }
             // Pass the new info for update
             $sex->save();
             // Redirect to the URL with successful status

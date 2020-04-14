@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Diagnosis;
 use App\Functionary;
 use App\FunctionarySpeciality;
-use App\Log;
 use App\Patient;
 use App\Prevition;
 use App\Release;
-use App\ReleaseGroup;
 use App\Sex;
 use App\Speciality;
 use App\Stage;
 use App\User;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 
 class GeneralController extends Controller
 {
@@ -165,15 +160,5 @@ class GeneralController extends Controller
             $url = "alta/" . $DNI;
             return redirect($url)->with('status', 'Paciente ' . $DNI . ' fue dado de alta');
         }
-    }
-    /***************************************************************************************************************************
-                                                    LOGS PROCESS
-     ****************************************************************************************************************************/
-    public function addLog($logAction){        
-        $user = Auth::user();
-        $logs = new Log();
-        $logs->descripcion = $logAction;
-        $logs->user_id = $user->id;
-        $logs->save();
     }
 }

@@ -108,7 +108,7 @@ class SpecialityController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:especialidad,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the speciality that want to update
         $speciality = Speciality::find($request->id);
@@ -119,7 +119,11 @@ class SpecialityController extends Controller
         if ($speciality) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $speciality->descripcion = $request->descripcion;
+            if ($speciality->descripcion != $request->descripcion) {
+                $check = Speciality::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $speciality->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Escpecialidad con el mismo nombre');
+            }
             // Pass the new info for update
             $speciality->save();
             // Redirect to the URL with successful status

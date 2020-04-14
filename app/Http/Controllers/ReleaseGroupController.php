@@ -68,7 +68,7 @@ class ReleaseGroupController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:grupo_alta,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the release that want to update
         $release = ReleaseGroup::find($request->id);
@@ -79,7 +79,11 @@ class ReleaseGroupController extends Controller
         if ($release) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $release->descripcion = $request->descripcion;
+            if ($release->descripcion != $request->descripcion) {
+                $check = ReleaseGroup::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $release->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Grupo de Alta con el mismo nombre');
+            }
             // Pass the new info for update
             $release->save();
             // Redirect to the URL with successful status

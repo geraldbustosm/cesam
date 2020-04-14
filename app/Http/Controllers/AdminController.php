@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Diagnosis;
 use App\Functionary;
+use App\Log;
 use App\Patient;
 use App\Provision;
 use App\Speciality;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -110,5 +112,25 @@ class AdminController extends Controller
         }
         // Return the boolean
         return $value;
+    }
+    /***************************************************************************************************************************
+                                                    LOGS PROCESS
+     ****************************************************************************************************************************/
+    public function addLog($logAction, $logItem, $logTable)
+    {
+        $user = Auth::user();
+        $logAction = 'Transacción: ' . $logAction . "\r\n" . 'Tabla: ' . $logTable . "\r\n" . 'ID tupla: ' . $logItem . "\r\n" . 'Usuario: ' . $user->rut;
+        $logs = new Log();
+        $logs->descripcion = $logAction;
+        $logs->user_id = $user->id;
+        $logs->save();
+        return $logs;
+    }
+
+    public function showLogs()
+    {
+        $logs = Log::all();
+        foreach($logs as $data) $data->fecha = $data->created_at->format('d/m/Y - H:i');
+        return view('admin.Views.logs', ['data' => $logs]);
     }
 }

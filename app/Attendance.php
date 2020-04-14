@@ -7,14 +7,14 @@ use Illuminate\Notifications\Notifiable;
 
 class Attendance extends Model
 {
-	use Notifiable;
+  use Notifiable;
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  protected $table = 'atencion';
-  
+  public $table = 'atencion';
+
   /**
    * The attributes that are mass assignable.
    *
@@ -38,8 +38,8 @@ class Attendance extends Model
   {
     return $this->belongsTo('App\Activity', 'actividad_id');
   }
-  protected $fillable = 
-    [
-      'id','funcionario_id','etapa_id','prestacion_id', 'actividad_id','fecha','asistencia','hora','duracion','activa','abre_canasta', 'repetido'
-    ];
+  protected $fillable =
+  [
+    'id', 'funcionario_id', 'etapa_id', 'prestacion_id', 'actividad_id', 'fecha', 'asistencia', 'hora', 'duracion', 'activa', 'abre_canasta', 'repetido'
+  ];
 }

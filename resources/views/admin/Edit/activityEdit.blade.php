@@ -31,8 +31,13 @@
 		</div>
 
 		<div class="form-group form-check">
-			<input type="checkbox" name="openCanasta" id="openCanasta" value="1" {{$activity->actividad_abre_canasta == 1 ? 'checked' : ''}}>
+			<input type="checkbox" name="openCanasta" id="openCanasta" value="1" {{$activity->actividad_abre_canasta ? 'checked' : ''}}>
 			<label class="form-check-label" for="openCanasta"> Abre canasta</label>
+		</div>
+
+		<div class="form-group form-check">
+			<input type="checkbox" name="noAssist" id="noAssist" value="1" {{$activity->sin_asistencia ? 'checked' : ''}}>
+			<label class="form-check-label" for="noAssist"> Sin asistencia</label>
 		</div>
 
 		<button type="submit" class="btn btn-primary">Editar actividad</button>

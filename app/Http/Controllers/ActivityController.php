@@ -32,7 +32,9 @@ class ActivityController extends Controller
         // Redirect to the view with list of activitis (standard name: data) and name of table in spanish (standard name: table)
         return view('admin.Form.activityForm', ['data' => $data, 'table' => 'Actividades']);
     }
-
+    /***************************************************************************************************************************
+                                                    ASIGN FORM
+     ****************************************************************************************************************************/
     public function showAsignActivity()
     {
         // Get specialitys in alfabetic order
@@ -71,10 +73,8 @@ class ActivityController extends Controller
      ****************************************************************************************************************************/
     public function showEditActivity($id)
     {
-
         // Get the specific activity
         $activity = Activity::find($id);
-
         // Redirect to the view with selected activity
         return view('admin.Edit.activityEdit', compact('activity'));
     }
@@ -96,10 +96,11 @@ class ActivityController extends Controller
         $activity->sin_asistencia = $request->input('noAssist', 0);
         // Pass the activity to database
         $activity->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Insertar', $activity->id, $activity->table);
         // Redirect to the view with successful status
         return redirect('registrar/actividad')->with('status', 'Nueva actividad creada');
     }
-
     /***************************************************************************************************************************
                                                     EDIT PROCESS
      ****************************************************************************************************************************/
@@ -107,7 +108,7 @@ class ActivityController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:actividad,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the release that want to update
         $activity = Activity::find($request->id);
@@ -118,15 +119,18 @@ class ActivityController extends Controller
         if ($activity) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $activity->descripcion = $request->descripcion;
-            // Set variable openCanasta when that option was clicked
-            if ($request->openCanasta) {
-                $activity->actividad_abre_canasta = 1;
-            } else {
-                $activity->actividad_abre_canasta = 0;
+            if ($activity->descripcion != $request->descripcion) {
+                $check = Activity::where('descripcion', $request->descripcion)->count();
+                if ($check == 0) $activity->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Actividad con el mismo nombre');
             }
+            // Set variable openCanasta when that option was clicked
+            $activity->actividad_abre_canasta = $request->input('openCanasta', 0);
+            $activity->sin_asistencia = $request->input('noAssist', 0);
             // Pass the new info for update
             $activity->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar', $activity->id, $activity->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la información de la actividad a "' . $request->descripcion . '"');
         }
@@ -169,6 +173,8 @@ class ActivityController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/actividad')->with('status', 'Actividad "' . $data->descripcion . '" re-activada');
     }
@@ -181,6 +187,8 @@ class ActivityController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/actividad')->with('status', 'Actividad "' . $data->descripcion . '" eliminada');
     }

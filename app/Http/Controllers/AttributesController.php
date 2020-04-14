@@ -67,7 +67,7 @@ class AttributesController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:atributos,descripcion',
+            'descripcion' => 'required|string|max:255',
         ]);
         // Get the attribute that want to update
         $attribute = Attributes::find($request->id);
@@ -81,7 +81,11 @@ class AttributesController extends Controller
         if ($attribute) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $attribute->descripcion = $request->descripcion;
+            if ($attribute->descripcion != $request->descripcion) {
+                $check = Attributes::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $attribute->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Atributo con el mismo nombre');
+            }
             // Pass the new info for update
             $attribute->save();
             // Redirect to the URL with successful status

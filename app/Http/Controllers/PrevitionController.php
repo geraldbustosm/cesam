@@ -78,7 +78,11 @@ class PrevitionController extends Controller
         if ($prevition) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $prevition->descripcion = $request->descripcion;
+            if ($prevition->descripcion != $request->descripcion) {
+                $check = Prevition::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $prevition->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Previsión con el mismo nombre');
+            }
             // Pass the new info for update
             $prevition->save();
             // Redirect to the URL with successful status

@@ -128,8 +128,8 @@ class ProvisionController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'glosaTrasadora' => 'required|string|max:255|unique:prestacion,glosaTrasadora',
-            'codigo' => 'required|string|max:255|unique:prestacion,codigo',
+            'glosaTrasadora' => 'required|string|max:255',
+            'codigo' => 'required|string|max:255',
             'frecuencia' => 'required|numeric',
             'ps_fam' => 'required|string|max:255',
         ]);
@@ -142,8 +142,16 @@ class ProvisionController extends Controller
 
         if ($request->lower_age > $request->senior_age) return redirect($url)->with('error', 'El rango menor es más grande que el rango mayor');
         if ($provision->count() != 0) {
-            $provision->glosaTrasadora = $request->glosaTrasadora;
-            $provision->codigo = $request->codigo;
+            if ($provision->glosaTrasadora != $request->glosaTrasadora) {
+                $check = Provision::where('descripcion', $request->glosaTrasadora)->count();
+                if ($check == 0)  $provision->glosaTrasadora = $request->glosaTrasadora;
+                else return redirect($url)->with('err', 'Glosa con el mismo nombre');
+            }
+            if ($provision->codigo != $request->codigo) {
+                $check = Provision::where('descripcion', $request->codigo)->count();
+                if ($check == 0)  $provision->codigo = $request->codigo;
+                else return redirect($url)->with('err', 'Glosa con el mismo código');
+            }
             $provision->rangoEdad_inferior = $request->lower_age;
             $provision->rangoEdad_superior = $request->senior_age;
             $provision->frecuencia = $request->frecuencia;

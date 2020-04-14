@@ -13,7 +13,7 @@
     <form method="post" action="{{ url('editar/atencion') }}">
         @csrf
         <!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
-		<input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="_method" value="PUT">
 
         <input type="hidden" id="attendance_id" name="attendance_id" value="{{$attendance->id}}">
         <input type="hidden" id="id" name="id" value="{{$patient->id}}">
@@ -25,7 +25,7 @@
 
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="datepicker">Fecha de la atención</label>
-                    <input class="form-control col-12"id="datepicker" name="datepicker" value="{{$fecha}}" required>
+                    <input class="form-control col-12" id="datepicker" name="datepicker" value="{{$fecha}}" required>
                     <script>
                         var config = {
                             format: 'dd/mm/yyyy',
@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group col-10">
                     <label class="form-group col-12" for="time" class="form-group col-6">Hora inicio de la atención</label>
-                    <input class="form-control col-12" id="timeInit" name="timeInit"  value="{{$hora}}" required>
+                    <input class="form-control col-12" id="timeInit" name="timeInit" value="{{$hora}}" required>
                     <script>
                         $('#timeInit').timepicker({
                             mode: '24hr',
@@ -67,7 +67,7 @@
                 <div class="form-grou col-10">
                     <label for="duration">Duración <b>(HH:MM)</b> </label>
                     <br>
-                    <input class = "form-control col-12" id="duration" name="duration" value="" required readonly>
+                    <input class="form-control col-12" id="duration" name="duration" value="" required readonly>
                     <script type="text/javascript">
                         var init = document.getElementById('timeInit');
                         var end = document.getElementById('timeEnd');
@@ -101,15 +101,15 @@
                     </script>
                 </div>
                 <div class="form-group col-10" style="min-width:200px">
-                        <label for="title">Tipo de paciente</label>
-                        <select name="selectType" class="form-control" style="min-width:200px">
-                            <option value="1" {{($attendance->repetido ? 'checked' : '' )}}>Repetido</option>
-                            <option value="0">Nuevo</option>
-                        </select>
-                    </div>
+                    <label for="title">Tipo de paciente</label>
+                    <select name="selectType" class="form-control" style="min-width:200px">
+                        <option value="1" {{($attendance->repetido ? 'selected' : '' )}}>Repetido</option>
+                        <option value="0" {{($attendance->repetido ? '' : 'selected' )}}>Nuevo</option>
+                    </select>
+                </div>
             </div>
             <div class="column">
-                
+
                 <div class="form-group">
                     <label for="title"><b>Asigne el funcionario y la prestación:</b></label>
                 </div>
@@ -118,17 +118,17 @@
                     <select id="functionary" name="functionary" class="form-control" style="width:350px" required>
                         <option value="" selected disabled>Seleccione un Funcionario</option>
                         @foreach($functionarys as $functionary)
-                            <option value="{{$functionary->id}}" {{($attendance->funcionario_id) == $functionary->id ? 'selected' : ''}}> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
+                        <option value="{{$functionary->id}}"> {{$functionary->user->primer_nombre}} {{$functionary->user->apellido_paterno}} {{$functionary->user->apellido_materno}}, {{$functionary->profesion}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="title">Seleccione la especialidad:</label>
-                    <select name="speciality" id="speciality" class="form-control" style="width:350px"></select>
+                    <select name="speciality" id="speciality" class="form-control" style="width:350px" required></select>
                 </div>
                 <div class="form-group">
                     <label for="title">Seleccione la glosa:</label>
-                    <select name="provision" id="provision" class="form-control" style="width:350px"></select>
+                    <select name="provision" id="provision" class="form-control" style="width:350px" required></select>
                 </div>
 
                 <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge">
@@ -136,13 +136,13 @@
                 </div>
                 <div class="form-group">
                     <label for="title">Seleccione la actividad:</label>
-                    <select name="activity" id="activity" class="form-control" style="width:350px"></select>
+                    <select name="activity" id="activity" class="form-control" style="width:350px" required></select>
                 </div>
                 <div class="form-group">
                     <label for="selectA">Asistencia: </label>
-                    <select name="selectA" class="form-control" style="width:350px">
+                    <select name="selectA" class="form-control" style="width:350px" required>
                         <option value="1" {{($attendance->asistencia ? 'selected' : '')}}>Si </option>
-                        <option value="0" {{(!$attendance->asistencia ? 'selected' : '')}}>No</option>
+                        <option value="0" {{($attendance->asistencia ? '' : 'selected')}}>No</option>
                     </select>
                 </div>
                 <script type="text/javascript">
@@ -211,7 +211,7 @@
 
                     $('#speciality').on('change', function() {
                         var specialityID = $(this).val();
-                        if (specialityID) {                            
+                        if (specialityID) {
                             $('#activity').prop('required', true);
                             $.ajax({
                                 type: "GET",
@@ -234,21 +234,25 @@
                     });
 
                     $('#provision').on('change', function() {
-                        $('#errorAge').hide();
                         btn[0].style = "";
                         btn[1].style = "";
                         var provisionID = $(this).val();
+                        var patientID = <?php echo json_encode($patient->id); ?>;
                         if (provisionID) {
                             $.ajax({
                                 type: "GET",
-                                url: "{{url('age-check')}}?provision_id=" + provisionID,
+                                url: "{{url('age-check')}}",
+                                data: {
+                                    provision_id: provisionID,
+                                    patient_id: patientID
+                                },
                                 success: function(res) {
                                     if (res < 0) {
                                         $('#errorAge').show();
                                         btn[0].style.display = "none";
                                         btn[1].style.display = "none";
                                     } else {
-                                        $('#errorAge').addClass('hide');
+                                        $('#errorAge').hide();
                                     }
                                 }
                             });

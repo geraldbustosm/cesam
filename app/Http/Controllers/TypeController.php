@@ -87,7 +87,7 @@ class TypeController extends Controller
     {
         // Check the format of each variable of 'request'
         $validacion = $request->validate([
-            'medical_provision_type' => 'required|string|max:255'
+            'medical_provision_type' => 'required|string|max:255|unique:tipo_prestacion,descripcion'
         ]);
         // Create the new 'object' type (of GES)
         $type = new Type;
@@ -111,16 +111,17 @@ class TypeController extends Controller
         // Get the type (of GES) that want to update
         $type = Type::find($request->id);
         // URL to redirect when process finish.
-        if($type->activa == 1){
-            $url = "/registrar/tipo/";
-        }else{
-            $url = "/inactivo/tipo/";
-        }
+        if($type->activa == 1) $url = "/registrar/tipo/";
+        else $url = "/inactivo/tipo/";
         // If found it then update the data
         if ($type) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $type->descripcion = $request->descripcion;
+            if ($type->descripcion != $request->descripcion) {
+                $check = Type::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $type->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Tipo con el mismo nombre');
+            }
             // Pass the new info for update
             $type->save();
             // Redirect to the URL with successful status

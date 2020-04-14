@@ -67,7 +67,7 @@ class ProvenanceController extends Controller
     {
         // Validate the request variable
         $validation = $request->validate([
-            'descripcion' => 'required|string|max:255|unique:procedencia,descripcion'
+            'descripcion' => 'required|string|max:255'
         ]);
         // Get the provenance that want to update
         $provenance = Provenance::find($request->id);
@@ -78,7 +78,11 @@ class ProvenanceController extends Controller
         if ($provenance) {
             // Set the variable 'descripcion'
             // the variables name of object must be the same that database for save it
-            $provenance->descripcion = $request->descripcion;
+            if ($provenance->descripcion != $request->descripcion) {
+                $check = Provenance::where('descripcion', $request->descripcion)->count();
+                if ($check == 0)  $provenance->descripcion = $request->descripcion;
+                else return redirect($url)->with('err', 'Procendencia con el mismo nombre');
+            }
             // Pass the new info for update
             $provenance->save();
             // Redirect to the URL with successful status
