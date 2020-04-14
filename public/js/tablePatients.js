@@ -46,7 +46,7 @@ function createRow(num, data) {
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = (data.dni ? data.dni : data.DNI);
     if (data.apellido2) {
-        celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1 + ' ' + data.apellido2;
+        celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1 + (data.apellido2 ? ' ' + data.apellido2 : '');
     } else {
         celdas[2].innerHTML = data.nombre1 + ' ' + data.apellido1;
     }

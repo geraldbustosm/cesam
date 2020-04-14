@@ -45,7 +45,7 @@ function createRow(num, data) {
     // Adding cells content
     celdas[0].innerHTML = num + 1;
     celdas[1].innerHTML = data.run;
-    celdas[2].innerHTML = data.primer_nombre + ' ' + data.apellido_paterno + ' ' + data.apellido_materno;
+    celdas[2].innerHTML = data.primer_nombre + ' ' + data.apellido_paterno + (data.apellido_materno ? ' ' + data.apellido_materno : '');
     celdas[3].innerHTML = data.nombre;
     celdas[4].innerHTML = writeActionButtons(data);
 }
