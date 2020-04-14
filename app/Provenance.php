@@ -13,11 +13,7 @@ class Provenance extends Model
      *
      * @var string
      */
-    public function stage()
-    {
-        return $this->hasMany('App\Stage');
-    }
-    protected $table = 'procedencia';
+    public $table = 'procedencia';
 
     /**
      * The attributes that are mass assignable.
@@ -28,4 +24,9 @@ class Provenance extends Model
     [
         'id', 'descripcion', 'activa'
     ];
+
+    public function stage()
+    {
+        return $this->hasMany('App\Stage');
+    }
 }

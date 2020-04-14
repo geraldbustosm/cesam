@@ -142,7 +142,8 @@ class PatientController extends Controller
         $correctDate = date('Y-m-d', strtotime($date));
         $patient->fecha_nacimiento = $correctDate;
         $patient->save();
-
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar paciente', $patient->id, $patient->table);
         // Create address
         $address = new Address;
         $address->pais = $request->pais;
@@ -151,12 +152,15 @@ class PatientController extends Controller
         $address->calle  = $request->calle;
         $address->numero = $request->numero;
         $address->departamento = $request->depto;
-
         $patient_id = Patient::where('DNI', $request->dni)->first()->id;
         $address->paciente_id = $patient_id;
         $address->save();
-
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar paciente', $patient->id, $patient->table);
+        // Add attributes for this patient
         $patient->attributes()->sync($request->options);
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar atributos a paciente', $request->options, 'paciente_posee_atributos');
         // Redirect to the view with successful status
         return redirect('registrar/paciente')->with('status', 'Usuario creado');
     }
@@ -230,6 +234,9 @@ class PatientController extends Controller
             // Pass the new info for update
             $patient->save();
             $address->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar paciente', $patient->id, $patient->table);
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar dirección', $patient->id, $patient->table);
         }
         $patient->attributes()->sync($request->options);
         // Redirect to the URL with successful status
@@ -241,7 +248,8 @@ class PatientController extends Controller
         $patient = Patient::where('dni', $request->dni)->first();
         $patient->attributes()->sync($request->options);
         $patient->save();
-
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar atributos de paciente', $request->options, 'paciente_posee_atributos');
         // URL to redirect
         $url = 'paciente-atributos/' . $request->dni;
         return redirect($url)->with('status', 'Se actualizaron los atributos del paciente');
@@ -257,6 +265,8 @@ class PatientController extends Controller
         $patient->activa = 1;
         // Send update to database
         $patient->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar paciente', $patient->id, $patient->table);
         // Redirect to the view with successful status (showing the DNI)
         return redirect('/pacientes/inactivos')->with('status', 'Paciente ' . $patient->DNI . ' reingresado');
     }
@@ -268,6 +278,8 @@ class PatientController extends Controller
         $patient->activa = 0;
         // Send update to database
         $patient->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar paciente', $patient->id, $patient->table);
         // Redirect to the view with successful status (showing the DNI)
         return redirect('/pacientes')->with('status', 'Paciente ' . $patient->DNI . ' eliminado');
     }

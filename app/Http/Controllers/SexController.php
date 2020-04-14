@@ -57,6 +57,8 @@ class SexController extends Controller
         $sex->descripcion = $request->sexuality;
         // Pass the gender to database
         $sex->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar sexo', $sex->id, $sex->table);
         // Redirect to the view with successful status
         return redirect('registrar/genero')->with('status', 'Nuevo Sexo / Género creado');
     }
@@ -72,7 +74,7 @@ class SexController extends Controller
         // Get the gender that want to update
         $sex = Sex::find($request->id);
         // URL to redirect when process finish.
-        if($sex->activa == 1) $url = "/registrar/genero/";
+        if ($sex->activa == 1) $url = "/registrar/genero/";
         else $url = "/inactivo/genero/";
         if ($request->id == 0 || $request->id == 1) return redirect($url)->with('err', 'No se puede editar estos valores');
         // If found it then update the data
@@ -86,8 +88,10 @@ class SexController extends Controller
             }
             // Pass the new info for update
             $sex->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar sexo', $sex->id, $sex->table);
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción de la sexualidad a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción de la sexualidad a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción de la sexualidad');
@@ -103,18 +107,23 @@ class SexController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar sexo', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/genero')->with('status', 'Género "' . $data->descripcion . '" re-activada');
     }
 
     public function deletingSex(Request $request)
     {
+        if ($request->id == 0 || $request->id == 1) return redirect(url()->previous())->with('err', 'No se puede eliminar estos valores');
         // Get the data
         $data = Sex::find($request->id);
         // Update active to 0 bits
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar sexo', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/genero')->with('status', 'Género "' . $data->descripcion . '" eliminada');
     }

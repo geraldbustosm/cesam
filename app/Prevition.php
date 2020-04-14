@@ -13,7 +13,7 @@ class Prevition extends Model
      *
      * @var string
      */
-    protected $table = 'prevision';
+    public $table = 'prevision';
 
     /**
      * The attributes that are mass assignable.

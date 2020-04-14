@@ -7,25 +7,27 @@ use Illuminate\Notifications\Notifiable;
 
 class SiGGES extends Model
 {
-	use Notifiable;
+  use Notifiable;
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  public function stage()
-    {
-        return $this->hasMany('App\Stage');
-    }
-  protected $table = 'sigges';
-  
+
+  public $table = 'sigges';
+
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = 
-    [
-      'id','descripcion','activa'
-    ];
+  protected $fillable =
+  [
+    'id', 'descripcion', 'activa'
+  ];
+
+  public function stage()
+  {
+    return $this->hasMany('App\Stage');
+  }
 }

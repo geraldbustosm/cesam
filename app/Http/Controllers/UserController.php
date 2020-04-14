@@ -110,6 +110,8 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         // Pass the user to database
         $user->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar usuario', $user->id, $user->table);
         if ($request->rol == 2) {
             // Return to the view
             return redirect('/registrar/funcionario')->with('status', 'Usuario creado');
@@ -126,11 +128,12 @@ class UserController extends Controller
         //$functionary = $this->middleware('auth');
         $user = Auth::user();
         if ($user->rol == 2) {
-            $activity = Activity::get();
+            $activity = Activity::all();
             $functionary = Functionary::where('user_id', $user->id)->first();
             return view('general.reportFunctionaryHours', compact('activity', 'user', 'functionary'));
         }
     }
+
     public function saveHours(Request $request)
     {
         $user = Auth::user();
@@ -146,11 +149,11 @@ class UserController extends Controller
                 );
                 if (is_null($registro->horasRealizadas)) {
                     $registro->horasRealizadas = 0;
+                    $registro->save();
                 }
-                $registro->save();
+                // Regist in logs events
+                app('App\Http\Controllers\AdminController')->addLog('Actualizar horas por actividad', $registro->id, $registro->table);
             }
-            //$register = new $Hours;
-            //die(print_r( $hours));
             return redirect('horas/edit')->with('status', 'Horas Actualizadas');
         }
     }
@@ -175,6 +178,7 @@ class UserController extends Controller
         Auth::logout();
         return redirect('login')->with('status', 'Se ha actualizado su contraseña');
     }
+
     public function editData(Request $request)
     {
         // Validate the request variables
@@ -207,8 +211,10 @@ class UserController extends Controller
             $user->email = $request->email;
             // Pass the new info for update
             $user->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar usuario', $user->id, $user->table);
         } else {
-            // Redirect to the URL with successful status
+            // Redirect to the URL with warning status
             return redirect('misdatos/edit')->with('wrong', 'Tu contraseña no es correcta');
         }
         // Redirect to the URL with successful status
@@ -225,6 +231,8 @@ class UserController extends Controller
         $user->activa = 1;
         // Send update to database
         $user->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar usuario', $user->id, $user->table);
         // Get functionays
         $functionarys = Functionary::where('user_id', $user->id)->get();
         if ($functionarys->count() != 0) {
@@ -232,11 +240,14 @@ class UserController extends Controller
                 // Deactivate them
                 $record->activa = 1;
                 $record->save();
+                // Regist in logs events
+                app('App\Http\Controllers\AdminController')->addLog('Activar funcionario', $record->id, $record->table);
             }
         }
         // Redirect to the view with successful status (showing the DNI)
         return redirect('usuarios/inactivos')->with('status', 'Usuario ' . $request->id . ' reingresado');
     }
+    
     public function deletingUser(Request $request)
     {
         // Get the user
@@ -245,6 +256,8 @@ class UserController extends Controller
         $user->activa = 0;
         // Send update to database
         $user->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar usuario', $user->id, $user->table);
         // Get functionays
         $functionarys = Functionary::where('user_id', $user->id)->get();
         if ($functionarys->count() != 0) {
@@ -252,6 +265,8 @@ class UserController extends Controller
                 // Deactivate them
                 $record->activa = 0;
                 $record->save();
+                // Regist in logs events
+                app('App\Http\Controllers\AdminController')->addLog('Desactivar funcionario', $record->id, $record->table);
             }
         }
         // Redirect to the view with successful status (showing the DNI)

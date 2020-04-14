@@ -57,6 +57,8 @@ class SIGGESController extends Controller
         $sigges->descripcion = $request->sigges;
         // Pass the sigges to databes
         $sigges->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar SiGGES', $sigges->id, $sigges->table);
         // Redirect to the view with successful status
         return redirect('registrar/sigges')->with('status', 'Nuevo tipo de SiGGES creado');
     }
@@ -72,7 +74,7 @@ class SIGGESController extends Controller
         // Get the gender that want to update
         $sigges = SiGGES::find($request->id);
         // URL to redirect when process finish.
-        if($sigges->activa == 1) $url = "/registrar/sigges/";
+        if ($sigges->activa == 1) $url = "/registrar/sigges/";
         else $url = "/inactivo/sigges/";
         // If found it then update the data
         if ($sigges) {
@@ -85,6 +87,8 @@ class SIGGESController extends Controller
             }
             // Pass the new info for update
             $sigges->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar SiGGES', $sigges->id, $sigges->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la descripción del tipo GES a "' . $request->descripcion . '"');
         }
@@ -102,6 +106,8 @@ class SIGGESController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar SiGGES', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/sigges')->with('status', 'SiGGES "' . $data->descripcion . '" re-activado');
     }
@@ -114,6 +120,8 @@ class SIGGESController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar SiGGES', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/sigges')->with('status', 'SiGGES "' . $data->descripcion . '" eliminado');
     }

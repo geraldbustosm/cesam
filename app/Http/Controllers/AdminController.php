@@ -118,6 +118,7 @@ class AdminController extends Controller
      ****************************************************************************************************************************/
     public function addLog($logAction, $logItem, $logTable)
     {
+        (is_array($logItem) ? $logItem = implode( ", ", $logItem ) : false);
         $user = Auth::user();
         $logAction = 'Transacción: ' . $logAction . "\r\n" . 'Tabla: ' . $logTable . "\r\n" . 'ID tupla: ' . $logItem . "\r\n" . 'Usuario: ' . $user->rut;
         $logs = new Log();

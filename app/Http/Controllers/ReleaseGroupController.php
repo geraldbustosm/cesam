@@ -58,6 +58,8 @@ class ReleaseGroupController extends Controller
         $release_group->descripcion = $request->medical_discharge;
         // Pass the release to database
         $release_group->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar grupo de altas', $release_group->id, $release_group->table);
         // Redirect to the view with successful status
         return redirect('registrar/grupo-altas')->with('status', 'Nueva alta creada');
     }
@@ -86,6 +88,8 @@ class ReleaseGroupController extends Controller
             }
             // Pass the new info for update
             $release->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar grupo de altas', $release->id, $release->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la descripción del alta a "' . $request->descripcion . '"');
         }
@@ -103,6 +107,8 @@ class ReleaseGroupController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar grupo de altas', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/grupo-altas')->with('status', 'Grupo-Altas "' . $data->descripcion . '" re-activada');
     }
@@ -115,6 +121,8 @@ class ReleaseGroupController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar grupo de altas', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/grupo-altas')->with('status', 'Grupo-Altas "' . $data->descripcion . '" eliminada');
     }

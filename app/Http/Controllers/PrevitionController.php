@@ -57,6 +57,8 @@ class PrevitionController extends Controller
         $prevition->descripcion = $request->prevition;
         // Pass the prevition to database
         $prevition->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar previsión', $prevition->id, $prevition->table);
         // Redirect to the view with the successful status
         return redirect('registrar/prevision')->with('status', 'Nueva prevision creada');
     }
@@ -72,7 +74,7 @@ class PrevitionController extends Controller
         // Get the prevition that want to update
         $prevition = Prevition::find($request->id);
         // URL to redirect when process finish.
-        if($prevition->activa == 1) $url = "/registrar/prevision/";
+        if ($prevition->activa == 1) $url = "/registrar/prevision/";
         else $url = "/inactivo/prevision/";
         // If found it then update the data
         if ($prevition) {
@@ -85,8 +87,10 @@ class PrevitionController extends Controller
             }
             // Pass the new info for update
             $prevition->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar previsión', $prevition->id, $prevition->table);
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción de la previsión a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción de la previsión a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción de la previsión');
@@ -102,6 +106,8 @@ class PrevitionController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar previsión', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/prevision')->with('status', 'Previsión "' . $data->descripcion . '" re-activada');
     }
@@ -114,6 +120,8 @@ class PrevitionController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar previsión', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/prevision')->with('status', 'Previsión "' . $data->descripcion . '" eliminada');
     }

@@ -57,6 +57,8 @@ class DiagnosisController extends Controller
         $diagnosis->descripcion = $request->diagnosis;
         // Pass the new diagnosis to database
         $diagnosis->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar diagnóstico', $diagnosis->id, $diagnosis->table);
         // Redirect to the view with successful status
         return redirect('registrar/diagnostico')->with('status', 'Nuevo diagnostico creado');
     }
@@ -85,6 +87,8 @@ class DiagnosisController extends Controller
             }
             // Pass the new info for update
             $diagnostic->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar diagnóstico', $diagnostic->id, $diagnostic->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la descripción del diagnóstico a "'.$request->descripcion.'"');
         }
@@ -102,6 +106,8 @@ class DiagnosisController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar diagnóstico', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/diagnostico')->with('status', 'Diagnóstico "' . $data->descripcion . '" re-activado');
     }
@@ -114,6 +120,8 @@ class DiagnosisController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar diagnóstico', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/diagnostico')->with('status', 'Diagnóstico "' . $data->descripcion . '" eliminado');
     }

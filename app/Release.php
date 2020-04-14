@@ -13,15 +13,8 @@ class Release extends Model
    *
    * @var string
    */
-  public function stage()
-  {
-    return $this->hasMany('App\Stage');
-  }
-  public function group()
-  {
-    return $this->belongsTo('App\ReleaseGroup', 'grupo_id');
-  }
-  protected $table = 'alta';
+
+  public $table = 'alta';
 
   /**
    * The attributes that are mass assignable.
@@ -32,4 +25,14 @@ class Release extends Model
   [
     'id', 'descripcion', 'activa'
   ];
+
+  public function stage()
+  {
+    return $this->hasMany('App\Stage');
+  }
+
+  public function group()
+  {
+    return $this->belongsTo('App\ReleaseGroup', 'grupo_id');
+  }
 }

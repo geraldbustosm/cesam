@@ -67,7 +67,8 @@ class ReleaseController extends Controller
         $release->descripcion = $request->medical_discharge;
         $release->grupo_id = $request->releases_group;
         // Pass the release to database
-        $release->save();
+        $release->save();// Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar alta', $release->id, $release->table);
         // Redirect to the view with successful status
         return redirect('registrar/alta')->with('status', 'Nueva alta creada');
     }
@@ -97,6 +98,8 @@ class ReleaseController extends Controller
             $release->grupo_id = $request->grupo;
             // Pass the new info for update
             $release->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar alta', $release->id, $release->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la descripción del alta a "' . $request->descripcion . '"');
         }
@@ -114,6 +117,8 @@ class ReleaseController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar alta', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/alta')->with('status', 'Alta "' . $data->descripcion . '" re-activada');
     }
@@ -125,6 +130,8 @@ class ReleaseController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar alta', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/alta')->with('status', 'Alta "' . $data->descripcion . '" eliminada');
     }

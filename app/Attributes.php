@@ -8,14 +8,14 @@ use App\Patient;
 
 class Attributes extends Model
 {
-	use Notifiable;
+  use Notifiable;
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  protected $table = 'atributos';
-  
+  public $table = 'atributos';
+
   /**
    * The attributes that are mass assignable.
    *
@@ -23,9 +23,10 @@ class Attributes extends Model
    */
   public function patients()
   {
-      return $this->belongsToMany(Patient::class, 'paciente_posee_atributos', 'atributos_id', 'paciente_id');
+    return $this->belongsToMany(Patient::class, 'paciente_posee_atributos', 'atributos_id', 'paciente_id');
   }
+  
   protected $fillable = [
-      'id','descripcion', 'tipo', 'activa'
+    'id', 'descripcion', 'tipo', 'activa'
   ];
 }

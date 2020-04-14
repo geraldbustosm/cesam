@@ -89,12 +89,10 @@ class FunctionaryController extends Controller
      ****************************************************************************************************************************/
     public function showAddFunctionary()
     {
+        $functionarys = Functionary::pluck('user_id');
         // Get active users
-        // $user = User::where('activa', 1)->get();
-        $functionarys = Functionary::select('user_id')->get();
-        $user = DB::table('users')
+        $user = User::where('activa', 1)
             ->whereNotIn('id', $functionarys)
-            ->where('activa', 1)
             ->get();
         $speciality = Speciality::where('activa', 1)->get();
         // Redirect to the view with list of users
@@ -135,6 +133,9 @@ class FunctionaryController extends Controller
         // Pass the functionary to database
         $functionary->save();
         $functionary->speciality()->sync($codigos);
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar funcionario', $functionary->id, $functionary->table);
+        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad a funcionario', $codigos, 'funcionario_posee_especialidad');
         // Redirect to the view with successful status
         return redirect('/funcionarios')->with('status', 'Funcionario creado!');
     }
@@ -156,9 +157,9 @@ class FunctionaryController extends Controller
         $functionary->profesion = $request->profesion;
         $functionary->horasDeclaradas = $request->horasDeclaradas;
         $functionary->horasRealizadas = $request->horasRealizadas;
-
         $functionary->save();
-
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar funcionario', $functionary->id, $functionary->table);
         return redirect($url)->with('status', 'Se actualizaron los datos del funcionario');
     }
     /***************************************************************************************************************************
@@ -172,6 +173,8 @@ class FunctionaryController extends Controller
         $functionary->activa = 1;
         // Send update to database
         $functionary->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar funcionario', $functionary->id, $functionary->table);
         // Get the user, because have the personal info
         $user = User::where('id', $functionary->user_id)->get();
         // Redirect to the view with successful status (showing the user_rut)
@@ -186,6 +189,8 @@ class FunctionaryController extends Controller
         $functionary->activa = 0;
         // Send update to database
         $functionary->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar funcionario', $functionary->id, $functionary->table);
         // Get the user, because have the personal info
         $user = User::where('id', $functionary->user_id)->get();
         // Redirect to the view with successful status (showing the user_rut)

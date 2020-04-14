@@ -12,13 +12,10 @@ class Activity extends Model
   {
     return $this->belongsToMany(Speciality::class, 'actividad_posee_especialidad', 'actividad_id', 'especialidad_id');
   }
+
   public function type()
   {
     return $this->hasOne('App\Type', 'tipo_id');
-  }
-  public function table()
-  {
-    return $this->table();
   }
 
   use Notifiable;

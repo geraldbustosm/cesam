@@ -95,9 +95,12 @@ class SpecialityController extends Controller
         $speciality->descripcion = $request->medical_speciality;
         // Pass the new speciality to database
         $speciality->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad', $speciality->id, $speciality->table);
         $codigos = Provision::where('activa', '=', 1)->get('id');
         $speciality->provision()->sync($codigos);
-
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar glosas para especialidad', $codigos, 'prestacion_posee_especialidad');
         // Redirect to the view with successful status
         return redirect('registrar/especialidad')->with('status', 'Nueva especialidad creada');
     }
@@ -113,7 +116,7 @@ class SpecialityController extends Controller
         // Get the speciality that want to update
         $speciality = Speciality::find($request->id);
         // URL to redirect when process finish.
-        if($speciality->activa == 1) $url = "/registrar/especialidad/";
+        if ($speciality->activa == 1) $url = "/registrar/especialidad/";
         else $url = "/inactivo/especialidad/";
         // If found it then update the data
         if ($speciality) {
@@ -126,8 +129,10 @@ class SpecialityController extends Controller
             }
             // Pass the new info for update
             $speciality->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar especialidad', $speciality->id, $speciality->table);
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'Nose pudo actualizar la descripción de la especialidad');
@@ -170,6 +175,8 @@ class SpecialityController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar especialidad', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/especialidad')->with('status', 'Especialidad "' . $data->descripcion . '" re-activada');
     }
@@ -182,6 +189,8 @@ class SpecialityController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar especialidad', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/especialidad')->with('status', 'Especialidad "' . $data->descripcion . '" eliminada');
     }

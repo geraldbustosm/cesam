@@ -57,6 +57,8 @@ class ProvenanceController extends Controller
         $provenance->descripcion = $request->provenance;
         // Pass the provenance to database
         $provenance->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar procedencia', $provenance->id, $provenance->table);
         // Redirect to the view with successful status
         return redirect('registrar/procedencia')->with('status', 'Nueva procedencia creada');
     }
@@ -72,7 +74,7 @@ class ProvenanceController extends Controller
         // Get the provenance that want to update
         $provenance = Provenance::find($request->id);
         // URL to redirect when process finish.
-        if($provenance->activa == 1) $url = "/registrar/procedencia/";
+        if ($provenance->activa == 1) $url = "/registrar/procedencia/";
         else $url = "/inactivo/procedencia/";
         // If found it then update the data
         if ($provenance) {
@@ -85,8 +87,10 @@ class ProvenanceController extends Controller
             }
             // Pass the new info for update
             $provenance->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar procedencia', $provenance->id, $provenance->table);
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción de la procedencia a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción de la procedencia a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción de la procedencia');
@@ -102,6 +106,8 @@ class ProvenanceController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar procedencia', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/procedencia')->with('status', 'Procedencia "' . $data->descripcion . '" re-activada');
     }
@@ -114,6 +120,8 @@ class ProvenanceController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar procedencia', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/procedencia')->with('status', 'Procedencia "' . $data->descripcion . '" eliminada');
     }

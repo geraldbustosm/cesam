@@ -157,6 +157,8 @@ class GeneralController extends Controller
             $stage->activa = 0;
             $stage->alta_id = $request->releases;
             $stage->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Registrar funcionario', $stage->id, $stage->table);
             $url = "alta/" . $DNI;
             return redirect($url)->with('status', 'Paciente ' . $DNI . ' fue dado de alta');
         }

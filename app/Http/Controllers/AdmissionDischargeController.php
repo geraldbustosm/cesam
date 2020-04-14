@@ -19,31 +19,22 @@ class AdmissionDischargeController extends Controller
 
     public function showAdmissionDischarge(Request $request)
     {
-        if ($request->year) {
-            $date = Carbon::createFromDate($request->year, $request->month, 1);
-        } else {
-            $date = Carbon::now();
-        }
+        if ($request->year) $date = Carbon::createFromDate($request->year, $request->month, 1);
+        else $date = Carbon::now();
         return $this->showReport($date);
     }
 
     public function showInfoAddmissionAndDischarge(Request $request)
     {
-        if ($request->year) {
-            $date = Carbon::createFromDate($request->year, $request->month, 1);
-        } else {
-            $date = Carbon::now();
-        }
+        if ($request->year) $date = Carbon::createFromDate($request->year, $request->month, 1);
+        else $date = Carbon::now();
         return $this->showInfoReport($date);
     }
 
     public function showSummaryAddmissionAndDischarge(Request $request)
     {
-        if ($request->year) {
-            $date = Carbon::createFromDate($request->year, $request->month, 1);
-        } else {
-            $date = Carbon::now();
-        }
+        if ($request->year) $date = Carbon::createFromDate($request->year, $request->month, 1);
+        else $date = Carbon::now();
         return $this->showSummaryReport($date);
     }
     /***************************************************************************************************************************
@@ -64,10 +55,10 @@ class AdmissionDischargeController extends Controller
         foreach ($data as $record) {
             $dob = Carbon::createFromDate($record->fecha_nacimiento);
             $addmission_date = Carbon::createFromDate($record->fecha_ingreso);
-            ($currUrl == "egresos" ? $discharge_date = Carbon::createFromDate($record->fecha_egreso) : false);
+            if ($currUrl == "egresos") $discharge_date = Carbon::createFromDate($record->fecha_egreso);
             $record->fecha_nacimiento = $dob->format('d/m/Y');
             $record->fecha_ingreso = $addmission_date->format('d/m/Y');
-            ($currUrl == "egresos" ? $record->fecha_egreso = $discharge_date->format('d/m/Y') : false);
+            if ($currUrl == "egresos") $record->fecha_egreso = $discharge_date->format('d/m/Y');
             $num = 0;
             $patient = Patient::where('DNI', $record->DNI)->first();
             $patientStage = $patient->stage;
@@ -97,11 +88,8 @@ class AdmissionDischargeController extends Controller
         }
         $date = $date->format('Y-m-d');
         // Return to the view
-        if ($currUrl == "ingresos") {
-            return view('general.patientAdmissions', compact('data', 'list', 'date'));
-        } else {
-            return view('general.patientDischarges', compact('data', 'list', 'date'));
-        }
+        if ($currUrl == "ingresos") return view('general.patientAdmissions', compact('data', 'list', 'date'));
+        else return view('general.patientDischarges', compact('data', 'list', 'date'));
     }
     // Query with with all info of admission/discharges
     public function infoQuery1($status, $date)
@@ -261,7 +249,6 @@ class AdmissionDischargeController extends Controller
                     (!in_array($record->DNI, $uniques) ? array_push($uniques, $record->DNI) : false);
                 }
             }
-
             // Get counts of releases distinct of terapeutic
             if ($currUrl == "egresos") {
                 foreach ($groups as $group) {
@@ -279,14 +266,12 @@ class AdmissionDischargeController extends Controller
                     }
                 }
             }
-
             $obj->menoresSENAME = count($sename);
             $obj->Beneficiarios = count($uniques);
             array_push($listData, $obj);
         }
 
         $date = $date->format('Y-m-d');
-
         // Return to the view
         if ($currUrl == "ingresos") {
             return view('general.patientAdmissionsInfo', ['main' => json_encode($listData), 'list' => json_encode($list), 'diagnosis' => json_encode($diagnosis), 'date' => json_encode($date)]);

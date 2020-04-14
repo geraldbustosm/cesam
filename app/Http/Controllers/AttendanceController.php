@@ -123,7 +123,7 @@ class AttendanceController extends Controller
         // Check if canasta = true
         $attendance = $this->checkCanasta($request, $attendance, $idPatient);
         // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Actualizar', $attendance->id, $attendance->table);
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
         if ($request->register == 1) {
             $activeStage = Stage::where('paciente_id', $idPatient)
                 ->where('activa', 1)
@@ -172,11 +172,9 @@ class AttendanceController extends Controller
         $idPatient = $request->get('id');
         $patient = Patient::find($idPatient);
         // Check if canasta = true
-        $attendance = $this->checkCanasta($request, $attendance, $idPatient);
+        $this->checkCanasta($request, $attendance, $idPatient);
         // Update variable for functionary
-        $updatedHours = $this->updateHours($request);
-        // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Registrar', $attendance->id, $attendance->table);
+        $this->updateHours($request);
         if ($request->register == 1) {
             // Redirect to the view with successful status
             $url = "/ficha/" . $patient->DNI;
@@ -189,6 +187,15 @@ class AttendanceController extends Controller
         }
     }
 
+    /**
+     * Check if the attention open benefits ('canasta')
+     * Logic: if is one attention with a certain functionary (asigned to GES or PPV) and the provision match ('glosa' -> GES or PPV)
+     *        and is the first that match, so open benefits
+     * @param request (from post)
+     * @param attendance
+     * @param patient_id
+     * @return void
+     */
     public function checkCanasta(Request $request, $attendance, $idPatient)
     {
         // Check for abre_canasta
@@ -208,9 +215,16 @@ class AttendanceController extends Controller
         }
         // Pass attendance to database
         $attendance->save();
-        return $attendance;
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar atención', $attendance->id, $attendance->table);
+        return;
     }
 
+    /**
+     * Add attendance hours to the functionary and per speciality
+     * @param request
+     * @return void
+     */
     public function updateHours(Request $request)
     {
         // functionary -> horasRealizadas
@@ -232,10 +246,15 @@ class AttendanceController extends Controller
         $registro->save();
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar horas', $functionary->id, $functionary->table);
-        app('App\Http\Controllers\AdminController')->addLog('Registrar', $registro->id, $registro->table);
+        app('App\Http\Controllers\AdminController')->addLog('Registrar horas por actividad', $registro->id, $registro->table);
         return;
     }
 
+    /**
+     * Clean the hours added before the update
+     * @param attendance
+     * @return void
+     */
     public function eraseHours($attendance)
     {
         // functionary -> horasRealizadas
@@ -255,14 +274,18 @@ class AttendanceController extends Controller
         $functionary->save();
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar horas', $functionary->id, $functionary->table);
-        app('App\Http\Controllers\AdminController')->addLog('Eliminar', $registro->id, $registro->table);
+        app('App\Http\Controllers\AdminController')->addLog('Eliminar horas por actividad', $registro->id, $registro->table);
         return;
     }
 
     /***************************************************************************************************************************
                                                     ATTENDANCE LOGIC
      ****************************************************************************************************************************/
-    // Return a specialitys from one functionary
+    /**
+     * Function for get the specialities from one functionary
+     * @param request (with the functionary ID)
+     * @return speciality_array
+    */
     public function getSpecialityPerFunctionary(Request $request)
     {
         // Get the functionary
@@ -272,7 +295,11 @@ class AttendanceController extends Controller
         // Return specialitys
         return response()->json($speciality);
     }
-    // Return a provisions from one speciality
+    /**
+     * Function for get the provisions for a speciality
+     * @param request (with the speciality ID)
+     * @return provision_array
+    */
     public function getProvisionPerSpeciality(Request $request)
     {
         // Get the speciality
@@ -282,7 +309,11 @@ class AttendanceController extends Controller
         // Return provisions
         return response()->json($provision);
     }
-    // Return a activitys from one speciality
+    /**
+     * Function for get the activities for a speciality
+     * @param request (with the speciality ID)
+     * @return activity_array
+    */
     public function getActivityPerSpeciality(Request $request)
     {
         // Get the speciality
@@ -292,6 +323,11 @@ class AttendanceController extends Controller
         // Return activity's
         return response()->json($activity);
     }
+    /**
+     * Function for check the patient age with respect to age range of provision
+     * @param request (with the patient_id and provision_id)
+     * @return integer (true if is in range)
+    */
     // Compare age of patient and range age of provision
     public function checkAge(Request $request)
     {
@@ -318,11 +354,18 @@ class AttendanceController extends Controller
     /***************************************************************************************************************************
                                                     DELETE LOGIC
      ****************************************************************************************************************************/
+    /**
+     * Function that deactivate the attendance
+     * @param request (with attendance_id)
+     * @return redirect (to stage view)
+     */
     public function deleteAttendance(Request $request)
     {
         $attendance = Attendance::find($request->id_attendance);
         $attendance->activa = 0;
         $attendance->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Eliminar', $attendance->id, $attendance->table);
         return redirect(url()->previous())->with('status', 'La prestación ha sido eliminada');
     }
 }

@@ -96,6 +96,8 @@ class TypeController extends Controller
         $type->descripcion = $request->medical_provision_type;
         // Pass the type to database
         $type->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar tipo prestación', $type->id, $type->table);
         // Redirect to the view with successful status
         return redirect('registrar/tipo')->with('status', 'Nuevo tipo de prestación creada');
     }
@@ -111,7 +113,7 @@ class TypeController extends Controller
         // Get the type (of GES) that want to update
         $type = Type::find($request->id);
         // URL to redirect when process finish.
-        if($type->activa == 1) $url = "/registrar/tipo/";
+        if ($type->activa == 1) $url = "/registrar/tipo/";
         else $url = "/inactivo/tipo/";
         // If found it then update the data
         if ($type) {
@@ -124,8 +126,10 @@ class TypeController extends Controller
             }
             // Pass the new info for update
             $type->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar tipo prestación', $type->id, $type->table);
             // Redirect to the URL with successful status
-            return redirect($url)->with('status', 'Se actualizó la descripción de la prestación a "'.$request->descripcion.'"');
+            return redirect($url)->with('status', 'Se actualizó la descripción de la prestación a "' . $request->descripcion . '"');
         }
         // Redirect to the URL with failure status
         return redirect($url)->with('err', 'No se pudo actualizar la descripción de la prestación');
@@ -168,6 +172,8 @@ class TypeController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar tipo prestación', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/tipo')->with('status', 'Tipo de prestación "' . $data->descripcion . '" re-activado');
     }
@@ -180,6 +186,8 @@ class TypeController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar tipo prestación', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/tipo')->with('status', 'Tipo de prestación "' . $data->descripcion . '" eliminado');
     }

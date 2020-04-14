@@ -13,7 +13,7 @@ class Address extends Model
    *
    * @var string
    */
-  protected $table = 'direccion';
+  public $table = 'direccion';
   
   /**
    * The attributes that are mass assignable.

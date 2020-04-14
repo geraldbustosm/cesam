@@ -21,11 +21,8 @@ class MonthlyRecordController extends Controller
 
     public function showMonthlyRecords(Request $request)
     {
-        if ($request->year) {
-            $date = Carbon::createFromDate($request->year, $request->month, 1);
-        } else {
-            $date = Carbon::now();
-        }
+        if ($request->year) $date = Carbon::createFromDate($request->year, $request->month, 1);
+        else $date = Carbon::now();
         return $this->showReport($date);
     }
 

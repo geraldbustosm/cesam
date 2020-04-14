@@ -66,6 +66,8 @@ class ProgramController extends Controller
         $program->especialidad_programa_id = $request->speciality;
         // Save changes
         $program->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar programa', $program->id, $program->table);
         return redirect($url)->with('status', 'Se ha actualizado el programa');
     }
 
@@ -87,6 +89,8 @@ class ProgramController extends Controller
         $program->especialidad_programa_id = $request->speciality;
         // Pass the program to database
         $program->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar programa', $program->id, $program->table);
         // Redirect to the view with successful status
         return redirect('registrar/programa')->with('status', 'Nuevo programa creado');
     }
@@ -101,6 +105,8 @@ class ProgramController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar programa', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/programa')->with('status', 'Previsión "' . $data->descripcion . '" re-activada');
     }
@@ -113,6 +119,8 @@ class ProgramController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar programa', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/programa')->with('status', 'Previsión "' . $data->descripcion . '" eliminada');
     }

@@ -61,6 +61,8 @@ class SpecialityProgramController extends Controller
         $speciality->codigo = $request->code_speciality;
         // Pass the new speciality to database
         $speciality->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar programa por especialidad', $speciality->id, $speciality->table);
         // Redirect to the view with successful status
         return redirect('registrar/especialidad-glosa')->with('status', 'Nueva especialidad creada');
     }
@@ -94,6 +96,8 @@ class SpecialityProgramController extends Controller
             }
             // Pass the new info for update
             $speciality->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar programa por especialidad', $speciality->id, $speciality->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la descripción de la especialidad a "'.$request->descripcion.'"');
         }
@@ -111,6 +115,8 @@ class SpecialityProgramController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar programa por especialidad', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/especialidad-glosa')->with('status', 'Especialidad "' . $data->descripcion . '" re-activada');
     }
@@ -123,6 +129,8 @@ class SpecialityProgramController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar programa por especialidad', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/especialidad-glosa')->with('status', 'Especialidad "' . $data->descripcion . '" eliminada');
     }

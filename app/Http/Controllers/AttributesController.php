@@ -57,6 +57,8 @@ class AttributesController extends Controller
         $attribute->descripcion = $request->attribute;
         // Pass the new attribute to database
         $attribute->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar atributo', $attribute->id, $attribute->table);
         // Redirect to the view with successful status
         return redirect('registrar/atributos')->with('status', 'Nuevo atributo creado');
     }
@@ -72,11 +74,8 @@ class AttributesController extends Controller
         // Get the attribute that want to update
         $attribute = Attributes::find($request->id);
         // URL to redirect when process finish.
-        if ($attribute->activa == 1) {
-            $url = "/registrar/atributos/";
-        } else {
-            $url = "/inactivo/atributo/";
-        }
+        if ($attribute->activa == 1) $url = "/registrar/atributos/";
+        else $url = "/inactivo/atributo/";
         // If found it then update the data
         if ($attribute) {
             // Set the variable 'descripcion'
@@ -88,6 +87,8 @@ class AttributesController extends Controller
             }
             // Pass the new info for update
             $attribute->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar atributo', $attribute->id, $attribute->table);
             // Redirect to the URL with successful status
             return redirect($url)->with('status', 'Se actualizó la descripción del atributo a "' . $request->descripcion . '"');
         }
@@ -105,6 +106,8 @@ class AttributesController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar atributo', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/atributo')->with('status', 'Atributo "' . $data->descripcion . '" re-activado');
     }
@@ -117,6 +120,8 @@ class AttributesController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar atributo', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/atributos')->with('status', 'Atributo "' . $data->descripcion . '" eliminado');
     }

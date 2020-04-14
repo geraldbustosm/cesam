@@ -116,8 +116,12 @@ class ProvisionController extends Controller
         $provision->rangoEdad_superior = $request->senior_age;
         $provision->tipo_id = $request->medical_provision_type;
         $provision->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar glosa', $provision->id, $provision->table);
         $codigos =  Speciality::where('activa', '=', 1)->get('id');
         $provision->speciality()->sync($codigos);
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad para glosa', $codigos, 'prestacion_posee_especialidad');
         // Redirect to the view with successful status
         return redirect('registrar/prestacion')->with('status', 'Nueva prestacion creada');
     }
@@ -159,6 +163,8 @@ class ProvisionController extends Controller
             $provision->tipo_id = $request->tipo_prestacion;
             // Save changes
             $provision->save();
+            // Regist in logs events
+            app('App\Http\Controllers\AdminController')->addLog('Actualizar glosa', $provision->id, $provision->table);
             return redirect($url)->with('status', 'Se actualizaron los datos de la prestación');
         }
         return redirect($url)->with('err', 'No se actualizaron los datos de la prestación');
@@ -201,6 +207,8 @@ class ProvisionController extends Controller
         $data->activa = 1;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Activar glosa', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('inactivo/prestacion')->with('status', 'Glosa "' . $data->glosaTrasadora . '" re-activada');
     }
@@ -213,6 +221,8 @@ class ProvisionController extends Controller
         $data->activa = 0;
         // Send update to database
         $data->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Desactivar glosa', $data->id, $data->table);
         // Redirect to the view with successful status (showing the user_rut)
         return redirect('registrar/prestacion')->with('status', 'Glosa "' . $data->glosaTrasadora . '" eliminada');
     }

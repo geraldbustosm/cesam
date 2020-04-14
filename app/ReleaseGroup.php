@@ -7,25 +7,27 @@ use Illuminate\Notifications\Notifiable;
 
 class ReleaseGroup extends Model
 {
-	use Notifiable;
+  use Notifiable;
   /**
    * The table associated with the model.
    *
    * @var string
    */
-  public function release()
-    {
-        return $this->hasMany('App\Release');
-    }
-  protected $table = 'grupo_alta';
-  
+
+  public $table = 'grupo_alta';
+
   /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
-  protected $fillable = 
-    [
-      'id','descripcion','activa'
-    ];
+  protected $fillable =
+  [
+    'id', 'descripcion', 'activa'
+  ];
+
+  public function release()
+  {
+    return $this->hasMany('App\Release');
+  }
 }

@@ -18,7 +18,7 @@ class Diagnosis extends Model
         return $this->hasMany('App\Stage');
     }
 
-    protected $table = 'diagnostico';
+    public $table = 'diagnostico';
 
     /**
      * The attributes that are mass assignable.

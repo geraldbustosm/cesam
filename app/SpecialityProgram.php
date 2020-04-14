@@ -13,7 +13,7 @@ class SpecialityProgram extends Model
    *
    * @var string
    */
-  protected $table = 'especialidad_programa';
+  public $table = 'especialidad_programa';
   
   /**
    * The attributes that are mass assignable.

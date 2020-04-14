@@ -17,7 +17,7 @@ class Program extends Model
     {
         return $this->hasMany('App\Stage');
     }
-    protected $table = 'programa';
+    public $table = 'programa';
 
     /**
      * The attributes that are mass assignable.
