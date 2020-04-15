@@ -39,14 +39,18 @@
     </form>
 </div>
 <div class="div-full">
-    <h4><b>Paciente: </b>{{ $patient->nombre1 }} {{ $patient->apellido1 }} {{ $patient->apellido2 }}</h4>
-    <h5 class="mb-2"><b>Rut: </b>{{ $patient->DNI }}</h5>
+    <h5><b>Paciente:</b> {{ $patient->nombre1 }} {{ $patient->apellido1 }} {{ $patient->apellido2 }}</h5>
+    <h5 class="mb-2"><b>Rut:</b> {{ $patient->DNI }}</h5>
+    <h5><b>Medico a cargo:</b> {{$stage->functionary->user->primer_nombre}} {{$stage->functionary->user->apellido_paterno}} {{$stage->functionary->user->apellido_materno}}</h5>
     <br>
     @if($stage->activa == 1)
     <button type="button" class="btn btn-primary mb-2" id="addAttendance">Añadir prestación</button>
     <button type="button" class="btn btn-primary mb-2" id="editAttributes">Editar atributos</button>
     <button type="button" class="btn btn-primary mb-2" id="editDiagnosis">Editar diagnósticos</button>
     <button type="button" class="btn btn-primary mb-2" id="addRelease">Dar alta</button>
+        @if(Auth::user()->rol == 1)
+        <button type="button" class="btn btn-primary mb-2" id="changeFunctionary">Cambiar medico a cargo</button>
+        @endif 
     @endif
 </div>
 <div class="div-full">
