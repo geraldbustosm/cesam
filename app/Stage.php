@@ -45,4 +45,10 @@ class Stage extends Model
   {
     return $this->belongsTo('App\Patient', 'paciente_id');
   }
+
+  public function functionary()
+  {
+    return $this->belongsTo('App\Functionary', 'funcionario_id');
+  }
+
 }
