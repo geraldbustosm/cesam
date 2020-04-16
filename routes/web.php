@@ -255,6 +255,10 @@ Route::put('misdatos/edit', 'UserController@editData')->middleware('checkrole:1|
 Route::get('horas/edit', 'UserController@editHours')->middleware('checkrole:1|2|3');
 Route::post('horas/edit', 'UserController@saveHours')->middleware('checkrole:1|2|3');
 
+// Cambiar medico a cargo de una ficha de un paciente
+Route::get('cambiar-medico/{dni}', 'AdminController@showEditFunctionaryInCharge');
+Route::put('cambiar-medico', 'AdminController@editFunctionaryInCharge');
+
 /***************************************************************************************************************************
                                                     REPORTS SECTION
  ****************************************************************************************************************************/

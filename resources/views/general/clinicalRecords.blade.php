@@ -167,6 +167,11 @@
         window.location.href = `/alta/${DNI}`;
     });
 
+    $('#changeFunctionary').on('click', function() {
+        DNI = <?php echo json_encode($patient->DNI); ?>;
+        window.location.href = `/alta/${DNI}`;
+    });
+
     function redirectEdit(id){
         var DNI = <?php echo json_encode($patient->DNI); ?>;
         var stage = <?php echo json_encode($stage->id); ?>;

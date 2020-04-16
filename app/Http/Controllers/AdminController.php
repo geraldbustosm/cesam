@@ -8,7 +8,7 @@ use App\Log;
 use App\Patient;
 use App\Provision;
 use App\Speciality;
-
+use App\FunctionarySpeciality;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +34,46 @@ class AdminController extends Controller
     {
         return false;
     }
+
+    public function showEditFunctionaryInCharge($dni){
+        $patient = Patient::where('DNI', $dni)->where('activa', 1)->get()->first();
+        $functionarys = Functionary::where('activa', 1)->get();
+        $medicals = array();
+        foreach($functionarys as $functionary){
+            foreach($functionary->speciality as $specialitys){
+                if($specialitys->pivot->especialidad_id == 1){
+                    array_push($medicals, $functionary);
+                    break;
+                }
+            }
+        }
+        
+        if($patient){
+            $stages = $patient->stage;
+            foreach($stages as $stage){
+                if($stage->activa == 1){
+                    $activeStage = $stage;
+                    $medicalInCharge = $activeStage->functionary;
+                    return view('admin.Edit.functionaryInChargeEdit', compact('medicalInCharge', 'patient', 'activeStage', 'medicals'));
+                }else{
+                    return redirect('ficha/' .$dni)->with('error', 'No se encontró ficha activa');
+                }
+            }
+        }
+
+        return redirect('pacientes')->with('error', 'No se encontró el paciente');
+
+    }
+
+    /***************************************************************************************************************************
+                                                    EDIT PROCESS
+     ****************************************************************************************************************************/
+    public function editFunctionaryInCharge(Request $request)
+    {
+        
+    }
+
+
     /***************************************************************************************************************************
                                                     HELPERS AND LOGIC FUNCTIONS
      ****************************************************************************************************************************/
