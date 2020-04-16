@@ -135,13 +135,17 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="addPCI();">Continuar</button>
+                <button type="button" class="btn btn-primary" id="btnPCI" onclick="addPCI();">Continuar</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    var patient_id = <?php echo json_encode($patient->id); ?>;
+    var patient_dni = <?php echo json_encode($patient->DNI); ?>;
+    var curr_stage_id = <?php echo json_encode($stage->id); ?>;
+
     $(document).ready(function() {
         // Run code
         var test = <?php echo json_encode($patientAttendances); ?>;
@@ -173,31 +177,26 @@
     });
 
     $('#stages').on('change', function() {
-        var tagID = document.getElementById('id');
-        tagID.value = <?php echo json_encode($patient->id); ?>;
+        document.getElementById('id').value = patient_id;
         document.onSubmit.submit();
     });
 
     $('#addAttendance').on('click', function() {
-        var tagID = document.getElementById('DNI_stage');
-        tagID.value = <?php echo json_encode($patient->id); ?>;
+        document.getElementById('DNI_stage').value = patient_id;
         document.onSubmitAttendance.submit();
-    });
-
-    $('#editDiagnosis').on('click', function() {
-        var stage = <?php echo json_encode($stage->id); ?>;
-        window.location.href = `/etapas/edit/${stage}`;
     });
 
     function addPCI() {
         var pci = document.getElementById("datepicker").value;
-        document.getElementById('pci').value = pci;
-        var tagID = document.getElementById('patient_stage');
-        tagID.value = <?php echo json_encode($patient->DNI); ?>;
-        var tagID = document.getElementById('id_stage');
-        tagID.value = <?php echo json_encode($stage->id); ?>;
-        console.log(tagID);
-        document.onSubmitPCI.submit();
+        if (pci) {
+            document.getElementById('btnPCI').disabled = true;
+            document.getElementById('pci').value = pci;
+            document.getElementById('patient_stage').value = patient_dni;
+            document.getElementById('id_stage').value = curr_stage_id;
+            document.onSubmitPCI.submit();
+        } else {
+            Swal.fire('Error', `Seleccione una fecha`, 'error');
+        }
     };
 
     function deleteAttendance(id) {
@@ -210,7 +209,7 @@
             // Get hidded input for submit and set value with id
             document.getElementById("id_attendance").value = id;
             // Submit the data
-            // document.onSubmitDelete.submit();
+            document.onSubmitDelete.submit();
         });
     }
 </script>

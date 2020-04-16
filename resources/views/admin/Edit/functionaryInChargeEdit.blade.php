@@ -40,7 +40,8 @@
 
 		<div class="form-group">
 			<label for="medical">Por</label>
-            <select name="medical_id" id="medical" class="form-control">
+            <select name="medical_id" id="medical" class="form-control" required>
+				<option value="" selected disabled> Seleccione otro médico</option>
                 @foreach($medicals as $medico)
                     @if($medico->id != $medicalInCharge->id)
                         <option value="{{$medico->id}}">{{$medico->user->primer_nombre}} {{$medico->user->apellido_paterno}} {{$medico->user->apellido_materno}}</option>
