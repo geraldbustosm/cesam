@@ -6,6 +6,7 @@ use App\Diagnosis;
 use App\Functionary;
 use App\Log;
 use App\Patient;
+use App\Stage;
 use App\Provision;
 use App\Speciality;
 use App\FunctionarySpeciality;
@@ -70,7 +71,11 @@ class AdminController extends Controller
      ****************************************************************************************************************************/
     public function editFunctionaryInCharge(Request $request)
     {
-        
+        $etapa = Stage::find($request->id_etapa);
+        $etapa->funcionario_id = $request->medical_id;
+        $etapa->save();
+
+        return redirect('cambiar-medico/'.$request->dni)->with('status', 'Se cambió el medico a cargo');
     }
 
 

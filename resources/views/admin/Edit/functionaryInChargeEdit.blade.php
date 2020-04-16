@@ -27,6 +27,9 @@
 		<!-- Por convención, para update utilizaremos metodo PUT (no un simple metodo post) -->
 		<input type="hidden" name="_method" value="PUT">
 
+        <!-- Enviamos el DNI -->
+		<input id="dni" name="dni" type="hidden" value="{{$patient->DNI}}">
+
 		<!-- Enviamos el ID de la ficha activa -->
 		<input id="id_etapa" name="id_etapa" type="hidden" value="{{$activeStage->id}}">
 
@@ -37,7 +40,7 @@
 
 		<div class="form-group">
 			<label for="medical">Por</label>
-            <select name="medical" id="medical" class="form-control">
+            <select name="medical_id" id="medical" class="form-control">
                 @foreach($medicals as $medico)
                     @if($medico->id != $medicalInCharge->id)
                         <option value="{{$medico->id}}">{{$medico->user->primer_nombre}} {{$medico->user->apellido_paterno}} {{$medico->user->apellido_materno}}</option>
