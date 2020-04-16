@@ -169,7 +169,7 @@
 
     $('#changeFunctionary').on('click', function() {
         DNI = <?php echo json_encode($patient->DNI); ?>;
-        window.location.href = `/alta/${DNI}`;
+        window.location.href = `/cambiar-medico/${DNI}`;
     });
 
     function redirectEdit(id){
