@@ -166,4 +166,18 @@ class StageController extends Controller
             } else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
         }
     }
+
+    public function addPCI(Request $request)
+    {
+        $stage = Stage::find($request->id_stage);
+        // Change datepicker format to database format
+        $var = $request->pci;
+        $date = str_replace('/', '-', $var);
+        $pci = date('Y-m-d', strtotime($date));
+        $stage->pci = $pci;
+        $stage->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar etapa (PCI)', $stage->id, $stage->table);
+        return redirect('ficha/' . $request->patient_stage);
+    }
 }

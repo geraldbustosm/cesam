@@ -118,7 +118,7 @@ class ProvisionController extends Controller
         $provision->save();
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar glosa', $provision->id, $provision->table);
-        $codigos =  Speciality::where('activa', '=', 1)->get('id');
+        $codigos =  Speciality::where('activa', '=', 1)->pluck('id');
         $provision->speciality()->sync($codigos);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad para glosa', $codigos, 'prestacion_posee_especialidad');

@@ -11,7 +11,7 @@ use App\Sex;
 use App\Speciality;
 use App\Stage;
 use App\User;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
@@ -87,6 +87,7 @@ class GeneralController extends Controller
             $patientAttendances = $stage->attendance;
             // Identify active stage
             $activeStage = $stage;
+            if ($stage->pci) $stage->PCI = Carbon::createFromDate($stage->pci)->format('d/m/Y');
             // Redirect to the view with successful status
             return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage', 'attributes', 'diagnosis'));
         }
@@ -125,6 +126,7 @@ class GeneralController extends Controller
         foreach ($stage->diagnosis as $index) {
             $diagnosis = $diagnosis . ", " . $index->descripcion;
         }
+        if ($stage->pci) $stage->PCI = Carbon::createFromDate($stage->pci)->format('d/m/Y');
         return view('general.clinicalRecords', compact('patient', 'stage', 'patientAttendances', 'activeStage', 'attributes', 'diagnosis'));
     }
     /***************************************************************************************************************************

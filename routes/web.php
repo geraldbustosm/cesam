@@ -302,5 +302,7 @@ Route::get('ultima-atencion', 'AttendanceControllerLast@showAddAttendance')->mid
 Route::post('ultima-atencion', 'AttendanceControllerLast@registerAttendance')->middleware('checkrole:1|2|3');
 // Eliminar atención
 Route::post('eliminar-atención', 'AttendanceController@deleteAttendance')->middleware('checkrole:1');
-
+// Agregar fecha de PCI a la etapa
+Route::post('pci-etapa', 'StageController@addPCI')->middleware('checkrole:1|2|3');
+// Registros del sistema
 Route::get('logs', 'AdminController@showLogs')->middleware('checkrole:1');
