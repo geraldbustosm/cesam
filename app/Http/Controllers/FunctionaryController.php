@@ -135,7 +135,7 @@ class FunctionaryController extends Controller
         $functionary->speciality()->sync($codigos);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar funcionario', $functionary->id, $functionary->table);
-        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad a funcionario', $codigos, 'funcionario_posee_especialidad');
+        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad a funcionario id: ' . $functionary->id, $codigos, 'funcionario_posee_especialidad');
         // Redirect to the view with successful status
         return redirect('/funcionarios')->with('status', 'Funcionario creado!');
     }

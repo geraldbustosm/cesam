@@ -155,6 +155,7 @@ class TypeController extends Controller
                             $speciality = Speciality::find($str_arr[0]);
                         }
                         $speciality->type()->sync($codigos);
+                        // Regist in logs events
                     }
                 }
             }

@@ -121,7 +121,7 @@ class ProvisionController extends Controller
         $codigos =  Speciality::where('activa', '=', 1)->pluck('id');
         $provision->speciality()->sync($codigos);
         // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad para glosa', $codigos, 'prestacion_posee_especialidad');
+        app('App\Http\Controllers\AdminController')->addLog('Registrar especialidad para glosa' . $provision->id, $codigos, 'prestacion_posee_especialidad');
         // Redirect to the view with successful status
         return redirect('registrar/prestacion')->with('status', 'Nueva prestacion creada');
     }
@@ -190,6 +190,8 @@ class ProvisionController extends Controller
                             $provision = Provision::find($str_arr[0]);
                         }
                         $provision->speciality()->sync($codigos);
+                        // Regist in logs events
+
                     }
                 }
             }

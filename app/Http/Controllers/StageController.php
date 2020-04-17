@@ -83,7 +83,7 @@ class StageController extends Controller
         $stage->diagnosis()->sync($request->options);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar etapa (ficha)', $stage->id, $stage->table);
-        app('App\Http\Controllers\AdminController')->addLog('Registrar diagnósticos de la etapa', $request->options, 'etapa_posee_diagnostico');
+        app('App\Http\Controllers\AdminController')->addLog('Registrar diagnósticos de la etapa id: ' . $stage->id, $request->options, 'etapa_posee_diagnostico');
         // Set variable with patient_id
         $DNI = $request->idpatient;
         // Get the patient
@@ -120,7 +120,7 @@ class StageController extends Controller
         $stage->save();
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar etapa (ficha)', $stage->id, $stage->table);
-        app('App\Http\Controllers\AdminController')->addLog('Actualizar diagnósticos de la etapa', $request->options, 'etapa_posee_diagnostico');
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar diagnósticos de la etapa id: ' . $stage->id, $request->options, 'etapa_posee_diagnostico');
         return redirect($url)->with('status', $msg);
     }
     /***************************************************************************************************************************

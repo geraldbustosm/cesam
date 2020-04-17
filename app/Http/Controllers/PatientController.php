@@ -157,10 +157,11 @@ class PatientController extends Controller
         $address->save();
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar paciente', $patient->id, $patient->table);
+        app('App\Http\Controllers\AdminController')->addLog('Registrar dirección', $address->id, $address->table);
         // Add attributes for this patient
         $patient->attributes()->sync($request->options);
         // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Registrar atributos a paciente', $request->options, 'paciente_posee_atributos');
+        app('App\Http\Controllers\AdminController')->addLog('Registrar atributos a paciente id: ' . $patient->id, $request->options, 'paciente_posee_atributos');
         // Redirect to the view with successful status
         return redirect('registrar/paciente')->with('status', 'Usuario creado');
     }
@@ -239,6 +240,8 @@ class PatientController extends Controller
             app('App\Http\Controllers\AdminController')->addLog('Actualizar dirección', $patient->id, $patient->table);
         }
         $patient->attributes()->sync($request->options);
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar atributos a paciente id: ' . $patient->id, $request->options, 'paciente_posee_atributos');
         // Redirect to the URL with successful status
         return redirect($url)->with('status', 'Se actualizaron los datos del paciente');
     }
@@ -249,7 +252,7 @@ class PatientController extends Controller
         $patient->attributes()->sync($request->options);
         $patient->save();
         // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Actualizar atributos de paciente', $request->options, 'paciente_posee_atributos');
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar atributos de paciente id: ' . $patient, $request->options, 'paciente_posee_atributos');
         // URL to redirect
         $url = 'paciente-atributos/' . $request->dni;
         return redirect($url)->with('status', 'Se actualizaron los atributos del paciente');

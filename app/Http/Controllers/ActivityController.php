@@ -158,6 +158,7 @@ class ActivityController extends Controller
                             $activity = Activity::find($str_arr[0]);
                         }
                         $activity->speciality()->sync($codigos);
+                        app('App\Http\Controllers\AdminController')->addLog('Asignar especialidades a actividad id: ' . $activity->id, $codigos, 'actividad_posee_especialidad');
                     }
                 }
             }

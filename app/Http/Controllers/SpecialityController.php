@@ -100,7 +100,7 @@ class SpecialityController extends Controller
         $codigos = Provision::where('activa', '=', 1)->get('id');
         $speciality->provision()->sync($codigos);
         // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Registrar glosas para especialidad', $codigos, 'prestacion_posee_especialidad');
+        app('App\Http\Controllers\AdminController')->addLog('Registrar glosas para especialidad id: ' . $speciality->id, $codigos, 'prestacion_posee_especialidad');
         // Redirect to the view with successful status
         return redirect('registrar/especialidad')->with('status', 'Nueva especialidad creada');
     }
@@ -158,6 +158,7 @@ class SpecialityController extends Controller
                             $functionary = Functionary::find($str_arr[0]);
                         }
                         $functionary->speciality()->sync($codigos);
+                        // Regist in logs events
                     }
                 }
             }
