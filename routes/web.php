@@ -118,9 +118,9 @@ Route::get('inactivo/genero', 'SexController@showInactiveSex')->middleware('chec
 Route::post('activar-genero', 'SexController@activateSex')->middleware('checkrole:1');
 Route::post('desactivar-genero', 'SexController@deletingSex')->middleware('checkrole:1');
 // SiGGES
-Route::get('inactivo/sigges', 'SiGGESController@showInactiveSiGGES')->middleware('checkrole:1');
-Route::post('activar-sigges', 'SiGGESController@activateSiGGES')->middleware('checkrole:1');
-Route::post('desactivar-sigges', 'SiGGESController@deletingSiGGES')->middleware('checkrole:1');
+Route::get('inactivo/sigges', 'SIGGESController@showInactiveSiGGES')->middleware('checkrole:1');
+Route::post('activar-sigges', 'SIGGESController@activateSiGGES')->middleware('checkrole:1');
+Route::post('desactivar-sigges', 'SIGGESController@deletingSiGGES')->middleware('checkrole:1');
 // Tipo de la prestación
 Route::get('inactivo/tipo', 'TypeController@showInactiveType')->middleware('checkrole:1');
 Route::post('activar-tipo', 'TypeController@activateType')->middleware('checkrole:1');
@@ -241,8 +241,8 @@ Route::put('programas/edit', 'ProgramController@editProgram');
 Route::get('géneros/edit/{id}', 'SexController@showEditSex')->middleware('checkrole:1');
 Route::put('géneros/edit', 'SexController@editSex')->middleware('checkrole:1');
 // Tipo GES
-Route::get('sigges/edit/{id}', 'SiGGESController@showEditSiGGES')->middleware('checkrole:1');
-Route::put('sigges/edit', 'SiGGESController@editSiGGES')->middleware('checkrole:1');
+Route::get('sigges/edit/{id}', 'SIGGESController@showEditSiGGES')->middleware('checkrole:1');
+Route::put('sigges/edit', 'SIGGESController@editSiGGES')->middleware('checkrole:1');
 // Tipo prestaciones
 Route::get('tipos/edit/{id}', 'TypeController@showEditType')->middleware('checkrole:1');
 Route::put('tipos/edit', 'TypeController@editType')->middleware('checkrole:1');
