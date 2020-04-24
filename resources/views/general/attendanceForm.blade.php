@@ -128,8 +128,8 @@
                         <select class="div-full search-select" id="provision" name="provision" required>
                             <option value="" selected disabled>Seleccione la glosa</option>
                             @foreach($provision as $index)
-                            @if (lastProvision->id)
-                            <option value="{{ $index->id}}" {{ ($lastProvision == $index->id ? 'selected' : '') }}>{{ $index->glosaTrasadora}}</option>
+                            @if ($lastProvision->id)
+                            <option value="{{ $index->id}}" {{ ($lastProvision->id == $index->id ? 'selected' : '') }}> {{ $index->glosaTrasadora}}</option>
                             @else
                             <option value="{{ $index->id}}">{{ $index->glosaTrasadora}}</option>
                             @endif
@@ -168,7 +168,6 @@
                                             btn[1].style = "";
                                             $('#errorAge').hide();
                                             $("#speciality").empty();
-                                            $("#provision").empty();
                                             $("#activity").empty();
                                             $("#speciality").append('<option value="" selected disabled>Seleccione la especialidad</option>');
                                             $.each(res, function(key, value) {
@@ -185,29 +184,8 @@
                         });
 
                         $('#speciality').on('change', function() {
-                            var specialityID = $(this).val();
-                            if (specialityID) {
-                                $.ajax({
-                                    type: "GET",
-                                    url: "{{url('lista-prestaciones')}}?speciality_id=" + specialityID,
-                                    success: function(res) {
-                                        if (res) {
-                                            btn[0].style = "";
-                                            btn[1].style = "";
-                                            $('#errorAge').hide();
-                                            $("#provision").empty();
-                                            $("#provision").append('<option value="" selected disabled>Seleccione la prestación</option>');
-                                            $.each(res, function(key, value) {
-                                                if (value.activa == true)
-                                                    $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
-                                            });
-                                        } else $("#provision").empty();
-                                    }
-                                });
-                            } else $("#provision").empty();
-                        });
-
-                        $('#speciality').on('change', function() {
+                            btn[0].style = "";
+                            btn[1].style = "";
                             var specialityID = $(this).val();
                             if (specialityID) {
                                 $.ajax({
@@ -267,7 +245,7 @@
                         <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                         <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
                         <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
-                        <button type="submit" name="register" id="register" value="2" class="btn btn-primary">Agregar Otro</button>
+                        <button type="submit" name="register" id="registerAnother" value="2" class="btn btn-primary">Agregar Otro</button>
                     </div>
                 </div>
             </div>

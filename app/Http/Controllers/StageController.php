@@ -134,12 +134,8 @@ class StageController extends Controller
         $patient = Patient::where('id', $request->DNI_stage)
             ->where('activa', 1)
             ->first();
-        // Set variable with patient DNI (rut)
-        $DNI = $patient->DNI;
-        // Set variable with patient id (from database)
-        $id_patient = $patient->id;
         // Get the active stage
-        $stage = Stage::where('paciente_id', $id_patient)
+        $stage = Stage::where('paciente_id', $patient->id)
             ->where('activa', 1)
             ->first();
         $provision = Provision::where('activa', 1)->get();
@@ -147,20 +143,20 @@ class StageController extends Controller
         // If have no active stage
         if (empty($stage)) {
             // Call function 'showAddStage'
-            return $this->showAddStage($id_patient);
+            return $this->showAddStage($patient->id);
         } else {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
             $user = Auth::user();
-            if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
+            if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
             else if ($user->rol == 2) {
                 $sugestion = "";
                 $attendance = $stage->attendance->first();
                 $functionary = Functionary::where('user_id', $user->id)->first();
                 if($attendance->$functionary->id == $functionary->id){
-                    return view('general.attendanceFormFunctionary', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
+                    return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
                 }
-                return view('general.attendanceFormFunctionary', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
+                return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
             }
             if ($user->rol == 3) {
                 $users = Functionary::where('activa', 1)->get();
