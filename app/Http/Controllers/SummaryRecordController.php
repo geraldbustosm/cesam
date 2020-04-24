@@ -29,14 +29,16 @@ class SummaryRecordController extends Controller
     {
         // Get data
         $data = $this->querySummary($date);
-        // Get functionarys and activities
-        $functionarys = $data->unique('rut');
+        // Get functionaries and activities
+        $functionaries = $data->unique('rut');
         $activities = $data->unique('actividad');
         $table = [];
+        $list = [];
         foreach ($activities as $index1) {
             $obj = new \stdClass();
             $obj->actividad = $index1->actividad;
-            foreach ($functionarys as $index2) {
+            foreach ($functionaries as $index2) {
+                if (!in_array($index2, $list)) array_push($list, $index2);
                 $strYes = $index2->rut . '-si';
                 $obj->$strYes = 0;
                 $strNo = $index2->rut . '-no';
@@ -52,7 +54,7 @@ class SummaryRecordController extends Controller
         }
         $date = $date->format('Y-m-d');
         // Return to the view
-        return view('general.recordsSummary', compact('functionarys', 'table', 'date'));
+        return view('general.recordsSummary', compact('list', 'table', 'date'));
     }
     // Query for summary info
     public function querySummary($date)

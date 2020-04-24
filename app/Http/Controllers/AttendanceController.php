@@ -124,6 +124,8 @@ class AttendanceController extends Controller
         $attendance = $this->checkCanasta($request, $attendance, $idPatient);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
         if ($request->register == 1) {
             $activeStage = Stage::where('paciente_id', $idPatient)
                 ->where('activa', 1)
@@ -172,7 +174,9 @@ class AttendanceController extends Controller
         $idPatient = $request->get('id');
         $patient = Patient::find($idPatient);
         // Check if canasta = true
-        $this->checkCanasta($request, $attendance, $idPatient);
+        $this->checkCanasta($request, $attendance, $idPatient);        
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Registrar atención', $attendance->id, $attendance->table);
         // Update variable for functionary
         $this->updateHours($request);
         if ($request->register == 1) {
@@ -215,8 +219,6 @@ class AttendanceController extends Controller
         }
         // Pass attendance to database
         $attendance->save();
-        // Regist in logs events
-        app('App\Http\Controllers\AdminController')->addLog('Registrar atención', $attendance->id, $attendance->table);
         return;
     }
 
