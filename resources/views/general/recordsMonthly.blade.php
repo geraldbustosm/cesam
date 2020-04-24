@@ -50,6 +50,7 @@
             <div class="form-group col-md-4 warpper">
                 <select class="form-control" id="filter-field" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
                     <option selected>Columna</option>
+                    <option value="canasta">Canasta</option>
                     <option value="procedencia">Procedencia</option>
                     <option value="programa">Programa</option>
                     <option value="DNI">Rut</option>
