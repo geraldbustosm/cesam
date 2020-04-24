@@ -198,8 +198,12 @@ class AttendanceController extends Controller
      */
     public function checkCanasta(Request $request, $attendance, $idPatient)
     {
+        $functionary = Functionary::find($request->functionary);
+        /**
+         * buscar la especialidad del funcionario y dejarla en typeSpeciality
+         */
         // Check for abre_canasta
-        $typespeciality = TypeSpeciality::where('especialidad_id', 1)->get();
+        $typespeciality = TypeSpeciality::where('especialidad_id', 6)->get();
         $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
         if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
             $canasta = true;
