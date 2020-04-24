@@ -51,7 +51,7 @@
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
                     <option value="actividad">Actividad</option>
-                    @foreach($functionarys as $functionary)
+                    @foreach($list as $functionary)
                     <option value="{{ $functionary->nombre_funcionario }}">{{ $functionary->nombre_funcionario }}</option>
                     @endforeach
                 </select>
@@ -101,27 +101,29 @@
             });
             //Getting data
             var tableData = <?php echo json_encode($table); ?>;
-            console.log(tableData)
-            var functionarys = <?php echo json_encode($functionarys); ?>;
-            console.log(functionarys)
+            var functionaries = <?php echo json_encode($list); ?>;
+            console.log(functionaries)
             var currDate = <?php echo json_encode($date); ?>;
+            function printFormatter(cell, formatterParams, onRendered){
+                return cell.getValue() ? "YES" : "NO";
+            }
             // Write data on Tabulator table
             table = new Tabulator("#example-table", {
                 height:"420px",
                 data:tableData,
                 // autoColumns: true,
                 columns: [
-                    {title: "Actividad", field:"actividad"},
+                    {title: "Actividad", field:"actividad"}
                 ],
             });
             // Complete table
-            for(i=0 ; i<functionarys.length ; i++){
+            for(i=0 ; i<functionaries.length ; i++){
                 table.addColumn(
                     {//create column group
-                        title:`${functionarys[i].nombre_funcionario}`,
+                        title:`${functionaries[i].nombre_funcionario}`,
                         columns:[
-                            {title:"Con Asistenia", field:`${functionarys[i].rut}-si`, width:160, bottomCalc:"sum"},
-                            {title:"Sin Asistenia", field:`${functionarys[i].rut}-no`, width:160, bottomCalc:"sum"},
+                            {title:"Con Asistenia", field:`${functionaries[i].rut}-si`, width:160, bottomCalc:"sum"},
+                            {title:"Sin Asistenia", field:`${functionaries[i].rut}-no`, width:160, bottomCalc:"sum"},
                         ],
                     }, false);
             };
