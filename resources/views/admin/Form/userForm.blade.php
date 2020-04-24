@@ -20,7 +20,7 @@
         </ul>
     </div>
     @endif
-    <form method="post" action="{{ url('registrar/usuario') }}"  name="onSubmit" id="onSubmit">
+    <form method="post" action="{{ url('registrar/usuario') }}" name="onSubmit" id="onSubmit">
         @csrf
         <!-- Nickname -->
         <div class="form-group">
@@ -78,10 +78,8 @@
         // No reaload
         e.preventDefault();
         await CheckRUT(document.getElementById('rut')).then(res => {
-            if (res)
-                document.onSubmit.submit()
-            else
-                Swal.fire('Error!', `El rut no es válido`, 'error');
+            if (res) document.onSubmit.submit()
+            else Swal.fire('Error!', `El rut no es válido`, 'error');
         })
     });
 </script>
