@@ -102,7 +102,7 @@ class AttendanceController extends Controller
         ($request->functionary ? $attendance->funcionario_id = $request->functionary : false);
         $attendance->etapa_id = $request->id_stage;
         ($request->get('provision') ? $attendance->prestacion_id = $request->get('provision') : false);
-        $attendance->asistencia = $request->get('selectA');
+        $attendance->asistencia = $request->get('selectAssist');
         $attendance->hora = $request->get('timeInit');
         ($request->get('activity') ? $attendance->actividad_id = $request->get('activity') : false);
         ($request->get('duration') ? $attendance->duracion = $request->get('duration') : false);
@@ -153,7 +153,7 @@ class AttendanceController extends Controller
         $attendance->funcionario_id = $request->functionary;
         $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
-        $attendance->asistencia = $request->get('selectA');
+        $attendance->asistencia = $request->get('selectAssist');
         $attendance->repetido = $request->get('selectType');
         $attendance->hora = $request->get('timeInit');
         $attendance->actividad_id = $request->get('activity');
@@ -198,14 +198,10 @@ class AttendanceController extends Controller
      */
     public function checkCanasta(Request $request, $attendance, $idPatient)
     {
-        $functionary = Functionary::find($request->functionary);
-        /**
-         * buscar la especialidad del funcionario y dejarla en typeSpeciality
-         */
         // Check for abre_canasta
-        $typespeciality = TypeSpeciality::where('especialidad_id', 6)->get();
-        $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
-        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
+        $typespeciality = TypeSpeciality::where('especialidad_id', $request->speciality)->get();
+        $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1)->get();
+        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectAssist') == 1) {
             $canasta = true;
             $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
                 ->where('atencion.prestacion_id', $attendance->prestacion_id)

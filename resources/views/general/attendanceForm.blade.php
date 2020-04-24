@@ -135,8 +135,8 @@
                         <select name="activity" id="activity" class="form-control" required></select>
                     </div>
                     <div class="form-group col" style="margin-top: 20px">
-                        <label for="selectA">Asistencia: </label>
-                        <select name="selectA" id="selectA" class="form-control col-12">
+                        <label for="selectAssist">Asistencia: </label>
+                        <select name="selectAssist" id="selectAssist" class="form-control col-12">
                             <option value="1" selected>Si </option>
                             <option value="0">No</option>
                         </select>
@@ -257,12 +257,12 @@
                         $('#activity').on('change', function() {
                             if ($("#activity option:selected").text().toLowerCase().includes('informe') ||
                                 $("#activity option:selected").text().toLowerCase().includes('ipg')) {
-                                $("#selectA").empty();
-                                $("#selectA").append('<option value="0" selected>No</option>');
+                                $("#selectAssist").empty();
+                                $("#selectAssist").append('<option value="0" selected>No</option>');
                             } else {
-                                $("#selectA").empty();
-                                $("#selectA").append('<option value="1" selected>Si</option>');
-                                $("#selectA").append('<option value="0">No</option>');
+                                $("#selectAssist").empty();
+                                $("#selectAssist").append('<option value="1" selected>Si</option>');
+                                $("#selectAssist").append('<option value="0">No</option>');
                             }
                         });
                     </script>

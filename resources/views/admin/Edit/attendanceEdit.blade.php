@@ -139,8 +139,8 @@
                     <select name="activity" id="activity" class="form-control" style="width:350px" required></select>
                 </div>
                 <div class="form-group">
-                    <label for="selectA">Asistencia: </label>
-                    <select name="selectA" class="form-control" style="width:350px" required>
+                    <label for="selectAssist">Asistencia: </label>
+                    <select name="selectAssist" class="form-control" style="width:350px" required>
                         <option value="1" {{($attendance->asistencia ? 'selected' : '')}}>Si </option>
                         <option value="0" {{($attendance->asistencia ? '' : 'selected')}}>No</option>
                     </select>
