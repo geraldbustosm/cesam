@@ -51,16 +51,12 @@
                 <select class="form-control" id="filter-field">
                     <option selected>Columna</option>
                     <option value="actividad">Actividad</option>
-                    @foreach($list as $functionary)
-                    <option value="{{ $functionary->nombre_funcionario }}">{{ $functionary->nombre_funcionario }}</option>
-                    @endforeach
                 </select>
             </div>
 
             <div class="form-group col-md-2">
                 <select class="form-control" id="filter-type">
                     <option selected>Tipo</option>
-                    <option value="=">=</option>
                     <option value="<=">&lt;=</option>
                     <option value=">=">&gt;=</option>
                     <option value="like">igual (texto)</option>
@@ -102,11 +98,7 @@
             //Getting data
             var tableData = <?php echo json_encode($table); ?>;
             var functionaries = <?php echo json_encode($list); ?>;
-            console.log(functionaries)
             var currDate = <?php echo json_encode($date); ?>;
-            function printFormatter(cell, formatterParams, onRendered){
-                return cell.getValue() ? "YES" : "NO";
-            }
             // Write data on Tabulator table
             table = new Tabulator("#example-table", {
                 height:"420px",
