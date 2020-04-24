@@ -72,7 +72,7 @@ class AttendanceControllerLast extends Controller
         $attendance->funcionario_id = $request->functionary;
         $attendance->etapa_id = $request->id_stage;
         $attendance->prestacion_id = $request->get('provision');
-        $attendance->asistencia = $request->get('selectA');
+        $attendance->asistencia = $request->get('selectAssist');
         $attendance->repetido = 1;
         $attendance->hora = $request->get('timeInit');
         $attendance->actividad_id = $request->get('activity');
@@ -91,9 +91,9 @@ class AttendanceControllerLast extends Controller
         $idPatient = $request->get('id');
         $patient = Patient::find($idPatient);
         // Check for abre_canasta
-        $typespeciality = TypeSpeciality::where('especialidad_id', 1)->get();
+        $typespeciality = TypeSpeciality::where('especialidad_id', 1)->first();
         $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
-        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectA') == 1) {
+        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectAssist') == 1) {
             $canasta = true;
             $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
                 ->where('atencion.prestacion_id', $attendance->prestacion_id)

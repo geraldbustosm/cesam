@@ -96,8 +96,8 @@
                     </script>
                 </div>
                 <div class="form-group col-10">
-                    <label for="selectA">Asistencia: </label>
-                    <select name="selectA" class="form-control col-12">
+                    <label for="selectAssist">Asistencia: </label>
+                    <select name="selectAssist" id="selectAssist" class="form-control col-12">
                         <option value="1" selected>Si </option>
                         <option value="0">No</option>
                     </select>
@@ -110,18 +110,18 @@
                 </div>
                 <div class="panel-heading">Funcionario</div>
                 <div class="form-control">
-                    <label class="form-group col-10">{{ $functionary->user->primer_nombre." ".$functionary->user->segundo_nombre." }}</label>
+                    <label class="form-group col-10">{{ $functionary->user->primer_nombre." ".$functionary->user->segundo_nombre }}</label>
                     <input hidden id="functionary" name="functionary" value="{{ $functionary->id}}"></input>
                 </div>
                 <div class="form-group">
                     <label for="title">Especialidad:</label>
-                    <label class="form-control col-10">{{ $speciality->descripcion}}</label>
-                    <input hidden id="speciality" name="speciality" value="{{ $speciality->id}}"></input>
+                    <label class="form-control col-10">{{ $speciality->descripcion }}</label>
+                    <input hidden id="speciality" name="speciality" value="{{ $speciality->id }}"></input>
                 </div>
                 <div class="form-group">
                     <label for="title">Prestación:</label>
-                    <label class="form-control col-10">{{ $attendance->provision->glosaTrasadora}}</label>
-                    <input hidden id="provision" name="provision" value="1"></input>
+                    <label class="form-control col-10">{{ $attendance->provision->glosaTrasadora }}</label>
+                    <input hidden id="provision" name="provision" value="{{ $attendance->provision->id }}"></input>
                 </div>
                 <div class="form-group">
                     <select class="form-control" name="activity" required>
