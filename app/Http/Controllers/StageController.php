@@ -153,8 +153,9 @@ class StageController extends Controller
                 $sugestion = "";
                 $attendance = $stage->attendance->first();
                 $functionary = Functionary::where('user_id', $user->id)->first();
+                $attendFunctionary = $attendance->$functionary;
                 $sameFunctionary = false;
-                foreach ($attendance->$functionary as $attendFunctionary) ($attendFunctionary->id == $functionary->id ? $sameFunctionary = true : false);
+                foreach ( $attendFunctionary as $index) ($index->id == $functionary->id ? $sameFunctionary = true : false);
                 if($sameFunctionary) return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
                 return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
             }
