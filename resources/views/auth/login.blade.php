@@ -20,7 +20,7 @@
         </div>
         @endif
         <img class="img-fluid mb-4" src="{{asset('img/logo.png')}}">
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login') }}" id="loginForm" name="onSubmit">
             @csrf
             <div class="form-group">
                 <input type="text" class="form-control form-control {{ $errors->has('rut') ? ' is-invalid' : '' }}" value="{{ old('rut') }}" id="rut" name="rut" placeholder="RUT">
@@ -36,10 +36,26 @@
             </div>
         </form>
     </div>
-    
+
     <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/rutValidator.js')}}"></script>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', async (e) => {
+            // No reaload
+            e.preventDefault();
+            // Remove dots and dashes
+            await quitarFormato($('#rut').val()).then(res => {
+                if (res) {
+                    document.getElementById('rut').value = res;
+                    document.onSubmit.submit();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
