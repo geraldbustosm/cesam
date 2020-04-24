@@ -22,7 +22,7 @@ class Attendance extends Model
    */
   public function functionary()
   {
-    return $this->belongsTo('App\Functionary', 'funcionario_id')->first();
+    return $this->belongsTo('App\Functionary', 'funcionario_id');
   }
 
   public function stage()
