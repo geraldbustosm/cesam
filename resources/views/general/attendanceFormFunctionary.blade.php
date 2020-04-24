@@ -117,7 +117,7 @@
                 <div class="panel-heading">Funcionario</div>
                 <div class="form-control">
                     <label class="form-group col-10">{{ $user->primer_nombre." ".$user->segundo_nombre }}</label>
-                    <input hidden id="functionary" name="functionary" value="{{ $functionary->id}}"></input>
+                    <input hidden id="functionary" name="functionary" value="{{ $functionary->id }}"></input>
                 </div>
 
                 <div class="form-group col-10" style="margin-top: 20px">
