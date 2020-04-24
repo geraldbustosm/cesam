@@ -125,7 +125,16 @@
                     </div>
                     <div class="form-group col-12" style="margin-top: 20px">
                         <label for="title">Seleccione la glosa:</label>
-                        <select name="provision" id="provision" class="form-control" required></select>
+                        <select class="div-full search-select" id="provision" name="provision" required>
+                            <option value="" selected disabled>Seleccione la glosa</option>
+                            @foreach($provision as $index)
+                            @if (lastProvision->id)
+                            <option value="{{ $index->id}}" {{ ($lastProvision == $index->id ? 'selected' : '') }}>{{ $index->glosaTrasadora}}</option>
+                            @else
+                            <option value="{{ $index->id}}">{{ $index->glosaTrasadora}}</option>
+                            @endif
+                            @endforeach
+                        </select>
                     </div>
                     <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge" style="min-width:200px">
                         La edad del paciente no esta en el rango de la prestación!!!
@@ -144,6 +153,8 @@
 
                     <script type="text/javascript">
                         var btn = document.getElementsByName("register");
+
+                        $('.search-select').select2();
 
                         $('#functionary').change(function() {
                             var functionaryID = $(this).val();
@@ -164,9 +175,7 @@
                                                 if (value.activa == true)
                                                     $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                             });
-                                        } else {
-                                            $("#speciality").empty();
-                                        }
+                                        } else $("#speciality").empty();
                                     }
                                 });
                             } else {
@@ -192,14 +201,10 @@
                                                 if (value.activa == true)
                                                     $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
                                             });
-                                        } else {
-                                            $("#provision").empty();
-                                        }
+                                        } else $("#provision").empty();
                                     }
                                 });
-                            } else {
-                                $("#provision").empty();
-                            }
+                            } else $("#provision").empty();
                         });
 
                         $('#speciality').on('change', function() {
@@ -216,14 +221,10 @@
                                                 if (value.activa == true)
                                                     $("#activity").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                             });
-                                        } else {
-                                            $("#activity").empty();
-                                        }
+                                        } else $("#activity").empty();
                                     }
                                 });
-                            } else {
-                                $("#activity").empty();
-                            }
+                            } else $("#activity").empty();
                         });
 
                         $('#provision').on('change', function() {
@@ -244,14 +245,10 @@
                                             $('#errorAge').show();
                                             btn[0].style.display = "none";
                                             btn[1].style.display = "none";
-                                        } else {
-                                            $('#errorAge').hide();
-                                        }
+                                        } else $('#errorAge').hide();
                                     }
                                 });
-                            } else {
-                                $("#activity").empty();
-                            }
+                            } else $("#activity").empty();
                         });
 
                         $('#activity').on('change', function() {
@@ -278,4 +275,3 @@
     </form>
     @endsection
     @push('styles')
-   

@@ -24,16 +24,6 @@ class AttendanceController extends Controller
         $this->middleware('auth');
     }
     /***************************************************************************************************************************
-                                                    CREATE FORM
-     ****************************************************************************************************************************/
-    public function showAddAttendance()
-    {
-        // Get active functionarys
-        $users = Functionary::where('activa', 1)->get();
-        // Redirect to the view with list of functionarys
-        return view('general.attendanceForm', compact('users'));
-    }
-    /***************************************************************************************************************************
                                                     EDIT FORM
      ****************************************************************************************************************************/
     public function showEditAttendance($dni, $etapa, $atencion)

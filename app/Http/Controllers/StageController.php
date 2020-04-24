@@ -10,6 +10,7 @@ use App\Program;
 use App\Release;
 use App\SiGGES;
 use App\Provenance;
+use App\Provision;
 use App\Stage;
 use Illuminate\Support\Facades\Auth;
 
@@ -141,6 +142,8 @@ class StageController extends Controller
         $stage = Stage::where('paciente_id', $id_patient)
             ->where('activa', 1)
             ->first();
+        $provision = Provision::where('activa', 1)->get();
+        $lastProvision = Provision::where('activa', 1)->first();
         // If have no active stage
         if (empty($stage)) {
             // Call function 'showAddStage'
@@ -149,7 +152,7 @@ class StageController extends Controller
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
             $user = Auth::user();
-            if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+            if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
             else if ($user->rol == 2) {
                 $functionary = Functionary::where('user_id', $user->id)->first();
                 return view('general.attendanceFormFunctionary', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
@@ -162,8 +165,8 @@ class StageController extends Controller
                 $DNI = $patient->dni;
                 $activity = $speciality->activity;
                 if ($attendance->count() != 0) return view('general.attendanceFormLast', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'functionary', 'speciality', 'attendance', 'activity'));
-                else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
-            } else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient'));
+                else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
+            } else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
         }
     }
 
