@@ -154,7 +154,12 @@ class StageController extends Controller
             $user = Auth::user();
             if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
             else if ($user->rol == 2) {
+                $sugestion = "";
+                $attendance = $stage->attendance->first();
                 $functionary = Functionary::where('user_id', $user->id)->first();
+                if($attendance->$functionary->id == $functionary->id){
+                    return view('general.attendanceFormFunctionary', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
+                }
                 return view('general.attendanceFormFunctionary', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
             }
             if ($user->rol == 3) {
