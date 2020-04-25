@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
 use Illuminate\Http\Request;
 use App\Patient;
 use App\Functionary;
@@ -93,9 +94,12 @@ class StageController extends Controller
             ->first();
         // Get active functionarys
         $users = Functionary::where('activa', 1)->get();
+        // Get provisions
+        $provision = Provision::where('activa', 1)->get();
+        $lastProvision = Attendance::where('activa', 1)->latest('created_at')->first();
         // Redirect to the view with stage, users (functionarys), patient, DNI (id of patient, we use DNI as standard in several views)
         // Also pass to the view the id of stage as stage_id
-        return view('general.attendanceForm')->with(compact('stage', 'users', 'patient', 'DNI'));
+        return view('general.attendanceForm')->with(compact('stage', 'users', 'patient', 'DNI', 'provision', 'lastProvision'));
     }
 
     /***************************************************************************************************************************
@@ -139,7 +143,7 @@ class StageController extends Controller
             ->where('activa', 1)
             ->first();
         $provision = Provision::where('activa', 1)->get();
-        $lastProvision = Provision::where('activa', 1)->first();
+        $lastProvision = Attendance::where('activa', 1)->latest('created_at')->first();
         // If have no active stage
         if (empty($stage)) {
             // Call function 'showAddStage'

@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
         DB::table('especialidad')->insert(['descripcion' => 'Psicólogo', 'created_at' => Carbon::now()]);
         DB::table('especialidad')->insert(['descripcion' => 'Asistente Social', 'created_at' => Carbon::now()]);
         DB::table('especialidad')->insert(['descripcion' => 'Enfermera', 'created_at' => Carbon::now()]);
-        DB::table('especialidad')->insert(['descripcion' => 'Terpaeuta Ocupacional', 'created_at' => Carbon::now()]);
+        DB::table('especialidad')->insert(['descripcion' => 'Terapeuta Ocupacional', 'created_at' => Carbon::now()]);
         DB::table('especialidad')->insert(['descripcion' => 'Psicopedagogo', 'created_at' => Carbon::now()]);
         DB::table('especialidad')->insert(['descripcion' => 'Agente Comunitario', 'created_at' => Carbon::now()]);
         DB::table('especialidad')->insert(['descripcion' => 'TENS', 'created_at' => Carbon::now()]);

@@ -109,11 +109,10 @@ class PatientController extends Controller
             'region' => 'required|string|max:255',
             'comuna' => 'required|string|max:255',
             'calle' => 'required|string|max:255',
-            'numero' => 'required|int',
+            'numero' => 'required|string|max:255',
             'depto' => 'nullable|string|max:255',
             'patient_sex' => 'required',
             'prevition' => 'required|int',
-            'numero' => 'required|int',
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
 
@@ -184,11 +183,10 @@ class PatientController extends Controller
             'region' => 'required|string|max:255',
             'comuna' => 'required|string|max:255',
             'calle' => 'required|string|max:255',
-            'numero' => 'required|int',
+            'numero' => 'required|string|max:255',
             'depto' => 'nullable|string|max:255',
             'patient_sex' => 'required',
             'prevition' => 'required|int',
-            'numero' => 'required|int',
             'datepicker' => 'required|date_format:"d/m/Y"',
         ]);
         // Get the patient that want to update

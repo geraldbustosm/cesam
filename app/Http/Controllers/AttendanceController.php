@@ -107,17 +107,15 @@ class AttendanceController extends Controller
         $stage = Stage::find($request->id_stage);
         $patientAttendances = $stage->attendance;
         // Get the patient
-        $idPatient = $request->get('id');
-        // Check for abre_canasta
-        $patient = Patient::find($idPatient);
+        $patient = Patient::find($request->get('id'));
         // Check if canasta = true
-        $attendance = $this->checkCanasta($request, $attendance, $idPatient);
+        $attendance = $this->checkCanasta($request, $attendance);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
         if ($request->register == 1) {
-            $activeStage = Stage::where('paciente_id', $idPatient)
+            $activeStage = Stage::where('paciente_id', $patient->id)
                 ->where('activa', 1)
                 ->select('id')
                 ->first();
@@ -128,7 +126,7 @@ class AttendanceController extends Controller
         if ($request->register == 2) {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
+            return view('general.attendanceForm', ['DNI' => $patient->id])->with(compact('users', 'patient', 'stage'));
         }
     }
     /***************************************************************************************************************************
@@ -161,10 +159,9 @@ class AttendanceController extends Controller
         $stage = Stage::find($request->id_stage);
         $patientAttendances = $stage->attendance;
         // Get the patient
-        $idPatient = $request->get('id');
-        $patient = Patient::find($idPatient);
+        $patient = Patient::find($request->get('id'));
         // Check if canasta = true
-        $this->checkCanasta($request, $attendance, $idPatient);        
+        $this->checkCanasta($request, $attendance);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar atención', $attendance->id, $attendance->table);
         // Update variable for functionary
@@ -177,7 +174,9 @@ class AttendanceController extends Controller
         if ($request->register == 2) {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $idPatient])->with(compact('users', 'patient', 'stage'));
+            $provision = Provision::where('activa', 1)->get();
+            $lastProvision = Attendance::where('activa', 1)->latest('created_at')->first();
+            return view('general.attendanceForm', ['DNI' => $patient->id])->with(compact('users', 'patient', 'stage', 'provision', 'lastProvision'));
         }
     }
 
@@ -190,17 +189,23 @@ class AttendanceController extends Controller
      * @param patient_id
      * @return void
      */
-    public function checkCanasta(Request $request, $attendance, $idPatient)
+    public function checkCanasta(Request $request, $attendance)
     {
         // Check for abre_canasta
-        $typespeciality = TypeSpeciality::where('especialidad_id', $request->speciality)->get();
+        $typespeciality = TypeSpeciality::join('prestacion', 'prestacion.tipo_id', '=', 'tipo_posee_especialidad_canasta.tipo_id')
+            ->where('especialidad_id', $request->speciality)
+            ->where('prestacion.id', $request->provision)
+            ->select('prestacion.id as prestacion', 'especialidad_id as especialidad')
+            ->get();
+
         $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1)->get();
         if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectAssist') == 1) {
             $canasta = true;
             $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
                 ->where('atencion.prestacion_id', $attendance->prestacion_id)
-                ->where('etapa.paciente_id', $idPatient)
+                ->where('etapa.paciente_id', $request->get('id'))
                 ->whereMonth('atencion.fecha', Carbon::now()->month)
+                ->whereYear('atencion.fecha', Carbon::now()->year)
                 ->where('atencion.activa', 1)
                 ->where('etapa.activa', 1)
                 ->get();
@@ -277,7 +282,7 @@ class AttendanceController extends Controller
      * Function for get the specialities from one functionary
      * @param request (with the functionary ID)
      * @return speciality_array
-    */
+     */
     public function getSpecialityPerFunctionary(Request $request)
     {
         // Get the functionary
@@ -291,7 +296,7 @@ class AttendanceController extends Controller
      * Function for get the provisions for a speciality
      * @param request (with the speciality ID)
      * @return provision_array
-    */
+     */
     public function getProvisionPerSpeciality(Request $request)
     {
         // Get the speciality
@@ -305,7 +310,7 @@ class AttendanceController extends Controller
      * Function for get the activities for a speciality
      * @param request (with the speciality ID)
      * @return activity_array
-    */
+     */
     public function getActivityPerSpeciality(Request $request)
     {
         // Get the speciality
@@ -319,7 +324,7 @@ class AttendanceController extends Controller
      * Function for check the patient age with respect to age range of provision
      * @param request (with the patient_id and provision_id)
      * @return integer (true if is in range)
-    */
+     */
     // Compare age of patient and range age of provision
     public function checkAge(Request $request)
     {

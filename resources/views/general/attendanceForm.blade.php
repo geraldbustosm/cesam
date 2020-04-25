@@ -10,7 +10,7 @@
         {{ session('status') }}
     </div>
     @endif
-    <form method="post" action="{{ url('ficha') }}">
+    <form method="post" action="{{ url('ficha') }}" name="onSubmitAttendance" id="attendanceForm">
         @csrf
         <input type="hidden" id="id" name="id" value="{{$patient->id}}">
         <div class="form-group">
@@ -129,7 +129,7 @@
                             <option value="" selected disabled>Seleccione la glosa</option>
                             @foreach($provision as $index)
                             @if ($lastProvision->id)
-                            <option value="{{ $index->id}}" {{ ($lastProvision->id == $index->id ? 'selected' : '') }}> {{ $index->glosaTrasadora}}</option>
+                            <option value="{{ $index->id}}" {{ ($lastProvision->prestacion_id == $index->id ? 'selected' : '') }}> {{ $index->glosaTrasadora}}</option>
                             @else
                             <option value="{{ $index->id}}">{{ $index->glosaTrasadora}}</option>
                             @endif
@@ -251,5 +251,19 @@
             </div>
         </div>
     </form>
-    @endsection
-    @push('styles')
+</div>
+
+<script src="{{asset('js/checkDate.js')}}"></script>
+<script>
+    var form = document.getElementById('attendanceForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if(getDate()) document.onSubmitAttendance.submit();
+        else {
+            Swal.fire('Error!', `Fecha no válida`, 'error');
+            $('#datepicker').val('');
+        }
+    });
+</script>
+@endsection
+@push('styles')

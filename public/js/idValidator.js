@@ -12,13 +12,16 @@ function validator() {
     form.addEventListener('submit', async(e) => {
         // No reaload
         e.preventDefault();
-        // Getting button for submit, country and Rut / Passport
-        var id = document.getElementById('dni');
-        var pais = document.getElementById('pais');
-        await checkCountry(id, pais).then(res => {
-            if (res) document.onSubmit.submit();
-            else Swal.fire('Error!', `El rut no es válido`, 'error');
-        })
+        // Check datepicker if someone type it manually
+        if (getDate()) {
+            // Getting button for submit, country and Rut / Passport
+            var id = document.getElementById('dni');
+            var pais = document.getElementById('pais');
+            await checkCountry(id, pais).then(res => {
+                if (res) document.onSubmit.submit();
+                else Swal.fire('Error!', `El rut no es válido`, 'error');
+            })
+        } else Swal.fire('Error!', `Fecha no válida`, 'error');
     });
 }
 /***************************************************************************************************************************
