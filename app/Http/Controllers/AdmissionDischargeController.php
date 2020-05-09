@@ -61,22 +61,13 @@ class AdmissionDischargeController extends Controller
             if ($currUrl == "egresos") $record->fecha_egreso = $discharge_date->format('d/m/Y');
             $num = 0;
             $patient = Patient::where('DNI', $record->DNI)->first();
-            $patientStage = $patient->stage;
-            $keepSearching = true;
-            $record->ges = 'NO';
-            foreach ($patientStage as $index) {
-                $patientAttendances = $index->attendance;
-                foreach ($patientAttendances as $index2) {
-                    $type = strtolower($index2->provision->type->descripcion);
-                    $find = strpos($type, 'ges');
-                    if ($find !== false) {
-                        $record->ges = 'SI';
-                        $keepSearching = false;
-                    }
-                    if (!$keepSearching) break;
-                }
-                if (!$keepSearching) break;
-            }
+            $checkType = DB::table('atencion')
+                ->join('prestacion', 'atencion.prestacion_id', '=', 'prestacion.id')
+                ->where('atencion.etapa_id', $record->numero_ficha)
+                ->where('prestacion.tipo_id', 1)
+                ->select('atencion.etapa_id', 'atencion.id as atencion_id', 'atencion.prestacion_id', 'prestacion.tipo_id')
+                ->count();
+            ($checkType > 0 ? $record->ges = 'SI': $record->ges = 'NO');
             foreach ($allDiagnosis as $index) {
                 if ($record->numero_ficha == $index->etapa_id) {
                     $str = "diagnostico_" . $num;

@@ -46,11 +46,13 @@ class AttendanceController extends Controller
                                     // Formatting date for the view
                                     $fecha = explode("-", $attendance->fecha);
                                     $fecha = $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0];
-
                                     // Formatting hour for the view
                                     $hora = $attendance->hora;
                                     $hora = substr($hora, 0, 5);
-                                    return view('admin.Edit.attendanceEdit', compact('patient', 'stage', 'attendance', 'functionarys', 'fecha', 'hora'));
+                                    // provisions and last provision used
+                                    $provision = Provision::where('activa', 1)->get();
+                                    $lastProvision = Attendance::where('activa', 1)->where('etapa_id', $stage->id)->latest('created_at')->first();
+                                    return view('admin.Edit.attendanceEdit', compact('patient', 'stage', 'attendance', 'functionarys', 'fecha', 'hora', 'provision', 'lastProvision'));
                                 }
                             }
                             return redirect($url)->with('error', 'No se encontró la atención para la etapa del paciente');
@@ -109,25 +111,13 @@ class AttendanceController extends Controller
         // Get the patient
         $patient = Patient::find($request->get('id'));
         // Check if canasta = true
-        $attendance = $this->checkCanasta($request, $attendance);
+        $this->checkCanasta($request, $attendance);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
-        if ($request->register == 1) {
-            $activeStage = Stage::where('paciente_id', $patient->id)
-                ->where('activa', 1)
-                ->select('id')
-                ->first();
-            // Redirect to the view with successful status
-            $url = 'ficha/' . $patient->DNI;
-            return redirect($url)->with('status', 'Se actualizó la atención');
-        }
-        if ($request->register == 2) {
-            // Get active functionarys
-            $users = Functionary::where('activa', 1)->get();
-            return view('general.attendanceForm', ['DNI' => $patient->id])->with(compact('users', 'patient', 'stage'));
-        }
+        // $request->register is button clicked from viewEdit
+        return redirect("ficha/" . $patient->DNI)->with('status', 'Se actualizó la atención');
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
@@ -160,22 +150,18 @@ class AttendanceController extends Controller
         $patientAttendances = $stage->attendance;
         // Get the patient
         $patient = Patient::find($request->get('id'));
-        // Check if canasta = true
+        // Check if canasta => true
         $this->checkCanasta($request, $attendance);
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar atención', $attendance->id, $attendance->table);
         // Update variable for functionary
         $this->updateHours($request);
-        if ($request->register == 1) {
-            // Redirect to the view with successful status
-            $url = "/ficha/" . $patient->DNI;
-            return redirect($url)->with('status', 'Atención agregada');
-        }
+        // $request->register is button clicked from viewForm
+        if ($request->register == 1) return redirect("ficha/" . $patient->DNI)->with('status', 'Atención agregada');
         if ($request->register == 2) {
-            // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
             $provision = Provision::where('activa', 1)->get();
-            $lastProvision = Attendance::where('activa', 1)->latest('created_at')->first();
+            $lastProvision = Attendance::where('activa', 1)->where('etapa_id', $stage->id)->latest('created_at')->first();
             return view('general.attendanceForm', ['DNI' => $patient->id])->with(compact('users', 'patient', 'stage', 'provision', 'lastProvision'));
         }
     }

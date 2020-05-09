@@ -144,7 +144,6 @@
                     {title:"Previsión", field:"prevision"},
                     {title:"GES", field:"ges"},
                     {title:"SIGGES", field:"sigges"},
-                    {title:"Diagnóstico", field:"diagnostico"},
                     {title:"Dirección", field:"direccion"},
                     {title:"SENAME", field:"SENAME"},
                     {title:"Médico", field:"medico"},

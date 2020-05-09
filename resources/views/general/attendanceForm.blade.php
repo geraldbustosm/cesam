@@ -128,7 +128,7 @@
                         <select class="div-full search-select" id="provision" name="provision" required>
                             <option value="" selected disabled>Seleccione la glosa</option>
                             @foreach($provision as $index)
-                            @if ($lastProvision->id)
+                            @if ($lastProvision)
                             <option value="{{ $index->id}}" {{ ($lastProvision->prestacion_id == $index->id ? 'selected' : '') }}> {{ $index->glosaTrasadora}}</option>
                             @else
                             <option value="{{ $index->id}}">{{ $index->glosaTrasadora}}</option>
