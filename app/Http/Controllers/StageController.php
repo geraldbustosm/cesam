@@ -8,7 +8,6 @@ use App\Patient;
 use App\Functionary;
 use App\Diagnosis;
 use App\Program;
-use App\Release;
 use App\SiGGES;
 use App\Provenance;
 use App\Provision;
@@ -68,14 +67,15 @@ class StageController extends Controller
     {
         // Check the format of each variable of 'request'
         $validation = $request->validate([]);
+        // Check have not anoter stage active
+        $checkStages = Stage::where('paciente_id', $request->idpatient)->where('activa', 1)->count();
+        if ($checkStages > 0) return redirect("ficha/" . $request->idpatient);
         // Create a new 'object' stage
         $stage = new Stage;
         // Set some variables with inputs of view
         // the variables name of object must be the same that database for save it
         // diagnostico_id, programa_id, sigges_id, procedencia_id, funcionario_id, paciente_id
-
         $stage->programa_id = $request->programa_id;
-        //$stage->alta_id = $request->alta_id;
         $stage->sigges_id = $request->sigges_id;
         $stage->procedencia_id = $request->procedencia_id;
         $stage->funcionario_id = $request->funcionario_id;
@@ -86,7 +86,7 @@ class StageController extends Controller
         // Regist in logs events
         app('App\Http\Controllers\AdminController')->addLog('Registrar etapa (ficha)', $stage->id, $stage->table);
         app('App\Http\Controllers\AdminController')->addLog('Registrar diagnósticos de la etapa id: ' . $stage->id, $request->options, 'etapa_posee_diagnostico');
-        // Set variable with patient_id
+        // Set variable with patient_dni
         $DNI = $request->idpatient;
         // Get the patient
         $patient = Patient::where('id', $DNI)
@@ -96,7 +96,11 @@ class StageController extends Controller
         $users = Functionary::where('activa', 1)->get();
         // Get provisions
         $provision = Provision::where('activa', 1)->get();
-        $lastProvision = Attendance::where('activa', 1)->latest('created_at')->first();
+        // Get last provision used
+        $lastProvision = Attendance::where('activa', 1)
+            ->where('etapa_id', $stage->id)
+            ->latest('created_at')
+            ->first();
         // Redirect to the view with stage, users (functionarys), patient, DNI (id of patient, we use DNI as standard in several views)
         // Also pass to the view the id of stage as stage_id
         return view('general.attendanceForm')->with(compact('stage', 'users', 'patient', 'DNI', 'provision', 'lastProvision'));
@@ -113,9 +117,7 @@ class StageController extends Controller
 
         // Massage and redirect url
         $url = 'etapas/edit/' . $stage->id;
-        $msg = 'Se actualizaron los datos de la etapa del paciente '
-            . $patient->nombre1 . ' ' . $patient->apellido1;
-
+        $msg = 'Se actualizaron los datos de la etapa del paciente ' . $patient->nombre1 . ' ' . $patient->apellido1;
         // Updating data
         $stage->programa_id = $request->programs;
         $stage->sigges_id = $request->sigges;
@@ -143,7 +145,10 @@ class StageController extends Controller
             ->where('activa', 1)
             ->first();
         $provision = Provision::where('activa', 1)->get();
-        $lastProvision = Attendance::where('activa', 1)->latest('created_at')->first();
+        $lastProvision = Attendance::where('activa', 1)
+            ->where('etapa_id', $stage->id)
+            ->latest('created_at')
+            ->first();
         // If have no active stage
         if (empty($stage)) {
             // Call function 'showAddStage'
@@ -158,7 +163,7 @@ class StageController extends Controller
                 $attendance = $stage->attendance->first();
                 $attendFunctionary = $attendance->functionary->first();
                 $functionary = Functionary::where('user_id', $user->id)->first();
-                if($attendFunctionary->id == $functionary->id) return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
+                if ($attendFunctionary->id == $functionary->id) return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
                 return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
             }
             if ($user->rol == 3) {
