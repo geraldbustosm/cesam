@@ -96,6 +96,8 @@
 
 <script>
   var fullArray = <?php echo json_encode($patients); ?>;
+  var auth = <?php echo json_encode($auth); ?>;
+  console.log(auth)
   document.getElementById('patients_Submenu').className += ' show';
 </script>
 
