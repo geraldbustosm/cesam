@@ -23,6 +23,12 @@ class REM7Controller extends Controller
      * The MAIN function is ShowReports, is the one that make the union between queries
      */
 
+     /**
+      * This function pass month and year of Request to a date variable with carbon
+      * because is easiest to use as Carbon Date
+      * @param request (with month and year)
+      * @return view (with the record of a specific date)
+      */
     public function showRem7(Request $request)
     {
         if ($request->year) {
@@ -33,6 +39,12 @@ class REM7Controller extends Controller
         return $this->showReport($date);
     }
 
+    /**
+     * This function is used for redirect to the view HTML using a date
+     * We use 3 queries for get diferent info and ensamble into a useful array with objects
+     * @param date (for extract year and month)
+     * @return view (recordRem7 with a list of age-range and data array with objects)
+     */
     public function showReport($date)
     {
         // Some variables
@@ -89,7 +101,7 @@ class REM7Controller extends Controller
                     $record1->mayores = count($mayores);
                 }
             }
-            // Cant per prevenance
+            // Cant per provenance
             foreach ($provenances as $index) {
                 $young = $index->descripcion . "_m";
                 $record1->$young = 0;
@@ -117,6 +129,13 @@ class REM7Controller extends Controller
         // Return to the view
         return view('general.recordsRem7', compact('data', 'list', 'provenances', 'date'));
     }
+
+    /**
+     * Query used for get functionaries with specality
+     * And count of male, female and total patient attended (group by the functionary)
+     * @param date (get month and year)
+     * @return data (object)
+     */
     public function queryRem3($date)
     {
         $data = DB::table('atencion')
@@ -155,7 +174,13 @@ class REM7Controller extends Controller
         return $data;
     }
 
-    // Query helper for REM
+    /**
+     * Query helper for REM
+     * Used for get patient (with age) attended by functionary-specality
+     * This is used for count patient by age-range
+     * @param date (get month and year)
+     * @return data (object)
+     */
     public function queryRem4($date)
     {
         $data = DB::table('atencion')
@@ -195,7 +220,13 @@ class REM7Controller extends Controller
         return $data;
     }
 
-    // Query helper for REM (inassist)
+    /**
+     * Query helper for REM (inassist)
+     * Used for get patient (with age) attended by functionary-specality
+     * This is used for count patient with inassistances
+     * @param date (get month and year)
+     * @return data (object)
+     */
     public function queryRem5($date)
     {
         $data = DB::table('atencion')
