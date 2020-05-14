@@ -25,7 +25,6 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('checkrole:1');
     }
 
     /***************************************************************************************************************************
@@ -175,7 +174,7 @@ class AdminController extends Controller
 
     public function showLogs()
     {
-        $logs = Log::all();
+        $logs = Log::latest()->get();
         foreach($logs as $data) $data->fecha = $data->created_at->format('d/m/Y - H:i');
         return view('admin.Views.logs', ['data' => $logs]);
     }
