@@ -115,7 +115,10 @@
                         <select id="functionary" name="functionary" class="form-control" required>
                             <option value="" selected disabled>Seleccione un Funcionario</option>
                             @foreach($users as $key => $user)
-                            <option value="{{$user->id}}"> {{$user->user->primer_nombre." ".$user->user->segundo_nombre}}</option>
+                            <option value="{{$user->id}}"> {{$user->user->primer_nombre." ".$user->user->apellido_paterno." - ".$user->user->run}}</option>
+                            <script>
+                                console.log(<?php echo json_encode($users); ?>)
+                            </script>
                             @endforeach
                         </select>
                     </div>
@@ -258,7 +261,7 @@
     var form = document.getElementById('attendanceForm');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if(getDate()) document.onSubmitAttendance.submit();
+        if (getDate()) document.onSubmitAttendance.submit();
         else {
             Swal.fire('Error!', `Fecha no válida`, 'error');
             $('#datepicker').val('');

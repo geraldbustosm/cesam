@@ -156,6 +156,7 @@ class StageController extends Controller
         } else {
             // Get active functionarys
             $users = Functionary::where('activa', 1)->get();
+            foreach($users as $index) app('App\Http\Controllers\UserController')->formatRut($index->user);
             $user = Auth::user();
             if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
             else if ($user->rol == 2) {
@@ -166,7 +167,7 @@ class StageController extends Controller
                 if ($attendFunctionary->id == $functionary->id) return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
                 return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
             }
-            if ($user->rol == 3) {
+            else if ($user->rol == 3) {
                 $users = Functionary::where('activa', 1)->get();
                 $attendance = $stage->attendance->first();
                 $functionary = $attendance->functionary;
@@ -175,7 +176,7 @@ class StageController extends Controller
                 $activity = $speciality->activity;
                 if ($attendance->count() != 0) return view('general.attendanceFormLast', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'functionary', 'speciality', 'attendance', 'activity'));
                 else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
-            } else return view('general.attendanceForm', ['DNI' => $DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
+            } else return view('general.attendanceForm', ['DNI' => $patient->dni])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
         }
     }
 
