@@ -13,7 +13,7 @@ use App\Stage;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class GeneralController extends Controller
 {
@@ -27,8 +27,8 @@ class GeneralController extends Controller
     // Home
     public function index()
     {
-        // Redirect to the view
-        return view('general.home');
+        if(Auth::user()->rol == 1) return view('general.home');
+        else return view('general.mision');
     }
     // Patients view (list)
     public function showPatients()
