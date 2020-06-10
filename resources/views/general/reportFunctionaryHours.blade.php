@@ -15,7 +15,7 @@
         @csrf
         <div class="form-group">
             <h4 class="titulo2">Funcionario: {{ $user->primer_nombre."  ".$user->segundo_nombre." ".$user->apellido_paterno." ".$user->apellido_materno }}</h4>
-            <input id="functID" name="functID" type="hidden" value="{{ $functionary->id}}">
+            <input id="functID" name="functID" type="hidden" value="{{ $functionary->id }}">
             <span class="titulo3">Horas Totales:</span>
             <span class="horasTotales">{{$functionary->horasDeclaradas }}</span>
             <span id="horasRestantes" class="horasRestantes">Horas Restantes: {{$functionary->horasDeclaradas }}</span>
@@ -26,13 +26,13 @@
                 </div>
                 <?php $i=0; ?>
                 
-                <div class="overflow-auto" style="height:450px; width:750px; ">
+                <div class="" style="height:450px; width:750px; max-width: 100%; ">
                     @foreach($activity as $activity)
                     <div class="form-group">
-                        <div class="container">
-                            <div class="slider">
+                        <div class="container" style=" max-width: 350px; ">
+                            <div class="slider" style=" max-width: 150px; font-size: 15px;">
                                 
-                                    <label class="rangeTitle"for="customRange">{{$activity->descripcion}}</label>
+                                    <label  class="rangeTitle"for="customRange">{{$activity->descripcion}}</label>
                                     <input name="hours2[]" type="range" value="0" max="{{$functionary->horasDeclaradas }}" data-target=".file<?php echo ++$i; ?>" class="custom-range x" id="customRange<?php echo $i; ?>">
                                     <input id="activityId<?php echo $i; ?>" name="activityId[]" type="hidden" value="{{$activity->id}}">
                                 
@@ -45,8 +45,8 @@
             </div>
             
             <div class="col-12 col-md-auto  ">
-                <div style="width:450px; ">
-                    <canvas  id="pie-chart2"  style="width:450px; "></canvas>
+                <div >
+                    <canvas  id="pie-chart2" ></canvas>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
                             }],
                         },
                         options: {
-                            responsive: false,
+                            responsive: true,
                             maintainAspectRatio: false,
                             legend: {
                                 display: true,
@@ -170,7 +170,7 @@
         .container {
             background-color: #20a8d5 ;
             width: 650px;
-            height: 70px;
+            height: 100px;
             border-radius: 10px 40px; 
         }
         .slider {

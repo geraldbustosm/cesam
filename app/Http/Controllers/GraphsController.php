@@ -76,5 +76,16 @@ class GraphsController extends Controller
         ->get();
       return response()->json($result4);
     }
+    public function chart5(Request $request)
+    {
+      $id = $request->functionary_id;
+      
+      $result4 = DB::table('funcionario_posee_horas_actividad')
+        ->where('funcionario_id',$id )
+        ->join('actividad', 'actividad.id', '=', 'funcionario_posee_horas_actividad.actividad_id')
+        ->select(DB::raw("horasDeclaradas as numero, horasRealizadas as realizadas, horas actividad.descripcion AS glosa"))
+        ->get();
+      return response()->json($result4);
+    }
 }
 

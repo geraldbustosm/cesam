@@ -8,22 +8,28 @@
   <div class="row">
     <div class="col">
         <div>
-            <canvas id="pie-chart"></canvas>
+            <canvas id="pie-chart" height="600px" width="600px"></canvas>
         </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col">
         <div>
-            <canvas id="pie-chart2" ></canvas>
+            <canvas id="pie-chart2" height="600px" width="600px" ></canvas>
         </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col">
         <div>
-            <canvas id="chart" height="400px" width="400px"></canvas>
+            <canvas id="chart" height="600px" width="600px"></canvas>
         </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col">
         <div>
-            <canvas id="line-chart3" height="400px" width="400px"></canvas>
+            <canvas id="line-chart3" height="600px" width="600px"></canvas>
         </div>
     </div>
   </div>
@@ -67,7 +73,7 @@
                 data: barChartData,
                 options: {
 
-                    responsive: false,
+                    responsive: true,
                     scales: {
                         yAxes: [{
                             ticks: {
@@ -140,7 +146,7 @@
                         }],
                     },
                     options: {
-                        responsive: false,
+                        responsive: true,
                         maintainAspectRatio: false,
                         legend: {
                             display: true,
@@ -211,7 +217,7 @@
                         }],
                     },
                     options: {
-                        responsive: false,
+                        responsive: true,
                         maintainAspectRatio: false,
                         legend: {
                             display: true,
@@ -278,7 +284,7 @@
                         }],
                     },
                     options: {
-                        responsive: false,
+                        responsive: true,
                         maintainAspectRatio: false,
                         legend: {
                             display: true,

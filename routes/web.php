@@ -294,6 +294,7 @@ Route::get('charts', 'GraphsController@chart')->middleware('checkrole:1|2|3');
 Route::get('charts2', 'GraphsController@chart2')->middleware('checkrole:1|2|3');
 Route::get('charts3', 'GraphsController@chart3')->middleware('checkrole:1|2|3');
 Route::get('charts4', 'GraphsController@chart4')->middleware('checkrole:1|2|3');
+Route::get('charts5', 'GraphsController@chart5')->middleware('checkrole:1|2|3');
 // Selección de etapa por paciente
 Route::get('etapas', 'GeneralController@stagesPerPatient')->middleware('checkrole:1|2|3');
 Route::post('etapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');

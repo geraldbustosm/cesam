@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use App\Functionary;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -13,7 +13,8 @@ class User extends Authenticatable
     /**/
 
     public function functionary(){
-        return $this->hasOne(Functionary::class);
+        
+        return $this->hasOne(Functionary::class, 'user_id')->first();
     }
     /**
      * The attributes that are mass assignable.
