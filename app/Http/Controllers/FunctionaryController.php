@@ -108,8 +108,10 @@ class FunctionaryController extends Controller
         $user = User::where('rut', $id)->first();
         // Get the functionary through id of that user
         $functionary = Functionary::where('user_id', $user->id)->first();
+        $funcSpec = $functionary->firstSpeciality[0]->id;
+        $speciality = Speciality::where('activa', 1)->get();
         // Redirect to the view with the functionary
-        return view('admin.Edit.functionaryEdit', compact('functionary'));
+        return view('admin.Edit.functionaryEdit', compact('functionary', 'speciality', 'funcSpec'));
     }
     /***************************************************************************************************************************
                                                     CREATE PROCESS
@@ -154,7 +156,7 @@ class FunctionaryController extends Controller
         ]);
 
         $functionary = Functionary::where('user_id', $request->id)->first();
-        $functionary->profesion = $request->profesion;
+        $functionary->speciality()->sync($request->profesion);
         $functionary->horasDeclaradas = $request->horasDeclaradas;
         $functionary->horasRealizadas = $request->horasRealizadas;
         $functionary->save();

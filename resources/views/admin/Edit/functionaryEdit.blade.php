@@ -32,8 +32,13 @@
 
 		<div class="form-group">
 			<label for="profesion">Profesión</label>
-			<input type="text" class="form-control {{ $errors->has('profesion') ? ' is-invalid' : '' }}" value="{{$functionary->profesion}}" placeholder="{{$functionary->profesion}}" id="profesion" name="profesion">
-		</div>
+            <select class="form-control" name="profesion" required>
+                <option selected disabled>Por favor seleccione una especialidad para asignar al funcionario</option>
+                @foreach($speciality as $speciality)
+                <option value="{{ $speciality->id}}" {{ ($speciality->id == $funcSpec ? 'selected' : '') }}>{{ $speciality->descripcion}}</option>
+                @endforeach
+            </select>
+        </div>
 		<div class="form-group">
 			<label for="horasDeclaradas">Horas declaradas</label>
 			<input type="text" class="form-control {{ $errors->has('horasDeclaradas') ? ' is-invalid' : '' }}" value="{{$functionary->horasDeclaradas}}" placeholder="{{$functionary->horasDeclaradas}}" id="horasDeclaradas" name="horasDeclaradas">

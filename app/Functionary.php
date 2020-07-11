@@ -15,6 +15,11 @@ class Functionary extends Model
     return $this->belongsToMany(Speciality::class, 'funcionario_posee_especialidad', 'funcionarios_id', 'especialidad_id');
   }
 
+  public function firstSpeciality()
+  {
+    return $this->belongsToMany(Speciality::class, 'funcionario_posee_especialidad', 'funcionarios_id', 'especialidad_id')->take(1);
+  }
+
   public function user()
   {
     return $this->belongsTO(User::class, 'user_id', 'id');
