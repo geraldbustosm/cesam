@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
         // Insert programs
         DB::table('programa')->insert(['descripcion' => 'PAI Infanto', 'especialidad_programa_id' => 2, 'created_at' => Carbon::now()]);
         DB::table('programa')->insert(['descripcion' => 'PAI Adulto', 'especialidad_programa_id' => 1,  'created_at' => Carbon::now()]);
-        DB::table('programa')->insert(['descripcion' => 'Adulto', 'especialidad_programa_id' => 2,  'created_at' => Carbon::now()]);
-        DB::table('programa')->insert(['descripcion' => 'Infanto Adolescente', 'especialidad_programa_id' => 1,  'created_at' => Carbon::now()]);
+        DB::table('programa')->insert(['descripcion' => 'Adulto', 'especialidad_programa_id' => 1,  'created_at' => Carbon::now()]);
+        DB::table('programa')->insert(['descripcion' => 'Infanto Adolescente', 'especialidad_programa_id' => 2,  'created_at' => Carbon::now()]);
     }
 }
