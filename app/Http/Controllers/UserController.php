@@ -183,11 +183,12 @@ class UserController extends Controller
     {
         // Validate the request variables
         $validation = $request->validate([
+            'rut' => 'required|string|max:255',
             'nombres' => 'required|string|max:255',
             'apellido_paterno' => 'required|string|max:255',
             'apellido_materno' => 'required|string|max:255',
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email',
             'password' => 'required|string'
         ]);
 
@@ -208,7 +209,21 @@ class UserController extends Controller
             $user->apellido_paterno = $request->apellido_paterno;
             $user->apellido_materno = $request->apellido_materno;
             $user->nombre = $request->nombre;
-            $user->email = $request->email;
+            if ($request->email != $user->email) {
+                $check = User::where('email', $request->email)->get();
+                if ($check->count() > 0) {
+                    return redirect(url()->previous())->with('err', 'El email ya se encuentra utilizado!');
+                }
+                $user->email = $request->email;
+            }
+
+            if ($request->rut != $user->rut) {
+                $check = User::where('rut', $request->email)->get();
+                if ($check->count() > 0) {
+                    return redirect(url()->previous())->with('err', 'El rut ya se encuentra utilizado!');
+                }
+                $user->email = $request->email;
+            }
             // Pass the new info for update
             $user->save();
             // Regist in logs events
