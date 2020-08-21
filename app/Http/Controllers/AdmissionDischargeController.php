@@ -55,10 +55,9 @@ class AdmissionDischargeController extends Controller
         foreach ($data as $record) {
             $dob = Carbon::createFromDate($record->fecha_nacimiento);
             $addmission_date = Carbon::createFromDate($record->fecha_ingreso);
-            if ($currUrl == "egresos") $discharge_date = Carbon::createFromDate($record->fecha_egreso);
+            if ($currUrl == "egresos") $record->fecha_egreso = Carbon::createFromDate($record->fecha_egreso)->format('d/m/Y');
             $record->fecha_nacimiento = $dob->format('d/m/Y');
             $record->fecha_ingreso = $addmission_date->format('d/m/Y');
-            if ($currUrl == "egresos") $record->fecha_egreso = $discharge_date->format('d/m/Y');
             $num = 0;
             $patient = Patient::where('DNI', $record->DNI)->first();
             $checkType = DB::table('atencion')

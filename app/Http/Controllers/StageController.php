@@ -145,10 +145,6 @@ class StageController extends Controller
             ->where('activa', 1)
             ->first();
         $provision = Provision::where('activa', 1)->get();
-        $lastProvision = Attendance::where('activa', 1)
-            ->where('etapa_id', $stage->id)
-            ->latest('created_at')
-            ->first();
         // If have no active stage
         if (empty($stage)) {
             // Call function 'showAddStage'
@@ -158,6 +154,12 @@ class StageController extends Controller
             $users = Functionary::where('activa', 1)->get();
             foreach($users as $index) app('App\Http\Controllers\UserController')->formatRut($index->user);
             $user = Auth::user();
+            // Get last provision
+            $lastProvision = Attendance::where('activa', 1)
+            ->where('etapa_id', $stage->id)
+            ->latest('created_at')
+            ->first();
+            // Check role of functionary
             if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
             else if ($user->rol == 2) {
                 $sugestion = "";

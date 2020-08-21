@@ -247,6 +247,7 @@
                     <div class="form-group col-10" class="register">
                         <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                         <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
+                        <input type="hidden" class="form-control {{ $errors->has('clicked') ? ' is-invalid' : '' }}" id="clicked" name="clicked">
                         <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
                         <button type="submit" name="register" id="registerAnother" value="2" class="btn btn-primary">Agregar Otro</button>
                     </div>
@@ -258,10 +259,17 @@
 
 <script src="{{asset('js/checkDate.js')}}"></script>
 <script>
+    $('#register').on('click', function() {
+        $('#clicked').val(1);
+    })
+    $('#registerAnother').on('click', function() {
+        $('#clicked').val(1);
+    })
+
     var form = document.getElementById('attendanceForm');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (getDate()) document.onSubmitAttendance.submit();
+        if (getThisDate()) document.onSubmitAttendance.submit();
         else {
             Swal.fire('Error!', `Fecha no válida`, 'error');
             $('#datepicker').val('');

@@ -1,4 +1,4 @@
-function getDate() {
+function getThisDate() {
     var datepicker = $('#datepicker').datepicker();
     var date = String(datepicker.value());
     var date = date.split("/");

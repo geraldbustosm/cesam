@@ -308,5 +308,6 @@ class UserController extends Controller
             $sRutFormateado = $sRutFormateado . $sDV;
         }
         $index->run = $sRutFormateado;
+        return $index;
     }
 }
