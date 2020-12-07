@@ -95,6 +95,7 @@ class AttendanceController extends Controller
         $attendance->etapa_id = $request->id_stage;
         ($request->get('provision') ? $attendance->prestacion_id = $request->get('provision') : false);
         $attendance->asistencia = $request->get('selectAssist');
+        $attendance->repetido = $request->get('selectType');
         $attendance->hora = $request->get('timeInit');
         ($request->get('activity') ? $attendance->actividad_id = $request->get('activity') : false);
         ($request->get('duration') ? $attendance->duracion = $request->get('duration') : false);
@@ -177,6 +178,7 @@ class AttendanceController extends Controller
      */
     public function checkCanasta(Request $request, $attendance)
     {
+        $canasta = false;
         // Check for abre_canasta
         $typespeciality = TypeSpeciality::join('prestacion', 'prestacion.tipo_id', '=', 'tipo_posee_especialidad_canasta.tipo_id')
             ->where('especialidad_id', $request->speciality)
@@ -188,7 +190,7 @@ class AttendanceController extends Controller
         if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectAssist') == 1) {
             $canasta = true;
             $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
-                ->where('atencion.prestacion_id', $attendance->prestacion_id)
+                //->where('atencion.prestacion_id', $attendance->prestacion_id)
                 ->where('etapa.paciente_id', $request->get('id'))
                 ->whereMonth('atencion.fecha', Carbon::now()->month)
                 ->whereYear('atencion.fecha', Carbon::now()->year)

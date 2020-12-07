@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attendance;
+use App\Activity;
 use Illuminate\Http\Request;
 use App\Patient;
 use App\Functionary;

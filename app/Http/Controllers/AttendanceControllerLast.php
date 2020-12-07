@@ -91,59 +91,12 @@ class AttendanceControllerLast extends Controller
         $idPatient = $request->get('id');
         $patient = Patient::find($idPatient);
         // Check for abre_canasta
-        $typespeciality = TypeSpeciality::where('especialidad_id', 1)->first();
-        $activity = Activity::where('id', $request->get('activity'))->where('actividad_abre_canasta', 1);
-        if ($typespeciality->count() > 0 && $activity->count() > 0 && $request->get('selectAssist') == 1) {
-            $canasta = true;
-            $query = Attendance::join('etapa', 'etapa.id', 'atencion.etapa_id')
-                ->where('atencion.prestacion_id', $attendance->prestacion_id)
-                ->where('etapa.paciente_id', $idPatient)
-                ->whereMonth('atencion.fecha', Carbon::now()->month)
-                ->where('atencion.activa', 1)
-                ->where('etapa.activa', 1)
-                ->get();
-            // $query2 = Attendance::join('prestacion', 'prestacion.id', 'atencion.prestacion_id')
-            //     ->join('tipo_prestacion', 'tipo_prestacion.id', 'prestacion.tipo_id')
-            //     ->join('etapa', 'etapa.id', 'atencion.etapa_id')
-            //     ->where('etapa.paciente_id', $idPatient)
-            //     ->where('tipo_prestacion.id', $attendance->provision->type->id)
-            //     ->whereMonth('atencion.fecha', Carbon::now()->month)
-            //     ->where('atencion.activa', 1)
-            //     ->where('etapa.activa', 1)
-            //     ->get();
-            if ($query->count() > 0) {
-                $canasta = false;
-            }
-            if ($canasta) {
-                $attendance->abre_canasta = 1;
-            }
-        }
-        // Pass attendance to database
-        $attendance->save();
+        app('App\Http\Controllers\AttendanceController')->checkCanasta($request, $attendance);
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Actualizar atención', $attendance->id, $attendance->table);
         // Update variable for functionary
-        // functionary -> horasRealizadas
-        $duration   = $request->get('duration');
-        $vector     = explode(":", $duration);
-        $hours      = $vector[0];
-        $minutes    = $vector[1];
-        // Get the specific functionary
-        $functionary = Functionary::find($request->functionary);
-        // Get previous hours worked
-        $anterior   = $functionary->horasRealizadas;
-        // Add the new hours
-        $new_hours =  $hours + $minutes / 60;
-        $functionary->horasRealizadas = $anterior +$new_hours;
-        // Update specific relationship in functionary - Activiti Hours
-        $activitiys = $request->get('activity');
-        $functionary_id=$functionary->id;
-        $registro = Hours::firstOrNew(['funcionario_id' => $functionary_id, 'actividad_id' => $activitiys ]);
-        $registro->horasRealizadas = ($registro->horasRealizadas + $new_hours);
-        if(is_null($registro->horasDeclaradas)){
-            $registro->horasDeclaradas=0;
-        }
-        // Save the update
-        $functionary->save();
-        $registro->save();
+        app('App\Http\Controllers\AttendanceController')->updateHours($request);
+        // $request->register is button clicked from viewForm
         if ($request->register == 1) {
             // Redirect to the view with successful status
             $url = "/ficha/" . $patient->DNI;
