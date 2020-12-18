@@ -163,12 +163,9 @@ class StageController extends Controller
             // Check role of functionary
             if ($user->rol == 1) return view('general.attendanceForm', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'provision', 'lastProvision'));
             else if ($user->rol == 2) {
-                $sugestion = "";
-                $attendance = $stage->attendance->first();
-                $attendFunctionary = $attendance->functionary->first();
                 $functionary = Functionary::where('user_id', $user->id)->first();
-                if ($attendFunctionary->id == $functionary->id) return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
-                return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI])->with(compact('stage', 'users', 'patient', 'user', 'functionary'));
+                return view('general.attendanceFormFunctionary', ['DNI' => $patient->DNI, 'currUser' => $user])
+                            ->with(compact('stage', 'users', 'patient', 'functionary', 'provision', 'lastProvision'));
             }
             else if ($user->rol == 3) {
                 $users = Functionary::where('activa', 1)->get();

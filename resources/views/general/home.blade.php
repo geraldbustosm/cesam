@@ -5,34 +5,27 @@
 @section('content')
 <link rel="stylesheet" href="{{asset('css/color.css')}}">
 <div class="container">
-  <div class="row">
-    <div class="col">
-        <div>
+    <ul class="nav nav-tabs" id="topNav" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="charts1-tab" data-toggle="tab" href="#charts1" role="tab" aria-controls="charts1" aria-selected="true">Atenciones por funcionario&nbsp;&nbsp;</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="chart2-tab" data-toggle="tab" href="#chart2" role="tab" aria-controls="chart2" aria-selected="false">Grafico de barra&nbsp;&nbsp;</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="charts1" role="tabpanel" aria-labelledby="charts1-tab">
             <canvas id="pie-chart" height="600px" width="600px"></canvas>
         </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-        <div>
-            <canvas id="pie-chart2" height="600px" width="600px" ></canvas>
-        </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-        <div>
+        <div class="tab-pane fade" id="chart2" role="tabpanel" aria-labelledby="chart2-tab">
             <canvas id="chart" height="600px" width="600px"></canvas>
         </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-        <div>
-            <canvas id="line-chart3" height="600px" width="600px"></canvas>
-        </div>
+
+    <br><br>
+    <div>
+        <canvas id="line-chart3" height="600px" width="600px"></canvas>
     </div>
-  </div>
 </div>
 
         
@@ -164,77 +157,6 @@
             }
             /* Create Chart */
             createChart('pie-chart', chartData, colorScale, colorRangeInfo);
-        },
-        error: function(error_data) {
-            console.log("error")
-            console.log(error_data)
-        }
-    })
-</script>
-<script>
-    var data2 = [];
-    var labels2 = [];
-    var endpoint = "{{url('charts2')}}";
-    $.ajax({
-        method: "GET",
-        dataType: 'json',
-        url: endpoint,
-        success: function(result2) {
-            result2.forEach(function(entry) {
-                labels2.push(entry.glosa);
-                data2.push(entry.numero);
-            });
-            const arrayLength = labels2.length;
-            const chartData2 = {
-                labels: labels2,
-                data: data2,
-            };
-            const colorScale = d3.interpolateCool;
-            const colorRangeInfo = {
-                colorStart: 0.1,
-                colorEnd: 0.65,
-                useEndAsStart: true,
-            };
-            /* Set up Chart.js Pie Chart */
-            function createChart(chartId, chartData2, colorScale, colorRangeInfo) {
-                /* Grab chart element by id */
-                const chartElement = document.getElementById(chartId);
-
-                const dataLength = chartData2.data.length;
-
-                /* Create color array */
-                var COLORS = interpolateColors(dataLength, colorScale, colorRangeInfo);
-
-                /* Create chart */
-                const myChart = new Chart(chartElement, {
-                    type: 'doughnut',
-                    data: {
-                        labels: chartData2.labels,
-                        datasets: [{
-                            backgroundColor: COLORS,
-                            hoverBackgroundColor: COLORS,
-                            data: chartData2.data
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        legend: {
-                            display: true,
-                        },
-                        hover: {
-                            onHover: function(e) {
-                                var point = this.getElementAtEvent(e);
-                                e.target.style.cursor = point.length ? 'pointer' : 'default';
-                            },
-                        },
-                    }
-                });
-
-                return myChart;
-            }
-            /* Create Chart */
-            createChart('pie-chart2', chartData2, colorScale, colorRangeInfo);
         },
         error: function(error_data) {
             console.log("error")

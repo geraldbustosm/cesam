@@ -193,6 +193,10 @@ a:hover {
     width: 100%;
 }
 
+.margin-right {
+    margin-right: 2px !important;
+}
+
 
 /* Para posicionar iconos en las cabeceras de las tarjetas de prestaciones */
 

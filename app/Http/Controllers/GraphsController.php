@@ -28,6 +28,7 @@ class GraphsController extends Controller
       $result = DB::table('atencion')
       ->join('funcionarios', 'funcionarios.id', '=', 'atencion.funcionario_id')
       ->join('users', 'users.id', '=', 'funcionarios.user_id')
+                ->whereMonth('atencion.fecha', Carbon::now()->month)
                 ->select(DB::raw("count(*) as stockPrice, CONCAT(users.nombre,' ', users.apellido_paterno, ' ', users.apellido_materno) AS stockYear"))
                 ->groupBy('users.id','users.nombre','users.apellido_paterno','users.apellido_materno')
                 ->get();
@@ -37,6 +38,7 @@ class GraphsController extends Controller
     {
       $result2 = DB::table('atencion')
         ->join('prestacion', 'prestacion.id', '=', 'atencion.prestacion_id')
+        ->whereMonth('atencion.fecha', Carbon::now()->month)
         ->select(DB::raw("count(*) as numero, prestacion.glosaTrasadora AS glosa"))
         ->groupBy('prestacion.glosaTrasadora')
         ->get();

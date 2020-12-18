@@ -31,4 +31,12 @@ function addAttendance(DNI) {
 function changeStatus(id) {
     confirmAction(id, 'id');
 }
+
+// Buttons
+function changeRol(id) {
+    // Call function set Value
+    setValue(id, 'rol');
+    // Submit the data
+    document.onSubmitRol.submit();
+}
 /********************************************************END*******************************************************************/

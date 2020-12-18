@@ -59,17 +59,17 @@ function createRow(num, data) {
 function writeActionButtons(data) {
     try {
         var active = data.activa;
+        console.log(data);
         var tmp = ` <td><a href='/ficha/${data.DNI}'><i title='Ver ficha' class='material-icons'>description</i></a>`;
         // Generate action buttons for active patients
-        if (active == 1) {
-            tmp += `<a href='javascript:addAttendance(${data.id})'><i title='Añadir prestación' class='material-icons'>add</i></a>`
-            tmp += "</td>"
+        if (active == 1) tmp += `<a href='javascript:addAttendance(${data.id})'><i title='Añadir prestación' class='material-icons'>add</i></a>`
+        if (auth.rol == 1) {
+            tmp += `<a href='/pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>`;
+            if (active == 1) tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a> </td>`;
+            else tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a> </td>`;
         }
-        // Generate action buttons for deactive patients
-        else tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a> </td>`;
-        if (auth.rol == 1) tmp += `<a href='/pacientes/edit/${data.DNI}'><i title='Editar' class='material-icons'>create</i></a>
-                                   <a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>`;
     } catch (ex) {
+        console.log(ex);
         tmp = "";
     }
     return tmp

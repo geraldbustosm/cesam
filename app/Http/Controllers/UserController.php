@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         // Get patients from database where 'activa' attribute is 1 bits
         $users = User::where('activa', 1)
-            ->select('id', 'rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+            ->select('id', 'rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa', 'rol')
             ->get();
         // Total users
         $cantUsers = $users->count();
@@ -43,7 +43,7 @@ class UserController extends Controller
     {
         // Get patients from database where 'activa' attribute is 0 bits
         $users = User::where('activa', 0)
-            ->select('id', 'rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa')
+            ->select('id', 'rut', 'primer_nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'nombre', 'email', 'activa', 'rol')
             ->get();
 
         foreach ($users as $user) {
@@ -286,6 +286,19 @@ class UserController extends Controller
         }
         // Redirect to the view with successful status (showing the DNI)
         return redirect('usuarios')->with('status', 'Usuario ' . $request->id . ' eliminado');
+    }
+
+    public function changeRolUser(Request $request)
+    {
+        // Get the user
+        $user = User::find($request->rol);
+        if ($user->rol == 1) $user->rol = 2;
+        else if ($user->rol == 2) $user->rol = 1;
+        $user->save();
+        // Regist in logs events
+        app('App\Http\Controllers\AdminController')->addLog('Cambio de rol', $user->id, $user->table);
+        // Redirect to the view with successful status (showing the DNI)
+        return redirect(url()->previous())->with('status', 'Usuario ' . $request->id . ' con rol cambiado');
     }
 
     public function formatRut($index)

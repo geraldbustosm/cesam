@@ -146,9 +146,6 @@ class AttendanceController extends Controller
         $attendance->fecha = $correctDate;
         // Set abre_canasta with 0;
         $attendance->abre_canasta = 0;
-        // Get the active stage
-        $stage = Stage::find($request->id_stage);
-        $patientAttendances = $stage->attendance;
         // Get the patient
         $patient = Patient::find($request->get('id'));
         // Check if canasta => true
@@ -158,8 +155,12 @@ class AttendanceController extends Controller
         // Update variable for functionary
         $this->updateHours($request);
         // $request->register is button clicked from viewForm
-        if ($request->clicked == 1) return redirect("ficha/" . $patient->DNI)->with('status', 'Atención agregada');
+        $url = "ficha/" . $patient->DNI;
+        if ($request->clicked == 1) return redirect($url)->with('status', 'Atención agregada');
         if ($request->clicked == 2) {
+            // Get the active stage
+            $stage = Stage::find($request->id_stage);
+            $patientAttendances = $stage->attendance;
             $users = Functionary::where('activa', 1)->get();
             $provision = Provision::where('activa', 1)->get();
             $lastProvision = Attendance::where('activa', 1)->where('etapa_id', $stage->id)->latest('created_at')->first();

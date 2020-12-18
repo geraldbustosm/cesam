@@ -116,9 +116,6 @@
                             <option value="" selected disabled>Seleccione un Funcionario</option>
                             @foreach($users as $key => $user)
                             <option value="{{$user->id}}"> {{$user->user->primer_nombre." ".$user->user->apellido_paterno." - ".$user->user->run}}</option>
-                            <script>
-                                console.log(<?php echo json_encode($users); ?>)
-                            </script>
                             @endforeach
                         </select>
                     </div>

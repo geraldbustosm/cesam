@@ -39,6 +39,13 @@
   </div>
 </form>
 
+<form name="onSubmitRol" method="post" action="{{ url('usuarios/rol') }}">
+  @csrf
+  <div class="form-group">
+    <input type="hidden" class="form-control {{ $errors->has('rol') ? ' is-invalid' : '' }}" value="{{ old('rol') }}" id="rol" name="rol">
+  </div>
+</form>
+
 <div class="div-full">
   <ul class="pagination justify-content-center" id="paginate">
     <!-- Generate in patientFilter.js->generatePaginationNum(); -->

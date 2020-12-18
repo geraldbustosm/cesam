@@ -3,20 +3,31 @@
 @section('active-escritorio','active')
 @section('content')
 
-<h1>Misión y visión</h1>
 <input id="functID" name="functID" type="hidden" value="{{ Auth::user()->functionary()->id }}">
-<div class="row">
-  <div class="col">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente laborum autem repudiandae distinctio laboriosam quo, harum sint adipisci fugiat iusto nesciunt aut eum qui quos quaerat doloremque molestiae debitis error? Praesentium maxime consequatur a unde. Eaque tenetur quae saepe minima exercitationem officiis sapiente labore eligendi tempora quam nesciunt, nihil quidem ipsam iste qui corrupti doloremque, temporibus hic ea repudiandae. Nostrum veritatis maxime obcaecati sapiente architecto ullam cumque porro, sit earum necessitatibus beatae perspiciatis voluptatem, quibusdam ea quae? Eaque sequi sunt nam deserunt voluptas omnis ab voluptatum corporis pariatur autem sapiente libero recusandae officia veniam iure, aliquid esse nemo laborum, repudiandae fugiat. Nobis necessitatibus quisquam obcaecati commodi explicabo corporis nostrum inventore, porro soluta. Laborum nostrum veniam quos nihil placeat nam ipsum expedita, perspiciatis, facere quaerat ab vel natus eveniet nobis fugiat eligendi ex qui molestias quasi earum aliquam. Fugiat, accusantium alias saepe cumque quibusdam dicta sunt, error commodi consectetur hic magni, magnam temporibus labore neque nisi expedita? Enim adipisci eum odio aliquid, laudantium quasi odit hic quod. Magni vitae ut sed asperiores doloremque eum, numquam ullam atque at optio fugit illum quia sapiente sit hic praesentium facere recusandae quod odio labore fugiat modi consectetur iure? Tempore fuga repudiandae rerum molestiae ratione pariatur qui aut natus quae voluptatibus harum, atque quibusdam magnam!</p>
+<div class="jumbotron jumbotron-fluid div-full">
+  <div class="container">
+    <h1 class="display-4">Misión y visión</h1>
+    <p class="lead" style="font-size: 18px;">Ser un Centro Comunitario reconocido territorialmente en el desarrollo de la Salud Mental
+      con una marcada participación democrática de los sujetos individuales y colectivos de la
+      población, promoviendo el bienestar físico psicológico, social y espiritual, con un enfoque
+      de recuperación, intercultural y de derecho
+    </p>
+    <p class="lead" style="font-size: 18px;">
+      En relación al mensaje comunicacional de la visión desea plasmar, a fin de fortalecer al
+      equipo de trabajo, se pueden señalar:
+    </p>
+    <ul style="width: 90%;">
+      <li><p>Somos un equipo de atención de especialidad, competente para abordar casos de alta complejidad.</p></li>
+      <li><p>Somos un equipo trasdisciplinario, llamado a mirar contextual, relacional e integralmente.</p></li>
+      <li><p>Somos un equipo respetuoso y democrático en el proceso de atención.</p></li>
+      <li><p>Somos un equipo colaborativo y constructivo en la toma de decisiones clínicas, técnicas y en su operar administrativo.</p></li>
+      <li><p>Somos un equipo creativo que busca innovar y diversificar en sus procesos de atención, a fin de llevar la atención requerida a los usuarios, cuidando su continuidad de cuidados, la oportunidad de su atención y el logro de su recuperación.</p></li>
+    </ul>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-      <div>
-          <canvas id="pie-chart2" height="400px" width="900px"></canvas>
-      </div>
-  </div>
+<div>
+    <canvas id="pie-chart2" height="400px" width="900px"></canvas>
 </div>
 
 
@@ -30,7 +41,7 @@
     var data3 = [];
     var labels2 = [];
     var ID = document.getElementById("functID").value; 
-    var endpoint = "{{url('charts5')}}?functionary_id="+ID;
+    var endpoint = "{{url('chartForFunctionaryHome')}}?functionary_id="+ID;
     $.ajax({
         method: "GET",
         dataType: 'json',

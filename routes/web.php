@@ -58,6 +58,7 @@ Route::post('pacientes/inactivos', 'PatientController@activatePatient')->middlew
 // Usuarios
 Route::get('usuarios', 'UserController@showUsers')->middleware('checkrole:1');
 Route::post('usuarios', 'UserController@deletingUser')->middleware('checkrole:1');
+Route::post('usuarios/rol', 'UserController@changeRolUser')->middleware('checkrole:1');
 // Usuarios desactivados
 Route::get('usuarios/inactivos', 'UserController@showInactiveUsers')->middleware('checkrole:1');
 Route::post('usuarios/inactivos', 'UserController@activateUser')->middleware('checkrole:1');
@@ -294,7 +295,7 @@ Route::get('charts', 'GraphsController@chart')->middleware('checkrole:1|2|3');
 Route::get('charts2', 'GraphsController@chart2')->middleware('checkrole:1|2|3');
 Route::get('charts3', 'GraphsController@chart3')->middleware('checkrole:1|2|3');
 Route::get('charts4', 'GraphsController@chart4')->middleware('checkrole:1|2|3');
-Route::get('charts5', 'GraphsController@chart5')->middleware('checkrole:1|2|3');
+Route::get('chartForFunctionaryHome', 'GraphsController@chart5')->middleware('checkrole:1|2|3');
 // Selección de etapa por paciente
 Route::get('etapas', 'GeneralController@stagesPerPatient')->middleware('checkrole:1|2|3');
 Route::post('etapa', 'GeneralController@selectStage')->middleware('checkrole:1|2|3');

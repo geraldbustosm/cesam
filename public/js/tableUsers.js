@@ -53,15 +53,25 @@ function createRow(num, data) {
 function writeActionButtons(data) {
     try {
         var active = data.activa;
-        var tmp = ` <td>`;
+        var rol = data.rol;
+
+        var tmp = '<td>';
+        if (rol == 1) {
+            // Generate action buttons for admins
+            tmp += `<a href='javascript:changeRol(${data.id})'><i title='Cambiar a usuario' class='material-icons'>supervised_user_circle</i></a>`;
+        } else if (rol == 2) {
+            // Generate action buttons for functionary
+            tmp += `<a href='javascript:changeRol(${data.id})'><i title='Cambiar a admin' class='material-icons'>account_circle</i></a>`;
+        }
+
         if (active == 1) {
-            // Generate action buttons for active patients
+            // Generate action buttons for active
             tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Borrar' class='material-icons'>delete</i></a>
-                    </td>`
+                    </td>`;
         } else {
-            // Generate action buttons for deactive patients
+            // Generate action buttons for deactive
             tmp += `<a href='javascript:changeStatus(${data.id})'><i title='Activar' class='material-icons'>person_add</i></a>
-                    </td>`
+                    </td>`;
         }
     } catch (ex) {
         tmp = "";

@@ -12,7 +12,7 @@
     @endif
     <form method="post" action="{{ url('ficha') }}" name="onSubmitAttendance" id="attendanceForm">
         @csrf
-        <input type="hidden" id="id" name="id" value=<?= $patient->id; ?>>
+        <input type="hidden" id="id" name="id" value="{{$patient->id}}">
         <div class="form-group">
             <p class="titulo2">Paciente: <?= $patient->nombre1 . " " . $patient->nombre2 . " " . $patient->apellido1 . " " . $patient->apellido2; ?></p>
         </div>
@@ -114,19 +114,33 @@
                     </select>
                 </div>
 
-                <div class="panel-heading">Funcionario</div>
-                <div class="form-control">
-                    <label class="form-group col-10">{{ $user->primer_nombre." ".$user->apellido_paterno." - ".$user->user->run }}</label>
-                    <input hidden id="functionary" name="functionary" value="{{ $functionary->id }}"></input>
+                <div class="form-group col-10" style="min-width:200px">
+                    <label for="title">Seleccione el funcionario:</label>
+                    <select id="functionary" name="functionary" class="form-control" required>
+                        <option value="" selected disabled>Seleccione un Funcionario</option>
+                        @foreach($users as $key => $user)
+                        <option value="{{$user->id}}" {{ ($user->user->id == $currUser->id ? 'selected' : '') }}> {{$user->user->primer_nombre." ".$user->user->apellido_paterno." - ".$user->user->run}}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group col-10" style="margin-top: 20px">
                     <label for="title">Seleccione la especialidad:</label>
                     <select name="speciality" id="speciality" class="form-control" required></select>
                 </div>
+
                 <div class="form-group col-10" style="margin-top: 20px">
-                    <label for="title">Seleccione la prestación:</label>
-                    <select name="provision" id="provision" class="form-control" required></select>
+                    <label for="title">Seleccione la glosa:</label>
+                    <select class="div-full search-select" id="provision" name="provision" required>
+                        <option value="" selected disabled>Seleccione la glosa</option>
+                        @foreach($provision as $index)
+                        @if ($lastProvision)
+                        <option value="{{ $index->id}}" {{ ($lastProvision->prestacion_id == $index->id ? 'selected' : '') }}> {{ $index->glosaTrasadora}}</option>
+                        @else
+                        <option value="{{ $index->id}}">{{ $index->glosaTrasadora}}</option>
+                        @endif
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="alert alert-danger collapse" role="alert" name="errorAge" id="errorAge" style="min-width:200px">
@@ -138,6 +152,7 @@
                 </div>
                 <script type="text/javascript">
                     var btn = document.getElementsByName("register");
+                    $('.search-select').select2();
 
                     $(document).ready(function() {
                         var functionaryID = <?php echo json_encode($functionary->id)?>;
@@ -151,7 +166,6 @@
                                         btn[1].style = "";
                                         $('#errorAge').hide();
                                         $("#speciality").empty();
-                                        $("#provision").empty();
                                         $("#activity").empty();
                                         $("#speciality").append('<option value="" selected disabled>Seleccione la especialidad</option>');
                                         $.each(res, function(key, value) {
@@ -168,29 +182,30 @@
                         }
                     });
 
-                    $('#speciality').on('change', function() {
-                        var specialityID = $(this).val();
-                        if (specialityID) {
+                    $('#functionary').change(function() {
+                        var functionaryID = $(this).val();
+                        if (functionaryID) {
                             $.ajax({
                                 type: "GET",
-                                url: "{{url('lista-prestaciones')}}?speciality_id=" + specialityID,
+                                url: "{{url('lista-especialidades')}}?functionary_id=" + functionaryID,
                                 success: function(res) {
                                     if (res) {
                                         btn[0].style = "";
                                         btn[1].style = "";
                                         $('#errorAge').hide();
-                                        $("#provision").empty();
-                                        $("#provision").append('<option value="" selected disabled>Seleccione la prestación</option>');
+                                        $("#speciality").empty();
+                                        $("#activity").empty();
+                                        $("#speciality").append('<option value="" selected disabled>Seleccione la especialidad</option>');
                                         $.each(res, function(key, value) {
-                                            $("#provision").append('<option value="' + value.id + '">' + value.glosaTrasadora + '</option>');
+                                            if (value.activa == true)
+                                                $("#speciality").append('<option value="' + value.id + '">' + value.descripcion + '</option>');
                                         });
-                                    } else {
-                                        $("#provision").empty();
-                                    }
+                                    } else $("#speciality").empty();
                                 }
                             });
                         } else {
-                            $("#provision").empty();
+                            $("#speciality").empty();
+                            $("#functionary").empty();
                         }
                     });
 
@@ -257,8 +272,9 @@
                 <div class="form-group col-10" class="register">
                     <input type="hidden" class="form-control {{ $errors->has('DNI') ? ' is-invalid' : '' }}" value="<?= $DNI; ?>" id="DNI" name="DNI">
                     <input type="hidden" class="form-control {{ $errors->has('id_stage') ? ' is-invalid' : '' }}" value="<?= $stage->id; ?>" id="id_stage" name="id_stage">
+                    <input type="hidden" class="form-control {{ $errors->has('clicked') ? ' is-invalid' : '' }}" id="clicked" name="clicked">
                     <button type="submit" name="register" id="register" value="1" class="btn btn-primary">Registrar</button>
-                    <button type="submit" name="register" id="register" value="2" class="btn btn-primary">Agregar Otro</button>
+                    <button type="submit" name="register" id="registerAnother" value="2" class="btn btn-primary">Agregar Otro</button>
                 </div>
             </div>
         </div>
