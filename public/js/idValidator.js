@@ -13,7 +13,7 @@ function validator() {
         // No reaload
         e.preventDefault();
         // Check datepicker if someone type it manually
-        if (getDate()) {
+        if (getThisDate()) {
             // Getting button for submit, country and Rut / Passport
             var id = document.getElementById('dni');
             var pais = document.getElementById('pais');
